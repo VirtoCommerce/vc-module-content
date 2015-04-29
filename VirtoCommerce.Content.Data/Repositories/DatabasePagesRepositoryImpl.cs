@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Data.Entity;
 using System.Threading.Tasks;
-using VirtoCommerce.Foundation.Data;
-using VirtoCommerce.Foundation.Data.Infrastructure.Interceptors;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using VirtoCommerce.Content.Data.Models;
 using VirtoCommerce.Content.Data.Converters;
+using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 
 namespace VirtoCommerce.Content.Data.Repositories
 {
@@ -23,7 +23,7 @@ namespace VirtoCommerce.Content.Data.Repositories
 		}
 
 		public DatabasePagesRepositoryImpl(string nameOrConnectionString, params IInterceptor[] interceptors)
-			: base(nameOrConnectionString, null, null, interceptors)
+			: base(nameOrConnectionString, null, interceptors)
 		{
 			Database.SetInitializer<DatabasePagesRepositoryImpl>(null);
 			Configuration.LazyLoadingEnabled = false;

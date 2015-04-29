@@ -6,10 +6,10 @@ using VirtoCommerce.Content.Data;
 using VirtoCommerce.Content.Data.Repositories;
 using VirtoCommerce.Content.Data.Services;
 using VirtoCommerce.Content.Web.Controllers.Api;
-using VirtoCommerce.Foundation.Assets.Repositories;
-using VirtoCommerce.Foundation.Data.Infrastructure.Interceptors;
+using VirtoCommerce.Platform.Core.Asset;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Settings;
+using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 
 namespace VirtoCommerce.Content.Web
 {
@@ -191,35 +191,35 @@ namespace VirtoCommerce.Content.Web
 
         public void SetupDatabase(SampleDataLevel sampleDataLevel)
         {
-            using (var context = new DatabaseMenuRepositoryImpl())
-            {
-                var initializer = new SqlMenuDatabaseInitializer();
-                initializer.InitializeDatabase(context);
-            }
+			//using (var context = new DatabaseMenuRepositoryImpl())
+			//{
+			//	var initializer = new SqlMenuDatabaseInitializer();
+			//	initializer.InitializeDatabase(context);
+			//}
 
-            #region Themes_SetupDatabase
+			//#region Themes_SetupDatabase
 
-            var options = this._container.Resolve<IModuleInitializerOptions>();
-            var modulePath = options.GetModuleDirectoryPath("VirtoCommerce.Content");
-            var themePath = Path.Combine(modulePath, "Default_Theme");
+			//var options = this._container.Resolve<IModuleInitializerOptions>();
+			//var modulePath = options.GetModuleDirectoryPath("VirtoCommerce.Content");
+			//var themePath = Path.Combine(modulePath, "Default_Theme");
 
-            using (var context = new DatabaseFileRepositoryImpl())
-            {
-                var initializer = new SqlThemeDatabaseInitializer(themePath);
-                initializer.InitializeDatabase(context);
-            }
+			//using (var context = new DatabaseFileRepositoryImpl())
+			//{
+			//	var initializer = new SqlThemeDatabaseInitializer(themePath);
+			//	initializer.InitializeDatabase(context);
+			//}
 
-            #endregion
+			//#endregion
 
-            #region Pages_SetupDatabase
+			//#region Pages_SetupDatabase
 
-            using (var context = new DatabasePagesRepositoryImpl())
-            {
-                var initializer = new SqlPagesDatabaseInitializer();
-                initializer.InitializeDatabase(context);
-            }
+			//using (var context = new DatabasePagesRepositoryImpl())
+			//{
+			//	var initializer = new SqlPagesDatabaseInitializer();
+			//	initializer.InitializeDatabase(context);
+			//}
 
-            #endregion
+			//#endregion
         }
 
         #endregion

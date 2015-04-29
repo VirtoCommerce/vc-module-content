@@ -5,8 +5,8 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VirtoCommerce.Foundation.Data;
-using VirtoCommerce.Foundation.Data.Infrastructure.Interceptors;
+using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 
 namespace VirtoCommerce.Content.Data.Repositories
 {
@@ -21,7 +21,7 @@ namespace VirtoCommerce.Content.Data.Repositories
 		}
 
 		public DatabaseMenuRepositoryImpl(string nameOrConnectionString, params IInterceptor[] interceptors)
-			: base(nameOrConnectionString, null, null, interceptors)
+			: base(nameOrConnectionString, null,  interceptors)
 		{
 			Database.SetInitializer<DatabaseMenuRepositoryImpl>(null);
 			Configuration.LazyLoadingEnabled = false;
