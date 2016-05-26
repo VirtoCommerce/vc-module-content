@@ -11,6 +11,7 @@ namespace VirtoCommerce.ContentModule.Data.Migrations
         {
             AutomaticMigrationsEnabled = false;
             MigrationsDirectory = @"Migrations";
+            ContextKey = "VirtoCommerce.Content.Data.Migrations.Configuration";
         }
 
         protected override void Seed(VirtoCommerce.ContentModule.Data.Repositories.ContentRepositoryImpl context)
