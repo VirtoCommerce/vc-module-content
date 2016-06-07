@@ -43,10 +43,27 @@ namespace VirtoCommerce.ContentModule.Web
             _container.RegisterInstance(menuRepFactory);
             _container.RegisterType<IMenuService, MenuServiceImpl>();
 
-            var blobConnectionString = BlobConnectionString.Parse(ConfigurationManager.ConnectionStrings["CmsContentConnectionString"].ConnectionString);
+            var settingManager = _container.Resolve<ISettingsManager>();
+            BlobConnectionString blobConnectionString = null;
+            if (ConfigurationManager.ConnectionStrings["CmsContentConnectionString"] != null)
+            {
+                blobConnectionString = BlobConnectionString.Parse(ConfigurationManager.ConnectionStrings["CmsContentConnectionString"].ConnectionString);
+            }
+            else
+            {
+                var connectionStringFromSettings = settingManager.GetValue("VirtoCommerce.Content.CmsContentConnectionString", string.Empty);
+                if (!string.IsNullOrEmpty(connectionStringFromSettings))
+                {
+                    blobConnectionString = BlobConnectionString.Parse(connectionStringFromSettings);
+                }
+            }
 
             Func<string, IContentBlobStorageProvider> contentProviderFactory = chrootPath =>
            {
+               if (blobConnectionString == null)
+               {
+                   throw new InvalidOperationException("CmsContentConnectionString not defined");
+               }
                if (string.Equals(blobConnectionString.Provider, FileSystemBlobProvider.ProviderName, StringComparison.OrdinalIgnoreCase))
                {
                    var storagePath = Path.Combine(NormalizePath(blobConnectionString.RootPath), chrootPath.Replace("/", "\\"));

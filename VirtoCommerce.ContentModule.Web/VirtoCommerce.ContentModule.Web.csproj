@@ -251,7 +251,9 @@
     <Compile Include="Security\ContentScopeObject.cs" />
     <Compile Include="Security\ContentSelectedStoreScope.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\templates\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Data\VirtoCommerce.ContentModule.Data.csproj">
       <Project>{e55e08b5-3af9-467d-8f90-4bef27bafa28}</Project>

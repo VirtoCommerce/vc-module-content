@@ -49,6 +49,16 @@
                 <title>Export/Import description</title>
                 <description>Module description in platform export/import wizard</description>
             </setting>
+			<setting>
+				<name>VirtoCommerce.Content.CmsContentConnectionString</name>
+				<valueType>string</valueType>
+				<defaultValue>~\App_Data\CMS</defaultValue>
+				<title>CMS content connection string</title>
+				<description>
+					Local file storage: provider=LocalStorage;rootPath={absolute or relative physical path in file system};publicUrl={web base url for content access}?
+					Azure blob storage: provider=AzureBlobStorage;rootPath={blob container};DefaultEndpointsProtocol=https;AccountName={ yourAccountName };AccountKey= { yourAccountKey }"
+				</description>
+			</setting>
         </group>
 
     </settings>

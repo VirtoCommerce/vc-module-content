@@ -19,45 +19,7 @@ angular.module(moduleName, [])
 	    };
 	    mainMenuService.addMenuItem(menuItem);
 
-	    //Register widgets
-	    //widgetService.registerWidget({
-	    //    controller: 'virtoCommerce.contentModule.mainContentItemWidgetController',
-	    //    size: [6, 2],
-	    //    template: 'Modules/$(VirtoCommerce.Content)/Scripts/widgets/mainContentItemWidget.tpl.html',
-	    //}, 'contentMainListItem');
-
-	    //widgetService.registerWidget({
-	    //    controller: 'virtoCommerce.contentModule.storeWidgetController',
-	    //    size: [2, 2],
-	    //    template: 'Modules/$(VirtoCommerce.Content)/Scripts/widgets/storeWidget.tpl.html',
-	    //}, 'contentMainListItem');
-
-	    //widgetService.registerWidget({
-	    //    controller: 'virtoCommerce.contentModule.themeActiveWidgetController',
-	    //    size: [4, 1],
-	    //    template: 'Modules/$(VirtoCommerce.Content)/Scripts/widgets/themeActiveWidget.tpl.html',
-	    //}, 'contentMainListItem');
-
-	    //widgetService.registerWidget({
-	    //    controller: 'virtoCommerce.contentModule.themesWidgetController',
-	    //    template: 'Modules/$(VirtoCommerce.Content)/Scripts/widgets/themesWidget.tpl.html',
-	    //}, 'contentMainListItem');
-
-	    //widgetService.registerWidget({
-	    //    controller: 'virtoCommerce.contentModule.pagesWidgetController',
-	    //    template: 'Modules/$(VirtoCommerce.Content)/Scripts/widgets/pagesWidget.tpl.html',
-	    //}, 'contentMainListItem');
-
-	    //widgetService.registerWidget({
-	    //    controller: 'virtoCommerce.contentModule.linkListsWidgetController',
-	    //    template: 'Modules/$(VirtoCommerce.Content)/Scripts/widgets/linkListsWidget.tpl.html',
-	    //}, 'contentMainListItem');
-
-	    //widgetService.registerWidget({
-	    //    controller: 'virtoCommerce.contentModule.blogsWidgetController',
-	    //    template: 'Modules/$(VirtoCommerce.Content)/Scripts/widgets/blogsWidget.tpl.html',
-	    //}, 'contentMainListItem');
-
+	 
 	    // themes widget in STORE details
 	    widgetService.registerWidget({
 	        size: [2, 1],
@@ -185,6 +147,7 @@ angular.module(moduleName, [])
 
 	    associationTypesService.registerType({ id: 'product', name: 'Product', openSelectWizard: openItemSelectWizard });
 	    associationTypesService.registerType({ id: 'category', name: 'Category', openSelectWizard: openCategorySelectWizard });
+
 	}])
 .config(['$stateProvider', function ($stateProvider) {
     $stateProvider
