@@ -43,27 +43,22 @@ namespace VirtoCommerce.ContentModule.Web
             _container.RegisterInstance(menuRepFactory);
             _container.RegisterType<IMenuService, MenuServiceImpl>();
 
-            var settingManager = _container.Resolve<ISettingsManager>();
-            BlobConnectionString blobConnectionString = null;
-            if (ConfigurationManager.ConnectionStrings["CmsContentConnectionString"] != null)
-            {
-                blobConnectionString = BlobConnectionString.Parse(ConfigurationManager.ConnectionStrings["CmsContentConnectionString"].ConnectionString);
-            }
-            else
-            {
-                var connectionStringFromSettings = settingManager.GetValue("VirtoCommerce.Content.CmsContentConnectionString", string.Empty);
-                if (!string.IsNullOrEmpty(connectionStringFromSettings))
-                {
-                    blobConnectionString = BlobConnectionString.Parse(connectionStringFromSettings);
-                }
-            }
+            var settingManager = _container.Resolve<ISettingsManager>();         
 
             Func<string, IContentBlobStorageProvider> contentProviderFactory = chrootPath =>
            {
-               if (blobConnectionString == null)
+               var connectionString = settingManager.GetValue("VirtoCommerce.Content.CmsContentConnectionString", string.Empty);
+               var configConnectionString = ConfigurationManager.ConnectionStrings["CmsContentConnectionString"];
+               if (configConnectionString != null && !string.IsNullOrEmpty(configConnectionString.ConnectionString))
                {
-                   throw new InvalidOperationException("CmsContentConnectionString not defined");
+                   connectionString = configConnectionString.ConnectionString;
+               }              
+
+               if (string.IsNullOrEmpty(connectionString))
+               {
+                   throw new InvalidOperationException("CmsContentConnectionString not defined. Please define module setting VirtoCommerce.Content.CmsContentConnectionString or in web.config");
                }
+               var blobConnectionString = BlobConnectionString.Parse(connectionString);
                if (string.Equals(blobConnectionString.Provider, FileSystemBlobProvider.ProviderName, StringComparison.OrdinalIgnoreCase))
                {
                    var storagePath = Path.Combine(NormalizePath(blobConnectionString.RootPath), chrootPath.Replace("/", "\\"));
