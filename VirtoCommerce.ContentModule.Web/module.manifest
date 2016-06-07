@@ -52,11 +52,11 @@
             <setting>
                 <name>VirtoCommerce.Content.CmsContentConnectionString</name>
                 <valueType>string</valueType>
-                <defaultValue>~\App_Data\cms-content</defaultValue>
+                <defaultValue>provider=LocalStorage;rootPath=~\App_Data\cms-content</defaultValue>
                 <title>CMS content connection string</title>
                 <description>
-                    Local file storage: provider=LocalStorage;rootPath={absolute or relative physical path in file system};publicUrl={web base url for content access}?
-                    Azure blob storage: provider=AzureBlobStorage;rootPath={blob container};DefaultEndpointsProtocol=https;AccountName={ yourAccountName };AccountKey= { yourAccountKey }"
+                    file storage: provider=LocalStorage;rootPath={absolute or relative physical path in file system};publicUrl={public base url}
+                    blob storage: provider=AzureBlobStorage;rootPath={blob container name};DefaultEndpointsProtocol=https;AccountName={yourAccountName};AccountKey={yourAccountKey}"
                 </description>
             </setting>
         </group>
