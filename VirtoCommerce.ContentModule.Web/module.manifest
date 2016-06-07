@@ -55,9 +55,9 @@
                 <defaultValue>provider=LocalStorage;rootPath=~\App_Data\cms-content</defaultValue>
                 <title>CMS content connection string</title>
                 <description>
-                    file storage: provider=LocalStorage;rootPath={absolute or relative physical path in file system};publicUrl={public base url}
-                    blob storage: provider=AzureBlobStorage;rootPath={blob container name};DefaultEndpointsProtocol=https;AccountName={yourAccountName};AccountKey={yourAccountKey}"
-                </description>
+					provider=AzureBlobStorage;rootPath=cms-content;DefaultEndpointsProtocol=https;AccountName=yourAccountName;AccountKey=yourAccountKey
+					provider=LocalStorage;rootPath=~\App_Data\cms-content;publicUrl=http://localhost/admin/cms-content
+				</description>
             </setting>
         </group>
 
