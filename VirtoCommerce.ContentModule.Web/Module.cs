@@ -70,7 +70,7 @@ namespace VirtoCommerce.ContentModule.Web
                        publicUrl = blobConnectionString.PublicUrl + "/" + chrootPath;
                    }
                    //Do not export default theme (Themes/default) its will distributed with code
-                   return new FileSystemContentBlobStorageProvider(storagePath, publicUrl, "/Themes/default");
+                   return new FileSystemContentBlobStorageProvider(storagePath, publicUrl);
                }
                else if (string.Equals(blobConnectionString.Provider, AzureBlobProvider.ProviderName, StringComparison.OrdinalIgnoreCase))
                {

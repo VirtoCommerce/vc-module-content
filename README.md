@@ -10,11 +10,9 @@ Key features:
 ![Content UI](https://cloud.githubusercontent.com/assets/5801549/15569963/fcbb7336-2333-11e6-808c-c484bf3a7d37.png)
 
 # Documentation
-User guide:
+Developer guide:
 * <a href="http://docs.virtocommerce.com/x/DQDr" target="_blank">Theme development</a>
 * <a href="http://docs.virtocommerce.com/x/joD-/" target="_blank">Pages and Blogs</a>
-
-Developer guide:
 
 # Installation
 Installing the module:
@@ -22,7 +20,7 @@ Installing the module:
 * Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-content/releases. In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
 
 # Settings
-* **VirtoCommerce.Content.BaseThemes** - names of base themes that can be used to create derivative themes in stores by copy operation.
+* **VirtoCommerce.Content.CmsContentConnectionString** - CMS content connection string. Defines the provider and connection parameters to connect to content assets. In fact, it's Platform's <a href="http://docs.virtocommerce.com/display/vc2devguide/Platform+settings#Platformsettings-AssetsConnectionString" target="_blank">AssetsConnectionString</a> preconfigured for CMS.
 
 # Available resources
 * Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.ContentModule.Data" target="_blank">NuGet package</a>
