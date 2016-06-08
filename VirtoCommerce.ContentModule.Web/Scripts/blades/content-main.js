@@ -72,7 +72,6 @@
 	        var newBlade = {
 	            id: "themesListBlade",
 	            storeId: store.id,
-	            baseThemes: getBaseThemes(store),
 	            title: 'content.blades.themes-list.title',
 	            titleValues: { name: store.name },
 	            subtitle: 'content.blades.themes-list.subtitle',
@@ -132,7 +131,6 @@
 	            isActivateAfterSave: !data.themesCount,
 	            store: data.store,
 	            storeId: data.storeId,
-	            baseThemes: getBaseThemes(data.store),
 	            controller: 'virtoCommerce.contentModule.themeDetailController',
 	            template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/themes/theme-detail.tpl.html',
 	        };
@@ -213,14 +211,6 @@
 	    $scope.openStoresModule = function () {
 	        $state.go('workspace.storeModule');
 	    };
-
-	    function getBaseThemes(store) {
-	        var setting;
-	        if (setting = _.findWhere(store.settings, { name: 'VirtoCommerce.Content.BaseThemes' })) {
-	            return setting.arrayValues;
-	        }
-	        return null;
-	    }
 
 	    blade.headIcon = 'fa-code';
 

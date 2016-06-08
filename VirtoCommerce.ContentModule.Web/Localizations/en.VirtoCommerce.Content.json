@@ -76,13 +76,10 @@
         "title-new": "New theme",
         "subtitle-new": "Create new theme",
         "labels": {
-          "theme-name": "Theme name",
-          "default-theme-to-copy": "Default theme to copy",
-          "default-theme-info": "Select a default theme to create a copy of it. An empty theme will be created otherwise."
+          "theme-name": "Theme name"
         },
         "placeholders": {
-          "theme-name": "Enter theme name",
-          "select": "Select theme"
+          "theme-name": "Enter theme name"
         }
       },
       "theme-upload": {
