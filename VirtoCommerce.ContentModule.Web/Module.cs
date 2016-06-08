@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Hosting;
 using Microsoft.Practices.Unity;
 using VirtoCommerce.ContentModule.Data.Repositories;
@@ -62,7 +63,12 @@ namespace VirtoCommerce.ContentModule.Web
                if (string.Equals(blobConnectionString.Provider, FileSystemBlobProvider.ProviderName, StringComparison.OrdinalIgnoreCase))
                {
                    var storagePath = Path.Combine(NormalizePath(blobConnectionString.RootPath), chrootPath.Replace("/", "\\"));
-                   var publicUrl = blobConnectionString.PublicUrl + "/" + chrootPath;
+                   //Use content api/content as public url by default             
+                   var publicUrl = VirtualPathUtility.ToAbsolute("~/api/content/" + chrootPath) + "?relativeUrl=";
+                   if(!string.IsNullOrEmpty(blobConnectionString.PublicUrl))
+                   {
+                       publicUrl = blobConnectionString.PublicUrl + "/" + chrootPath;
+                   }
                    //Do not export default theme (Themes/default) its will distributed with code
                    return new FileSystemContentBlobStorageProvider(storagePath, publicUrl, "/Themes/default");
                }
