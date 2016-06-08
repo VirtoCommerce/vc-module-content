@@ -8,12 +8,9 @@ namespace VirtoCommerce.ContentModule.Data.Services
 {
     public class FileSystemContentBlobStorageProvider : FileSystemBlobProvider, IContentBlobStorageProvider
     {
-        private readonly string[] _ignoreUrls;
-
-        public FileSystemContentBlobStorageProvider(string storagePath, string publicUrl, params string[] ignoreUrls)
+        public FileSystemContentBlobStorageProvider(string storagePath, string publicUrl)
             : base(storagePath, publicUrl)
         {
-            _ignoreUrls = ignoreUrls;
         }
 
         #region IContentStorageProvider Members
@@ -47,7 +44,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         public override BlobSearchResult Search(string folderUrl, string keyword)
         {
-            if (!string.IsNullOrEmpty(folderUrl) && _ignoreUrls != null && _ignoreUrls.Any(x => folderUrl.StartsWith(x, StringComparison.OrdinalIgnoreCase)))
+            if (!string.IsNullOrEmpty(folderUrl))
             {
                 return new BlobSearchResult();
             }
