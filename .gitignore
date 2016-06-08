@@ -153,6 +153,7 @@ $RECYCLE.BIN/
 .DS_Store
 
 *.nupkg
+*.zip
 
 .vs/
 /VirtoCommerce.ContentModule.Web/client_packages
