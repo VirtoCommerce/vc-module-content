@@ -43,11 +43,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
         #endregion
 
         public override BlobSearchResult Search(string folderUrl, string keyword)
-        {
-            if (!string.IsNullOrEmpty(folderUrl))
-            {
-                return new BlobSearchResult();
-            }
+        {         
             return base.Search(folderUrl, keyword);
         }
 
