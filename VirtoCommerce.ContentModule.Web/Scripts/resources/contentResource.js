@@ -23,7 +23,7 @@
             transformResponse: function (rawData) { return { data: rawData }; }
         },
         // post data as multipart form
-        save: {
+        saveMultipartContent: {
             method: 'POST',
             headers: { 'Content-Type': undefined },
             transformRequest: function (currentEntity) {

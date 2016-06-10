@@ -92,7 +92,7 @@
         $scope.saveChanges = function () {
             blade.isLoading = true;
 
-            contentApi.save({
+            contentApi.saveMultipartContent({
                 contentType: blade.contentType,
                 storeId: blade.storeId,
                 folderUrl: blade.folderUrl
