@@ -75,7 +75,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [ResponseType(typeof(bool))]
         [Route("menu/checkname")]
-        public IHttpActionResult CheckName(string storeId, string name, string language, string id = "")
+        public IHttpActionResult CheckName(string storeId, string name, string language = "", string id = "")
         {
             CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Read, new ContentScopeObject { StoreId = storeId });
 

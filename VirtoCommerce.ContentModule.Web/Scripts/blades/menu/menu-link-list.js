@@ -12,7 +12,7 @@
             if (blade.newList) {
                 blade.currentEntity = { title: undefined, language: blade.defaultStoreLanguage, storeId: blade.chosenStoreId, menuLinks: [] };
                 blade.chosenListId = blade.currentEntity.id;
-                $scope.blade.toolbarCommands = [{
+                blade.toolbarCommands = [{
                     name: "content.commands.add-link", icon: 'fa fa-plus',
                     executeMethod: function () {
                         var newEntity = { url: undefined, title: undefined, type: undefined, priority: 0, isActive: false, language: undefined, menuLinkListId: blade.chosenListId };
@@ -46,7 +46,7 @@
                     blade.currentEntity = angular.copy(data);
                     blade.isLoading = false;
 
-                    $scope.blade.toolbarCommands = [{
+                    blade.toolbarCommands = [{
                         name: "content.commands.add-link", icon: 'fa fa-plus',
                         executeMethod: function () {
                             var newEntity = { url: undefined, title: undefined, isActive: false, priority: 0, menuLinkListId: blade.chosenListId };
@@ -93,10 +93,10 @@
 					    permission: 'content:delete'
 					}];
                 },
-                function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
+                function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             }
         },
-        function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
+        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
     }
 
     $scope.selected = function (id) {
@@ -104,7 +104,6 @@
     };
 
     blade.saveChanges = function () {
-        //checkForNull();
         blade.isLoading = true;
         menus.checkList({ storeId: blade.chosenStoreId, id: blade.currentEntity.id, name: blade.currentEntity.name, language: blade.currentEntity.language }, function (data) {
             if (Boolean(data.result)) {
@@ -115,7 +114,7 @@
                     blade.origEntity = angular.copy(blade.currentEntity);
                     $rootScope.$broadcast("cms-menus-changed", blade.chosenStoreId);
                 },
-                function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
+                function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             }
             else {
                 blade.isLoading = false;
@@ -130,7 +129,7 @@
                 dialogService.showNotificationDialog(dialog);
             }
         },
-        function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
+        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
     };
 
     function isDirty() {
@@ -159,7 +158,7 @@
                         blade.parentBlade.initialize();
                         $rootScope.$broadcast("cms-menus-changed", blade.chosenStoreId);
                     },
-                    function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
+                    function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
                 }
             }
         }
@@ -214,25 +213,8 @@
 				    return link.id == data.id;
 				});
     };
-
-    blade.getFlag = function (lang) {
-        switch (lang) {
-            case 'en-US':
-                return 'us';
-            case 'fr-FR':
-                return 'fr';
-            case 'zh-CN':
-                return 'ch';
-            case 'ru-RU':
-                return 'ru';
-            case 'ja-JP':
-                return 'jp';
-            case 'de-DE':
-                return 'de';
-        }
-    }
-
-    $scope.blade.headIcon = 'fa-archive';
+    
+    blade.headIcon = 'fa-archive';
 
     $scope.sortableOptions = {
         stop: function (e, ui) {
