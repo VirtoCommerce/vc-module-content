@@ -18,8 +18,8 @@ namespace VirtoCommerce.ContentModule.Data.Converters
             if (target == null)
                 throw new ArgumentNullException("target");
 
-            var patchInjectionPolicy = new PatchInjection<MenuLinkList>(x => x.Language, x => x.Name);
-            target.InjectFrom(patchInjectionPolicy, source);
+            target.Language = source.Language;
+            target.Name = source.Name;            
 
             if (!source.MenuLinks.IsNullCollection())
             {
