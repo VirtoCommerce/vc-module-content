@@ -68,6 +68,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
                 if (existList != null)
                 {
                     repository.Remove(existList);
+                    repository.UnitOfWork.Commit();
                 }
             }
         }
