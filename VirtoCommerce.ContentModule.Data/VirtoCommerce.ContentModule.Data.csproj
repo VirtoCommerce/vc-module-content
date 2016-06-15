@@ -141,6 +141,10 @@
     <Compile Include="Migrations\201602150959294_AssociatedObjectNameField.Designer.cs">
       <DependentUpon>201602150959294_AssociatedObjectNameField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606150819134_LinkListLanguageOptional.cs" />
+    <Compile Include="Migrations\201606150819134_LinkListLanguageOptional.Designer.cs">
+      <DependentUpon>201606150819134_LinkListLanguageOptional.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\MenuLink.cs" />
     <Compile Include="Models\MenuLinkList.cs" />
@@ -178,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602150959294_AssociatedObjectNameField.resx">
       <DependentUpon>201602150959294_AssociatedObjectNameField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606150819134_LinkListLanguageOptional.resx">
+      <DependentUpon>201606150819134_LinkListLanguageOptional.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

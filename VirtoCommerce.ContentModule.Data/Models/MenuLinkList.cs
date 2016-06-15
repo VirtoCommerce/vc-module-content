@@ -15,7 +15,7 @@ namespace VirtoCommerce.ContentModule.Data.Models
         public string Name { get; set; }
         [Required]
         public string StoreId { get; set; }
-        [Required]
+        
         public string Language { get; set; }
         public virtual ObservableCollection<MenuLink> MenuLinks { get; set; }
     }
