@@ -7,10 +7,9 @@
     blade.initialize = function () {
         menusStores.get({ id: blade.chosenStoreId }, function (data) {
             blade.languages = data.languages;
-            blade.defaultStoreLanguage = data.defaultLanguage;
 
             if (blade.newList) {
-                blade.currentEntity = { title: undefined, language: blade.defaultStoreLanguage, storeId: blade.chosenStoreId, menuLinks: [] };
+                blade.currentEntity = { title: undefined, storeId: blade.chosenStoreId, menuLinks: [] };
                 blade.chosenListId = blade.currentEntity.id;
                 blade.toolbarCommands = [{
                     name: "content.commands.add-link", icon: 'fa fa-plus',
@@ -19,9 +18,7 @@
                         blade.currentEntity.menuLinks.push(newEntity);
                         blade.recalculatePriority();
                     },
-                    canExecuteMethod: function () {
-                        return true;
-                    },
+                    canExecuteMethod: function () { return true; },
                     permission: blade.updatePermission
                 },
 				{
@@ -213,7 +210,7 @@
 				    return link.id == data.id;
 				});
     };
-    
+
     blade.headIcon = 'fa-archive';
 
     $scope.sortableOptions = {
