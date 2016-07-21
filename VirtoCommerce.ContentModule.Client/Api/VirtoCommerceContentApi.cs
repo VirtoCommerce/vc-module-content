@@ -250,10 +250,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="storeId">Store id</param>
         /// <param name="name">Name of menu link list</param>
-        /// <param name="language">Language of menu link list</param>
+        /// <param name="language">Language of menu link list (optional)</param>
         /// <param name="id">Menu link list id (optional)</param>
         /// <returns>bool?</returns>
-        bool? MenuCheckName(string storeId, string name, string language, string id = null);
+        bool? MenuCheckName(string storeId, string name, string language = null, string id = null);
 
         /// <summary>
         /// Checking name of menu link list
@@ -264,10 +264,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="storeId">Store id</param>
         /// <param name="name">Name of menu link list</param>
-        /// <param name="language">Language of menu link list</param>
+        /// <param name="language">Language of menu link list (optional)</param>
         /// <param name="id">Menu link list id (optional)</param>
         /// <returns>ApiResponse of bool?</returns>
-        ApiResponse<bool?> MenuCheckNameWithHttpInfo(string storeId, string name, string language, string id = null);
+        ApiResponse<bool?> MenuCheckNameWithHttpInfo(string storeId, string name, string language = null, string id = null);
         /// <summary>
         /// Delete menu link list
         /// </summary>
@@ -596,10 +596,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="storeId">Store id</param>
         /// <param name="name">Name of menu link list</param>
-        /// <param name="language">Language of menu link list</param>
+        /// <param name="language">Language of menu link list (optional)</param>
         /// <param name="id">Menu link list id (optional)</param>
         /// <returns>Task of bool?</returns>
-        System.Threading.Tasks.Task<bool?> MenuCheckNameAsync(string storeId, string name, string language, string id = null);
+        System.Threading.Tasks.Task<bool?> MenuCheckNameAsync(string storeId, string name, string language = null, string id = null);
 
         /// <summary>
         /// Checking name of menu link list
@@ -610,10 +610,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="storeId">Store id</param>
         /// <param name="name">Name of menu link list</param>
-        /// <param name="language">Language of menu link list</param>
+        /// <param name="language">Language of menu link list (optional)</param>
         /// <param name="id">Menu link list id (optional)</param>
         /// <returns>Task of ApiResponse (bool?)</returns>
-        System.Threading.Tasks.Task<ApiResponse<bool?>> MenuCheckNameAsyncWithHttpInfo(string storeId, string name, string language, string id = null);
+        System.Threading.Tasks.Task<ApiResponse<bool?>> MenuCheckNameAsyncWithHttpInfo(string storeId, string name, string language = null, string id = null);
         /// <summary>
         /// Delete menu link list
         /// </summary>
@@ -2227,10 +2227,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="storeId">Store id</param>
         /// <param name="name">Name of menu link list</param>
-        /// <param name="language">Language of menu link list</param>
+        /// <param name="language">Language of menu link list (optional)</param>
         /// <param name="id">Menu link list id (optional)</param>
         /// <returns>bool?</returns>
-        public bool? MenuCheckName(string storeId, string name, string language, string id = null)
+        public bool? MenuCheckName(string storeId, string name, string language = null, string id = null)
         {
              ApiResponse<bool?> localVarResponse = MenuCheckNameWithHttpInfo(storeId, name, language, id);
              return localVarResponse.Data;
@@ -2242,10 +2242,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="storeId">Store id</param>
         /// <param name="name">Name of menu link list</param>
-        /// <param name="language">Language of menu link list</param>
+        /// <param name="language">Language of menu link list (optional)</param>
         /// <param name="id">Menu link list id (optional)</param>
         /// <returns>ApiResponse of bool?</returns>
-        public ApiResponse<bool?> MenuCheckNameWithHttpInfo(string storeId, string name, string language, string id = null)
+        public ApiResponse<bool?> MenuCheckNameWithHttpInfo(string storeId, string name, string language = null, string id = null)
         {
             // verify the required parameter 'storeId' is set
             if (storeId == null)
@@ -2253,9 +2253,6 @@ namespace VirtoCommerce.ContentModule.Client.Api
             // verify the required parameter 'name' is set
             if (name == null)
                 throw new ApiException(400, "Missing required parameter 'name' when calling VirtoCommerceContentApi->MenuCheckName");
-            // verify the required parameter 'language' is set
-            if (language == null)
-                throw new ApiException(400, "Missing required parameter 'language' when calling VirtoCommerceContentApi->MenuCheckName");
 
             var localVarPath = "/api/cms/{storeId}/menu/checkname";
             var localVarPathParams = new Dictionary<string, string>();
@@ -2314,10 +2311,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="storeId">Store id</param>
         /// <param name="name">Name of menu link list</param>
-        /// <param name="language">Language of menu link list</param>
+        /// <param name="language">Language of menu link list (optional)</param>
         /// <param name="id">Menu link list id (optional)</param>
         /// <returns>Task of bool?</returns>
-        public async System.Threading.Tasks.Task<bool?> MenuCheckNameAsync(string storeId, string name, string language, string id = null)
+        public async System.Threading.Tasks.Task<bool?> MenuCheckNameAsync(string storeId, string name, string language = null, string id = null)
         {
              ApiResponse<bool?> localVarResponse = await MenuCheckNameAsyncWithHttpInfo(storeId, name, language, id);
              return localVarResponse.Data;
@@ -2330,10 +2327,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="storeId">Store id</param>
         /// <param name="name">Name of menu link list</param>
-        /// <param name="language">Language of menu link list</param>
+        /// <param name="language">Language of menu link list (optional)</param>
         /// <param name="id">Menu link list id (optional)</param>
         /// <returns>Task of ApiResponse (bool?)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<bool?>> MenuCheckNameAsyncWithHttpInfo(string storeId, string name, string language, string id = null)
+        public async System.Threading.Tasks.Task<ApiResponse<bool?>> MenuCheckNameAsyncWithHttpInfo(string storeId, string name, string language = null, string id = null)
         {
             // verify the required parameter 'storeId' is set
             if (storeId == null)
@@ -2341,9 +2338,6 @@ namespace VirtoCommerce.ContentModule.Client.Api
             // verify the required parameter 'name' is set
             if (name == null)
                 throw new ApiException(400, "Missing required parameter 'name' when calling VirtoCommerceContentApi->MenuCheckName");
-            // verify the required parameter 'language' is set
-            if (language == null)
-                throw new ApiException(400, "Missing required parameter 'language' when calling VirtoCommerceContentApi->MenuCheckName");
 
             var localVarPath = "/api/cms/{storeId}/menu/checkname";
             var localVarPathParams = new Dictionary<string, string>();
