@@ -129,7 +129,6 @@
           "name": "Name",
           "language": "Language",
           "list-note": "Set the order how the links appear sorted in web store. Drag and drop to change the order.",
-          "is-active": "Is active",
           "link-title": "Link Title",
           "link-url": "URL",
           "links-to": "Links to",
@@ -138,7 +137,8 @@
         "placeholders": {
           "name": "Enter page name",
           "language": "Select...",
-          "associated-object-type": "Select type"
+          "associated-object-type": "Select type",
+          "select-linked-object": "Select linked object"
         }
       },
       "catalog-items-select": {
