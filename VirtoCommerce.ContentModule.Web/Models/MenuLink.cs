@@ -1,7 +1,9 @@
-﻿namespace VirtoCommerce.ContentModule.Web.Models
+﻿using System;
+
+namespace VirtoCommerce.ContentModule.Web.Models
 {
 	public class MenuLink
-	{
+	{     
 		public string Id { get; set; }
 
 		/// <summary>
@@ -19,11 +21,6 @@
         /// Priority of menu link element, the higher the value, the higher in the list
 		/// </summary>
 		public int Priority { get; set; }
-
-		/// <summary>
-		/// If true - will displayed in the list, if false - not
-		/// </summary>
-		public bool IsActive { get; set; }
 
 		public string MenuLinkListId { get; set; }
 
