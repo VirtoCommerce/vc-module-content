@@ -54,8 +54,26 @@
 </div>
 
 <style>
-    div.ui-grid-cell input.uiGridInput {
-        padding: 5px 10px;
+    .ui-grid-editable .ui-grid-cell-contents {
+        overflow: visible;
+        padding: 10px 0 0 10px;
+    }
+
+    .ui-grid-cell .ui-grid-editable input {
+        padding: 6px 10px;
+        box-sizing: border-box;
+    }
+
+    .ui-grid-cell .ui-grid-editable .btn {
+        width: 80px;
+        margin: 10px 0 0 10px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .ui-grid-cell .ui-grid-editable input.ng-valid {
+        border: 1px solid #dee9f0;
     }
 </style>
 
@@ -70,44 +88,43 @@
     </div>
 </script>
 <script type="text/ng-template" id="title.cell.html">
-    <div class="ui-grid-cell-contents">
-        <div class="form-group">
+    <div class="ui-grid-editable">
+        <div class="ui-grid-cell-contents">
             <div class="form-input">
-                <input ng-model="row.entity.title" required class="uiGridInput">
+                <input ng-model="row.entity.title" required>
             </div>
         </div>
     </div>
 </script>
 <script type="text/ng-template" id="url.cell.html">
-    <div class="ui-grid-cell-contents">
-        <div class="form-group">
+    <div class="ui-grid-editable">
+        <div class="ui-grid-cell-contents">
             <div class="form-input">
-                <input ng-model="row.entity.url" required class="uiGridInput">
+                <input ng-model="row.entity.url" required>
             </div>
         </div>
     </div>
 </script>
 <script type="text/ng-template" id="associatedObjectType.cell.html">
-    <div class="form-group">
-        <div class="form-input">
-            <ui-select ng-model="row.entity.associatedObjectType" ng-change="row.entity.associatedObject = $select.selected;row.entity.associatedObjectId=row.entity.associatedObjectName=undefined" style="width:122px">
-                <ui-select-match allow-clear placeholder="{{'content.blades.menu-link-list.placeholders.associated-object-type' | translate}}">{{$select.selected.name}}</ui-select-match>
-                <ui-select-choices repeat="x.id as x in grid.appScope.associatedObjectTypes | filter: $select.search">
-                    <span ng-bind-html="x.name | highlight: $select.search"></span>
-                </ui-select-choices>
-            </ui-select>
+    <div class="ui-grid-editable">
+        <div class="ui-grid-cell-contents">
+            <div class="form-input">
+                <ui-select ng-model="row.entity.associatedObjectType" ng-change="row.entity.associatedObject = $select.selected;row.entity.associatedObjectId=row.entity.associatedObjectName=undefined" style="width:122px">
+                    <ui-select-match allow-clear placeholder="{{'content.blades.menu-link-list.placeholders.associated-object-type' | translate}}">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices repeat="x.id as x in grid.appScope.associatedObjectTypes | filter: $select.search">
+                        <span ng-bind-html="x.name | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
         </div>
     </div>
 </script>
 <script type="text/ng-template" id="associatedObjectName.cell.html">
-    <div class="form-group">
-        <div class="form-input">
-            <ng-include src='row.entity.associatedObject.templateURL'></ng-include>
-        </div>
-        <span class="error" ng-if="row.entity.associatedObjectType && !row.entity.associatedObjectId">{{'content.blades.menu-link-list.placeholders.select-linked-object' | translate}}</span>
+    <div class="ui-grid-editable">
+        <ng-include src='row.entity.associatedObject.templateURL'></ng-include>
     </div>
 </script>
 
 <script type="text/ng-template" id="linkListSelectObject.tpl">
-    <a class="__link" ng-click="row.entity.associatedObject.openSelectWizard(row.entity, blade)">{{row.entity.associatedObjectName?row.entity.associatedObjectName: 'select'}}</a>
+    <a class="btn" ng-click="row.entity.associatedObject.openSelectWizard(row.entity, blade)" title="{{row.entity.associatedObjectName}}">{{row.entity.associatedObjectName ? row.entity.associatedObjectName: ('content.blades.menu-link-list.placeholders.select-linked-object' | translate)}}</a>
 </script>

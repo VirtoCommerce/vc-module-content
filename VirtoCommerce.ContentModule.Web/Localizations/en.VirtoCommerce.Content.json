@@ -138,7 +138,7 @@
           "name": "Enter page name",
           "language": "Select...",
           "associated-object-type": "Select type",
-          "select-linked-object": "Select linked object"
+          "select-linked-object": "Select"
         }
       },
       "catalog-items-select": {
