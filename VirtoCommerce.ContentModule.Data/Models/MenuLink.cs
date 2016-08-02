@@ -12,8 +12,6 @@ namespace VirtoCommerce.ContentModule.Data.Models
         [StringLength(2048)]
         public string Url { get; set; }
         [Required]
-        public bool IsActive { get; set; }
-        [Required]
         public int Priority { get; set; }
         [StringLength(254)]
         public string AssociatedObjectType { get; set; }
