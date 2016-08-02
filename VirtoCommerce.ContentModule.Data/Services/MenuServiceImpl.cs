@@ -68,6 +68,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
                 if (existList != null)
                 {
                     repository.Remove(existList);
+                    repository.UnitOfWork.Commit();
                 }
             }
         }
@@ -78,7 +79,9 @@ namespace VirtoCommerce.ContentModule.Data.Services
             {
                 var lists = repository.GetListsByStoreId(storeId);
 
-                var retVal = !lists.Any(l => l.Name.ToLower() == name.ToLower() && l.Language == language && l.Id != id);
+                var retVal = !lists.Any(l => l.Name.ToLower() == name.ToLower()
+                                    && (l.Language == language || (string.IsNullOrEmpty(l.Language) && string.IsNullOrEmpty(language)))
+                                    && l.Id != id);
 
                 return retVal;
             }
