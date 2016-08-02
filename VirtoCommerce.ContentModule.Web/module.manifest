@@ -16,8 +16,8 @@
     <owners>
         <owner>Virto Commerce</owner>
     </owners>
-    <projectUrl>http://virtocommerce.com/</projectUrl>
-    <iconUrl>Modules/$(VirtoCommerce.Content)/Content/logo.png</iconUrl>
+    <projectUrl>https://github.com/VirtoCommerce/vc-module-content</projectUrl>
+    <iconUrl>https://github.com/VirtoCommerce/vc-module-content/raw/master/VirtoCommerce.ContentModule.Web/Content/logo.png</iconUrl>
     <releaseNotes>First version.</releaseNotes>
     <copyright>Copyright © 2011-2016 Virto Commerce. All rights reserved</copyright>
     <tags>cms menu</tags>
