@@ -44,23 +44,13 @@
                     blade.isLoading = false;
 
                     blade.toolbarCommands = [{
-                        name: "content.commands.add-link", icon: 'fa fa-plus',
-                        executeMethod: function () {
-                            var newEntity = { url: undefined, title: undefined, isActive: false, priority: 0, menuLinkListId: blade.chosenListId };
-                            blade.currentEntity.menuLinks.push(newEntity);
-                            blade.recalculatePriority();
-                        },
-                        canExecuteMethod: function () { return true; },
+                        name: "platform.commands.save", icon: 'fa fa-save',
+                        executeMethod: blade.saveChanges,
+                        canExecuteMethod: canSave,
                         permission: blade.updatePermission
                     },
 					{
-					    name: "content.commands.save-list", icon: 'fa fa-save',
-					    executeMethod: blade.saveChanges,
-					    canExecuteMethod: canSave,
-					    permission: blade.updatePermission
-					},
-					{
-					    name: "content.commands.reset-list", icon: 'fa fa-undo',
+					    name: "platform.commands.reset", icon: 'fa fa-undo',
 					    executeMethod: function () {
 					        angular.copy(blade.origEntity, blade.currentEntity);
 					    },
@@ -70,14 +60,14 @@
 					    permission: blade.updatePermission
 					},
 					{
-					    name: "content.commands.delete-list", icon: 'fa fa-trash-o',
+					    name: "content.commands.add-link", icon: 'fa fa-plus',
 					    executeMethod: function () {
-					        blade.deleteList();
+					        var newEntity = { url: undefined, title: undefined, isActive: true, priority: 0, menuLinkListId: blade.chosenListId };
+					        blade.currentEntity.menuLinks.push(newEntity);
+					        blade.recalculatePriority();
 					    },
-					    canExecuteMethod: function () {
-					        return true;
-					    },
-					    permission: 'content:delete'
+					    canExecuteMethod: function () { return true; },
+					    permission: blade.updatePermission
 					},
 					{
 					    name: "content.commands.delete-links", icon: 'fa fa-trash-o',
@@ -140,27 +130,6 @@
         });
         return isDirty() && listNameIsRight && linksAreRight && _.any(blade.currentEntity.menuLinks);
     }
-
-    blade.deleteList = function () {
-        var dialog = {
-            id: "confirmDelete",
-            title: "content.dialogs.link-list-delete.title",
-            message: "content.dialogs.link-list-delete.message",
-            callback: function (remove) {
-                if (remove) {
-                    blade.isLoading = true;
-
-                    menus.delete({ storeId: blade.chosenStoreId, listId: blade.chosenListId }, function () {
-                        $scope.bladeClose();
-                        blade.parentBlade.initialize();
-                        $rootScope.$broadcast("cms-menus-changed", blade.chosenStoreId);
-                    },
-                    function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-                }
-            }
-        }
-        dialogService.showConfirmationDialog(dialog);
-    };
 
     blade.deleteLinks = function () {
         var dialog = {
