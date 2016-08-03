@@ -62,16 +62,25 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         public void DeleteList(string listId)
         {
+            DeleteLists(new[] { listId });
+        }
+
+        public void DeleteLists(string[] listIds)
+        {
             using (var repository = _menuRepositoryFactory())
             {
-                var existList = repository.GetListById(listId);
-                if (existList != null)
+                foreach (var listId in listIds)
                 {
-                    repository.Remove(existList);
-                    repository.UnitOfWork.Commit();
+                    var existList = repository.GetListById(listId);
+                    if (existList != null)
+                    {
+                        repository.Remove(existList);
+                    }
                 }
+                repository.UnitOfWork.Commit();
             }
         }
+
 
         public bool CheckList(string storeId, string name, string language, string id)
         {

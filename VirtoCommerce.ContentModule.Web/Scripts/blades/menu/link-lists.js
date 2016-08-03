@@ -53,7 +53,7 @@
                         if (remove) {
                             blade.isLoading = true;
 
-                            menus.delete({ storeId: blade.storeId, listId: node.id }, function () {
+                            menus.delete({ storeId: blade.storeId, listIds: node.id }, function () {
                                 $scope.selectedNodeId = null;
                                 blade.refresh();
                                 $rootScope.$broadcast("cms-menus-changed", blade.storeId);

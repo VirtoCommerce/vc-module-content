@@ -101,17 +101,18 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <summary>
         /// Delete menu link list
         /// </summary>
-        /// <param name="listId">Menu link list id</param>
+        /// <param name="listIds">Menu link list id</param>
         [HttpDelete]
         [ResponseType(typeof(void))]
         [Route("menu")]
-        public IHttpActionResult Delete(string listId)
+        public IHttpActionResult Delete([FromUri] string[] listIds)
         {
-            var list = _menuService.GetListById(listId).ToWebModel();
-
-            CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Delete, new ContentScopeObject { StoreId = list.StoreId });
-
-            _menuService.DeleteList(listId);
+            foreach (var listId in listIds)
+            {
+                var list = _menuService.GetListById(listId).ToWebModel();
+                CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Delete, new ContentScopeObject { StoreId = list.StoreId });
+            }
+            _menuService.DeleteLists(listIds);
             return StatusCode(HttpStatusCode.NoContent);
         }
 
