@@ -101,8 +101,8 @@
 	            id: "linkListBlade",
 	            storeId: data.storeId,
 	            title: 'content.blades.link-lists.title',
-	            titleValues: { name: data.store.name },
 	            subtitle: 'content.blades.link-lists.subtitle',
+	            subtitleValues: { name: data.store.name },
 	            controller: 'virtoCommerce.contentModule.linkListsController',
 	            template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/menu/link-lists.tpl.html',
 	        };
@@ -156,8 +156,8 @@
 	    blade.addNewLinkList = function (data) {
 	        var newBlade = {
 	            id: 'addMenuLinkListBlade',
-	            chosenStoreId: data.storeId,
-	            newList: true,
+	            storeId: data.storeId,
+	            isNew: true,
 	            title: 'content.blades.menu-link-list.title-new',
 	            subtitle: 'content.blades.menu-link-list.subtitle-new',
 	            controller: 'virtoCommerce.contentModule.menuLinkListController',

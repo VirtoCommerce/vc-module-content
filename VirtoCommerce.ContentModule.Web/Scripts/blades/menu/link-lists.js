@@ -1,11 +1,10 @@
 ﻿angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.linkListsController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.menus', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'uiGridConstants', 'platformWebApp.uiGridHelper',
-    function ($rootScope, $scope, menus, menusStores, bladeNavigationService, dialogService, uiGridConstants, uiGridHelper) {
+    function ($rootScope, $scope, menus, stores, bladeNavigationService, dialogService, uiGridConstants, uiGridHelper) {
         $scope.uiGridConstants = uiGridConstants;
-        $scope.selectedNodeId = null;
         var blade = $scope.blade;
 
-        blade.initialize = function () {
+        blade.refresh = function () {
             blade.isLoading = true;
             menus.get({ storeId: blade.storeId }, function (data) {
                 blade.currentEntities = data;
@@ -13,37 +12,33 @@
                 blade.parentBlade.refresh(blade.storeId, 'menus');
             },
             function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-        }
+        };
 
-        blade.selectNode = function (data) {
-            $scope.selectedNodeId = data.id;
+        blade.selectNode = function (listItem, isNew) {
+            $scope.selectedNodeId = listItem.id;
 
             var newBlade = {
-                id: 'editMenuLinkListBlade',
-                chosenStoreId: blade.storeId,
-                chosenListId: data.id,
-                newList: false,
-                title: 'content.blades.menu-link-list.title',
-                titleValues: { name: data.name },
-                subtitle: 'content.blades.menu-link-list.subtitle',
+                id: 'menuLinkListBlade',
+                storeId: blade.storeId,
+                parentRefresh: blade.refresh,
                 controller: 'virtoCommerce.contentModule.menuLinkListController',
                 template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/menu/menu-link-list.tpl.html'
             };
-            bladeNavigationService.showBlade(newBlade, blade);
-        }
 
-        function openBladeNew() {
-            $scope.selectedNodeId = null;
-
-            var newBlade = {
-                id: 'addMenuLinkListBlade',
-                chosenStoreId: blade.storeId,
-                newList: true,
-                title: 'content.blades.menu-link-list.title-new',
-                subtitle: 'content.blades.menu-link-list.subtitle-new',
-                controller: 'virtoCommerce.contentModule.menuLinkListController',
-                template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/menu/menu-link-list.tpl.html'
-            };
+            if (isNew) {
+                angular.extend(newBlade, {
+                    isNew: true,
+                    title: 'content.blades.menu-link-list.title-new',
+                    subtitle: 'content.blades.menu-link-list.subtitle-new'
+                });
+            } else {
+                angular.extend(newBlade, {
+                    listId: listItem.id,
+                    title: 'content.blades.menu-link-list.title',
+                    titleValues: { name: listItem.name },
+                    subtitle: 'content.blades.menu-link-list.subtitle'
+                });
+            }
             bladeNavigationService.showBlade(newBlade, blade);
         }
 
@@ -59,7 +54,8 @@
                             blade.isLoading = true;
 
                             menus.delete({ storeId: blade.storeId, listId: node.id }, function () {
-                                blade.initialize();
+                                $scope.selectedNodeId = null;
+                                blade.refresh();
                                 $rootScope.$broadcast("cms-menus-changed", blade.storeId);
                             },
                             function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
@@ -70,17 +66,13 @@
             });
         };
 
-        blade.headIcon = 'fa-archive';
+        blade.headIcon = 'fa-list-ol';
 
         blade.toolbarCommands = [
             {
                 name: "platform.commands.add", icon: 'fa fa-plus',
-                executeMethod: function () {
-                    openBladeNew();
-                },
-                canExecuteMethod: function () {
-                    return true;
-                },
+                executeMethod: function () { blade.selectNode({}, true); },
+                canExecuteMethod: function () { return true; },
                 permission: 'content:create'
             },
 			{
@@ -100,5 +92,5 @@
             uiGridHelper.initialize($scope, gridOptions);
         };
 
-        blade.initialize();
+        blade.refresh();
     }]);

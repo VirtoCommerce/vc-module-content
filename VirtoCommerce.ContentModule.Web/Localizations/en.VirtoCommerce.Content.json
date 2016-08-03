@@ -63,8 +63,8 @@
         }
       },
       "link-lists": {
-        "title": "{{name}} link Lists",
-        "subtitle": "Link Lists",
+        "title": "Link Lists",
+        "subtitle": "Link Lists in store '{{name}}'",
         "labels": {
           "name": "Name",
           "language": "Language",
@@ -121,10 +121,10 @@
         }
       },
       "menu-link-list": {
-        "title": "Edit '{{name}}' list",
-        "subtitle": "Link list edit",
-        "title-new": "Add new list",
-        "subtitle-new": "Create new list",
+        "title": "'{{name}}' list",
+        "subtitle": "Edit Link list",
+        "title-new": "New list",
+        "subtitle-new": "Create new Link list",
         "labels": {
           "name": "Name",
           "language": "Language",
@@ -135,7 +135,7 @@
           "linked-object": "Linked object"
         },
         "placeholders": {
-          "name": "Enter page name",
+          "name": "Enter list name",
           "language": "Select...",
           "associated-object-type": "Select type",
           "select-linked-object": "Select"
@@ -258,7 +258,6 @@
       "add-blog": "Add blog",
       "add-post": "Add post",
       "add-page": "Add",
-      "save-list": "Save list",
       "delete-links": "Delete links",
       "delete-theme": "Delete",
       "manage-metadata": "Manage Metadata properties",
