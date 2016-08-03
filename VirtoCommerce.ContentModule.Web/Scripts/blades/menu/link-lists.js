@@ -48,24 +48,26 @@
         }
 
         blade.deleteList = function (node) {
-            var dialog = {
-                id: "confirmDelete",
-                title: "content.dialogs.link-list-delete.title",
-                message: "content.dialogs.link-list-delete.message",
-                messageValues: { name: node.name },
-                callback: function (remove) {
-                    if (remove) {
-                        blade.isLoading = true;
+            bladeNavigationService.closeChildrenBlades(blade, function () {
+                var dialog = {
+                    id: "confirmDelete",
+                    title: "content.dialogs.link-list-delete.title",
+                    message: "content.dialogs.link-list-delete.message",
+                    messageValues: { name: node.name },
+                    callback: function (remove) {
+                        if (remove) {
+                            blade.isLoading = true;
 
-                        menus.delete({ storeId: blade.storeId, listId: node.id }, function () {
-                            blade.initialize();
-                            $rootScope.$broadcast("cms-menus-changed", blade.storeId);
-                        },
-                        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                            menus.delete({ storeId: blade.storeId, listId: node.id }, function () {
+                                blade.initialize();
+                                $rootScope.$broadcast("cms-menus-changed", blade.storeId);
+                            },
+                            function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                        }
                     }
-                }
-            };
-            dialogService.showConfirmationDialog(dialog);
+                };
+                dialogService.showConfirmationDialog(dialog);
+            });
         };
 
         blade.headIcon = 'fa-archive';
