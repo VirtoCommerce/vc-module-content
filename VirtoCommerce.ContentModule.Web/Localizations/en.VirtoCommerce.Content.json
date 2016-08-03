@@ -200,7 +200,7 @@
       },
       "link-list-delete": {
         "title": "Delete confirmation",
-        "message": "Are you sure you want to delete link list '{{name}}'?"
+        "message": "Are you sure you want to delete selected Link lists?"
       },
       "links-delete": {
         "title": "Delete confirmation",

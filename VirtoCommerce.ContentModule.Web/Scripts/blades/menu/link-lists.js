@@ -42,19 +42,18 @@
             bladeNavigationService.showBlade(newBlade, blade);
         }
 
-        blade.deleteList = function (node) {
+        blade.deleteList = function (selection) {
             bladeNavigationService.closeChildrenBlades(blade, function () {
                 var dialog = {
                     id: "confirmDelete",
                     title: "content.dialogs.link-list-delete.title",
                     message: "content.dialogs.link-list-delete.message",
-                    messageValues: { name: node.name },
                     callback: function (remove) {
                         if (remove) {
                             blade.isLoading = true;
 
-                            menus.delete({ storeId: blade.storeId, listIds: node.id }, function () {
-                                $scope.selectedNodeId = null;
+                            var listEntryIds = _.pluck(selection, 'id');
+                            menus.delete({ storeId: blade.storeId, listIds: listEntryIds }, function () {
                                 blade.refresh();
                                 $rootScope.$broadcast("cms-menus-changed", blade.storeId);
                             },
@@ -77,11 +76,9 @@
             },
 			{
 			    name: "platform.commands.delete", icon: 'fa fa-trash-o',
-			    executeMethod: function () {
-			        blade.deleteList(_.findWhere(blade.currentEntities, { id: $scope.selectedNodeId }));
-			    },
+			    executeMethod: function () { blade.deleteList($scope.gridApi.selection.getSelectedRows()); },
 			    canExecuteMethod: function () {
-			        return $scope.selectedNodeId;
+			        return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
 			    },
 			    permission: 'content:delete'
 			}
