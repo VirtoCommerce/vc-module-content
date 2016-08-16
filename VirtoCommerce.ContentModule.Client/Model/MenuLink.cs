@@ -45,13 +45,6 @@ namespace VirtoCommerce.ContentModule.Client.Model
         public int? Priority { get; set; }
 
         /// <summary>
-        /// If true - will displayed in the list, if false - not
-        /// </summary>
-        /// <value>If true - will displayed in the list, if false - not</value>
-        [DataMember(Name="isActive", EmitDefaultValue=false)]
-        public bool? IsActive { get; set; }
-
-        /// <summary>
         /// Gets or Sets MenuLinkListId
         /// </summary>
         [DataMember(Name="menuLinkListId", EmitDefaultValue=false)]
@@ -96,7 +89,6 @@ namespace VirtoCommerce.ContentModule.Client.Model
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Url: ").Append(Url).Append("\n");
             sb.Append("  Priority: ").Append(Priority).Append("\n");
-            sb.Append("  IsActive: ").Append(IsActive).Append("\n");
             sb.Append("  MenuLinkListId: ").Append(MenuLinkListId).Append("\n");
             sb.Append("  AssociatedObjectId: ").Append(AssociatedObjectId).Append("\n");
             sb.Append("  AssociatedObjectName: ").Append(AssociatedObjectName).Append("\n");
@@ -159,11 +151,6 @@ namespace VirtoCommerce.ContentModule.Client.Model
                     this.Priority.Equals(other.Priority)
                 ) && 
                 (
-                    this.IsActive == other.IsActive ||
-                    this.IsActive != null &&
-                    this.IsActive.Equals(other.IsActive)
-                ) && 
-                (
                     this.MenuLinkListId == other.MenuLinkListId ||
                     this.MenuLinkListId != null &&
                     this.MenuLinkListId.Equals(other.MenuLinkListId)
@@ -213,9 +200,6 @@ namespace VirtoCommerce.ContentModule.Client.Model
 
                 if (this.Priority != null)
                     hash = hash * 59 + this.Priority.GetHashCode();
-
-                if (this.IsActive != null)
-                    hash = hash * 59 + this.IsActive.GetHashCode();
 
                 if (this.MenuLinkListId != null)
                     hash = hash * 59 + this.MenuLinkListId.GetHashCode();

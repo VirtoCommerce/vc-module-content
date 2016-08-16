@@ -41,7 +41,7 @@
 		}
 	}
 
-	if (!isBlogs()) {
+	if (!isBlogs() || (blade.currentEntity.type && blade.currentEntity.type === 'folder')) {
 		$scope.rename = function (listItem) {
 			var result = prompt("Enter new name", listItem.name);
 			if (result) {

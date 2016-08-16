@@ -275,10 +275,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="listId">Menu link list id</param>
+        /// <param name="listIds">Menu link list id</param>
         /// <param name="storeId"></param>
         /// <returns></returns>
-        void MenuDelete(string listId, string storeId);
+        void MenuDelete(List<string> listIds, string storeId);
 
         /// <summary>
         /// Delete menu link list
@@ -287,10 +287,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="listId">Menu link list id</param>
+        /// <param name="listIds">Menu link list id</param>
         /// <param name="storeId"></param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> MenuDeleteWithHttpInfo(string listId, string storeId);
+        ApiResponse<Object> MenuDeleteWithHttpInfo(List<string> listIds, string storeId);
         /// <summary>
         /// Get menu link list by id
         /// </summary>
@@ -621,10 +621,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="listId">Menu link list id</param>
+        /// <param name="listIds">Menu link list id</param>
         /// <param name="storeId"></param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task MenuDeleteAsync(string listId, string storeId);
+        System.Threading.Tasks.Task MenuDeleteAsync(List<string> listIds, string storeId);
 
         /// <summary>
         /// Delete menu link list
@@ -633,10 +633,10 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="listId">Menu link list id</param>
+        /// <param name="listIds">Menu link list id</param>
         /// <param name="storeId"></param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<object>> MenuDeleteAsyncWithHttpInfo(string listId, string storeId);
+        System.Threading.Tasks.Task<ApiResponse<object>> MenuDeleteAsyncWithHttpInfo(List<string> listIds, string storeId);
         /// <summary>
         /// Get menu link list by id
         /// </summary>
@@ -2393,26 +2393,26 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// Delete menu link list 
         /// </summary>
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="listId">Menu link list id</param>
+        /// <param name="listIds">Menu link list id</param>
         /// <param name="storeId"></param>
         /// <returns></returns>
-        public void MenuDelete(string listId, string storeId)
+        public void MenuDelete(List<string> listIds, string storeId)
         {
-             MenuDeleteWithHttpInfo(listId, storeId);
+             MenuDeleteWithHttpInfo(listIds, storeId);
         }
 
         /// <summary>
         /// Delete menu link list 
         /// </summary>
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="listId">Menu link list id</param>
+        /// <param name="listIds">Menu link list id</param>
         /// <param name="storeId"></param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<object> MenuDeleteWithHttpInfo(string listId, string storeId)
+        public ApiResponse<object> MenuDeleteWithHttpInfo(List<string> listIds, string storeId)
         {
-            // verify the required parameter 'listId' is set
-            if (listId == null)
-                throw new ApiException(400, "Missing required parameter 'listId' when calling VirtoCommerceContentApi->MenuDelete");
+            // verify the required parameter 'listIds' is set
+            if (listIds == null)
+                throw new ApiException(400, "Missing required parameter 'listIds' when calling VirtoCommerceContentApi->MenuDelete");
             // verify the required parameter 'storeId' is set
             if (storeId == null)
                 throw new ApiException(400, "Missing required parameter 'storeId' when calling VirtoCommerceContentApi->MenuDelete");
@@ -2441,7 +2441,7 @@ namespace VirtoCommerce.ContentModule.Client.Api
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
             if (storeId != null) localVarPathParams.Add("storeId", ApiClient.ParameterToString(storeId)); // path parameter
-            if (listId != null) localVarQueryParams.Add("listId", ApiClient.ParameterToString(listId)); // query parameter
+            if (listIds != null) localVarQueryParams.Add("listIds", ApiClient.ParameterToString(listIds)); // query parameter
 
 
             // make the HTTP request
@@ -2466,12 +2466,12 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// Delete menu link list 
         /// </summary>
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="listId">Menu link list id</param>
+        /// <param name="listIds">Menu link list id</param>
         /// <param name="storeId"></param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task MenuDeleteAsync(string listId, string storeId)
+        public async System.Threading.Tasks.Task MenuDeleteAsync(List<string> listIds, string storeId)
         {
-             await MenuDeleteAsyncWithHttpInfo(listId, storeId);
+             await MenuDeleteAsyncWithHttpInfo(listIds, storeId);
 
         }
 
@@ -2479,14 +2479,14 @@ namespace VirtoCommerce.ContentModule.Client.Api
         /// Delete menu link list 
         /// </summary>
         /// <exception cref="VirtoCommerce.ContentModule.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="listId">Menu link list id</param>
+        /// <param name="listIds">Menu link list id</param>
         /// <param name="storeId"></param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<object>> MenuDeleteAsyncWithHttpInfo(string listId, string storeId)
+        public async System.Threading.Tasks.Task<ApiResponse<object>> MenuDeleteAsyncWithHttpInfo(List<string> listIds, string storeId)
         {
-            // verify the required parameter 'listId' is set
-            if (listId == null)
-                throw new ApiException(400, "Missing required parameter 'listId' when calling VirtoCommerceContentApi->MenuDelete");
+            // verify the required parameter 'listIds' is set
+            if (listIds == null)
+                throw new ApiException(400, "Missing required parameter 'listIds' when calling VirtoCommerceContentApi->MenuDelete");
             // verify the required parameter 'storeId' is set
             if (storeId == null)
                 throw new ApiException(400, "Missing required parameter 'storeId' when calling VirtoCommerceContentApi->MenuDelete");
@@ -2515,7 +2515,7 @@ namespace VirtoCommerce.ContentModule.Client.Api
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
             if (storeId != null) localVarPathParams.Add("storeId", ApiClient.ParameterToString(storeId)); // path parameter
-            if (listId != null) localVarQueryParams.Add("listId", ApiClient.ParameterToString(listId)); // query parameter
+            if (listIds != null) localVarQueryParams.Add("listIds", ApiClient.ParameterToString(listIds)); // query parameter
 
 
             // make the HTTP request
