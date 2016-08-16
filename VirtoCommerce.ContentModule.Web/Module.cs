@@ -156,6 +156,16 @@ namespace VirtoCommerce.ContentModule.Web
                 ValueType = DynamicPropertyValueType.ShortText,
                 CreatedBy = "Auto"
             };
+            //It allows  to specify aliases on a per page basis, in the YAML front matter. This aliases can be used for redirection.
+            var aliasesHeader = new DynamicProperty
+            {
+                Id = "Alias_FrontMatterHeader",
+                Name = "aliases",
+                ObjectType = frontMatterHeaderType,
+                ValueType = DynamicPropertyValueType.ShortText,
+                IsArray = true,
+                CreatedBy = "Auto"
+            };
 
 
             //Create DefaultTheme dynamic property for  Store 
@@ -168,7 +178,7 @@ namespace VirtoCommerce.ContentModule.Web
                 CreatedBy = "Auto"
             };
 
-            dynamicPropertyService.SaveProperties(new[] { titleHeader, defaultThemeNameProperty, permalinkHeader, layoutHeader, publishedHeader, categoryHeader, categoriesHeader, tagsHeader });
+            dynamicPropertyService.SaveProperties(new[] { titleHeader, defaultThemeNameProperty, permalinkHeader, aliasesHeader, layoutHeader, publishedHeader, categoryHeader, categoriesHeader, tagsHeader });
 
             //Register bounded security scope types
             var securityScopeService = _container.Resolve<IPermissionScopeService>();
