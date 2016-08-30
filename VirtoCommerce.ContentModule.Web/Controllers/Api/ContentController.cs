@@ -78,7 +78,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
 
             storageProvider.Remove(urls);
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
 
             storageProvider.MoveContent(oldUrl, newUrl);
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             var storageProvider = _contentStorageProviderFactory(string.Empty);
 
             storageProvider.CopyContent(srcPath, destPath);
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             }
             //remove archive after unpack
             storageProvider.Remove(new[] { archivePath });
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
 
             storageProvider.CreateFolder(folder.ToBlobModel());
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
 
 
