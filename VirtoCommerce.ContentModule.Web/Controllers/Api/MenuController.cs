@@ -44,7 +44,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             {
                 return Ok(lists.Select(s => s.ToWebModel()));
             }
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Update, new ContentScopeObject { StoreId = list.StoreId });
 
             _menuService.AddOrUpdate(list.ToCoreModel());
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Delete, new ContentScopeObject { StoreId = list.StoreId });
             }
             _menuService.DeleteLists(listIds);
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
 
     }
