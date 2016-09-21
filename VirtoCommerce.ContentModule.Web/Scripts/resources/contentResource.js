@@ -45,7 +45,10 @@
                     var parsedMetadata = [];
                     var parsedYAML = YAML.parse(parts[1].trim());
                     retVal.metadata = _.map(parsedYAML, function (val, key) {
-                        return { name: key, values: _.map(val.toString().split(','), function (v) { return { value: v }; }) };
+                        return {
+                            name: key,
+                            values: _.map(val.toString().split(','), function (v) { return { value: v }; })
+                        };
                     });
                 }
                 else {
@@ -60,9 +63,21 @@
             headers: { 'Content-Type': undefined },
             transformRequest: function (currentEntity) {
                 var metadata = {};
-                var nonEmptyProperties = _.filter(currentEntity.dynamicProperties, function (x) { return _.any(x.values) && x.values[0].value; });
+                var nonEmptyProperties = _.filter(currentEntity.dynamicProperties, function (x) { return _.any(x.values, function (val) { return val.value; }); });
                 _.each(nonEmptyProperties, function (x) {
-                    var values = _.pluck(x.values, 'value');
+                    var values;
+                    if (x.isMultilingual) {
+                        var nonEmptyMultilinguals = _.filter(x.values, function (val) { return val.value; });
+                        values = _.map(nonEmptyMultilinguals, function (val) { return val.locale + ':' + val.value; });
+                    } else {
+                        values = _.pluck(x.values, 'value');
+                        if (x.valueType == 'DateTime') {
+                            values = _.map(values, function (val) { return moment(val).format().substring(0, 10); });
+                        } else if (x.isDictionary) {
+                            values = _.map(values, function (val) { return val.id + ':' + val.name; });
+                        }
+                    }
+
                     metadata[x.name] = x.isArray ? values : values.join();
                 });
                 var dataToSave = '---\n' + YAML.stringify(metadata) + '\n---\n' + (currentEntity.content || '').trim();

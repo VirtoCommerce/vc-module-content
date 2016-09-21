@@ -1,5 +1,5 @@
 ﻿angular.module('virtoCommerce.contentModule')
-.controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope', '$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'platformWebApp.settings', 'FileUploader', function ($rootScope, $scope, validators, dialogService, contentApi, $timeout, bladeNavigationService, dynamicPropertiesApi, settings, FileUploader) {
+.controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope', '$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'platformWebApp.settings', 'FileUploader', 'platformWebApp.dynamicProperties.dictionaryItemsApi', function ($rootScope, $scope, validators, dialogService, contentApi, $timeout, bladeNavigationService, dynamicPropertiesApi, settings, FileUploader, dictionaryItemsApi) {
     var blade = $scope.blade;
     $scope.validators = validators;
     var contentType = blade.contentType.substr(0, 1).toUpperCase() + blade.contentType.substr(1, blade.contentType.length - 1);
@@ -8,13 +8,6 @@
         headers: { Accept: 'application/json' },
         autoUpload: true,
         removeAfterUpload: true,
-        filters: [{
-            name: 'imageFilter',
-            fn: function (i, options) {
-                var type = '|' + i.type.slice(i.type.lastIndexOf('/') + 1) + '|';
-                return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-            }
-        }],
         onBeforeUploadItem: function (fileItem) {
             blade.isLoading = true;
         },
@@ -74,6 +67,24 @@
         _.each(props, function (x) {
             x.displayNames = undefined;
             var metadataRecord = _.findWhere(metadata, { name: x.name });
+            if (metadataRecord)
+                if (x.isMultilingual) {
+                    var validValues = _.filter(metadataRecord.values, function (value) { return value.value && value.value.indexOf(':') > 1; });
+                    metadataRecord.values = _.map(validValues, function (val) {
+                        var parts = val.value.split(':');
+                        val.locale = parts[0];
+                        val.value = parts[1];
+                        return val;
+                    });
+                } else if (x.isDictionary) {
+                    metadataRecord.values = _.map(metadataRecord.values, function (val) {
+                        var parts = val.value.split(':');
+                        val.id = parts[0];
+                        val.name = parts[1];
+                        return { value: val };
+                    });
+                }
+
             x.values = metadataRecord ? metadataRecord.values : [];
         });
 
@@ -204,28 +215,30 @@
     };
 
     // dynamic properties (metadata)
-    //$scope.editDictionary = function (property) {
-    //    var newBlade = {
-    //        id: "propertyDictionary",
-    //        isApiSave: true,
-    //        currentEntity: property,
-    //        controller: 'platformWebApp.propertyDictionaryController',
-    //        template: '$(Platform)/Scripts/app/dynamicProperties/blades/property-dictionary.tpl.html',
-    //        onChangesConfirmedFn: function () {
-    //            // blade.entity.dynamicProperties = angular.copy(blade.entity.dynamicProperties);
-    //        }
-    //    };
-    //    bladeNavigationService.showBlade(newBlade, blade);
-    //};
+    $scope.editDictionary = function (property) {
+        var newBlade = {
+            id: "propertyDictionary",
+            isApiSave: true,
+            currentEntity: property,
+            controller: 'platformWebApp.propertyDictionaryController',
+            template: '$(Platform)/Scripts/app/dynamicProperties/blades/property-dictionary.tpl.html',
+            onChangesConfirmedFn: function () {
+                dictionaryItemsApi.query({ id: property.objectType, propertyId: property.id }, getDictionaryValuesCallback);
+            }
+        };
+        bladeNavigationService.showBlade(newBlade, blade);
+    };
 
-    //$scope.getDictionaryValues = function (property, callback) {
-    //    dictionaryItemsApi.query({ id: property.objectType, propertyId: property.id }, callback);
-    //}
+    var getDictionaryValuesCallback;
+    $scope.getDictionaryValues = function (property, callback) {
+        getDictionaryValuesCallback = callback;
+        dictionaryItemsApi.query({ id: property.objectType, propertyId: property.id }, callback);
+    }
 
-    ////settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' }, function (data) {
-    ////    $scope.languages = data;
-    ////});
-    //$scope.languages = settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' });
+    //settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' }, function (data) {
+    //    $scope.languages = data;
+    //});
+    $scope.languages = settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' });
 
     blade.headIcon = 'fa-file-o';
     blade.initializeBlade();
