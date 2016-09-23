@@ -44,7 +44,7 @@ namespace VirtoCommerce.ContentModule.Web
             _container.RegisterInstance(menuRepFactory);
             _container.RegisterType<IMenuService, MenuServiceImpl>();
 
-            var settingManager = _container.Resolve<ISettingsManager>();         
+            var settingManager = _container.Resolve<ISettingsManager>();
 
             Func<string, IContentBlobStorageProvider> contentProviderFactory = chrootPath =>
            {
@@ -53,7 +53,7 @@ namespace VirtoCommerce.ContentModule.Web
                if (configConnectionString != null && !string.IsNullOrEmpty(configConnectionString.ConnectionString))
                {
                    connectionString = configConnectionString.ConnectionString;
-               }              
+               }
 
                if (string.IsNullOrEmpty(connectionString))
                {
@@ -65,7 +65,7 @@ namespace VirtoCommerce.ContentModule.Web
                    var storagePath = Path.Combine(NormalizePath(blobConnectionString.RootPath), chrootPath.Replace("/", "\\"));
                    //Use content api/content as public url by default             
                    var publicUrl = VirtualPathUtility.ToAbsolute("~/api/content/" + chrootPath) + "?relativeUrl=";
-                   if(!string.IsNullOrEmpty(blobConnectionString.PublicUrl))
+                   if (!string.IsNullOrEmpty(blobConnectionString.PublicUrl))
                    {
                        publicUrl = blobConnectionString.PublicUrl + "/" + chrootPath;
                    }
@@ -84,7 +84,7 @@ namespace VirtoCommerce.ContentModule.Web
         public override void PostInitialize()
         {
             base.PostInitialize();
-            
+
             var dynamicPropertyService = _container.Resolve<IDynamicPropertyService>();
 
             //https://jekyllrb.com/docs/frontmatter/

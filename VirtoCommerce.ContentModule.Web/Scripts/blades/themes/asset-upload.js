@@ -8,7 +8,7 @@
         var uploader = $scope.uploader = new FileUploader({
             scope: $scope,
             headers: { Accept: 'application/json' },
-            url: 'api/content/' + blade.contentType + '/' + blade.storeId + '?folderUrl=' + blade.currentEntityId,
+            url: 'api/content/' + blade.contentType + '/' + blade.storeId + '?folderUrl=' + (blade.currentEntityId || ''),
             method: 'POST',
             autoUpload: true,
             removeAfterUpload: true

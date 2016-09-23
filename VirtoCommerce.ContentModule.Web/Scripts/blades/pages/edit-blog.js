@@ -1,5 +1,5 @@
 ﻿angular.module('virtoCommerce.contentModule')
-.controller('virtoCommerce.contentModule.editBlogController', ['$rootScope', '$scope', 'platformWebApp.validators', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.dynamicProperties.api', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', function ($rootScope, $scope, validators, contentApi, dynamicPropertiesApi, bladeNavigationService, dialogService) {
+.controller('virtoCommerce.contentModule.editBlogController', ['$rootScope', '$scope', 'platformWebApp.validators', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.dynamicProperties.api', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings', function ($rootScope, $scope, validators, contentApi, dynamicPropertiesApi, bladeNavigationService, dialogService, dictionaryItemsApi, settings) {
     var blade = $scope.blade;
     blade.updatePermission = 'content:update';
     $scope.validators = validators;
@@ -32,6 +32,24 @@
         _.each(props, function (x) {
             x.displayNames = undefined;
             var metadataRecord = _.findWhere(metadata, { name: x.name });
+            if (metadataRecord)
+                if (x.isMultilingual) {
+                    var validValues = _.filter(metadataRecord.values, function (value) { return value.value && value.value.indexOf(':') > 1; });
+                    metadataRecord.values = _.map(validValues, function (val) {
+                        var parts = val.value.split(':');
+                        val.locale = parts[0];
+                        val.value = parts[1];
+                        return val;
+                    });
+                } else if (x.isDictionary) {
+                    metadataRecord.values = _.map(metadataRecord.values, function (val) {
+                        var parts = val.value.split(':');
+                        val.id = parts[0];
+                        val.name = parts[1];
+                        return { value: val };
+                    });
+                }
+
             x.values = metadataRecord ? metadataRecord.values : [];
         });
 
@@ -147,7 +165,29 @@
     };
 
     var formScope;
-    $scope.setForm = function (form) { $scope.formScope = formScope = form; }
+    $scope.setForm = function (form) { $scope.formScope = formScope = form; };
+
+    $scope.editDictionary = function (property) {
+        var newBlade = {
+            id: "propertyDictionary",
+            isApiSave: true,
+            currentEntity: property,
+            controller: 'platformWebApp.propertyDictionaryController',
+            template: '$(Platform)/Scripts/app/dynamicProperties/blades/property-dictionary.tpl.html',
+            onChangesConfirmedFn: function () {
+                dictionaryItemsApi.query({ id: property.objectType, propertyId: property.id }, getDictionaryValuesCallback);
+            }
+        };
+        bladeNavigationService.showBlade(newBlade, blade);
+    };
+
+    var getDictionaryValuesCallback;
+    $scope.getDictionaryValues = function (property, callback) {
+        getDictionaryValuesCallback = callback;
+        dictionaryItemsApi.query({ id: property.objectType, propertyId: property.id }, callback);
+    }
+
+    $scope.languages = settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' });
 
     blade.headIcon = 'fa-inbox';
 

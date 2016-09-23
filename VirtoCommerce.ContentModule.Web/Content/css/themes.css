@@ -3,7 +3,7 @@
     min-height: 500px;
 }
 
-/* theme widget */
+/* theme widget: duplicates style from platform version > v2.11.5. To be deleted when this module reach platform dependency > v2.11.5 */
 .list.__stats {
     height: 100%;
     line-height: 1.2;
