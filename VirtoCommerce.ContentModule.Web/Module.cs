@@ -166,8 +166,33 @@ namespace VirtoCommerce.ContentModule.Web
                 IsArray = true,
                 CreatedBy = "Auto"
             };
+           
+            var isStickedHeader = new DynamicProperty
+            {
+                Id = "isSticked_FrontMatterHeader",
+                Name = "is-sticked",
+                ObjectType = frontMatterHeaderType,
+                ValueType = DynamicPropertyValueType.Boolean,
+                CreatedBy = "Auto"
+            };
 
+            var mainImageHeader = new DynamicProperty
+            {
+                Id = "mainImage_FrontMatterHeader",
+                Name = "main-image",
+                ObjectType = frontMatterHeaderType,
+                ValueType = DynamicPropertyValueType.ShortText,
+                CreatedBy = "Auto"
+            };
 
+            var isTrendingHeader = new DynamicProperty
+            {
+                Id = "isTrending_FrontMatterHeader",
+                Name = "is-trending",
+                ObjectType = frontMatterHeaderType,
+                ValueType = DynamicPropertyValueType.Boolean,
+                CreatedBy = "Auto"
+            };
             //Create DefaultTheme dynamic property for  Store 
             var defaultThemeNameProperty = new DynamicProperty
             {
@@ -178,7 +203,7 @@ namespace VirtoCommerce.ContentModule.Web
                 CreatedBy = "Auto"
             };
 
-            dynamicPropertyService.SaveProperties(new[] { titleHeader, defaultThemeNameProperty, permalinkHeader, aliasesHeader, layoutHeader, publishedHeader, categoryHeader, categoriesHeader, tagsHeader });
+            dynamicPropertyService.SaveProperties(new[] { titleHeader, defaultThemeNameProperty, permalinkHeader, aliasesHeader, layoutHeader, publishedHeader, categoryHeader, categoriesHeader, tagsHeader, isTrendingHeader, isStickedHeader, mainImageHeader });
 
             //Register bounded security scope types
             var securityScopeService = _container.Resolve<IPermissionScopeService>();
