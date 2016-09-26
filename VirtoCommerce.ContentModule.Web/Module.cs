@@ -125,7 +125,7 @@ namespace VirtoCommerce.ContentModule.Web
                 Id = "Published_FrontMatterHeader",
                 Name = "published",
                 ObjectType = frontMatterHeaderType,
-                ValueType = DynamicPropertyValueType.ShortText,
+                ValueType = DynamicPropertyValueType.Boolean,
                 CreatedBy = "Auto"
             };
             //Instead of placing posts inside of folders, you can specify one or more categories that the post belongs to. When the site is generated the post will act as though it had been set with these categories normally. Categories (plural key) can be specified as a YAML list or a comma-separated string.
