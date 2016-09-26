@@ -32,23 +32,8 @@
         _.each(props, function (x) {
             x.displayNames = undefined;
             var metadataRecord = _.findWhere(metadata, { name: x.name });
-            if (metadataRecord) {
-                if (x.isDictionary) {
-                    metadataRecord.values = _.map(metadataRecord.values, function (val) {
-                        var str = _.isString(val.value) ? val.value : _.keys(val.value)[0];
-                        val.id = str.substr(0, str.indexOf(':'));
-                        val.name = str.substr(str.indexOf(':') + 1);
-                        return { value: val };
-                    });
-                } else if (x.isMultilingual) {
-                    var validValues = _.filter(metadataRecord.values, function (value) { return value.value && value.value.indexOf(':') > 1; });
-                    metadataRecord.values = _.map(validValues, function (val) {
-                        var str = val.value;
-                        val.locale = str.substr(0, str.indexOf(':'));
-                        val.value = str.substr(str.indexOf(':') + 1);
-                        return val;
-                    });
-                }
+            if (metadataRecord && x.isMultilingual && !x.isDictionary) {
+                metadataRecord.values = _.pluck(metadataRecord.values, 'value');
             }
 
             x.values = metadataRecord ? metadataRecord.values : [];

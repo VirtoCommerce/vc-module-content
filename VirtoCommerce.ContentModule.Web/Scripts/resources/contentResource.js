@@ -65,24 +65,25 @@
             headers: { 'Content-Type': undefined },
             transformRequest: function (currentEntity) {
                 var metadata = {};
-                var nonEmptyProperties = _.filter(currentEntity.dynamicProperties, function (x) { return _.any(x.values, function (val) { return val.value; }); });
+                var nonEmptyProperties = _.filter(currentEntity.dynamicProperties, function (x) { return _.any(x.values, function (val) { return val.value || x.valueType == 'Boolean'; }); });
                 _.each(nonEmptyProperties, function (x) {
                     var values;
                     var isArray = x.isArray;
                     if (x.isMultilingual && !x.isDictionary) {
                         isArray = true;
                         var nonEmptyMultilinguals = _.filter(x.values, function (val) { return val.value; });
-                        values = _.map(nonEmptyMultilinguals, function (val) { return val.locale + ':' + val.value; });
+                        values = _.map(nonEmptyMultilinguals, function (val) { return { locale: val.locale, value: val.value } });
                     } else {
                         values = _.pluck(x.values, 'value');
                         if (x.valueType == 'DateTime') {
                             values = _.map(values, function (val) { return moment(val).format().substring(0, 10); });
                         } else if (x.isDictionary) {
                             values = _.map(values, function (val) {
-                                var retVal = val.id + ':' + val.name;
+                                var retVal = { id: val.id, name: val.name };
                                 if (x.isMultilingual) {
-                                    retVal = {};
-                                    retVal[val.id + ':' + val.name] = _.map(val.displayNames, function (displayName) { return displayName.locale + ':' + displayName.name; });
+                                    retVal.displayNames = _.map(val.displayNames, function (displayName) {
+                                        return { locale: displayName.locale, name: displayName.name }
+                                    });
                                 }
                                 return retVal;
                             });
