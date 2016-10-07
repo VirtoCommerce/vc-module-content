@@ -212,7 +212,6 @@
     <Content Include="Scripts\blades\pages\pages-list.js" />
     <Content Include="Scripts\blades\themes\themes-list.js" />
     <Content Include="Scripts\blades\themes\themes-list.tpl.html" />
-    <Content Include="Scripts\common\uiKitHtmlEditor.js" />
     <Content Include="Scripts\content.js" />
     <Content Include="Scripts\resources\contentResource.js" />
     <Content Include="Scripts\widgets\linkListsWidget.js" />
