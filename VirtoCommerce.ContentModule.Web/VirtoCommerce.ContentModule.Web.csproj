@@ -164,7 +164,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\allStyles.css" />
     <None Include="gulpfile.js" />
     <Content Include="Content\logo.png" />
     <Content Include="module.manifest">
@@ -188,7 +187,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\css\pages.css" />
     <Content Include="Content\css\themes.css" />
     <Content Include="Scripts\allPackages.js" />
     <Content Include="Scripts\blades\content-main.js" />
