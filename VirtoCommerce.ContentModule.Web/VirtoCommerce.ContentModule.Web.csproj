@@ -170,7 +170,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\allStyles.css" />
     <None Include="gulpfile.js" />
     <Content Include="Content\logo.png" />
     <Content Include="module.manifest">
@@ -194,7 +193,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\css\pages.css" />
     <Content Include="Content\css\themes.css" />
     <Content Include="Scripts\allPackages.js" />
     <Content Include="Scripts\blades\content-main.js" />
@@ -218,7 +216,6 @@
     <Content Include="Scripts\blades\pages\pages-list.js" />
     <Content Include="Scripts\blades\themes\themes-list.js" />
     <Content Include="Scripts\blades\themes\themes-list.tpl.html" />
-    <Content Include="Scripts\common\uiKitHtmlEditor.js" />
     <Content Include="Scripts\content.js" />
     <Content Include="Scripts\resources\contentResource.js" />
     <Content Include="Scripts\widgets\linkListsWidget.js" />
