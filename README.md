@@ -11,8 +11,8 @@ Key features:
 
 # Documentation
 Developer guide:
-* <a href="http://docs.virtocommerce.com/x/DQDr" target="_blank">Theme development</a>
-* <a href="http://docs.virtocommerce.com/x/joD-/" target="_blank">Pages and Blogs</a>
+* <a href="https://virtocommerce.com/docs/vc2devguide/working-with-storefront/theme-development" target="_blank">Theme development</a>
+* <a href="https://virtocommerce.com/docs/vc2devguide/working-with-storefront/pages-and-blogs" target="_blank">Pages and Blogs</a>
 
 # Installation
 Installing the module:
@@ -20,7 +20,7 @@ Installing the module:
 * Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-content/releases. In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
 
 # Settings
-* **VirtoCommerce.Content.CmsContentConnectionString** - CMS content connection string. Defines the provider and connection parameters to connect to content assets (themes, pages, etc.). In fact, it's Platform's <a href="http://docs.virtocommerce.com/display/vc2devguide/Platform+settings#Platformsettings-AssetsConnectionString" target="_blank">AssetsConnectionString</a> preconfigured for CMS.
+* **VirtoCommerce.Content.CmsContentConnectionString** - CMS content connection string. Defines the provider and connection parameters to connect to content assets (themes, pages, etc.). In fact, it's Platform's <a href="https://virtocommerce.com/docs/vc2devguide/deployment/platform-settings" target="_blank">AssetsConnectionString</a> preconfigured for CMS.
 
 # Available resources
 * Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.ContentModule.Data" target="_blank">NuGet package</a>
