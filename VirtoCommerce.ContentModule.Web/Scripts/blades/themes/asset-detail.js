@@ -184,12 +184,6 @@
             mode: getEditorMode()
         };
 
-        blade.getBladeStyle = function () {
-            var value = $(window).width() - 550;
-
-            return 'width:' + value + 'px';
-        }
-
         blade.headIcon = 'fa-file-o';
         blade.initializeBlade();
     }]);
