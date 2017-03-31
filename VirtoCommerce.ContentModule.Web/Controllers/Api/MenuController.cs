@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 using VirtoCommerce.ContentModule.Data.Services;
@@ -9,7 +8,6 @@ using VirtoCommerce.ContentModule.Web.Converters;
 using VirtoCommerce.ContentModule.Web.Models;
 using VirtoCommerce.ContentModule.Web.Security;
 using VirtoCommerce.Platform.Core.Security;
-using VirtoCommerce.Platform.Core.Web.Common;
 
 namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 {
@@ -33,7 +31,6 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <param name="storeId">Store id</param>
 		[HttpGet]
         [ResponseType(typeof(IEnumerable<MenuLinkList>))]
-        [ClientCache(Duration = 60)]
         [Route("menu")]
         public IHttpActionResult GetLists(string storeId)
         {
@@ -55,7 +52,6 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [ResponseType(typeof(MenuLinkList))]
         [Route("menu/{listId}")]
-        [ClientCache(Duration = 60)]
         public IHttpActionResult GetList(string storeId, string listId)
         {
             CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Read, new ContentScopeObject { StoreId = storeId });
