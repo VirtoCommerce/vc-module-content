@@ -1,6 +1,7 @@
 ﻿angular.module('virtoCommerce.contentModule')
-.controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope', '$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'platformWebApp.settings', 'FileUploader', 'platformWebApp.dynamicProperties.dictionaryItemsApi', function ($rootScope, $scope, validators, dialogService, contentApi, $timeout, bladeNavigationService, dynamicPropertiesApi, settings, FileUploader, dictionaryItemsApi) {
+.controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope', '$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'platformWebApp.settings', 'FileUploader', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.i18n', function ($rootScope, $scope, validators, dialogService, contentApi, $timeout, bladeNavigationService, dynamicPropertiesApi, settings, FileUploader, dictionaryItemsApi, i18n) {
     var blade = $scope.blade;
+    blade.currentLanguage = i18n.getLanguage();
     $scope.validators = validators;
     var contentType = blade.contentType.substr(0, 1).toUpperCase() + blade.contentType.substr(1, blade.contentType.length - 1);
     $scope.fileUploader = new FileUploader({
@@ -65,7 +66,7 @@
 
     function fillDynamicProperties(metadata, props) {
         _.each(props, function (x) {
-            x.displayNames = undefined;
+            //x.displayNames = undefined;
             var metadataRecord = _.findWhere(metadata, { name: x.name });
             if (metadataRecord && x.isMultilingual && !x.isDictionary) {
                 metadataRecord.values = _.pluck(metadataRecord.values, 'value');

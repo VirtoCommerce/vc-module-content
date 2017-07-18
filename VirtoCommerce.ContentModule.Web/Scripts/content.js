@@ -181,4 +181,15 @@ angular.module(moduleName, [])
             this.objects.push(entry);
         }
     };
-}]);
+}])
+//Filter for set localized display name for current user language
+.filter('metadataPropertyDisplayNameToUserLanguage', function () {
+    return function (input, lang) {
+        var retVal = input.name;
+        var displayName = _.first(_.filter(input.displayNames, function (obj) { return obj && obj.locale.startsWith(lang); }));
+        if (displayName && displayName.name)
+            retVal = displayName.name;
+
+        return retVal;
+    }
+});

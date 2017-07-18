@@ -47,9 +47,9 @@
                 </div>
                 <div class="tab-cnt">
                     <form class="form">
-                        <div class="form-group" ng-repeat="property in blade.currentEntity.dynamicProperties | orderBy: 'name'">
+                        <div class="form-group" ng-repeat="property in blade.currentEntity.dynamicProperties | orderBy: 'displayOrder'">
                             <label class="form-label" for="">
-                                {{property.name}}
+                                {{property | metadataPropertyDisplayNameToUserLanguage:blade.currentLanguage}}
                                 <a href="" ng-click="editDictionary(property)" ng-show="property.isDictionary" class="form-edit"><i class="form-ico fa fa-pencil"></i></a>
                             </label>
                             <va-generic-value-input ng-model="property" languages="languages" get-dictionary-values="getDictionaryValues"></va-generic-value-input>
