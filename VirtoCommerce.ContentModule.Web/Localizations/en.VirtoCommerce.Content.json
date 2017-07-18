@@ -266,7 +266,8 @@
       "preview-theme": "Preview",
       "edit-css-html": "Edit CSS/HTML",
       "add-theme": "Add new theme",
-      "set-active": "Set Active"
+      "set-active": "Set Active",
+      "preview-page": "Preview page"
     }
   }
 }

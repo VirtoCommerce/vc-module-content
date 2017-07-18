@@ -93,6 +93,7 @@
 				id: 'pageDetail',
 				contentType: blade.contentType,
 				storeId: blade.storeId,
+				storeUrl: blade.currentEntity.store.url,
 				languages: blade.languages,
 				folderUrl: blade.currentEntity.url,
 				currentEntity: listItem,
