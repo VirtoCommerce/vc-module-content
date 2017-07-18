@@ -88,12 +88,16 @@
 	};
 
 	function openDetailsBlade(listItem, isNew) {
-		if (isNew || listItem.isOpenable) {
+	    if (isNew || listItem.isOpenable) {
+	        var storeUrl = undefined;
+	        if (blade.currentEntity.store && blade.currentEntity.store.url)
+	            storeUrl = blade.currentEntity.store.url;
+
 			var newBlade = {
 				id: 'pageDetail',
 				contentType: blade.contentType,
 				storeId: blade.storeId,
-				storeUrl: blade.currentEntity.store.url,
+				storeUrl: storeUrl,
 				languages: blade.languages,
 				folderUrl: blade.currentEntity.url,
 				currentEntity: listItem,

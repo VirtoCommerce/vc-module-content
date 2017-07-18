@@ -165,6 +165,25 @@
                 },
                 canExecuteMethod: function () { return !blade.editAsHtml; },
                 permission: blade.updatePermission
+            },
+            {
+                name: "content.commands.preview-page", icon: 'fa fa-eye',
+                executeMethod: function () {
+                    if (blade.storeUrl) {
+                        var fileNameRaw = blade.currentEntity.name;
+                        var fileName = fileNameRaw.substring(0, fileNameRaw.indexOf("."));
+                        window.open(blade.storeUrl + '/pages/' + fileName, '_blank');
+                    }
+                    else {
+                        var dialog = {
+                            id: "noUrlInStore",
+                            title: "content.dialogs.set-store-url.title",
+                            message: "content.dialogs.set-store-url.message"
+                        }
+                        dialogService.showNotificationDialog(dialog);
+                    }
+                },
+                canExecuteMethod: function () { return true; }
             }
         ];
 
@@ -183,26 +202,7 @@
 		        bladeNavigationService.showBlade(newBlade, blade);
 		    },
 		    canExecuteMethod: function () { return true; }
-		},
-        {
-            name: "content.commands.preview-page", icon: 'fa fa-eye',
-            executeMethod: function () {
-                if (blade.storeUrl) {
-                    var fileNameRaw = blade.currentEntity.name;
-                    var fileName = fileNameRaw.substring(0, fileNameRaw.indexOf("."));
-                    window.open(blade.storeUrl + '/pages/' + fileName, '_blank');
-                }
-                else {
-                    var dialog = {
-                        id: "noUrlInStore",
-                        title: "content.dialogs.set-store-url.title",
-                        message: "content.dialogs.set-store-url.message"
-                    }
-                    dialogService.showNotificationDialog(dialog);
-                }
-            },
-            canExecuteMethod: function () { return true; }
-        }
+		}
     );
 
     var formScope;
