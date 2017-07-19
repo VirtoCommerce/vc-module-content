@@ -170,9 +170,14 @@
                 name: "content.commands.preview-page", icon: 'fa fa-eye',
                 executeMethod: function () {
                     if (blade.storeUrl) {
-                        var fileNameRaw = blade.currentEntity.name;
-                        var fileName = fileNameRaw.substring(0, fileNameRaw.indexOf("."));
-                        window.open(blade.storeUrl + '/pages/' + fileName, '_blank');
+                        var fileNameArray = blade.currentEntity.relativeUrl.split('.');
+                        var fileName = _.first(fileNameArray);
+                        var locale = '';
+                        if (_.size(fileNameArray) > 2)
+                            locale = '/' + fileNameArray[1];
+                        var contentType = '/' + blade.contentType;
+
+                        window.open(blade.storeUrl + locale + contentType + fileName, '_blank');
                     }
                     else {
                         var dialog = {
