@@ -1,6 +1,7 @@
 ﻿angular.module('virtoCommerce.contentModule')
-.controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope', '$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'platformWebApp.settings', 'FileUploader', 'platformWebApp.dynamicProperties.dictionaryItemsApi', function ($rootScope, $scope, validators, dialogService, contentApi, $timeout, bladeNavigationService, dynamicPropertiesApi, settings, FileUploader, dictionaryItemsApi) {
+.controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope', '$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'platformWebApp.settings', 'FileUploader', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.i18n', function ($rootScope, $scope, validators, dialogService, contentApi, $timeout, bladeNavigationService, dynamicPropertiesApi, settings, FileUploader, dictionaryItemsApi, i18n) {
     var blade = $scope.blade;
+    blade.currentLanguage = i18n.getLanguage();
     $scope.validators = validators;
     var contentType = blade.contentType.substr(0, 1).toUpperCase() + blade.contentType.substr(1, blade.contentType.length - 1);
     $scope.fileUploader = new FileUploader({
@@ -65,7 +66,7 @@
 
     function fillDynamicProperties(metadata, props) {
         _.each(props, function (x) {
-            x.displayNames = undefined;
+            //x.displayNames = undefined;
             var metadataRecord = _.findWhere(metadata, { name: x.name });
             if (metadataRecord && x.isMultilingual && !x.isDictionary) {
                 metadataRecord.values = _.pluck(metadataRecord.values, 'value');
@@ -164,6 +165,30 @@
                 },
                 canExecuteMethod: function () { return !blade.editAsHtml; },
                 permission: blade.updatePermission
+            },
+            {
+                name: "content.commands.preview-page", icon: 'fa fa-eye',
+                executeMethod: function () {
+                    if (blade.storeUrl) {
+                        var fileNameArray = blade.currentEntity.relativeUrl.split('.');
+                        var fileName = _.first(fileNameArray);
+                        var locale = '';
+                        if (_.size(fileNameArray) > 2)
+                            locale = '/' + fileNameArray[1];
+                        var contentType = '/' + blade.contentType;
+
+                        window.open(blade.storeUrl + locale + contentType + fileName, '_blank');
+                    }
+                    else {
+                        var dialog = {
+                            id: "noUrlInStore",
+                            title: "content.dialogs.set-store-url.title",
+                            message: "content.dialogs.set-store-url.message"
+                        }
+                        dialogService.showNotificationDialog(dialog);
+                    }
+                },
+                canExecuteMethod: function () { return true; }
             }
         ];
 

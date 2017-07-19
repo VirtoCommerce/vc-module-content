@@ -70,6 +70,7 @@
 				id: blade.id,
 				contentType: blade.contentType,
 				storeId: blade.storeId,
+				storeUrl: blade.storeUrl,
 				languages: blade.languages,
 				currentEntity: listItem,
 				breadcrumbs: blade.breadcrumbs,
@@ -88,11 +89,12 @@
 	};
 
 	function openDetailsBlade(listItem, isNew) {
-		if (isNew || listItem.isOpenable) {
+	    if (isNew || listItem.isOpenable) {
 			var newBlade = {
 				id: 'pageDetail',
 				contentType: blade.contentType,
 				storeId: blade.storeId,
+				storeUrl: blade.storeUrl,
 				languages: blade.languages,
 				folderUrl: blade.currentEntity.url,
 				currentEntity: listItem,

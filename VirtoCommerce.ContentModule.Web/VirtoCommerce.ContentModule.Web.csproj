@@ -176,6 +176,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Localizations\en.VirtoCommerce.Content.json" />
+    <Content Include="Localizations\de.VirtoCommerce.Content.json" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
