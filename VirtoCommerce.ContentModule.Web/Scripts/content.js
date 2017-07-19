@@ -188,7 +188,7 @@ angular.module(moduleName, [])
         var retVal = input.name;
         var displayName = _.first(_.filter(input.displayNames, function (obj) { return obj && obj.locale.startsWith(lang); }));
         if (displayName && displayName.name)
-            retVal = displayName.name;
+            retVal += ' (' + displayName.name + ')';
 
         return retVal;
     }
