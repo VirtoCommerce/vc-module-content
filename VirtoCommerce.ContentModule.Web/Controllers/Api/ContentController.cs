@@ -75,6 +75,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Delete)]
         public IHttpActionResult DeleteContent(string contentType, string storeId, [FromUri] string[] urls)
         {
+            CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Delete, new ContentScopeObject { StoreId = storeId });
+
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
 
             storageProvider.Remove(urls);
@@ -140,6 +142,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Update)]
         public IHttpActionResult MoveContent(string contentType, string storeId, string oldUrl, string newUrl)
         {
+            CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Update, new ContentScopeObject { StoreId = storeId });
+
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
 
             storageProvider.MoveContent(oldUrl, newUrl);
@@ -241,6 +245,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
+
+            CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Create, new ContentScopeObject { StoreId = storeId });
 
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
 
