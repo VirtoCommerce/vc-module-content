@@ -27,7 +27,7 @@ namespace VirtoCommerce.ContentModule.Web.Converters
             retVal.InjectFrom(blobInfo);
             retVal.Name = blobInfo.FileName;
             retVal.MimeType = blobInfo.ContentType;
-            retVal.Size = blobInfo.Size.ToHumanReadableSize();
+            retVal.Size = blobInfo.Size.ToString();
             retVal.ModifiedDate = blobInfo.ModifiedDate;
             return retVal;
         }
