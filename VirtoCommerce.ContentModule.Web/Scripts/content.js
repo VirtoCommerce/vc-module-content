@@ -19,7 +19,7 @@ angular.module(moduleName, [])
 	    };
 	    mainMenuService.addMenuItem(menuItem);
 
-	 
+
 	    // themes widget in STORE details
 	    widgetService.registerWidget({
 	        size: [2, 1],
@@ -182,11 +182,12 @@ angular.module(moduleName, [])
         }
     };
 }])
-//Filter for set localized display name for current user language
-.filter('metadataPropertyDisplayNameToUserLanguage', function () {
+//Filter for showing localized display name in current user language. 
+//Duplicates the next version after platform 2.13.12 and should be removed when this module gets platformVersion dependency higher!
+.filter('localizeDynamicPropertyName', function () {
     return function (input, lang) {
         var retVal = input.name;
-        var displayName = _.first(_.filter(input.displayNames, function (obj) { return obj && obj.locale.startsWith(lang); }));
+        var displayName = _.find(input.displayNames, function (obj) { return obj && obj.locale.startsWith(lang); });
         if (displayName && displayName.name)
             retVal += ' (' + displayName.name + ')';
 
