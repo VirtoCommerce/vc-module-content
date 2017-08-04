@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using Microsoft.Practices.Unity;
@@ -11,6 +9,7 @@ using VirtoCommerce.ContentModule.Web.ExportImport;
 using VirtoCommerce.ContentModule.Web.Security;
 using VirtoCommerce.Domain.Store.Model;
 using VirtoCommerce.Platform.Core.Assets;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -44,40 +43,42 @@ namespace VirtoCommerce.ContentModule.Web
             _container.RegisterInstance(menuRepFactory);
             _container.RegisterType<IMenuService, MenuServiceImpl>();
 
-            var settingManager = _container.Resolve<ISettingsManager>();
+            var connectionString = ConnectionStringHelper.GetConnectionString("CmsContentConnectionString");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                var settingsManager = _container.Resolve<ISettingsManager>();
+                connectionString = settingsManager.GetValue("VirtoCommerce.Content.CmsContentConnectionString", string.Empty);
+            }
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("CmsContentConnectionString is not defined. Please define module setting VirtoCommerce.Content.CmsContentConnectionString or in web.config");
+            }
 
             Func<string, IContentBlobStorageProvider> contentProviderFactory = chrootPath =>
-           {
-               var connectionString = settingManager.GetValue("VirtoCommerce.Content.CmsContentConnectionString", string.Empty);
-               var configConnectionString = ConfigurationManager.ConnectionStrings["CmsContentConnectionString"];
-               if (configConnectionString != null && !string.IsNullOrEmpty(configConnectionString.ConnectionString))
-               {
-                   connectionString = configConnectionString.ConnectionString;
-               }
+            {
+                var blobConnectionString = BlobConnectionString.Parse(connectionString);
+                if (string.Equals(blobConnectionString.Provider, FileSystemBlobProvider.ProviderName, StringComparison.OrdinalIgnoreCase))
+                {
+                    var storagePath = Path.Combine(NormalizePath(blobConnectionString.RootPath), chrootPath.Replace("/", "\\"));
+                    //Use content api/content as public url by default             
+                    var publicUrl = VirtualPathUtility.ToAbsolute("~/api/content/" + chrootPath) + "?relativeUrl=";
+                    if (!string.IsNullOrEmpty(blobConnectionString.PublicUrl))
+                    {
+                        publicUrl = blobConnectionString.PublicUrl + "/" + chrootPath;
+                    }
+                    //Do not export default theme (Themes/default) its will distributed with code
+                    return new FileSystemContentBlobStorageProvider(storagePath, publicUrl);
+                }
 
-               if (string.IsNullOrEmpty(connectionString))
-               {
-                   throw new InvalidOperationException("CmsContentConnectionString not defined. Please define module setting VirtoCommerce.Content.CmsContentConnectionString or in web.config");
-               }
-               var blobConnectionString = BlobConnectionString.Parse(connectionString);
-               if (string.Equals(blobConnectionString.Provider, FileSystemBlobProvider.ProviderName, StringComparison.OrdinalIgnoreCase))
-               {
-                   var storagePath = Path.Combine(NormalizePath(blobConnectionString.RootPath), chrootPath.Replace("/", "\\"));
-                   //Use content api/content as public url by default             
-                   var publicUrl = VirtualPathUtility.ToAbsolute("~/api/content/" + chrootPath) + "?relativeUrl=";
-                   if (!string.IsNullOrEmpty(blobConnectionString.PublicUrl))
-                   {
-                       publicUrl = blobConnectionString.PublicUrl + "/" + chrootPath;
-                   }
-                   //Do not export default theme (Themes/default) its will distributed with code
-                   return new FileSystemContentBlobStorageProvider(storagePath, publicUrl);
-               }
-               else if (string.Equals(blobConnectionString.Provider, AzureBlobProvider.ProviderName, StringComparison.OrdinalIgnoreCase))
-               {
-                   return new AzureContentBlobStorageProvider(blobConnectionString.ConnectionString, Path.Combine(blobConnectionString.RootPath, chrootPath));
-               }
-               throw new InvalidOperationException("Unknown storage provider: " + blobConnectionString.Provider);
-           };
+                if (string.Equals(blobConnectionString.Provider, AzureBlobProvider.ProviderName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return new AzureContentBlobStorageProvider(blobConnectionString.ConnectionString, Path.Combine(blobConnectionString.RootPath, chrootPath));
+                }
+
+                throw new InvalidOperationException("Unknown storage provider: " + blobConnectionString.Provider);
+            };
             _container.RegisterInstance(contentProviderFactory);
         }
 
@@ -89,7 +90,7 @@ namespace VirtoCommerce.ContentModule.Web
 
             //https://jekyllrb.com/docs/frontmatter/
             //Register special ContentItem.FrontMatterHeaders type which will be used to define YAML headers for pages, blogs and posts
-            var frontMatterHeaderType = "VirtoCommerce.ContentModule.Web.FrontMatterHeaders";
+            const string frontMatterHeaderType = "VirtoCommerce.ContentModule.Web.FrontMatterHeaders";
             dynamicPropertyService.RegisterType(frontMatterHeaderType);
             //Title
             var titleHeader = new DynamicProperty
@@ -166,7 +167,7 @@ namespace VirtoCommerce.ContentModule.Web
                 IsArray = true,
                 CreatedBy = "Auto"
             };
-           
+
             var isStickedHeader = new DynamicProperty
             {
                 Id = "isSticked_FrontMatterHeader",
@@ -259,7 +260,7 @@ namespace VirtoCommerce.ContentModule.Web
         #endregion
 
 
-        private string NormalizePath(string path)
+        private static string NormalizePath(string path)
         {
             string result;
 
