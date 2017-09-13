@@ -92,6 +92,7 @@ namespace VirtoCommerce.ContentModule.Web
             //Register special ContentItem.FrontMatterHeaders type which will be used to define YAML headers for pages, blogs and posts
             const string frontMatterHeaderType = "VirtoCommerce.ContentModule.Web.FrontMatterHeaders";
             dynamicPropertyService.RegisterType(frontMatterHeaderType);
+            
             //Title
             var titleHeader = new DynamicProperty
             {
@@ -107,6 +108,15 @@ namespace VirtoCommerce.ContentModule.Web
             {
                 Id = "Layout_FrontMatterHeader",
                 Name = "layout",
+                ObjectType = frontMatterHeaderType,
+                ValueType = DynamicPropertyValueType.ShortText,
+                CreatedBy = "Auto"
+            };
+            //Name of liquid template in theme witch will be used for display this page by including  {{ page.content }} expression 
+            var templateHeader = new DynamicProperty
+            {
+                Id = "Template_FrontMatterHeader",
+                Name = "template",
                 ObjectType = frontMatterHeaderType,
                 ValueType = DynamicPropertyValueType.ShortText,
                 CreatedBy = "Auto"
@@ -214,7 +224,7 @@ namespace VirtoCommerce.ContentModule.Web
                 CreatedBy = "Auto"
             };
 
-            dynamicPropertyService.SaveProperties(new[] { titleHeader, defaultThemeNameProperty, permalinkHeader, aliasesHeader, layoutHeader, publishedHeader, categoryHeader, categoriesHeader, tagsHeader, isTrendingHeader, isStickedHeader, mainImageHeader, dateHeader });
+            dynamicPropertyService.SaveProperties(new[] { templateHeader, titleHeader, defaultThemeNameProperty, permalinkHeader, aliasesHeader, layoutHeader, publishedHeader, categoryHeader, categoriesHeader, tagsHeader, isTrendingHeader, isStickedHeader, mainImageHeader, dateHeader });
 
             //Register bounded security scope types
             var securityScopeService = _container.Resolve<IPermissionScopeService>();
