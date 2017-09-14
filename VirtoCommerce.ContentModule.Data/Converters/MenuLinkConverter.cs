@@ -14,10 +14,12 @@ namespace VirtoCommerce.ContentModule.Data.Converters
         /// <param name="target"></param>
         public static void Patch(this MenuLink source, MenuLink target)
         {
-            if (target == null)
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+			if (target == null)
                 throw new ArgumentNullException("target");
 
-            var patchInjectionPolicy = new PatchInjection<MenuLink>(x => x.Priority, x => x.Title, x => x.Url);
+			var patchInjectionPolicy = new PatchInjection<MenuLink>(x => x.Priority, x => x.Title, x => x.Url);
 
             target.AssociatedObjectId = source.AssociatedObjectId;
             target.AssociatedObjectName = source.AssociatedObjectName;

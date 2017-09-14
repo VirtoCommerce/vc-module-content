@@ -6,8 +6,7 @@
         var codemirrorEditor;
 
         $scope.validators = validators;
-        var formScope;
-        $scope.setForm = function (form) { formScope = form; }
+		$scope.setForm = function (form) { $scope.formScope = form; }
 
         blade.initializeBlade = function () {
             if (blade.isNew) {

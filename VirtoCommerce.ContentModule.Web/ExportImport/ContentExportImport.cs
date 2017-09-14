@@ -46,24 +46,35 @@ namespace VirtoCommerce.ContentModule.Web.ExportImport
 
         public ContentExportImport(IMenuService menuService, Func<string, IContentBlobStorageProvider> themesStorageProviderFactory)
         {
-            _menuService = menuService;
+			if (themesStorageProviderFactory == null)
+				throw new ArgumentNullException(nameof(themesStorageProviderFactory));
+
+			_menuService = menuService;
             _contentStorageProvider = themesStorageProviderFactory(string.Empty);
         }
 
         public void DoExport(Stream backupStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
         {
-            var backupObject = GetBackupObject(progressCallback, manifest.HandleBinaryData);
+			if (manifest == null)
+				throw new ArgumentNullException(nameof(manifest));
+
+			var backupObject = GetBackupObject(progressCallback, manifest.HandleBinaryData);
             backupObject.SerializeJson(backupStream);
         }
 
         public void DoImport(Stream backupStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
         {
-            var backupObject = backupStream.DeserializeJson<BackupObject>();
+			if (manifest == null)
+				throw new ArgumentNullException(nameof(manifest));
+
+			var backupObject = backupStream.DeserializeJson<BackupObject>();
             var originalObject = GetBackupObject(progressCallback, false);
 
-            var progressInfo = new ExportImportProgressInfo();
-            progressInfo.Description = String.Format("{0} menu link lists importing...", backupObject.MenuLinkLists.Count());
-            progressCallback(progressInfo);
+			var progressInfo = new ExportImportProgressInfo
+			{
+				Description = String.Format("{0} menu link lists importing...", backupObject.MenuLinkLists.Count())
+			};
+			progressCallback(progressInfo);
             UpdateMenuLinkLists(backupObject.MenuLinkLists);
 
             if (manifest.HandleBinaryData)
@@ -89,9 +100,11 @@ namespace VirtoCommerce.ContentModule.Web.ExportImport
         {
             var retVal = new BackupObject();
 
-            var progressInfo = new ExportImportProgressInfo();
-            progressInfo.Description = "cms content loading...";
-            progressCallback(progressInfo);
+			var progressInfo = new ExportImportProgressInfo
+			{
+				Description = "cms content loading..."
+			};
+			progressCallback(progressInfo);
 
             retVal.MenuLinkLists = _menuService.GetAllLinkLists().Select(x => x.ToWebModel()).ToList();
 
@@ -123,9 +136,11 @@ namespace VirtoCommerce.ContentModule.Web.ExportImport
                 using (var stream = _contentStorageProvider.OpenWrite(folderFile.Url))
                 using (var memStream = new MemoryStream(folderFile.Data))
                 {
-                    var progressInfo = new ExportImportProgressInfo();
-                    progressInfo.Description = String.Format("Saving {0}", folderFile.Url);
-                    progressCallback(progressInfo);
+					var progressInfo = new ExportImportProgressInfo
+					{
+						Description = String.Format("Saving {0}", folderFile.Url)
+					};
+					progressCallback(progressInfo);
                     memStream.CopyTo(stream);
                 }
             }
@@ -147,9 +162,11 @@ namespace VirtoCommerce.ContentModule.Web.ExportImport
 
             foreach (var blobItem in result.Items)
             {
-                var progressInfo = new ExportImportProgressInfo();
-                progressInfo.Description = String.Format("Read {0}", blobItem.Url);
-                progressCallback(progressInfo);
+				var progressInfo = new ExportImportProgressInfo
+				{
+					Description = String.Format("Read {0}", blobItem.Url)
+				};
+				progressCallback(progressInfo);
 
                 var contentFile = new ContentFile
                 {

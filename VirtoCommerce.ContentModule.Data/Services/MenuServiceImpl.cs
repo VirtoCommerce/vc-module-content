@@ -14,7 +14,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
         public MenuServiceImpl(Func<IMenuRepository> menuRepositoryFactory)
         {
             if (menuRepositoryFactory == null)
-                throw new ArgumentNullException("menuRepositoryFactory");
+                throw new ArgumentNullException(nameof(menuRepositoryFactory));
 
             _menuRepositoryFactory = menuRepositoryFactory;
         }
@@ -36,6 +36,9 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         public void AddOrUpdate(Models.MenuLinkList list)
         {
+			if (list == null)
+				throw new ArgumentNullException(nameof(list));
+
             using (var repository = _menuRepositoryFactory())
             using (var changeTracker = GetChangeTracker(repository))
             {
@@ -67,7 +70,10 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         public void DeleteLists(string[] listIds)
         {
-            using (var repository = _menuRepositoryFactory())
+			if (listIds == null)
+				throw new ArgumentNullException(nameof(listIds));
+
+			using (var repository = _menuRepositoryFactory())
             {
                 foreach (var listId in listIds)
                 {
@@ -88,7 +94,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             {
                 var lists = repository.GetListsByStoreId(storeId);
 
-                var retVal = !lists.Any(l => l.Name.ToLower() == name.ToLower()
+                var retVal = !lists.Any(l => string.Equals(l.Name, name, StringComparison.OrdinalIgnoreCase)
                                     && (l.Language == language || (string.IsNullOrEmpty(l.Language) && string.IsNullOrEmpty(language)))
                                     && l.Id != id);
 

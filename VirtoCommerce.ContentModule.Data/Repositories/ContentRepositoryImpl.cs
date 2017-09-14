@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
@@ -22,7 +23,10 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+			if (modelBuilder == null)
+				throw new ArgumentNullException(nameof(modelBuilder));
+
+			modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Entity<MenuLinkList>().HasKey(x => x.Id)
                         .Property(x => x.Id);
