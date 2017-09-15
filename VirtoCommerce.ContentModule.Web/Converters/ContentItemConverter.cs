@@ -1,4 +1,5 @@
 ﻿using Omu.ValueInjecter;
+using System;
 using VirtoCommerce.ContentModule.Web.Models;
 using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
@@ -23,7 +24,10 @@ namespace VirtoCommerce.ContentModule.Web.Converters
 
         public static ContentFile ToContentModel(this BlobInfo blobInfo)
         {
-            var retVal = new ContentFile();
+			if (blobInfo == null)
+				throw new ArgumentNullException(nameof(blobInfo));
+
+			var retVal = new ContentFile();
             retVal.InjectFrom(blobInfo);
             retVal.Name = blobInfo.FileName;
             retVal.MimeType = blobInfo.ContentType;

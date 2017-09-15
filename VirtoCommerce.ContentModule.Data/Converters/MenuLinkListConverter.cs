@@ -15,7 +15,9 @@ namespace VirtoCommerce.ContentModule.Data.Converters
         /// <param name="target"></param>
         public static void Patch(this MenuLinkList source, MenuLinkList target)
         {
-            if (target == null)
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+			if (target == null)
                 throw new ArgumentNullException("target");
 
             target.Language = source.Language;

@@ -2,6 +2,7 @@
 using Omu.ValueInjecter;
 using webModels = VirtoCommerce.ContentModule.Web.Models;
 using coreModels = VirtoCommerce.ContentModule.Data.Models;
+using System;
 
 namespace VirtoCommerce.ContentModule.Web.Converters
 {
@@ -9,7 +10,10 @@ namespace VirtoCommerce.ContentModule.Web.Converters
 	{
 		public static coreModels.MenuLinkList ToCoreModel(this webModels.MenuLinkList list)
 		{
-            var retVal = new coreModels.MenuLinkList();
+			if (list == null)
+				throw new ArgumentNullException(nameof(list));
+
+			var retVal = new coreModels.MenuLinkList();
             retVal.InjectFrom(list);
 
             foreach(var link in list.MenuLinks)

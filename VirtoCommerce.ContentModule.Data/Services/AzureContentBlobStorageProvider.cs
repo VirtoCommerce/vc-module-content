@@ -13,7 +13,10 @@ namespace VirtoCommerce.ContentModule.Data.Services
         public AzureContentBlobStorageProvider(string connectionString, string chrootPath)
             : base(connectionString)
         {
-            chrootPath = chrootPath.Replace('/', '\\');
+			if (chrootPath == null)
+				throw new ArgumentNullException(nameof(chrootPath));
+
+			chrootPath = chrootPath.Replace('/', '\\');
             _chrootPath = "\\" + chrootPath.TrimStart('\\');
         }
 
@@ -35,7 +38,10 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         public override void CreateFolder(BlobFolder folder)
         {
-            if (folder.ParentUrl.IsNullOrEmpty())
+			if (folder == null)
+				throw new ArgumentNullException(nameof(folder));
+
+			if (folder.ParentUrl.IsNullOrEmpty())
             {
                 folder.Name = NormalizeUrl(folder.Name);
             }

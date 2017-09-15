@@ -20,7 +20,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             : base(securityService, permissionScopeService)
         {
             if (menuService == null)
-                throw new ArgumentNullException("menuService");
+                throw new ArgumentNullException(nameof(menuService));
 
             _menuService = menuService;
         }
@@ -88,7 +88,10 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("menu")]
         public IHttpActionResult Update(MenuLinkList list)
         {
-            CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Update, new ContentScopeObject { StoreId = list.StoreId });
+			if (list == null)
+				throw new ArgumentNullException(nameof(list));
+
+			CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Update, new ContentScopeObject { StoreId = list.StoreId });
 
             _menuService.AddOrUpdate(list.ToCoreModel());
             return Ok();
@@ -103,7 +106,10 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("menu")]
         public IHttpActionResult Delete([FromUri] string[] listIds)
         {
-            foreach (var listId in listIds)
+			if (listIds == null)
+				throw new ArgumentNullException(nameof(listIds));
+
+			foreach (var listId in listIds)
             {
                 var list = _menuService.GetListById(listId).ToWebModel();
                 CheckCurrentUserHasPermissionForObjects(ContentPredefinedPermissions.Delete, new ContentScopeObject { StoreId = list.StoreId });

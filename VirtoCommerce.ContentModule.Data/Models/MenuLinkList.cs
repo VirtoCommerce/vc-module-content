@@ -8,7 +8,6 @@ namespace VirtoCommerce.ContentModule.Data.Models
     {
         public MenuLinkList()
         {
-            MenuLinks = new ObservableCollection<MenuLink>();
         }
 
         [Required]
@@ -17,6 +16,7 @@ namespace VirtoCommerce.ContentModule.Data.Models
         public string StoreId { get; set; }
         
         public string Language { get; set; }
-        public virtual ObservableCollection<MenuLink> MenuLinks { get; set; }
-    }
+		public virtual ObservableCollection<MenuLink> MenuLinks { get; set; } = new ObservableCollection<MenuLink>();
+
+	}
 }
