@@ -189,6 +189,17 @@ angular.module(moduleName, [])
             var result = $translate.instant(translateKey);
             return result === translateKey ? fallbackValue : result;
         };
-    }]);
+    }])
+    //Duplicates the next version after platform 2.13.14 and should be removed when this module gets platformVersion dependency higher!
+    .filter('localizeDynamicPropertyName', function () {
+        return function (input, lang) {
+            var retVal = input.name;
+            var displayName = _.find(input.displayNames, function (obj) { return obj && obj.locale.startsWith(lang); });
+            if (displayName && displayName.name)
+                retVal += ' (' + displayName.name + ')';
+
+            return retVal;
+        }
+    });
 
 
