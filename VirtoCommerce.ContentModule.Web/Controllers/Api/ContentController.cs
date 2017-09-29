@@ -54,9 +54,9 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             var retVal = new ContentStatistic
             {
                 ActiveThemeName = store.GetDynamicPropertyValue("DefaultThemeName", "not set"),
-                ThemesCount = contentStorageProvider.Search("Themes/" + storeId, null).Folders.Count,
-                BlogsCount = contentStorageProvider.Search("Pages/" + storeId + "/blogs", null).Folders.Count,
-                PagesCount = contentStorageProvider.Search("Pages/" + storeId, null).Items.Count
+                ThemesCount = contentStorageProvider.Search(GetContentBasePath("themes", storeId), null).Folders.Count,
+                BlogsCount = contentStorageProvider.Search(GetContentBasePath("blogs", storeId), null).Folders.Count,
+                PagesCount = CountContentItemsRecursive(GetContentBasePath("pages", storeId), contentStorageProvider, GetContentBasePath("blogs", storeId))
             };
             return Ok(retVal);
         }
@@ -297,6 +297,18 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             {
                 retVal = "Pages/" + storeId + "/blogs";
             }
+            return retVal;
+        }
+
+        private int CountContentItemsRecursive(string folderUrl, IContentBlobStorageProvider _contentStorageProvider, string excludedFolderUrl = null)
+        {
+            var searchResult = _contentStorageProvider.Search(folderUrl, null);
+            var retVal = searchResult.Items.Count
+                        + searchResult.Folders
+                            .Where(x => excludedFolderUrl == null || !x.RelativeUrl.EndsWith(excludedFolderUrl, StringComparison.InvariantCultureIgnoreCase))
+                            .Select(x => CountContentItemsRecursive(x.RelativeUrl, _contentStorageProvider))
+                            .Sum();
+
             return retVal;
         }
     }
