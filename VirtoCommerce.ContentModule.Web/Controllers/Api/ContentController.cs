@@ -56,7 +56,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             var contentStorageProvider = _contentStorageProviderFactory("");
             var store = _storeService.GetById(storeId);
 
-            var pagesCount = _cacheManager.Get("pagesCount", $"content-{storeId}", () =>
+            var pagesCount = _cacheManager.Get("pagesCount", $"content-{storeId}", TimeSpan.FromMinutes(1), () =>
            {
                return CountContentItemsRecursive(GetContentBasePath("pages", storeId), contentStorageProvider, GetContentBasePath("blogs", storeId)); ;
            });
