@@ -52,7 +52,8 @@
                 function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             }
         } else {
-            var newUrl = blade.origEntity.url.substring(0, blade.origEntity.url.length - blade.origEntity.name.length) + blade.currentEntity.name;
+            //fix (blade.origEntity.name.length + 1) as url ended '/'
+            var newUrl = blade.origEntity.url.substring(0, blade.origEntity.url.length - (blade.origEntity.name.length + 1)) + blade.currentEntity.name;
             contentApi.move({
                 contentType: 'themes',
                 storeId: blade.storeId,
