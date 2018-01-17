@@ -43,7 +43,7 @@ namespace VirtoCommerce.ContentModule.Web
             _container.RegisterInstance(menuRepFactory);
             _container.RegisterType<IMenuService, MenuServiceImpl>();
 
-            var connectionString = ConnectionStringHelper.GetConnectionString("CmsContentConnectionString");
+            var connectionString = ConfigurationHelper.GetConnectionStringValue("CmsContentConnectionString");
 
             if (string.IsNullOrEmpty(connectionString))
             {
