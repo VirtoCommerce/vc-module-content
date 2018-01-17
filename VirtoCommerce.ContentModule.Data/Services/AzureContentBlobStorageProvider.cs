@@ -23,12 +23,12 @@ namespace VirtoCommerce.ContentModule.Data.Services
         #region IContentStorageProvider Members
         public void MoveContent(string oldUrl, string newUrl)
         {
-            throw new NotImplementedException();
+           base.Move(oldUrl, newUrl);
         }
 
         public void CopyContent(string fromUrl, string toUrl)
         {
-            throw new NotImplementedException();
+            base.Copy(fromUrl, toUrl);
         }
         #endregion
         public override Stream OpenRead(string url)

@@ -48,13 +48,18 @@
         };
 
         $scope.rename = function (listItem) {
+
+            var isFolder = /\/$/.test(listItem.url);
             var result = prompt("Enter new name", listItem.name);
+            // if rename folder, then ulr name ends '/' 
+            var substrNameLenght = isFolder ? listItem.name.length + 1 : listItem.name.length;
+
             if (result) {
                 contentApi.move({
                     contentType: blade.contentType,
                     storeId: blade.storeId,
                     oldUrl: listItem.url,
-                    newUrl: listItem.url.substring(0, listItem.url.length - listItem.name.length) + result
+                    newUrl: listItem.url.substring(0, listItem.url.length - substrNameLenght) + result
                 }, blade.refresh,
                 function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             }
