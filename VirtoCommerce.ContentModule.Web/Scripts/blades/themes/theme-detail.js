@@ -52,8 +52,11 @@
                 function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             }
         } else {
-            //fix (blade.origEntity.name.length + 1) as url ended '/'
-            var newUrl = blade.origEntity.url.substring(0, blade.origEntity.url.length - (blade.origEntity.name.length + 1)) + blade.currentEntity.name;
+            // if rename folder, then ulr name ends '/' 
+            var isFolder = /\/$/.test(blade.origEntity.url);
+            var substrNameLenght = isFolder ? blade.origEntity.name.length + 1 : blade.origEntity.name.length;
+
+            var newUrl = blade.origEntity.url.substring(0, blade.origEntity.url.length - substrNameLenght) + blade.currentEntity.name;
             contentApi.move({
                 contentType: 'themes',
                 storeId: blade.storeId,
