@@ -224,7 +224,23 @@ namespace VirtoCommerce.ContentModule.Web
                 CreatedBy = "Auto"
             };
 
-            dynamicPropertyService.SaveProperties(new[] { templateHeader, titleHeader, defaultThemeNameProperty, permalinkHeader, aliasesHeader, layoutHeader, publishedHeader, categoryHeader, categoriesHeader, tagsHeader, isTrendingHeader, isStickedHeader, mainImageHeader, dateHeader });
+			//Create Authorize dynamic property for  Store 
+			var authorizeProperty = new DynamicProperty
+			{
+				Id = "Authorize_FrontMatterHeader",
+				Name = "authorize",
+				ObjectType = frontMatterHeaderType,
+				ValueType = DynamicPropertyValueType.Boolean,
+				CreatedBy = "Auto"
+			};
+
+			dynamicPropertyService.SaveProperties(new[] {
+				templateHeader, titleHeader, defaultThemeNameProperty,
+				permalinkHeader, aliasesHeader, layoutHeader,
+				publishedHeader, categoryHeader, categoriesHeader,
+				tagsHeader, isTrendingHeader, isStickedHeader,
+				mainImageHeader, dateHeader, authorizeProperty
+			});
 
             //Register bounded security scope types
             var securityScopeService = _container.Resolve<IPermissionScopeService>();
