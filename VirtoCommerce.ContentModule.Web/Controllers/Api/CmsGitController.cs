@@ -152,5 +152,26 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             return Ok(retVal);
         }
 
+        /// <summary>
+        /// Update specific folder
+        /// </summary>
+        /// <param name="storeId">Store id</param>
+        /// <param name="userName">User name</param>
+        /// <returns>unique link</returns>
+        [HttpPost]
+        [Route("~/api/cmsgit/{storeId}/{userName}/refresh")]
+        [ResponseType(typeof(string))]
+        [CheckPermission(Permission = ContentPredefinedPermissions.Create)]
+        public IHttpActionResult refresh(string storeId, string userName)
+        {
+            var retVal = "ok";
+
+            LocalGitRepository rep = new LocalGitRepository();
+
+            rep.Update(userName);
+
+            return Ok(retVal);
+        }
+
     }
 }

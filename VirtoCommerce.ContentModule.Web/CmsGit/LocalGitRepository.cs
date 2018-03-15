@@ -9,7 +9,7 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
 {
     public class LocalGitRepository
     {
-        private string _repositoryPath = @"D:\VC\GIT-TEST";
+        private string _repositoryPath = @"D:\VC\SOLUTIONS\vc-storefront-core\VirtoCommerce.Storefront\wwwroot\cms-content\Git";
         private string _tempRepositoryName = "temp";
         private string _originalRepositoryName = "original";
 
