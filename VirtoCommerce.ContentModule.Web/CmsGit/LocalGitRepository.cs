@@ -85,8 +85,11 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
             {
                 var branch = GetForceBranch(repo, user, branchName);
 
-                // Saving the file
-                retVal = File.ReadAllText(filePath);
+                if (File.Exists(filePath))
+                {
+                    // Getting the file
+                    retVal = File.ReadAllText(filePath);
+                }
             }
 
             return retVal;
@@ -139,6 +142,11 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
                 catch { }
             }
 
+        }
+
+        public bool FileExists(string userName, string fileName)
+        {
+            return GetFile(userName, fileName) != String.Empty;
         }
 
 

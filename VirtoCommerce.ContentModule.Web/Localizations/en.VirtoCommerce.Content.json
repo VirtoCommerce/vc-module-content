@@ -145,6 +145,17 @@
         "title-product": "Pick Product for link",
         "title-category": "Pick Category for link"
       },
+      "edit-json": {
+        "title-new": "New Json-page",
+        "placeholders": {
+          "json-name": "Json-page Name",
+          "json-content": "Json-page Content"
+        },
+        "labels": {
+          "json-name": "Json-page Name",
+          "json": "Json"
+        }
+      },
       "edit-blog": {
         "subtitle": "Edit blog",
         "title-new": "New blog",
@@ -250,6 +261,14 @@
       "name-must-unique": {
         "title": "Name not unique",
         "message": "Name must be unique for this language!"
+      },
+      "json-save": {
+        "title": "Save changes",
+        "message": "The page has been modified. Do you want to save changes?"
+      },
+      "json-file-exists": {
+        "title": "The page already exists",
+        "message": "The chosen page name has already been taken. You need to choose another file name"
       }
     },
     "commands": {

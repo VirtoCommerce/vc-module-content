@@ -121,4 +121,32 @@
         copy: { url: 'api/content/copy' },
         move: { url: 'api/content/:contentType/:storeId/move' }
     });
+}])
+.factory('virtoCommerce.contentModule.cmsGitApi', ['$resource', function ($resource) {
+    return $resource(null, null, {
+        // post data as multipart form
+        set: {
+            url: 'api/cmsgit/:storeId/:userName/:fileName/set',
+            method: 'POST',
+            isArray: false
+        },
+        get: {
+            url: 'api/cmsgit/:storeId/:userName/:fileName/get',
+            method: 'GET',
+            isArray: false,
+            transformResponse: function (rawData) {
+                console.log('rawData: ', rawData);
+                return { content: rawData };
+            }
+        },
+        exists: {
+            url: 'api/cmsgit/:storeId/:userName/:fileName/exists',
+            method: 'GET',
+            isArray: false,
+            transformResponse: function (rawData) {
+                console.log('rawData: ', rawData);
+                return { exists: rawData };
+            }
+        }
+    });
 }]);

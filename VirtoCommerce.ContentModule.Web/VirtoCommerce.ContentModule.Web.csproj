@@ -182,7 +182,9 @@
     <Content Include="Scripts\allPackages.js" />
     <Content Include="Scripts\blades\content-main.js" />
     <Content Include="Scripts\blades\content-main.tpl.html" />
+    <Content Include="Scripts\blades\pages\edit-json.js" />
     <Content Include="Scripts\blades\pages\edit-blog.js" />
+    <Content Include="Scripts\blades\pages\edit-json.tpl.html" />
     <Content Include="Scripts\blades\pages\edit-blog.tpl.html" />
     <Content Include="Scripts\blades\themes\asset-list.js" />
     <Content Include="Scripts\blades\themes\asset-detail.js" />

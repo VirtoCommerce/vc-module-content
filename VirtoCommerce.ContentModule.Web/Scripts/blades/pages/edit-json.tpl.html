@@ -1,0 +1,19 @@
+﻿<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>
+<div class="blade-content">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <form class="form" name="formScope">
+                <div class="form-group" ng-init="setForm(formScope)">
+                    <label class="form-label">{{'content.blades.edit-json.labels.json-name' | translate }}</label>
+                    <div class="form-input">
+                        <input focus-on="" required class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.edit-json.placeholders.json-name' | translate }}" name="name" ui-validate=" 'validators.webSafeFileNameValidator($value)' " />
+                    </div>
+                </div>
+                <div class="sub-t">{{'content.blades.edit-json.labels.json' | translate }}</div>
+                <div class="form-input">
+                    <textarea focus-on="" required class="form-control" ng-model="blade.currentEntity.content" placeholder="{{ 'content.blades.edit-json.placeholders.json-content' | translate }}" name="content"></textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

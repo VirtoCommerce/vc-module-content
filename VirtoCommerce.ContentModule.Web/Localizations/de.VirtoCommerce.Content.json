@@ -145,6 +145,16 @@
         "title-product": "Produkt für Link auswählen",
         "title-category": "Kategorie für Link auswählen"
       },
+      "edit-json": {
+        "title-new": "Neuer Json-page",
+        "placeholders": {
+          "blog-name": "Blog Namen eingeben"
+        },
+        "labels": {
+          "blog-name": "Json-page Namen",
+          "metadata": "Metadaten"
+        }
+      },
       "edit-blog": {
         "subtitle": "Blog bearbeiten",
         "title-new": "Neuer Blog",

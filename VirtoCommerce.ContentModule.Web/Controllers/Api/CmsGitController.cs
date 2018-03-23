@@ -76,7 +76,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("~/api/cmsgit/{storeId}/{userName}/{fileName}/get")]
         [ResponseType(typeof(string))]
-        [CheckPermission(Permission = ContentPredefinedPermissions.Create)]
+        [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
         public IHttpActionResult GetCmsGitFile(string storeId, string userName, string fileName)
         {
             var retVal = String.Empty;
@@ -84,6 +84,26 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             LocalGitRepository rep = new LocalGitRepository();
 
             retVal = rep.GetFile(userName, fileName);
+
+            return Ok(retVal);
+        }
+
+        /// <summary>
+        /// Checks whether the file exists or not
+        /// </summary>
+        /// <param name="storeId">Store id</param>
+        /// <param name="userName">User name</param>
+        /// <param name="fileName">File name</param>
+        /// <returns>unique link</returns>
+        [HttpGet]
+        [Route("~/api/cmsgit/{storeId}/{userName}/{fileName}/exists")]
+        [ResponseType(typeof(string))]
+        [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
+        public IHttpActionResult CheckCmsGitFileExists(string storeId, string userName, string fileName)
+        {
+            LocalGitRepository rep = new LocalGitRepository();
+
+            var retVal = rep.FileExists(userName, fileName);
 
             return Ok(retVal);
         }
@@ -98,7 +118,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpPost]
         [Route("~/api/cmsgit/{storeId}/{userName}/{fileName}/sendToReview")]
         [ResponseType(typeof(string))]
-        [CheckPermission(Permission = ContentPredefinedPermissions.Create)]
+        [CheckPermission(Permission = ContentPredefinedPermissions.Update)]
         public IHttpActionResult SendToReview(string storeId, string userName, string fileName)
         {
             var retVal = "ok";
@@ -120,11 +140,11 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpPost]
         [Route("~/api/cmsgit/{storeId}/{userName}/{fileName}/sendToProduction")]
         [ResponseType(typeof(string))]
-        [CheckPermission(Permission = ContentPredefinedPermissions.Create)]
+        [CheckPermission(Permission = ContentPredefinedPermissions.Update)]
         public IHttpActionResult SendToProduction(string storeId, string userName, string fileName)
         {
             var retVal = "ok";
-
+            
             LocalGitRepository rep = new LocalGitRepository();
 
             rep.MoveTo(rep.BranchDraftName, fileName, rep.BranchMasterName);
@@ -140,7 +160,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpPost]
         [Route("~/api/cmsgit/{storeId}/refreshProduction")]
         [ResponseType(typeof(string))]
-        [CheckPermission(Permission = ContentPredefinedPermissions.Create)]
+        [CheckPermission(Permission = ContentPredefinedPermissions.Update)]
         public IHttpActionResult refreshProduction(string storeId)
         {
             var retVal = "ok";
@@ -161,7 +181,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpPost]
         [Route("~/api/cmsgit/{storeId}/{userName}/refresh")]
         [ResponseType(typeof(string))]
-        [CheckPermission(Permission = ContentPredefinedPermissions.Create)]
+        [CheckPermission(Permission = ContentPredefinedPermissions.Update)]
         public IHttpActionResult refresh(string storeId, string userName)
         {
             var retVal = "ok";
