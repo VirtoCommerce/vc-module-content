@@ -1,4 +1,6 @@
 ﻿using LibGit2Sharp;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +11,9 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
 {
     public class LocalGitRepository
     {
-        private string _repositoryPath = @"D:\VC\SOLUTIONS\vc-storefront-core\VirtoCommerce.Storefront\wwwroot\cms-content\Git";
+        //private string _repositoryPath = @"D:\VC\SOLUTIONS\vc-storefront-core\VirtoCommerce.Storefront\wwwroot\cms-content\Git";
+        private string _repositoryPath = @"D:\VC\SOLUTIONS\vc-storefront-core-json\VirtoCommerce.Storefront\wwwroot\cms-content\git";
+        
         private string _tempRepositoryName = "temp";
         private string _originalRepositoryName = "original";
 
@@ -147,6 +151,44 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
         public bool FileExists(string userName, string fileName)
         {
             return GetFile(userName, fileName) != String.Empty;
+        }
+
+        public object PermalinkUnique(string userName, string fileName, string permalink)
+        {
+            var workingPath = _repositoryPath + @"\" + userName;
+
+            string[] files = Directory.GetFiles(workingPath, "*.json", SearchOption.AllDirectories);
+
+            bool retVal = true;
+
+            foreach (string file in files)
+            {
+                if (!fileName.Equals(Path.GetFileName(file))) {
+                    var json = File.ReadAllText(file);
+
+                    JArray blocks = (JArray)JsonConvert.DeserializeObject(json);
+
+                    foreach(var block in blocks)
+                    {
+                        if (block["type"].ToString() == "settings" && block["permalink"] != null)
+                        {
+                            var exists = block["permalink"].ToString() == permalink;
+                            if (exists)
+                            {
+                                retVal = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (!retVal)
+                {
+                    break;
+                }
+            }
+                
+            return retVal;
         }
 
 

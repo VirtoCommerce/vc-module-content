@@ -5,11 +5,15 @@
     $scope.validators = validators;
 
     var userName = 'draft';
+    var cmsDesignerUrl = 'http://localhost:49578/?';
 
     blade.initialize = function () {
         if (blade.isNew) {
             blade.isLoading = false;
-            $scope.blade.currentEntity.content = '[\n  {\n    "type": "settings",\n    "title": "",\n    "permalink": ""\n  }\n]\n';
+            $scope.blade.currentEntity.blocks = [{ type: 'settings', title: '', permalink: '' }];
+            $scope.blade.currentEntity.settings = $scope.blade.currentEntity.blocks[0];
+
+            $scope.blade.currentEntity.content = JSON.stringify($scope.blade.currentEntity.blocks);
         } else {
             var fileName = $scope.blade.currentEntity.name;
             if (!fileName.endsWith('.json')) {
@@ -25,7 +29,16 @@
             null,
             function (data) {
                 blade.isLoading = false;
-                blade.currentEntity.content = data.content;
+                blade.currentEntity.content = JSON.parse(data.content);
+
+                console.log(blade.currentEntity.content);
+            
+                $scope.blade.currentEntity.blocks = JSON.parse(blade.currentEntity.content);
+                $scope.blade.currentEntity.settings = $scope.blade.currentEntity.blocks[0];
+                $scope.blade.currentEntity.content = JSON.stringify($scope.blade.currentEntity.blocks);
+
+                console.log($scope.blade.currentEntity.blocks);
+
                 blade.origEntity = angular.copy(blade.currentEntity);
             },
             function (error) {
@@ -49,6 +62,7 @@
             }
         }
 
+        $scope.blade.currentEntity.content = JSON.stringify($scope.blade.currentEntity.blocks);
         var content = $scope.blade.currentEntity.content;
 
         blade.isLoading = true;
@@ -87,6 +101,8 @@
                         }
 
                         blade.parentBlade.refresh();
+
+                        window.open(cmsDesignerUrl + 'file=' + fileName + '&user=' + userName, '_blank');
                     },
                     function (error) {
                         bladeNavigationService.setError('Error ' + error.status, $scope.blade); blade.isLoading = false;

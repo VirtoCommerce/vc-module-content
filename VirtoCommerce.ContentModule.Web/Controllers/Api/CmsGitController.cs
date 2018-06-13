@@ -43,25 +43,30 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             _cacheManager = cacheManager;
         }
 
+        public class JsonPageBlockParam
+        {
+            public string content { get; set; }
+        }
+
         /// <summary>
         /// Creates or saves the file in the git repository for the user
         /// </summary>
         /// <param name="storeId">Store id</param>
         /// <param name="userName">User name</param>
         /// <param name="fileName">File name</param>
-        /// <param name="content">Content</param>
+        /// <param name="data">Content</param>
         /// <returns>unique link</returns>
         [HttpPost]
         [Route("~/api/cmsgit/{storeId}/{userName}/{fileName}/set")]
         [ResponseType(typeof(string))]
         [CheckPermission(Permission = ContentPredefinedPermissions.Create)]
-        public IHttpActionResult SetCmsGitFile(string storeId, string userName, string fileName, string content)
+        public IHttpActionResult SetCmsGitFile(string storeId, string userName, string fileName, [FromBody] JsonPageBlockParam data)
         {
             var retVal = "ok";
 
             LocalGitRepository rep = new LocalGitRepository();
 
-            rep.SetFile(userName, fileName, content);
+            rep.SetFile(userName, fileName, data.content);
 
             return Ok(retVal);
         }
@@ -104,6 +109,27 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             LocalGitRepository rep = new LocalGitRepository();
 
             var retVal = rep.FileExists(userName, fileName);
+
+            return Ok(retVal);
+        }
+
+        /// <summary>
+        /// Checks whether the permalink is unique within the repository
+        /// </summary>
+        /// <param name="storeId">Store id</param>
+        /// <param name="userName">User name</param>
+        /// <param name="fileName">User name</param>
+        /// <param name="permalink">Permalink</param>
+        /// <returns>unique link</returns>
+        [HttpGet]
+        [Route("~/api/cmsgit/{storeId}/{userName}/{fileName}/{permalink}/isunique")]
+        [ResponseType(typeof(string))]
+        [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
+        public IHttpActionResult CheckCmsGitPermalinkUnique(string storeId, string userName, string fileName, string permalink)
+        {
+            LocalGitRepository rep = new LocalGitRepository();
+
+            var retVal = rep.PermalinkUnique(userName, fileName, permalink);
 
             return Ok(retVal);
         }
