@@ -86,12 +86,12 @@
                 }
                 else {
                     cmsGitApi.set({
-                        content: content,
+                        //content: content,
                         storeId: blade.storeId,
                         userName: userName,
                         fileName: fileName
                     },
-                    null,
+                    { content: content },
                     function (data) {
                         blade.isLoading = false;
                         blade.origEntity = angular.copy(blade.currentEntity);

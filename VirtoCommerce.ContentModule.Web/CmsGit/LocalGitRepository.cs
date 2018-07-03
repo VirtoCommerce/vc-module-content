@@ -12,8 +12,8 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
     public class LocalGitRepository
     {
         //private string _repositoryPath = @"D:\VC\SOLUTIONS\vc-storefront-core\VirtoCommerce.Storefront\wwwroot\cms-content\Git";
-        private string _repositoryPath = @"D:\VC\SOLUTIONS\vc-storefront-core-json\VirtoCommerce.Storefront\wwwroot\cms-content\git";
-        
+        private string _repositoryPath = String.Empty; //@"D:\VC\SOLUTIONS\vc-storefront-core-json\VirtoCommerce.Storefront\wwwroot\cms-content\git";
+
         private string _tempRepositoryName = "temp";
         private string _originalRepositoryName = "original";
 
@@ -43,6 +43,8 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
         public LocalGitRepository()
         {
             this._userMaster = new Signature("Master", "master@vc.com", DateTime.Now);
+
+            this._repositoryPath = System.Web.Configuration.WebConfigurationManager.AppSettings["GitRepositoryPath"];
 
             CreateOriginalRepository();
         }
@@ -163,12 +165,13 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
 
             foreach (string file in files)
             {
-                if (!fileName.Equals(Path.GetFileName(file))) {
+                if (!fileName.Equals(Path.GetFileName(file)))
+                {
                     var json = File.ReadAllText(file);
 
                     JArray blocks = (JArray)JsonConvert.DeserializeObject(json);
 
-                    foreach(var block in blocks)
+                    foreach (var block in blocks)
                     {
                         if (block["type"].ToString() == "settings" && block["permalink"] != null)
                         {
@@ -187,7 +190,7 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
                     break;
                 }
             }
-                
+
             return retVal;
         }
 
@@ -340,7 +343,7 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
 
                 Commands.Pull(repo, user, new PullOptions() { MergeOptions = new MergeOptions() { FastForwardStrategy = FastForwardStrategy.FastForwardOnly /*, FileConflictStrategy = CheckoutFileConflictStrategy.Theirs*/ } });
             }
-            catch 
+            catch
             {
             }
         }

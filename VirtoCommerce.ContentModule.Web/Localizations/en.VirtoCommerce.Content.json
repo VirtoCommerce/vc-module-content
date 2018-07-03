@@ -149,6 +149,8 @@
         "title-new": "New Json-page",
         "placeholders": {
           "json-name": "Json-page Name",
+          "json-title": "Page title",
+          "json-permalink": "Permalink",
           "json-content": "Json-page Content"
         },
         "labels": {
