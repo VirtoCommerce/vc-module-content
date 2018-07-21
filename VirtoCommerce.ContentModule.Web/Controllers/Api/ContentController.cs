@@ -127,17 +127,9 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
         public IHttpActionResult SearchContent(string contentType, string storeId, string folderUrl = null, string keyword = null)
         {
-            var storageProvider = _contentStorageProviderFactory("Git/draft");
+            var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
+
             var result = storageProvider.Search(folderUrl, keyword);
-
-            result.Folders.Remove(result.Folders.SingleOrDefault(item => item.Name == ".git"));
-
-            var storageProviderContent = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
-            var resultContent = storageProviderContent.Search(folderUrl, keyword);
-
-            result.Folders.AddRange(resultContent.Folders.ToArray());
-            result.Items.AddRange(resultContent.Items.ToArray());
-
             var retVal = result.Folders.Select(x => x.ToContentModel())
                                .OfType<ContentItem>()
                                .Concat(result.Items.Select(x => x.ToContentModel()))
