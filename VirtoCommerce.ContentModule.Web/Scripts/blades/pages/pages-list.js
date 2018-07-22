@@ -162,6 +162,29 @@
         bladeNavigationService.showBlade(newBlade, blade);
     }
 
+    function openBlogDetailsBlade(listItem, isNew) {
+        var newBlade = {
+            id: 'blogDetail',
+            contentType: blade.contentType,
+            storeId: blade.storeId,
+            currentEntity: listItem,
+            isNew: isNew,
+            title: listItem.name,
+            subtitle: 'content.blades.edit-blog.subtitle',
+            controller: 'virtoCommerce.contentModule.editBlogController',
+            template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/edit-blog.tpl.html'
+        };
+
+        if (isNew) {
+            angular.extend(newBlade, {
+                title: 'content.blades.edit-blog.title-new',
+                subtitle: 'content.blades.edit-blog.subtitle-new',
+            });
+        }
+
+        bladeNavigationService.showBlade(newBlade, blade);
+    }
+
 	$scope.delete = function (data) {
 		deleteList([data]);
 	};
@@ -249,15 +272,29 @@
             	canExecuteMethod: function () { return true; },
             	permission: 'content:create'
             },
+            /*
             {
                 name: "platform.commands.add", icon: 'fa fa-plus',
                 executeMethod: function () { openDetailsBlade({}, true); },
                 canExecuteMethod: function () { return true; },
                 permission: 'content:create'
-            },
+            },*/
             {
                 name: "platform.commands.add", icon: 'fa fa-plus',
-                executeMethod: function () { openJsonDetailsBlade({}, true); },
+                executeMethod: function () {
+                    /*
+                    openJsonDetailsBlade({}, true);
+                    */
+                    var newBlade = {
+                        id: 'listItemChild',
+                        title: 'content.blades.add-page.title',
+                        subtitle: 'content.blades.add-page.subtitle',
+                        controller: 'virtoCommerce.contentModule.pageAddController',
+                        template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/page-add.tpl.html'
+                    };
+
+                    bladeNavigationService.showBlade(newBlade, blade);
+                },
                 canExecuteMethod: function () { return true; },
                 permission: 'content:create'
             }

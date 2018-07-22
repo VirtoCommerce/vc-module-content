@@ -4,20 +4,13 @@
         <div class="inner-block">
             <form class="form" name="formScope">
                 <div class="form-group" ng-init="setForm(formScope)">
-                    <label class="form-label">{{'content.blades.edit-json.labels.json-name' | translate }}</label>
+                    <label class="form-label">{{ 'content.blades.edit-page.labels.name' | translate }}</label>
                     <div class="form-input">
-                        <input focus-on="" required class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.edit-json.placeholders.json-name' | translate }}" name="name" ui-validate=" 'validators.webSafeFileNameValidator($value)' " />
+                        <input focus-on="" required class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.edit-page.placeholders.name' | translate }}" name="pageName" ui-validate=" 'validators.webSafeFileNameValidator($value)' " />
                     </div>
-                    <div class="form-input">
-                        <input focus-on="" required class="form-control" ng-model="blade.currentEntity.settings.title" placeholder="{{ 'content.blades.edit-json.placeholders.json-title' | translate }}" name="title"  />
+                    <div class="form-error" ng-show="formScope.pageName.$dirty">
+                        <span ng-show="formScope.pageName.$error.validator">{{ 'content.blades.edit-page.validations.pageName-invalid' | translate }}</span>
                     </div>
-                    <div class="form-input">
-                        <input focus-on="" required class="form-control" ng-model="blade.currentEntity.settings.permalink" placeholder="{{ 'content.blades.edit-json.placeholders.json-permalink' | translate }}" name="permalink" />
-                    </div>
-                </div>
-                <div class="sub-t">{{'content.blades.edit-json.labels.json' | translate }}</div>
-                <div class="form-input">
-                    <textarea focus-on="" readonly required class="form-control" ng-model="blade.currentEntity.content" placeholder="{{ 'content.blades.edit-json.placeholders.json-content' | translate }}" name="content"></textarea>
                 </div>
             </form>
         </div>

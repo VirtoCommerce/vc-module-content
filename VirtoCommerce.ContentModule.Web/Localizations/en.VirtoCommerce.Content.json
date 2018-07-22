@@ -71,6 +71,20 @@
           "no-data": "No Link Lists yet"
         }
       },
+      "add-page": {
+        "title": "New",
+        "subtitle": "Choose what page you want to create",
+        "menu": {
+          "design-page": {
+            "title": "Design Page",
+            "description": "Use designer to create a new page."
+          },
+          "html-page": {
+            "title": "Html Page",
+            "description": "Use markdown or html to create a new page."
+          }
+        }
+      },
       "theme-detail": {
         "subtitle": "Manage the theme",
         "title-new": "New theme",
@@ -146,15 +160,15 @@
         "title-category": "Pick Category for link"
       },
       "edit-json": {
-        "title-new": "New Json-page",
+        "title-new": "New design page",
         "placeholders": {
-          "json-name": "Json-page Name",
+          "json-name": "Page Name",
           "json-title": "Page title",
           "json-permalink": "Permalink",
-          "json-content": "Json-page Content"
+          "json-content": "Contents"
         },
         "labels": {
-          "json-name": "Json-page Name",
+          "json-name": "Page Name",
           "json": "Json"
         }
       },
