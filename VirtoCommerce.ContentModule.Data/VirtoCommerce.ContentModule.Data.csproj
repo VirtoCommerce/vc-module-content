@@ -154,9 +154,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
     <None Include="VirtoCommerce.ContentModule.Data.nuspec" />
   </ItemGroup>
   <ItemGroup>

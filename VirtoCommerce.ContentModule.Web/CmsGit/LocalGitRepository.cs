@@ -15,25 +15,12 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
         private string _repositoryPath = String.Empty; //@"D:\VC\SOLUTIONS\vc-storefront-core-json\VirtoCommerce.Storefront\wwwroot\cms-content\git";
 
         private string _tempRepositoryName = "temp";
+
         private string _originalRepositoryName = "original";
 
-        private string _branchDraftName = "draft";
-        public string BranchDraftName
-        {
-            get
-            {
-                return _branchDraftName;
-            }
-        }
+        public string BranchDraftName { get; } = "draft";
 
-        private string _branchMasterName = "master";
-        public string BranchMasterName
-        {
-            get
-            {
-                return _branchMasterName;
-            }
-        }
+        public string BranchMasterName { get; } = "master";
 
         private Signature _userMaster = null;
 
@@ -49,7 +36,6 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
             CreateOriginalRepository();
         }
 
-
         public void SetFile(string userName, string fileName, string content)
         {
             Signature user = new Signature(userName, userName, DateTime.Now);
@@ -58,7 +44,7 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
 
             CheckBranchFolder(branchName, user);
 
-            UpdateBranch(branchName, user, _branchDraftName);
+            UpdateBranch(branchName, user, BranchDraftName);
 
             var workingPath = _repositoryPath + @"\" + branchName;
             var filePath = workingPath + @"\" + fileName;
@@ -80,7 +66,7 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
 
             CheckBranchFolder(branchName, user);
 
-            UpdateBranch(branchName, user, _branchDraftName);
+            UpdateBranch(branchName, user, BranchDraftName);
 
             var workingPath = _repositoryPath + @"\" + branchName;
             var filePath = workingPath + @"\" + fileName;
@@ -218,9 +204,9 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
                 Repository.Clone(tempPath, originalPath, new CloneOptions() { IsBare = true });
             }
 
-            CheckBranchFolder(_branchDraftName, _userMaster);
+            CheckBranchFolder(BranchDraftName, _userMaster);
 
-            CheckBranchFolder(_branchMasterName, _userMaster);
+            CheckBranchFolder(BranchMasterName, _userMaster);
 
         }
 
@@ -259,13 +245,13 @@ namespace VirtoCommerce.ContentModule.Web.CmsGit
             {
                 // Checkout master-branch
 
-                var branch = repo.Branches[_branchMasterName];
+                var branch = repo.Branches[BranchMasterName];
                 Branch currentBranch = Commands.Checkout(repo, branch);
 
-                if (branchName != _branchDraftName)
+                if (branchName != BranchDraftName)
                 {
                     // Create a new branch
-                    var branchDraft = repo.CreateBranch(_branchDraftName);
+                    var branchDraft = repo.CreateBranch(BranchDraftName);
                     // Checkout the new branch
                     branchDraft = Commands.Checkout(repo, branchDraft);
 
