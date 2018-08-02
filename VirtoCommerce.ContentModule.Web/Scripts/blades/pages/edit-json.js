@@ -3,12 +3,18 @@
         function ($rootScope, $scope, validators, contentApi, dynamicPropertiesApi, bladeNavigationService, dialogService, dictionaryItemsApi, settings) {
     var blade = $scope.blade;
     blade.updatePermission = 'content:update';
-    blade.designerUrl = 'http://localhost:59855/';
+    blade.designerUrl = null;
+    var designerUrlPromise = settings.getValues({ id: 'VirtoCommerce.Content.DesignerUrl' }).$promise;
     $scope.validators = validators;
 
     var userName = 'draft';
 
     blade.initialize = function () {
+        designerUrlPromise.then(function (promiseData) {
+            blade.designerUrl = promiseData;
+            if (blade.designerUrl == '')
+                blade.designerUrl = null;
+        });
         if (blade.isNew) {
             blade.isLoading = false;
             $scope.blade.currentEntity.blocks = [{ type: 'settings', title: '', permalink: '' }];
@@ -117,8 +123,8 @@
                     else {
                         var dialog = {
                             id: "noUrlInStore",
-                            title: "content.dialogs.set-store-url.title",
-                            message: "content.dialogs.set-store-url.message"
+                            title: "content.dialogs.set-designer-url.title",
+                            message: "content.dialogs.set-designer-url.message"
                         }
                         dialogService.showNotificationDialog(dialog);
                     }

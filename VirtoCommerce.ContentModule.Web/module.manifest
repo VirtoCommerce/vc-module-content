@@ -51,6 +51,13 @@
                     provider=LocalStorage;rootPath=~\App_Data\cms-content;publicUrl=http://localhost/admin/cms-content
                 </description>
             </setting>
+            <setting>
+              <name>VirtoCommerce.Content.DesignerUrl</name>
+              <valueType>string</valueType>
+              <defaultValue></defaultValue>
+              <title>Designer URL</title>
+              <description>Enter URL for the Page Designer (Example: http://localhost:59855)</description>
+            </setting>
         </group>
     </settings>
 

@@ -264,6 +264,10 @@
       "name-must-unique": {
         "title": "Name not unique",
         "message": "Name must be unique for this language!"
+      },
+      "set-designer-url": {
+        "title": "Url is not set for the designer",
+        "message": "Please, set designer url before editing!"
       }
     },
     "commands": {
