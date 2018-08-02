@@ -5,7 +5,7 @@
 
 	$scope.selectedNodeId = null;
 
-	blade.refresh = function () {
+    blade.refresh = function () {
 		blade.isLoading = true;
 		contentApi.query(
             {
@@ -16,9 +16,10 @@
             },
             function (data) {
             	$scope.pageSettings.totalItems = data.length;
-            	_.each(data, function (x) {
+                _.each(data, function (x) {
             		x.isImage = x.mimeType && x.mimeType.startsWith('image/');
-            		x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
+                    x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
+                    x.isJson = x.mimeType && (x.mimeType === 'application/json' || x.mimeType === 'text/json');
             	});
             	$scope.listEntries = data;
             	blade.isLoading = false;
@@ -88,7 +89,9 @@
 		}
 	};
 
-	function openDetailsBlade(listItem, isNew) {
+    function openDetailsBlade(listItem, isNew) {
+        console.log(listItem);
+
 	    if (isNew || listItem.isOpenable) {
 			var newBlade = {
 				id: 'pageDetail',
@@ -104,56 +107,83 @@
 				template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/page-detail.tpl.html'
 			};
 
-
-			if (isBlogs()) {
-				if (isNew) {
-					angular.extend(newBlade, {
-						title: 'content.blades.edit-page.title-new-post',
-						subtitle: 'content.blades.edit-page.subtitle-new-post'
-					});
-				} else {
-					angular.extend(newBlade, {
-						subtitle: 'content.blades.edit-page.subtitle-post'
-					});
-				}
-			} else {
-				if (isNew) {
-					angular.extend(newBlade, {
-						title: 'content.blades.edit-page.title-new',
-						subtitle: 'content.blades.edit-page.subtitle-new'
-					});
-				} else {
-					angular.extend(newBlade, {
-						subtitle: 'content.blades.edit-page.subtitle'
-					});
-				}
-			}
-			bladeNavigationService.showBlade(newBlade, blade);
+            if (listItem.isJson) {
+                openJsonDetailsBlade(listItem, isNew);
+            }
+            else {
+                if (isBlogs()) {
+                    if (isNew) {
+                        angular.extend(newBlade, {
+                            title: 'content.blades.edit-page.title-new-post',
+                            subtitle: 'content.blades.edit-page.subtitle-new-post'
+                        });
+                    } else {
+                        angular.extend(newBlade, {
+                            subtitle: 'content.blades.edit-page.subtitle-post'
+                        });
+                    }
+                } else {
+                    if (isNew) {
+                        angular.extend(newBlade, {
+                            title: 'content.blades.edit-page.title-new',
+                            subtitle: 'content.blades.edit-page.subtitle-new'
+                        });
+                    } else {
+                        angular.extend(newBlade, {
+                            subtitle: 'content.blades.edit-page.subtitle'
+                        });
+                    }
+                }
+                bladeNavigationService.showBlade(newBlade, blade);
+            }
 		}
 	}
+    
+    function openJsonDetailsBlade(listItem, isNew) {
+        var newBlade = {
+            id: 'jsonDetail',
+            contentType: blade.contentType,
+            storeId: blade.storeId,
+            currentEntity: listItem,
+            isNew: isNew,
+            title: listItem.name,
+            subtitle: 'content.blades.edit-page.subtitle',
+            controller: 'virtoCommerce.contentModule.editJsonController',
+            template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/edit-json.tpl.html'
+        };
 
-	function openBlogDetailsBlade(listItem, isNew) {
-		var newBlade = {
-			id: 'blogDetail',
-			contentType: blade.contentType,
-			storeId: blade.storeId,
-			currentEntity: listItem,
-			isNew: isNew,
-			title: listItem.name,
-			subtitle: 'content.blades.edit-blog.subtitle',
-			controller: 'virtoCommerce.contentModule.editBlogController',
-			template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/edit-blog.tpl.html'
-		};
+        if (isNew) {
+            angular.extend(newBlade, {
+                title: 'content.blades.edit-page.title-new',
+                subtitle: 'content.blades.edit-page.subtitle-new',
+            });
+        }
 
-		if (isNew) {
-			angular.extend(newBlade, {
-				title: 'content.blades.edit-blog.title-new',
-				subtitle: 'content.blades.edit-blog.subtitle-new',
-			});
-		}
+        bladeNavigationService.showBlade(newBlade, blade);
+    }
 
-		bladeNavigationService.showBlade(newBlade, blade);
-	}
+    function openBlogDetailsBlade(listItem, isNew) {
+        var newBlade = {
+            id: 'blogDetail',
+            contentType: blade.contentType,
+            storeId: blade.storeId,
+            currentEntity: listItem,
+            isNew: isNew,
+            title: listItem.name,
+            subtitle: 'content.blades.edit-blog.subtitle',
+            controller: 'virtoCommerce.contentModule.editBlogController',
+            template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/edit-blog.tpl.html'
+        };
+
+        if (isNew) {
+            angular.extend(newBlade, {
+                title: 'content.blades.edit-blog.title-new',
+                subtitle: 'content.blades.edit-blog.subtitle-new',
+            });
+        }
+
+        bladeNavigationService.showBlade(newBlade, blade);
+    }
 
 	$scope.delete = function (data) {
 		deleteList([data]);
@@ -242,11 +272,31 @@
             	canExecuteMethod: function () { return true; },
             	permission: 'content:create'
             },
+            /*
             {
-            	name: "platform.commands.add", icon: 'fa fa-plus',
-            	executeMethod: function () { openDetailsBlade({}, true); },
-            	canExecuteMethod: function () { return true; },
-            	permission: 'content:create'
+                name: "platform.commands.add", icon: 'fa fa-plus',
+                executeMethod: function () { openDetailsBlade({}, true); },
+                canExecuteMethod: function () { return true; },
+                permission: 'content:create'
+            },*/
+            {
+                name: "platform.commands.add", icon: 'fa fa-plus',
+                executeMethod: function () {
+                    /*
+                    openJsonDetailsBlade({}, true);
+                    */
+                    var newBlade = {
+                        id: 'listItemChild',
+                        title: 'content.blades.add-page.title',
+                        subtitle: 'content.blades.add-page.subtitle',
+                        controller: 'virtoCommerce.contentModule.pageAddController',
+                        template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/page-add.tpl.html'
+                    };
+
+                    bladeNavigationService.showBlade(newBlade, blade);
+                },
+                canExecuteMethod: function () { return true; },
+                permission: 'content:create'
             }
         );
 	} else if (isBlogs()) {

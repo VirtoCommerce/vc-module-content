@@ -155,6 +155,7 @@
     <Content Include="Localizations\de.VirtoCommerce.Content.json" />
     <None Include=".bowerrc" />
     <None Include="bower.json" />
+    <Content Include="Localizations\ru.VirtoCommerce.Content.json" />
     <None Include="module.ignore" />
     <None Include="package.json" />
     <None Include="app.config">
@@ -177,6 +178,10 @@
     <Content Include="Scripts\blades\content-main.tpl.html" />
     <Content Include="Scripts\blades\pages\edit-blog.js" />
     <Content Include="Scripts\blades\pages\edit-blog.tpl.html" />
+    <Content Include="Scripts\blades\pages\edit-json.js" />
+    <Content Include="Scripts\blades\pages\edit-json.tpl.html" />
+    <Content Include="Scripts\blades\pages\page-add.js" />
+    <Content Include="Scripts\blades\pages\page-add.tpl.html" />
     <Content Include="Scripts\blades\themes\asset-list.js" />
     <Content Include="Scripts\blades\themes\asset-detail.js" />
     <Content Include="Scripts\blades\themes\asset-detail.tpl.html" />

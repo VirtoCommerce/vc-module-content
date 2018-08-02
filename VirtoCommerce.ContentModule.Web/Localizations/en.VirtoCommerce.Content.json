@@ -120,6 +120,20 @@
           "pageName-invalid": "Page name can contain alphanumeric, \"_\", \"-\" and \".\" characters only."
         }
       },
+      "add-page": {
+        "title": "New",
+        "subtitle": "Choose what page you want to create",
+        "menu": {
+          "design-page": {
+            "title": "Design Page",
+            "description": "Use designer to create a new page."
+          },
+          "html-page": {
+            "title": "Html Page",
+            "description": "Use markdown or html to create a new page."
+          }
+        }
+      },
       "menu-link-list": {
         "title": "'{{name}}' list",
         "subtitle": "Edit Link list",
@@ -267,7 +281,8 @@
       "edit-css-html": "Edit CSS/HTML",
       "add-theme": "Add new theme",
       "set-active": "Set Active",
-      "preview-page": "Preview page"
+      "preview-page": "Preview page",
+      "open-designer": "Open in Designer"
     },
 			"front-matter-description": {
 				"Title_FrontMatterHeader": "The page title",
