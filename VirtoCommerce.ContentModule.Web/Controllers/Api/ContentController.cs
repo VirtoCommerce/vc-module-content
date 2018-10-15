@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using CacheManager.Core;
 using VirtoCommerce.ContentModule.Data.Services;
@@ -103,6 +104,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("")]
         [ResponseType(typeof(byte[]))]
         [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public HttpResponseMessage GetContentItemDataStream(string contentType, string storeId, string relativeUrl)
         {
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
@@ -246,6 +248,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("")]
         [ResponseType(typeof(ContentItem[]))]
         [CheckPermission(Permission = ContentPredefinedPermissions.Create)]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public async Task<IHttpActionResult> UploadContent(string contentType, string storeId, [FromUri] string folderUrl, [FromUri]string url = null)
         {
             if (url == null && !Request.Content.IsMimeMultipartContent())
