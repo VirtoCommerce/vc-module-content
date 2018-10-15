@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
     .controller('virtoCommerce.contentModule.editJsonController', ['$rootScope', '$scope', 'platformWebApp.validators', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.dynamicProperties.api', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings',
         function ($rootScope, $scope, validators, contentApi, dynamicPropertiesApi, bladeNavigationService, dialogService, dictionaryItemsApi, settings) {
     var blade = $scope.blade;
@@ -118,7 +118,7 @@
 
                         // overwrite the name for now
                         fileName = $scope.blade.currentEntity.name;
-                        window.open(blade.designerUrl + '?file=' + fileName + '&user=' + userName + '&locale=' + locale, '_blank');
+                        window.open(blade.designerUrl + '?path=' + fileName + '&storeId=' + blade.storeId, '_blank');
                     }
                     else {
                         var dialog = {
