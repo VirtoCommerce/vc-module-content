@@ -66,6 +66,7 @@ angular.module('virtoCommerce.contentModule')
             }
         }
 
+        $scope.blade.currentEntity.name = originFileName;
         $scope.blade.currentEntity.content = JSON.stringify($scope.blade.currentEntity.blocks);
         var content = $scope.blade.currentEntity.content;
 
@@ -85,7 +86,7 @@ angular.module('virtoCommerce.contentModule')
                 }
 
                 blade.parentBlade.refresh();
-                window.open(blade.designerUrl + '?file=' + fileName + '&user=' + userName, '_blank');
+                runDesigner(fileName);
             }, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
     };
 
@@ -106,28 +107,42 @@ angular.module('virtoCommerce.contentModule')
                 permission: blade.updatePermission
             },
             {
-                name: "content.commands.open-designer", icon: 'fa fa-crop',
+                name: "content.commands.preview-page", icon: 'fa fa-eye',
                 executeMethod: function () {
-                    if (blade.designerUrl) {
+                    if (blade.storeUrl) {
                         var fileNameArray = blade.currentEntity.relativeUrl.split('.');
                         var fileName = _.first(fileNameArray);
                         var locale = '';
                         if (_.size(fileNameArray) > 2)
-                            locale = fileNameArray[1];
-                        var contentType = blade.contentType;
+                            locale = '/' + fileNameArray[1];
+                        var contentType = '/' + blade.contentType;
 
-                        // overwrite the name for now
-                        fileName = $scope.blade.currentEntity.name;
-                        window.open(blade.designerUrl + '?path=' + fileName + '&storeId=' + blade.storeId, '_blank');
+                        window.open(blade.storeUrl + locale + contentType + fileName, '_blank');
                     }
                     else {
                         var dialog = {
                             id: "noUrlInStore",
-                            title: "content.dialogs.set-designer-url.title",
-                            message: "content.dialogs.set-designer-url.message"
+                            title: "content.dialogs.set-store-url.title",
+                            message: "content.dialogs.set-store-url.message"
                         }
                         dialogService.showNotificationDialog(dialog);
                     }
+                },
+                canExecuteMethod: function () { return true; }
+            },
+            {
+                name: "content.commands.open-designer", icon: 'fa fa-crop',
+                executeMethod: function () {
+                    var fileNameArray = blade.currentEntity.relativeUrl.split('.');
+                    var fileName = _.first(fileNameArray);
+                    var locale = '';
+                    if (_.size(fileNameArray) > 2)
+                        locale = fileNameArray[1];
+                    var contentType = blade.contentType;
+
+                    // overwrite the name for now
+                    fileName = $scope.blade.currentEntity.name;
+                    runDesigner(fileName);
                 },
                 canExecuteMethod: function () { return true; }
             }
@@ -142,6 +157,19 @@ angular.module('virtoCommerce.contentModule')
 
     function canSave() {
         return isDirty() && formScope && formScope.$valid;
+    }
+
+    function runDesigner(fileName) {
+        if (blade.designerUrl) {
+            window.open(blade.designerUrl + '?path=' + fileName + '&storeId=' + blade.storeId + '&contentType=' + blade.contentType, '_blank');
+        } else {
+            var dialog = {
+                id: "noUrlInStore",
+                title: "content.dialogs.set-designer-url.title",
+                message: "content.dialogs.set-designer-url.message"
+            };
+            dialogService.showNotificationDialog(dialog);
+        }
     }
 
     blade.onClose = function (closeCallback) {

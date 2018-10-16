@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.pagesListController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', function ($rootScope, $scope, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
 	var blade = $scope.blade;
 	blade.updatePermission = 'content:update';
@@ -144,6 +144,7 @@
             id: 'jsonDetail',
             contentType: blade.contentType,
             storeId: blade.storeId,
+            storeUrl: blade.storeUrl,
             currentEntity: listItem,
             isNew: isNew,
             title: listItem.name,
