@@ -233,7 +233,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Controllers\Api\CmsPagesController.cs" />
     <Compile Include="Controllers\Api\ContentBaseController.cs" />
     <Compile Include="Controllers\Api\MenuController.cs" />
     <Compile Include="Controllers\Api\ContentController.cs" />
