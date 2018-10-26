@@ -35,13 +35,9 @@ angular.module('virtoCommerce.contentModule')
                 blade.isLoading = false;
                 blade.currentEntity.content = JSON.parse(data.data);
 
-                console.log(blade.currentEntity.content);
-            
                 $scope.blade.currentEntity.blocks = blade.currentEntity.content;
                 $scope.blade.currentEntity.settings = $scope.blade.currentEntity.blocks[0];
                 $scope.blade.currentEntity.content = JSON.stringify($scope.blade.currentEntity.blocks);
-
-                console.log($scope.blade.currentEntity.blocks);
 
                 blade.origEntity = angular.copy(blade.currentEntity);
             },
@@ -116,8 +112,8 @@ angular.module('virtoCommerce.contentModule')
                         if (_.size(fileNameArray) > 2)
                             locale = '/' + fileNameArray[1];
                         var contentType = '/' + blade.contentType;
-
-                        window.open(blade.storeUrl + locale + contentType + fileName, '_blank');
+                        var page = '/' + blade.currentEntity.settings.permalink || fileName;
+                        window.open(blade.storeUrl + locale + contentType + page, '_blank');
                     }
                     else {
                         var dialog = {

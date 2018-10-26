@@ -90,8 +90,6 @@ angular.module('virtoCommerce.contentModule')
 	};
 
     function openDetailsBlade(listItem, isNew) {
-        console.log(listItem);
-
 	    if (isNew || listItem.isOpenable) {
 			var newBlade = {
 				id: 'pageDetail',
