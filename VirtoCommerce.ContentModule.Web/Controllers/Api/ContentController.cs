@@ -104,7 +104,6 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("")]
         [ResponseType(typeof(byte[]))]
         [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
-        [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*", SupportsCredentials = true)]
         public HttpResponseMessage GetContentItemDataStream(string contentType, string storeId, string relativeUrl)
         {
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
@@ -248,7 +247,6 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("")]
         [ResponseType(typeof(ContentItem[]))]
         [CheckPermission(Permission = ContentPredefinedPermissions.Create)]
-        [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*", SupportsCredentials = true)]
         public async Task<IHttpActionResult> UploadContent(string contentType, string storeId, [FromUri] string folderUrl, [FromUri]string url = null)
         {
             if (url == null && !Request.Content.IsMimeMultipartContent())
