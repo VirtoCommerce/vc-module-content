@@ -63,8 +63,7 @@ angular.module('virtoCommerce.contentModule')
         }
 
         $scope.blade.currentEntity.name = originFileName;
-        $scope.blade.currentEntity.content = JSON.stringify($scope.blade.currentEntity.blocks);
-        var content = $scope.blade.currentEntity.content;
+        $scope.blade.currentEntity.content = JSON.stringify($scope.blade.currentEntity.blocks, null, 4);
 
         blade.isLoading = true;
 
@@ -72,7 +71,7 @@ angular.module('virtoCommerce.contentModule')
             contentType: blade.contentType,
             storeId: blade.storeId,
             folderUrl: blade.folderUrl || ''
-        }, blade.currentEntity,
+        }, $scope.blade.currentEntity,
             function () {
                 blade.isLoading = false;
                 blade.origEntity = angular.copy(blade.currentEntity);
@@ -82,7 +81,9 @@ angular.module('virtoCommerce.contentModule')
                 }
 
                 blade.parentBlade.refresh();
-                runDesigner(fileName);
+                if (blade.isNew) {
+                    runDesigner(fileName);
+                }
             }, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
     };
 
@@ -112,7 +113,10 @@ angular.module('virtoCommerce.contentModule')
                         if (_.size(fileNameArray) > 2)
                             locale = '/' + fileNameArray[1];
                         var contentType = '/' + blade.contentType;
-                        var page = '/' + blade.currentEntity.settings.permalink || fileName;
+                        var permalink = blade.currentEntity.settings.permalink;
+                        var page = '/' + (permalink && permalink.length
+                            ? permalink.replace(/^\/+|\/+$/g, '')
+                            : fileName.replace(/^\/+|\/+$/g, ''));
                         window.open(blade.storeUrl + locale + contentType + page, '_blank');
                     }
                     else {
@@ -174,6 +178,12 @@ angular.module('virtoCommerce.contentModule')
 
     var formScope;
     $scope.setForm = function (form) { $scope.formScope = formScope = form; };
+
+    var getDictionaryValuesCallback;
+    $scope.getDictionaryValues = function (property, callback) {
+        getDictionaryValuesCallback = callback;
+        dictionaryItemsApi.query({ id: property.objectType, propertyId: property.id }, callback);
+    };
 
     $scope.languages = settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' });
 

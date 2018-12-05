@@ -1,4 +1,4 @@
-﻿<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>
+<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>
 <div class="blade-content">
     <div class="blade-inner">
         <div class="inner-block">
@@ -12,14 +12,30 @@
                         <span ng-show="formScope.pageName.$error.validator">{{ 'content.blades.edit-page.validations.pageName-invalid' | translate }}</span>
                     </div>
                 </div>
-                <!--
-    <div class="sub-t">{{'content.blades.edit-json.labels.json' | translate }}</div>
-    <div class="form-input">
-        <div class="form-input">
-            <textarea focus-on="" required class="form-control" ng-model="blade.currentEntity.content" placeholder="{{ 'content.blades.edit-json.placeholders.json-content' | translate }}" name="content"></textarea>	                    <textarea focus-on="" readonly required class="form-control" ng-model="blade.currentEntity.content" placeholder="{{ 'content.blades.edit-json.placeholders.json-content' | translate }}" name="content"></textarea>
-        </div>
-    </div>
-        -->
+                <div class="form-group">
+                    <label class="form-label">Page header</label>
+                    <div class="form-input">
+                        <input focus-on="" class="form-control" ng-model="blade.currentEntity.settings.header" placeholder="Page header" name="header" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Permalink</label>
+                    <div class="form-input">
+                        <input focus-on="" class="form-control" ng-model="blade.currentEntity.settings.permalink" placeholder="Permalink" name="permalink" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Page meta title</label>
+                    <div class="form-input">
+                        <input focus-on="" class="form-control" ng-model="blade.currentEntity.settings.title" placeholder="Page meta title" name="title" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Page meta description</label>
+                    <div class="form-input">
+                        <textarea focus-on="" class="form-control" ng-model="blade.currentEntity.settings.description" placeholder="Page meta description" name="description"></textarea>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
