@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VirtoCommerce.ContentModule.Utils;
 using Xunit;
 
@@ -19,7 +17,7 @@ namespace VirtoCommerce.ContentModule.Tests
             {
                 FilePath = @"/temp/foobar_baz.md",
             };
-        
+
             var url = fmPermalink.ToUrl();
             Assert.Equal("temp/foobar_baz", url);
         }
@@ -64,7 +62,7 @@ namespace VirtoCommerce.ContentModule.Tests
         [InlineData("/:dashcategories/:year/:month/:day/:title.html", "/2015/03/09/foobar-baz.html", "")]
         [InlineData("pretty", "temp/cat1/cat2/2015/03/09/foobar-baz/", "cat1,cat2")]
         [InlineData("ordinal", "temp/cat1/cat2/2015/068/foobar-baz", "cat1,cat2")]
-        [InlineData("none", "temp/cat1/cat2/foobar-baz", "cat1,cat2")]
+        [InlineData("default", "temp/cat1/cat2/foobar-baz", "cat1,cat2")]
         [InlineData("/:categories/:short_year/:i_month/:i_day/:title.html", "/cat1/cat2/15/3/9/foobar-baz.html", "cat1,cat2")]
         [InlineData("/:category/:title.html", "/cat1/foobar-baz.html", "cat1,cat2")]
         [InlineData("/:category/:title.html", "/foobar-baz.html", "")]
