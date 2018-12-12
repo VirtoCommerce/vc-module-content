@@ -186,7 +186,12 @@ angular.module('virtoCommerce.contentModule')
     };
 
     $scope.languages = settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' });
-
+    // todo: read from blocks schema json
+    $scope.options = [
+        { label: "Theme", value: "theme" },
+        { label: "Empty", value: "empty" },
+        { label: "Custom", value: "custom" }
+    ];
     blade.headIcon = 'fa-inbox';
 
     blade.initialize();
