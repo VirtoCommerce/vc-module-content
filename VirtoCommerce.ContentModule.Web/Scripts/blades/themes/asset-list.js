@@ -1,6 +1,8 @@
 ﻿angular.module('platformWebApp')
-.controller('virtoCommerce.contentModule.assetListController', ['$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils',
-    function ($scope, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
+    .controller('virtoCommerce.contentModule.assetListController',
+    ['$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService',
+     'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils',
+     function ($scope, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
         var blade = $scope.blade;
 
         blade.refresh = function () {
@@ -249,7 +251,6 @@
                     breadcrumb.blade.searchKeyword = null;
                     breadcrumb.blade.disableOpenAnimation = true;
                     bladeNavigationService.showBlade(breadcrumb.blade, breadcrumb.blade.parentBlade);
-                    // breadcrumb.blade.refresh();
                 }
             }
         }

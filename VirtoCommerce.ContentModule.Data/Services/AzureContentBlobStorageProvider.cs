@@ -13,22 +13,22 @@ namespace VirtoCommerce.ContentModule.Data.Services
         public AzureContentBlobStorageProvider(string connectionString, string chrootPath)
             : base(connectionString)
         {
-			if (chrootPath == null)
-				throw new ArgumentNullException(nameof(chrootPath));
+            if (chrootPath == null)
+                throw new ArgumentNullException(nameof(chrootPath));
 
-			chrootPath = chrootPath.Replace('/', '\\');
+            chrootPath = chrootPath.Replace('/', '\\');
             _chrootPath = "\\" + chrootPath.TrimStart('\\');
         }
 
         #region IContentStorageProvider Members
-        public void MoveContent(string oldUrl, string newUrl)
+        public void MoveContent(string srcUrl, string destUrl)
         {
-           base.Move(oldUrl, newUrl);
+            base.Move(srcUrl, destUrl);
         }
 
-        public void CopyContent(string fromUrl, string toUrl)
+        public void CopyContent(string srcUrl, string destUrl)
         {
-            base.Copy(fromUrl, toUrl);
+            base.Copy(srcUrl, destUrl);
         }
         #endregion
         public override Stream OpenRead(string url)
@@ -38,10 +38,10 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         public override void CreateFolder(BlobFolder folder)
         {
-			if (folder == null)
-				throw new ArgumentNullException(nameof(folder));
+            if (folder == null)
+                throw new ArgumentNullException(nameof(folder));
 
-			if (folder.ParentUrl.IsNullOrEmpty())
+            if (folder.ParentUrl.IsNullOrEmpty())
             {
                 folder.Name = NormalizeUrl(folder.Name);
             }
