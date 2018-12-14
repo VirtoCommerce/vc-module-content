@@ -17,7 +17,7 @@
                 _.each(data, function (x) {
                     x.isImage = x.mimeType && x.mimeType.startsWith('image/');
                     if (x.isImage){
-                        x.noCacheUrl = x.url + (x.url.indexOf('?') > -1 ? '&t=' : '?t=') + x.modifiedDate;
+                        x.noCacheUrl = x.url;
                     }
                     x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
                 });
