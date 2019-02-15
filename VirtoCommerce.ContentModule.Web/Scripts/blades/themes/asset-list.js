@@ -16,6 +16,9 @@
                 $scope.pageSettings.totalItems = data.length;
                 _.each(data, function (x) {
                     x.isImage = x.mimeType && x.mimeType.startsWith('image/');
+                    if (x.isImage){
+                        x.noCacheUrl = x.url;
+                    }
                     x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
                 });
                 $scope.listEntries = data;
@@ -51,7 +54,7 @@
 
             var isFolder = /\/$/.test(listItem.url);
             var result = prompt("Enter new name", listItem.name);
-            // if rename folder, then ulr name ends '/' 
+            // if rename folder, then ulr name ends '/'
             var substrNameLenght = isFolder ? listItem.name.length + 1 : listItem.name.length;
 
             if (result) {
