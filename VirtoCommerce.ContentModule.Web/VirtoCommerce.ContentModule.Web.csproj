@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="gulpfile.js" />
+    <Content Include="Content\css\content.css" />
     <Content Include="Content\logo.png" />
     <Content Include="module.manifest">
       <SubType>Designer</SubType>

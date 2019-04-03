@@ -1,0 +1,8 @@
+.blade-content-height {
+    height: calc(100% - 220px) !Important;
+}
+
+.blade-static-top {
+    height: 150px !Important;
+    padding: 0 17px;
+}
