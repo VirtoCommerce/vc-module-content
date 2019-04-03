@@ -1,35 +1,37 @@
-﻿<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>
+<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>
+<div class="blade-static __top">
+    <form name="formScope">
+        <div class="clearfix">
+            <div class="column">
+                <div class="form-group">
+                    <label class="form-label">{{ 'content.blades.menu-link-list.labels.name' | translate }}</label>
+                    <div class="form-input">
+                        <input focus-on="" required class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.menu-link-list.placeholders.name' | translate }}" />
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="form-group">
+                    <label class="form-label">{{ 'content.blades.menu-link-list.labels.language' | translate }}</label>
+                    <div class="form-input">
+                        <ui-select ng-model="blade.currentEntity.language">
+                            <ui-select-match allow-clear placeholder="{{ 'content.blades.menu-link-list.placeholders.language' | translate }}">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="x in blade.languages">
+                                <span class="flag flag-{{x.substr(3).toLowerCase()}}"></span>
+                                <span ng-bind-html="x"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="note">{{'content.blades.menu-link-list.labels.list-note' | translate}}</p>
+    </form>
+</div>
 <div class="blade-content __large-wide">
     <div class="blade-inner">
         <div class="inner-block">
-            <form name="formScope">
-                <div class="clearfix">
-                    <div class="column">
-                        <div class="form-group">
-                            <label class="form-label">{{ 'content.blades.menu-link-list.labels.name' | translate }}</label>
-                            <div class="form-input">
-                                <input focus-on="" required class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.menu-link-list.placeholders.name' | translate }}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="form-group">
-                            <label class="form-label">{{ 'content.blades.menu-link-list.labels.language' | translate }}</label>
-                            <div class="form-input">
-                                <ui-select ng-model="blade.currentEntity.language">
-                                    <ui-select-match allow-clear placeholder="{{ 'content.blades.menu-link-list.placeholders.language' | translate }}">{{$select.selected}}</ui-select-match>
-                                    <ui-select-choices repeat="x in blade.languages">
-                                        <span class="flag flag-{{x.substr(3).toLowerCase()}}"></span>
-                                        <span ng-bind-html="x"></span>
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p class="note">{{'content.blades.menu-link-list.labels.list-note' | translate}}</p>
-
-                <div class="table-wrapper" ng-if="blade.currentEntity.menuLinks.length" ng-init="setGridOptions({
+            <div class="table-wrapper" ng-if="blade.currentEntity.menuLinks.length" ng-init="setGridOptions({
                     data: 'blade.currentEntity.menuLinks',
                     rowTemplate: 'list.row.html',
                     rowHeight: 55,
@@ -42,14 +44,13 @@
                         { name: 'associatedObjectType', displayName: 'content.blades.menu-link-list.labels.links-to', cellTemplate: 'associatedObjectType.cell.html'},
                         { name: 'associatedObjectName', displayName: 'content.blades.menu-link-list.labels.linked-object', cellTemplate: 'associatedObjectName.cell.html'}
                     ]})">
-                    <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-draggable-rows ui-grid-height></div>
-                    <ul class="menu __context" role="menu" id="mll_menu">
-                        <li class="menu-item" ng-click='deleteRows([contextMenuEntity])'>
-                            <i class="menu-ico fa fa-trash-o"></i> {{'platform.commands.delete' | translate}}
-                        </li>
-                    </ul>
-                </div>
-            </form>
+                <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-draggable-rows ui-grid-height></div>
+                <ul class="menu __context" role="menu" id="mll_menu">
+                    <li class="menu-item" ng-click='deleteRows([contextMenuEntity])'>
+                        <i class="menu-ico fa fa-trash-o"></i> {{'platform.commands.delete' | translate}}
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
