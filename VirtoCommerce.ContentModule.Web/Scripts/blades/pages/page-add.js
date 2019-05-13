@@ -48,3 +48,6 @@ angular.module('virtoCommerce.contentModule')
 
         $scope.blade.isLoading = false;
     }]);
+
+    $scope.blade.isLoading = false;
+}]);

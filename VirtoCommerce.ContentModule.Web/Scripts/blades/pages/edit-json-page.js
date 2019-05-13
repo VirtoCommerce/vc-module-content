@@ -191,3 +191,9 @@ angular.module('virtoCommerce.contentModule')
 
             blade.initialize();
         }]);
+
+    $scope.options = [
+        { label: "Theme", value: "theme" },
+        { label: "Empty", value: "empty" },
+        { label: "Custom", value: "custom" }
+    ];
