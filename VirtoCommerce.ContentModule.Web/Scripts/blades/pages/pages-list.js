@@ -144,6 +144,7 @@ angular.module('virtoCommerce.contentModule')
                 storeId: blade.storeId,
                 storeUrl: blade.storeUrl,
                 currentEntity: listItem,
+                folderUrl: blade.currentEntity.url,
                 isNew: isNew,
                 title: listItem.name,
                 subtitle: 'content.blades.edit-page.subtitle',

@@ -136,7 +136,7 @@ angular.module('virtoCommerce.contentModule')
         );
 
         function getBlogBlobName() {
-            return blade.currentEntity.name + '/' + blade.currentEntity.name + '.md'
+            return blade.currentEntity.name + '/' + blade.currentEntity.name + '.md';
         }
         function isDirty() {
             return !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();

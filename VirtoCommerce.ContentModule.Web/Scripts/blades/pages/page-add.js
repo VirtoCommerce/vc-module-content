@@ -5,6 +5,7 @@ angular.module('virtoCommerce.contentModule')
                 id: 'jsonPageDetail',
                 contentType: $scope.blade.parentBlade.contentType,
                 storeId: $scope.blade.parentBlade.storeId,
+                folderUrl: $scope.blade.parentBlade.currentEntity.url,
                 currentEntity: {},
                 isNew: true,
                 title: 'content.blades.edit-page.title-new',

@@ -63,6 +63,7 @@ angular.module('virtoCommerce.contentModule')
                 }
 
                 $scope.blade.currentEntity.name = originFileName;
+                $scope.blade.currentEntity.relativeUrl = $scope.blade.parentBlade.currentEntity.relativeUrl + '/' + originFileName;
                 $scope.blade.currentEntity.content = JSON.stringify($scope.blade.currentEntity.blocks, null, 4);
 
                 blade.isLoading = true;
