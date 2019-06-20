@@ -63,7 +63,7 @@ angular.module('virtoCommerce.contentModule')
                 }
 
                 $scope.blade.currentEntity.name = originFileName;
-                $scope.blade.currentEntity.relativeUrl = $scope.blade.parentBlade.currentEntity.relativeUrl + '/' + originFileName;
+                $scope.blade.currentEntity.relativeUrl = ($scope.blade.parentBlade.currentEntity.relativeUrl || '') + '/' + originFileName;
                 $scope.blade.currentEntity.content = JSON.stringify($scope.blade.currentEntity.blocks, null, 4);
 
                 blade.isLoading = true;
@@ -108,17 +108,18 @@ angular.module('virtoCommerce.contentModule')
                         name: "content.commands.preview-page", icon: 'fa fa-eye',
                         executeMethod: function () {
                             if (blade.storeUrl) {
-                                var fileNameArray = blade.currentEntity.relativeUrl.split('.');
-                                var fileName = _.first(fileNameArray);
-                                var locale = '';
-                                if (_.size(fileNameArray) > 2)
-                                    locale = '/' + fileNameArray[1];
-                                var contentType = '/' + blade.contentType;
-                                var permalink = blade.currentEntity.settings.permalink;
-                                var page = '/' + (permalink && permalink.length
-                                    ? permalink.replace(/^\/+|\/+$/g, '')
-                                    : fileName.replace(/^\/+|\/+$/g, ''));
-                                window.open(blade.storeUrl + locale + contentType + page, '_blank');
+                                //var fileNameArray = blade.currentEntity.relativeUrl.split('.');
+                                //var fileName = _.first(fileNameArray);
+                                //var locale = '';
+                                //if (_.size(fileNameArray) > 2)
+                                //    locale = '/' + fileNameArray[1];
+                                //var contentType = '/' + blade.contentType;
+                                //var permalink = blade.currentEntity.settings.permalink;
+                                //var page = '/' + (permalink && permalink.length
+                                //    ? permalink.replace(/^\/+|\/+$/g, '')
+                                //    : fileName.replace(/^\/+|\/+$/g, ''));
+                                var path = generatePath();
+                                window.open(blade.storeUrl + path, '_blank');
                             }
                             else {
                                 var dialog = {
@@ -134,15 +135,15 @@ angular.module('virtoCommerce.contentModule')
                     {
                         name: "content.commands.open-designer", icon: 'fa fa-crop',
                         executeMethod: function () {
-                            var fileNameArray = blade.currentEntity.relativeUrl.split('.');
-                            var fileName = _.first(fileNameArray);
-                            var locale = '';
-                            if (_.size(fileNameArray) > 2)
-                                locale = fileNameArray[1];
-                            var contentType = blade.contentType;
+                            //var fileNameArray = blade.currentEntity.relativeUrl.split('.');
+                            //var fileName = _.first(fileNameArray);
+                            //var locale = '';
+                            //if (_.size(fileNameArray) > 2)
+                            //    locale = fileNameArray[1];
+                            //var contentType = blade.contentType;
 
-                            // overwrite the name for now
-                            fileName = $scope.blade.currentEntity.name;
+                            //// overwrite the name for now
+                            //fileName = $scope.blade.currentEntity.name;
                             runDesigner();
                         },
                         canExecuteMethod: function () { return true; }
@@ -160,9 +161,17 @@ angular.module('virtoCommerce.contentModule')
                 return isDirty() && formScope && formScope.$valid;
             }
 
+            function generatePath() {
+                // need to return path relative to the root folder
+                return blade.currentEntity.settings.permalink
+                    ? '/pages/' + blade.currentEntity.settings.permalink
+                    : blade.currentEntity.relativeUrl;
+            }
+
             function runDesigner() {
                 if (blade.designerUrl) {
-                    window.open(blade.designerUrl + '?path=' + blade.currentEntity.relativeUrl + '&storeId=' + blade.storeId + '&contentType=' + blade.contentType, '_blank');
+                    var path = blade.currentEntity.relativeUrl;
+                    window.open(blade.designerUrl + '?path=' + path + '&storeId=' + blade.storeId + '&contentType=' + blade.contentType, '_blank');
                 } else {
                     var dialog = {
                         id: "noUrlInStore",
@@ -191,7 +200,7 @@ angular.module('virtoCommerce.contentModule')
             $scope.options = [
                 { label: "Theme", value: "theme" },
                 { label: "Empty", value: "empty" },
-                { label: "Custom", value: "custom" }
+                { label: "Glossary", value: "glossary" }
             ];
 
             blade.headIcon = 'fa-inbox';
