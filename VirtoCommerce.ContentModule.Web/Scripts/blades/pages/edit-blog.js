@@ -45,26 +45,31 @@
     $scope.saveChanges = function () {
         blade.isLoading = true;
 
-        contentApi.saveWithMetadata({
-            contentType: blade.contentType,
-            storeId: blade.storeId,
-            folderUrl: ''
-        }, {
-            dynamicProperties: blade.currentEntity.dynamicProperties,
-            content: '',
-            name: getBlogBlobName()
-        },
-        function (data) {
-            blade.isLoading = false;
-            blade.origEntity = angular.copy(blade.currentEntity);
-            if (blade.isNew) {
-                $scope.bladeClose();
-                $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
-            }
+        contentApi.createFolder(
+            { contentType: blade.contentType, storeId: blade.storeId },
+            { name: blade.currentEntity.name, parentUrl: blade.currentEntity.url },
+            contentApi.saveWithMetadata({
+                    contentType: blade.contentType,
+                    storeId: blade.storeId,
+                    folderUrl: blade.currentEntity.name
+                }, {
+                    dynamicProperties: blade.currentEntity.dynamicProperties,
+                    content: '',
+                    name: getBlogBlobName()
+                },
+                function (data) {
+                    blade.isLoading = false;
+                    blade.origEntity = angular.copy(blade.currentEntity);
+                    if (blade.isNew) {
+                        $scope.bladeClose();
+                        $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
+                    }
 
-            blade.parentBlade.refresh();
-        },
-        function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); blade.isLoading = false; });
+                    blade.parentBlade.refresh();
+                },
+                function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); blade.isLoading = false; }),
+            function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+
     };
 
     blade.deleteBlog = function () {
