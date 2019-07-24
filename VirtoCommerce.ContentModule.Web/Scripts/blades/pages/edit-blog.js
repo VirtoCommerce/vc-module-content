@@ -42,34 +42,48 @@
         blade.currentEntity.dynamicProperties = props;
     }
 
+    $scope.saveWithMetadata = function() {
+
+        contentApi.saveWithMetadata({
+                contentType: blade.contentType,
+                storeId: blade.storeId,
+                folderUrl: blade.currentEntity.name
+            },
+            {
+                dynamicProperties: blade.currentEntity.dynamicProperties,
+                content: '',
+                name: getBlogBlobName()
+            },
+            function (data) {
+                blade.isLoading = false;
+                blade.origEntity = angular.copy(blade.currentEntity);
+                if (blade.isNew) {
+                    $scope.bladeClose();
+                    $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
+                }
+
+                blade.parentBlade.refresh();
+            },
+            function (error) {
+                bladeNavigationService.setError('Error ' + error.status, $scope.blade);
+                blade.isLoading = false;
+            });
+    };
+
     $scope.saveChanges = function () {
         blade.isLoading = true;
 
-        contentApi.createFolder(
-            { contentType: blade.contentType, storeId: blade.storeId },
-            { name: blade.currentEntity.name, parentUrl: blade.currentEntity.url },
-            contentApi.saveWithMetadata({
-                    contentType: blade.contentType,
-                    storeId: blade.storeId,
-                    folderUrl: blade.currentEntity.name
-                }, {
-                    dynamicProperties: blade.currentEntity.dynamicProperties,
-                    content: '',
-                    name: getBlogBlobName()
-                },
-                function (data) {
-                    blade.isLoading = false;
-                    blade.origEntity = angular.copy(blade.currentEntity);
-                    if (blade.isNew) {
-                        $scope.bladeClose();
-                        $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
-                    }
-
-                    blade.parentBlade.refresh();
-                },
-                function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); blade.isLoading = false; }),
-            function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-
+        var parentUrl = blade.currentEntity.url;
+        var folderName = blade.currentEntity.name;
+        if (!parentUrl) {
+            contentApi.createFolder(
+                { contentType: blade.contentType, storeId: blade.storeId },
+                { name: folderName, parentUrl: parentUrl },
+                $scope.saveWithMetadata(),
+                function(error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+        } else {
+            $scope.saveWithMetadata();
+        }
     };
 
     blade.deleteBlog = function () {
