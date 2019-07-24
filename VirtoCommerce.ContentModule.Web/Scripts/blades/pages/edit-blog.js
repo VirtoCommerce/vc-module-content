@@ -79,8 +79,8 @@
             contentApi.createFolder(
                 { contentType: blade.contentType, storeId: blade.storeId },
                 { name: folderName, parentUrl: parentUrl },
-                $scope.saveWithMetadata(),
-                function(error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                $scope.saveWithMetadata
+            );
         } else {
             $scope.saveWithMetadata();
         }
