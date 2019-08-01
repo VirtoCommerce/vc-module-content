@@ -155,6 +155,7 @@
     <Content Include="Localizations\de.VirtoCommerce.Content.json" />
     <None Include=".bowerrc" />
     <None Include="bower.json" />
+    <Content Include="Localizations\ru.VirtoCommerce.Content.json" />
     <None Include="module.ignore" />
     <None Include="package.json" />
     <None Include="app.config">
