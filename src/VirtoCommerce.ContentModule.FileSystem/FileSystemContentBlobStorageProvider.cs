@@ -10,6 +10,5 @@ namespace VirtoCommerce.ContentModule.FileSystem
             : base(options)
         {
         }
-
     }
 }

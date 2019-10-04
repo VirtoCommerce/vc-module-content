@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
@@ -41,7 +39,6 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
             contentFile.ModifiedDate = blobInfo.ModifiedDate;
             contentFile.Type = blobInfo.Type;
             contentFile.MimeType = blobInfo.ContentType;
-
 
             return contentFile;
         }

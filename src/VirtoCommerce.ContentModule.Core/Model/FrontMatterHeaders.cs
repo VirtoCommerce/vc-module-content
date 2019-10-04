@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
@@ -141,7 +140,6 @@ namespace VirtoCommerce.ContentModule.Core.Model
             CreatedBy = "Auto"
         };
 
-
         public static DynamicProperty dateHeader = new DynamicProperty
         {
             Id = "date_FrontMatterHeader",
@@ -202,9 +200,7 @@ namespace VirtoCommerce.ContentModule.Core.Model
         public virtual object Clone()
         {
             var result = MemberwiseClone() as FrontMatterHeaders;
-
             result.DynamicProperties = DynamicProperties?.Select(x => x.Clone()).OfType<DynamicObjectProperty>().ToList();
-
             return result;
         }
 

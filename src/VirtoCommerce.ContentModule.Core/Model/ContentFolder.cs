@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
 
@@ -14,20 +11,15 @@ namespace VirtoCommerce.ContentModule.Core.Model
         public ContentFolder()
             : base("folder")
         {
-
         }
 
-        public ContentFolder ToContentModel (BlobFolder blobFolder)
+        public ContentFolder ToContentModel(BlobFolder blobFolder)
         {
             var result = AbstractTypeFactory<ContentFolder>.TryCreateInstance();
-
-
-
             return result;
-
         }
 
-        public BlobFolder ToBlobModel( BlobFolder blobFolder)
+        public BlobFolder ToBlobModel(BlobFolder blobFolder)
         {
             blobFolder.Name = Name;
             blobFolder.Url = Url;

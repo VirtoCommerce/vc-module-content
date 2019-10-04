@@ -7,10 +7,12 @@ namespace VirtoCommerce.ContentModule.FileSystem
     public class FileSystemContentBlobStorageProviderFactory : IBlobContentStorageProviderFactory
     {
         private readonly FileSystemContentBlobOptions _options;
+
         public FileSystemContentBlobStorageProviderFactory(IOptions<FileSystemContentBlobOptions> options)
         {
             _options = options.Value;
         }
+
         public IBlobContentStorageProvider CreateProvider(string basePath)
         {
             var clonedOptions = _options.Clone() as FileSystemContentBlobOptions;

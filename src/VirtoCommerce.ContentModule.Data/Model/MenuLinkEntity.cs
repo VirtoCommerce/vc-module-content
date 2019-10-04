@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;

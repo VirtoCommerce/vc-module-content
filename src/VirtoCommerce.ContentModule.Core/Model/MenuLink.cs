@@ -5,7 +5,6 @@ namespace VirtoCommerce.ContentModule.Core.Model
 {
     public class MenuLink : AuditableEntity, IHasOuterId, ICloneable
     {
-
         /// <summary>
         /// Title of menu link element, displayed as link text or link title
         /// </summary>
@@ -15,7 +14,6 @@ namespace VirtoCommerce.ContentModule.Core.Model
         /// Url of menu link element, inserts in href attribute of link
         /// </summary>
         public string Url { get; set; }
-
 
         /// <summary>
         /// Priority of menu link element, the higher the value, the higher in the list

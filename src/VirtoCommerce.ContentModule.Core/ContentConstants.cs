@@ -12,8 +12,7 @@ namespace VirtoCommerce.ContentModule.Core
                     Delete = "content:delete",
                     Update = "content:update";
 
-                public static string[] AllPermissions = new[] { Read, Access, Create, Delete, Update };
-
+                public static string[] AllPermissions = { Read, Access, Create, Delete, Update };
             }
         }
     }

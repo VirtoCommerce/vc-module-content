@@ -14,6 +14,7 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
         public ICollection<ContentFolder> Folders { get; set; }
         public ICollection<ContentFile> Files { get; set; }
     }
+
     public class ContentFile
     {
         public string Url { get; set; }

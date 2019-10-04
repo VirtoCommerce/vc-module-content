@@ -77,7 +77,6 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             return Ok(retVal);
         }
 
-
         /// <summary>
         /// Delete content from server
         /// </summary>
@@ -237,7 +236,6 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             return NoContent();
         }
 
-
         /// <summary>
         /// Upload content item 
         /// </summary>
@@ -311,7 +309,6 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
             return Ok(retVal.ToArray());
         }
-
 
         private string GetContentBasePath(string contentType, string storeId)
         {

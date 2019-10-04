@@ -24,7 +24,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// Get menu link lists
         /// </summary>
         /// <param name="storeId">Store id</param>
-		[HttpGet]
+        [HttpGet]
         [Route("menu")]
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<MenuLinkList[]>> GetListsAsync([FromRoute]string storeId)
@@ -107,6 +107,5 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
             return NoContent();
         }
-
     }
 }

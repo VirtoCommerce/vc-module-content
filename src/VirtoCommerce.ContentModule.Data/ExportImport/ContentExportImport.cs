@@ -76,7 +76,7 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
                         {
                             Url = blobFolder.RelativeUrl
                         };
-                        await ReadContentFoldersRecuriveAsync(contentFolder, progressCallback);
+                        await ReadContentFoldersRecursiveAsync(contentFolder, progressCallback);
 
                         _jsonSerializer.Serialize(writer, contentFolder);
                     }
@@ -172,7 +172,7 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
             }
         }
 
-        private async Task ReadContentFoldersRecuriveAsync(ContentFolder folder, Action<ExportImportProgressInfo> progressCallback)
+        private async Task ReadContentFoldersRecursiveAsync(ContentFolder folder, Action<ExportImportProgressInfo> progressCallback)
         {
             var result = await _blobContentStorageProvider.SearchAsync(folder.Url, null);
 
@@ -183,7 +183,7 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
                     Url = blobFolder.RelativeUrl
                 };
 
-                await ReadContentFoldersRecuriveAsync(contentFolder, progressCallback);
+                await ReadContentFoldersRecursiveAsync(contentFolder, progressCallback);
                 folder.Folders.Add(contentFolder);
             }
 
