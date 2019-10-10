@@ -6,11 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="GitVersionTask" Version="5.0.2-beta1.58">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="VirtoCommerce.Platform.Assets.FileSystem" Version="3.0.0-beta0001" />
+      <PackageReference Include="VirtoCommerce.Platform.Assets.FileSystem" Version="3.0.0-rc0001" />
     </ItemGroup>
 
     <ItemGroup>
