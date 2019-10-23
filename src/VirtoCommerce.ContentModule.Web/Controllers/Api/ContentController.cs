@@ -154,7 +154,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("move")]
         [Authorize(Permissions.Update)]
-        public ActionResult MoveContent(string contentType, string storeId, string oldUrl, string newUrl)
+        public ActionResult MoveContent(string contentType, string storeId, [FromQuery] string oldUrl, [FromQuery] string newUrl)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
 
@@ -171,7 +171,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("~/api/content/copy")]
         [Authorize(Permissions.Update)]
-        public ActionResult CopyContent(string srcPath, string destPath)
+        public ActionResult CopyContent([FromQuery] string srcPath, [FromQuery] string destPath)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(string.Empty);
 
@@ -191,7 +191,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("unpack")]
         [Authorize(Permissions.Update)]
-        public async Task<ActionResult> UnpackAsync(string contentType, string storeId, string archivePath, string destPath)
+        public async Task<ActionResult> UnpackAsync(string contentType, string storeId, [FromQuery] string archivePath, [FromQuery] string destPath)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
 
