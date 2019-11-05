@@ -36,7 +36,7 @@ namespace VirtoCommerce.ContentModule.Web
         {
             var snapshot = serviceCollection.BuildServiceProvider();
             var configuration = snapshot.GetService<IConfiguration>();
-            var hostingEnvironment = snapshot.GetService<IHostingEnvironment>();
+            var hostingEnvironment = snapshot.GetService<IWebHostEnvironment>();
 
             serviceCollection.AddDbContext<MenuDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("VirtoCommerce")));
             serviceCollection.AddTransient<IMenuRepository, MenuRepository>();
@@ -72,7 +72,7 @@ namespace VirtoCommerce.ContentModule.Web
             //Register module permissions
             var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsProvider.RegisterPermissions(ContentConstants.Security.Permissions.AllPermissions.Select(x =>
-                new Permission()
+                new Permission
                 {
                     GroupName = "Content",
                     ModuleId = ModuleInfo.Id,
