@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
@@ -14,6 +14,7 @@ using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.ContentModule.Web.Converters;
 using VirtoCommerce.ContentModule.Web.Models;
 using VirtoCommerce.ContentModule.Web.Security;
+using VirtoCommerce.ContentModule.Web.Services;
 using VirtoCommerce.Domain.Store.Services;
 using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
@@ -32,14 +33,16 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IBlobUrlResolver _urlResolver;
         private readonly IStoreService _storeService;
         private readonly ICacheManager<object> _cacheManager;
+        private readonly ISearchContentService _searchContentService;
 
-        public ContentController(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory, IBlobUrlResolver urlResolver, ISecurityService securityService, IPermissionScopeService permissionScopeService, IStoreService storeService, ICacheManager<object> cacheManager)
+        public ContentController(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory, IBlobUrlResolver urlResolver, ISecurityService securityService, IPermissionScopeService permissionScopeService, IStoreService storeService, ICacheManager<object> cacheManager, ISearchContentService searchContentService)
             : base(securityService, permissionScopeService)
         {
             _storeService = storeService;
             _contentStorageProviderFactory = contentStorageProviderFactory;
             _urlResolver = urlResolver;
             _cacheManager = cacheManager;
+            _searchContentService = searchContentService;
         }
 
         /// <summary>
@@ -135,6 +138,21 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                                .Concat(result.Items.Select(x => x.ToContentModel()))
                                .ToArray();
             return Ok(retVal);
+        }
+
+        /// <summary>
+        /// Search content items by specified search criteria
+        /// </summary>
+        /// <param name="criteria">searching criteria</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("search")]
+        [ResponseType(typeof(ContentSearchResult))]
+        [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
+        public IHttpActionResult SearchContent(ContentSearchCriteria criteria)
+        {
+            var result = _searchContentService.SearchContent(criteria);
+            return Ok(result);
         }
 
         /// <summary>
