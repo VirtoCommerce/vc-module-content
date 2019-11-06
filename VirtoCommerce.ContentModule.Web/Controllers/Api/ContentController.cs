@@ -322,15 +322,10 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
                 var changedEntries = blobMultipartProvider.BlobInfos.Select(blobInfo => new GenericChangedEntry<BlobInfo>(blobInfo, EntryState.Added));
                 await _eventPublisher.Publish(new ContentChangedEvent(changedEntries));
-
-
                 retVal.AddRange(files);
             }
 
             _cacheManager.ClearRegion($"content-{storeId}");
-
-
-
             return Ok(retVal.ToArray());
         }
 
