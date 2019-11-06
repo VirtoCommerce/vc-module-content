@@ -39,7 +39,14 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IContentSearchService _contentSearchService;
         private readonly IEventPublisher _eventPublisher;
 
-        public ContentController(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory, IBlobUrlResolver urlResolver, ISecurityService securityService, IPermissionScopeService permissionScopeService, IStoreService storeService, ICacheManager<object> cacheManager, IContentSearchService contentSearchService, IEventPublisher eventPublisher)
+        public ContentController(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory,
+            IBlobUrlResolver urlResolver,
+            ISecurityService securityService,
+            IPermissionScopeService permissionScopeService,
+            IStoreService storeService,
+            ICacheManager<object> cacheManager,
+            IContentSearchService contentSearchService,
+            IEventPublisher eventPublisher)
             : base(securityService, permissionScopeService)
         {
             _storeService = storeService;
@@ -91,9 +98,25 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("")]
         [ResponseType(typeof(void))]
         [CheckPermission(Permission = ContentPredefinedPermissions.Delete)]
-        public IHttpActionResult DeleteContent(string contentType, string storeId, [FromUri] string[] urls)
+        public async Task<IHttpActionResult> DeleteContent(string contentType, string storeId, [FromUri] string[] urls)
         {
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
+            var changedEntries = new List<GenericChangedEntry<BlobInfo>>();
+
+            foreach (var url in urls)
+            {
+                var fileName = HttpUtility.UrlDecode(System.IO.Path.GetFileName(url));
+                var blobInfo = new BlobInfo
+                {
+                    ContentType = contentType,
+                    Url = _urlResolver.GetAbsoluteUrl(url),
+                    FileName = fileName,
+                    RelativeUrl = url,
+                    Key = url
+                };
+                changedEntries.Add(new GenericChangedEntry<BlobInfo>(blobInfo, EntryState.Deleted));
+            }
+            await _eventPublisher.Publish(new ContentChangedEvent(changedEntries));
 
             storageProvider.Remove(urls);
             _cacheManager.ClearRegion($"content-{storeId}");
@@ -172,9 +195,35 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("move")]
         [ResponseType(typeof(void))]
         [CheckPermission(Permission = ContentPredefinedPermissions.Update)]
-        public IHttpActionResult MoveContent(string contentType, string storeId, string oldUrl, string newUrl)
+        public async Task<IHttpActionResult> MoveContent(string contentType, string storeId, string oldUrl, string newUrl)
         {
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
+
+            var changedEntries = new List<GenericChangedEntry<BlobInfo>>();
+
+            var fileName = HttpUtility.UrlDecode(System.IO.Path.GetFileName(newUrl));
+            var blobInfoNew = new BlobInfo
+            {
+                ContentType = contentType,
+                Url = _urlResolver.GetAbsoluteUrl(newUrl),
+                FileName = fileName,
+                RelativeUrl = newUrl,
+                Key = newUrl
+            };
+
+            fileName = HttpUtility.UrlDecode(System.IO.Path.GetFileName(oldUrl));
+            var blobInfoOld = new BlobInfo
+            {
+                ContentType = contentType,
+                Url = _urlResolver.GetAbsoluteUrl(oldUrl),
+                FileName = fileName,
+                RelativeUrl = oldUrl,
+                Key = oldUrl
+            };
+            changedEntries.Add(new GenericChangedEntry<BlobInfo>(blobInfoOld, EntryState.Deleted));
+            changedEntries.Add(new GenericChangedEntry<BlobInfo>(blobInfoNew, EntryState.Added));
+
+            await _eventPublisher.Publish(new ContentChangedEvent(changedEntries));
 
             storageProvider.MoveContent(oldUrl, newUrl);
             return Ok();
@@ -303,7 +352,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                             Url = _urlResolver.GetAbsoluteUrl(fileUrl),
                             FileName = fileName,
                             RelativeUrl = fileUrl,
-                            Size = remoteStream.Length
+                            Size = remoteStream.Length,
+                            Key = fileUrl
                         }, EntryState.Added);
 
                     await _eventPublisher.Publish(new ContentChangedEvent(new List<GenericChangedEntry<BlobInfo>>() { changedEntry }));

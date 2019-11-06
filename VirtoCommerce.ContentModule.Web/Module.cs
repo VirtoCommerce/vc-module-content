@@ -9,6 +9,7 @@ using VirtoCommerce.ContentModule.Data.Repositories;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.ContentModule.Web.ExportImport;
 using VirtoCommerce.ContentModule.Web.Security;
+using VirtoCommerce.ContentModule.Web.Services;
 using VirtoCommerce.Domain.Store.Model;
 using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Bus;
@@ -45,6 +46,7 @@ namespace VirtoCommerce.ContentModule.Web
 
             _container.RegisterInstance(menuRepFactory);
             _container.RegisterType<IMenuService, MenuServiceImpl>();
+            _container.RegisterType<IContentSearchService, ContentSearchService>();
 
             var connectionString = ConfigurationHelper.GetConnectionStringValue("CmsContentConnectionString");
 
