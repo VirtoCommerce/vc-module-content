@@ -13,6 +13,7 @@ using CacheManager.Core;
 using VirtoCommerce.ContentModule.Data;
 using VirtoCommerce.ContentModule.Data.Search;
 using VirtoCommerce.ContentModule.Data.Services;
+using VirtoCommerce.ContentModule.Data.Utility;
 using VirtoCommerce.ContentModule.Web.Converters;
 using VirtoCommerce.ContentModule.Web.Models;
 using VirtoCommerce.ContentModule.Web.Security;
@@ -74,14 +75,14 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
             var pagesCount = _cacheManager.Get("pagesCount", $"content-{storeId}", TimeSpan.FromMinutes(1), () =>
            {
-               return CountContentItemsRecursive(GetContentBasePath("pages", storeId), contentStorageProvider, GetContentBasePath("blogs", storeId)); ;
+               return CountContentItemsRecursive(ContentTypeUtility.GetContentBasePath("pages", storeId), contentStorageProvider, ContentTypeUtility.GetContentBasePath("blogs", storeId)); ;
            });
 
             var retVal = new ContentStatistic
             {
                 ActiveThemeName = store.GetDynamicPropertyValue("DefaultThemeName", "not set"),
-                ThemesCount = contentStorageProvider.Search(GetContentBasePath("themes", storeId), null).Folders.Count,
-                BlogsCount = contentStorageProvider.Search(GetContentBasePath("blogs", storeId), null).Folders.Count,
+                ThemesCount = contentStorageProvider.Search(ContentTypeUtility.GetContentBasePath("themes", storeId), null).Folders.Count,
+                BlogsCount = contentStorageProvider.Search(ContentTypeUtility.GetContentBasePath("blogs", storeId), null).Folders.Count,
                 PagesCount = pagesCount
             };
             return Ok(retVal);
@@ -101,7 +102,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Delete)]
         public async Task<IHttpActionResult> DeleteContent(string contentType, string storeId, [FromUri] string[] urls)
         {
-            var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
+            var storageProvider = _contentStorageProviderFactory(ContentTypeUtility.GetContentBasePath(contentType, storeId));
             var changedEntries = new List<GenericChangedEntry<BlobInfo>>();
 
             foreach (var url in urls)
@@ -137,7 +138,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
         public HttpResponseMessage GetContentItemDataStream(string contentType, string storeId, string relativeUrl)
         {
-            var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
+            var storageProvider = _contentStorageProviderFactory(ContentTypeUtility.GetContentBasePath(contentType, storeId));
             var stream = storageProvider.OpenRead(relativeUrl);
             var result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(stream) };
             result.Content.Headers.ContentType = new MediaTypeHeaderValue(MimeMapping.GetMimeMapping(relativeUrl));
@@ -159,7 +160,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
         public IHttpActionResult SearchContent(string contentType, string storeId, string folderUrl = null, string keyword = null)
         {
-            var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
+            var storageProvider = _contentStorageProviderFactory(ContentTypeUtility.GetContentBasePath(contentType, storeId));
 
             var result = storageProvider.Search(folderUrl, keyword);
             var retVal = result.Folders.Select(x => x.ToContentModel())
@@ -198,7 +199,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Update)]
         public async Task<IHttpActionResult> MoveContent(string contentType, string storeId, string oldUrl, string newUrl)
         {
-            var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
+            var storageProvider = _contentStorageProviderFactory(ContentTypeUtility.GetContentBasePath(contentType, storeId));
 
             var changedEntries = new List<GenericChangedEntry<BlobInfo>>();
 
@@ -263,7 +264,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Update)]
         public IHttpActionResult Unpack(string contentType, string storeId, string archivePath, string destPath)
         {
-            var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
+            var storageProvider = _contentStorageProviderFactory(ContentTypeUtility.GetContentBasePath(contentType, storeId));
 
             using (var stream = storageProvider.OpenRead(archivePath))
             using (var archive = new ZipArchive(stream))
@@ -300,7 +301,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Create)]
         public IHttpActionResult CreateContentFolder(string contentType, string storeId, ContentFolder folder)
         {
-            var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
+            var storageProvider = _contentStorageProviderFactory(ContentTypeUtility.GetContentBasePath(contentType, storeId));
 
             storageProvider.CreateFolder(folder.ToBlobModel());
             return Ok();
@@ -328,7 +329,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             }
 
             var retVal = new List<ContentFile>();
-            var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
+            var storageProvider = _contentStorageProviderFactory(ContentTypeUtility.GetContentBasePath(contentType, storeId));
 
             if (url != null)
             {
@@ -378,25 +379,6 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
             _cacheManager.ClearRegion($"content-{storeId}");
             return Ok(retVal.ToArray());
-        }
-
-
-        private string GetContentBasePath(string contentType, string storeId)
-        {
-            var retVal = string.Empty;
-            if (contentType.EqualsInvariant("themes"))
-            {
-                retVal = "Themes/" + storeId;
-            }
-            else if (contentType.EqualsInvariant("pages"))
-            {
-                retVal = "Pages/" + storeId;
-            }
-            else if (contentType.EqualsInvariant("blogs"))
-            {
-                retVal = "Pages/" + storeId + "/blogs";
-            }
-            return retVal;
         }
 
         private int CountContentItemsRecursive(string folderUrl, IContentBlobStorageProvider _contentStorageProvider, string excludedFolderUrl = null)

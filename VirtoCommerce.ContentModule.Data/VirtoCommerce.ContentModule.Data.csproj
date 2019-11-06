@@ -150,6 +150,8 @@
     <Compile Include="Repositories\IMenuRepository.cs" />
     <Compile Include="Search\ContentIndexedSearchService.cs" />
     <Compile Include="Search\ContentKnownDocumentTypes.cs" />
+    <Compile Include="Search\Indexing\IndexDocumentExtensions.cs" />
+    <Compile Include="Search\Indexing\MarkdownPagesDocumentBuilder.cs" />
     <Compile Include="Search\ContentSearchCriteria.cs" />
     <Compile Include="Services\AzureContentBlobStorageProvider.cs" />
     <Compile Include="Services\IMenuService.cs" />
