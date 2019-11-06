@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.Assets;
@@ -9,7 +10,7 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.ContentModule.Data.Search
 {
-    public class ContentIndexedSearchService
+    public class ContentIndexedSearchService : IContentSearchService
     {
         private readonly ISearchRequestBuilder[] _searchRequestBuilders;
         private readonly ISearchProvider _searchProvider;
@@ -62,20 +63,20 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             var result = new List<BlobInfo>();
 
-            if (documents?.Any() == true)
-            {
-                var itemIds = documents.Select(doc => doc.Id).ToArray();
-                var items = GeMembersByIds(itemIds, criteria);
-                var itemsMap = items.ToDictionary(m => m.Id, m => m);
+            //if (documents?.Any() == true)
+            //{
+            //    var itemIds = documents.Select(doc => doc.Id).ToArray();
+            //    var items = GeMembersByIds(itemIds, criteria);
+            //    var itemsMap = items.ToDictionary(m => m.Id, m => m);
 
-                // Preserve documents order
-                var members = documents
-                    .Select(doc => itemsMap.ContainsKey(doc.Id) ? itemsMap[doc.Id] : null)
-                    .Where(m => m != null)
-                    .ToArray();
+            //    // Preserve documents order
+            //    var members = documents
+            //        .Select(doc => itemsMap.ContainsKey(doc.Id) ? itemsMap[doc.Id] : null)
+            //        .Where(m => m != null)
+            //        .ToArray();
 
-                result.AddRange(members);
-            }
+            //    result.AddRange(members);
+            //}
 
             return result;
         }

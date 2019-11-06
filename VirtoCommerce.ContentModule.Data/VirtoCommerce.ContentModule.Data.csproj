@@ -143,6 +143,11 @@
       <DependentUpon>201608021232286_RemoveIsActiveColumn.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ContentFile.cs" />
+    <Compile Include="Models\ContentFolder.cs" />
+    <Compile Include="Models\ContentItem.cs" />
+    <Compile Include="Models\ContentSearchResult.cs" />
+    <Compile Include="Models\ContentStatistic.cs" />
     <Compile Include="Models\MenuLink.cs" />
     <Compile Include="Models\MenuLinkList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -154,6 +159,7 @@
     <Compile Include="Search\Indexing\MarkdownPagesDocumentBuilder.cs" />
     <Compile Include="Search\ContentSearchCriteria.cs" />
     <Compile Include="Services\AzureContentBlobStorageProvider.cs" />
+    <Compile Include="Services\IContentSearchService.cs" />
     <Compile Include="Services\IMenuService.cs" />
     <Compile Include="Services\IContentBlobStorageProvider.cs" />
     <Compile Include="Services\MenuServiceImpl.cs" />

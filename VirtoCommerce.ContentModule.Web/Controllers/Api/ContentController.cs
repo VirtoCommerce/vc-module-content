@@ -17,7 +17,7 @@ using VirtoCommerce.ContentModule.Data.Utility;
 using VirtoCommerce.ContentModule.Web.Converters;
 using VirtoCommerce.ContentModule.Web.Models;
 using VirtoCommerce.ContentModule.Web.Security;
-using VirtoCommerce.ContentModule.Web.Services;
+
 using VirtoCommerce.Domain.Common.Events;
 using VirtoCommerce.Domain.Store.Services;
 using VirtoCommerce.Platform.Core.Assets;
@@ -181,7 +181,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
         public IHttpActionResult SearchContent(ContentSearchCriteria criteria)
         {
-            var result = _contentSearchService.SearchContent(criteria);
+            var result = _contentSearchService.SearchAsync(criteria);
             return Ok(result);
         }
 
