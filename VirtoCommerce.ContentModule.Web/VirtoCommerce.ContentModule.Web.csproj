@@ -230,7 +230,6 @@
     <Compile Include="Models\ContentFile.cs" />
     <Compile Include="Models\ContentFolder.cs" />
     <Compile Include="Models\ContentItem.cs" />
-    <Compile Include="Models\ContentSearchCriteria.cs" />
     <Compile Include="Models\ContentSearchResult.cs" />
     <Compile Include="Models\ContentStatistic.cs" />
     <Compile Include="Security\ContentPredefinedPermissions.cs" />

@@ -1,7 +1,7 @@
 
 using VirtoCommerce.Domain.Commerce.Model.Search;
 
-namespace VirtoCommerce.ContentModule.Web.Models
+namespace VirtoCommerce.ContentModule.Data.Search
 {
     public class ContentSearchCriteria : SearchCriteriaBase
     {

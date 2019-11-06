@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using CacheManager.Core;
 using VirtoCommerce.ContentModule.Data;
+using VirtoCommerce.ContentModule.Data.Search;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.ContentModule.Web.Converters;
 using VirtoCommerce.ContentModule.Web.Models;
