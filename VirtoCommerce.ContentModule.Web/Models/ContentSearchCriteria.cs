@@ -5,7 +5,7 @@ namespace VirtoCommerce.ContentModule.Web.Models
 {
     public class ContentSearchCriteria : SearchCriteriaBase
     {
-        public string StroeId { get; set; }
+        public string StoreId { get; set; }
 
         public string ContentType { get; set; }
 

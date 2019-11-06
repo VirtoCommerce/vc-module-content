@@ -245,8 +245,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\ContentScopeObject.cs" />
     <Compile Include="Security\ContentSelectedStoreScope.cs" />
-    <Compile Include="Services\ISearchContentService.cs" />
-    <Compile Include="Services\SearchContentService.cs" />
+    <Compile Include="Services\IContentSearchService.cs" />
+    <Compile Include="Services\ContentSearchService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\templates\" />

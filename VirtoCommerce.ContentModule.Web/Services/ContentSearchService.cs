@@ -6,7 +6,7 @@ using VirtoCommerce.ContentModule.Web.Models;
 
 namespace VirtoCommerce.ContentModule.Web.Services
 {
-    public class SearchContentService : ISearchContentService
+    public class ContentSearchService : IContentSearchService
     {
         public ContentSearchResult SearchContent(ContentSearchCriteria criteria)
         {

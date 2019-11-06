@@ -33,16 +33,16 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IBlobUrlResolver _urlResolver;
         private readonly IStoreService _storeService;
         private readonly ICacheManager<object> _cacheManager;
-        private readonly ISearchContentService _searchContentService;
+        private readonly IContentSearchService _contentSearchService;
 
-        public ContentController(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory, IBlobUrlResolver urlResolver, ISecurityService securityService, IPermissionScopeService permissionScopeService, IStoreService storeService, ICacheManager<object> cacheManager, ISearchContentService searchContentService)
+        public ContentController(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory, IBlobUrlResolver urlResolver, ISecurityService securityService, IPermissionScopeService permissionScopeService, IStoreService storeService, ICacheManager<object> cacheManager, IContentSearchService contentSearchService)
             : base(securityService, permissionScopeService)
         {
             _storeService = storeService;
             _contentStorageProviderFactory = contentStorageProviderFactory;
             _urlResolver = urlResolver;
             _cacheManager = cacheManager;
-            _searchContentService = searchContentService;
+            _contentSearchService = contentSearchService;
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
         public IHttpActionResult SearchContent(ContentSearchCriteria criteria)
         {
-            var result = _searchContentService.SearchContent(criteria);
+            var result = _contentSearchService.SearchContent(criteria);
             return Ok(result);
         }
 
