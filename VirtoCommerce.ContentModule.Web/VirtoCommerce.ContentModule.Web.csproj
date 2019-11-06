@@ -230,6 +230,8 @@
     <Compile Include="Models\ContentFile.cs" />
     <Compile Include="Models\ContentFolder.cs" />
     <Compile Include="Models\ContentItem.cs" />
+    <Compile Include="Models\ContentSearchCriteria.cs" />
+    <Compile Include="Models\ContentSearchResult.cs" />
     <Compile Include="Models\ContentStatistic.cs" />
     <Compile Include="Security\ContentPredefinedPermissions.cs" />
     <Compile Include="Converters\MenuLinkConverter.cs" />
@@ -243,6 +245,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\ContentScopeObject.cs" />
     <Compile Include="Security\ContentSelectedStoreScope.cs" />
+    <Compile Include="Services\IContentSearchService.cs" />
+    <Compile Include="Services\ContentSearchService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\templates\" />
