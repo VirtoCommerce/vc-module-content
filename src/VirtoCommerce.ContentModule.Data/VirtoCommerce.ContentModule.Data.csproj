@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="EntityFrameworkCore.Triggers" Version="1.2.2" />
+        <PackageReference Include="EntityFrameworkCore.Triggers" Version="1.2.1" />
         <PackageReference Include="GitVersionTask" Version="5.0.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
