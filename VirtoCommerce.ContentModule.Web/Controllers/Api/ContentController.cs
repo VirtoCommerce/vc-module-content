@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
@@ -10,14 +10,17 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using CacheManager.Core;
+using VirtoCommerce.ContentModule.Data;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.ContentModule.Web.Converters;
 using VirtoCommerce.ContentModule.Web.Models;
 using VirtoCommerce.ContentModule.Web.Security;
+using VirtoCommerce.Domain.Common.Events;
 using VirtoCommerce.Domain.Store.Services;
 using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Web.Assets;
 using VirtoCommerce.Platform.Core.Web.Security;
@@ -32,14 +35,16 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IBlobUrlResolver _urlResolver;
         private readonly IStoreService _storeService;
         private readonly ICacheManager<object> _cacheManager;
+        private readonly IEventPublisher _eventPublisher;
 
-        public ContentController(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory, IBlobUrlResolver urlResolver, ISecurityService securityService, IPermissionScopeService permissionScopeService, IStoreService storeService, ICacheManager<object> cacheManager)
+        public ContentController(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory, IBlobUrlResolver urlResolver, ISecurityService securityService, IPermissionScopeService permissionScopeService, IStoreService storeService, ICacheManager<object> cacheManager, IEventPublisher eventPublisher)
             : base(securityService, permissionScopeService)
         {
             _storeService = storeService;
             _contentStorageProviderFactory = contentStorageProviderFactory;
             _urlResolver = urlResolver;
             _cacheManager = cacheManager;
+            _eventPublisher = eventPublisher;
         }
 
         /// <summary>
@@ -248,6 +253,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [CheckPermission(Permission = ContentPredefinedPermissions.Create)]
         public async Task<IHttpActionResult> UploadContent(string contentType, string storeId, [FromUri] string folderUrl, [FromUri]string url = null)
         {
+
             if (url == null && !Request.Content.IsMimeMultipartContent())
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
@@ -271,6 +277,18 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                         Name = fileName,
                         Url = _urlResolver.GetAbsoluteUrl(fileUrl)
                     });
+
+                    var changedEntry = new GenericChangedEntry<BlobInfo>(
+                        new BlobInfo
+                        {
+                            ContentType = contentType,
+                            Url = _urlResolver.GetAbsoluteUrl(fileUrl),
+                            FileName = fileName,
+                            RelativeUrl = fileUrl,
+                            Size = remoteStream.Length
+                        }, EntryState.Added);
+
+                    await _eventPublisher.Publish(new ContentChangedEvent(new List<GenericChangedEntry<BlobInfo>>() { changedEntry }));
                 }
             }
             else
@@ -283,10 +301,18 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                     Name = blobInfo.FileName,
                     Url = _urlResolver.GetAbsoluteUrl(blobInfo.Key)
                 });
+
+                var changedEntries = blobMultipartProvider.BlobInfos.Select(blobInfo => new GenericChangedEntry<BlobInfo>(blobInfo, EntryState.Added));
+                await _eventPublisher.Publish(new ContentChangedEvent(changedEntries));
+
+
                 retVal.AddRange(files);
             }
 
             _cacheManager.ClearRegion($"content-{storeId}");
+
+
+
             return Ok(retVal.ToArray());
         }
 
