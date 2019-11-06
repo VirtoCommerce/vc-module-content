@@ -10,11 +10,11 @@ using VirtoCommerce.Platform.Core.Assets;
 
 namespace VirtoCommerce.ContentModule.Data.Search.Indexing
 {
-    public class MetadataPagesDocumentBuilder : IIndexDocumentBuilder
+    public class MarkdownPagesDocumentBuilder : IIndexDocumentBuilder
     {
         private readonly IContentBlobStorageProvider _storageProvider;
 
-        public MetadataPagesDocumentBuilder(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory)
+        public MarkdownPagesDocumentBuilder(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory)
         {
             _storageProvider = contentStorageProviderFactory("Pages");
         }
