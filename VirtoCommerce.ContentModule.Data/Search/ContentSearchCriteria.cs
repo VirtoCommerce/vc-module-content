@@ -9,7 +9,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
         //public string ContentType { get; set; }
 
-        public string[] FolderUrls { get; set; }
+        public string FolderUrl { get; set; }
 
     }
 }

@@ -70,9 +70,9 @@ namespace VirtoCommerce.ContentModule.Data.Search
             //    result.Add(CreateTermFilter("relativeUrl", $"/{criteria.StoreId}/"));
             //}
 
-            if (!criteria.FolderUrls.IsNullOrEmpty())
+            if (!string.IsNullOrEmpty(criteria.FolderUrl))
             {
-                result.Add(CreateTermFilter("relativeUrl", criteria.FolderUrls));
+                result.Add(CreateTermFilter("relativeUrl", criteria.FolderUrl));
             }
 
             return result;
