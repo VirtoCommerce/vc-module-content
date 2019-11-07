@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
 .factory('virtoCommerce.contentModule.menus', ['$resource', function ($resource) {
     return $resource('api/cms/:storeId/menu/', {}, {
         get: { url: 'api/cms/:storeId/menu/', method: 'GET', isArray: true },
@@ -17,6 +17,10 @@
     return $resource('api/content/:contentType/:storeId', null, {
         getStatistics: { url: 'api/content/:storeId/stats' },
         query: { url: 'api/content/:contentType/:storeId/search', isArray: true },
+        search: {
+            url: 'api/content/search',
+            method: 'POST'            
+        },
         get: {
             // using transformResponse to:
             // 1. avoid automatic response result string converting to array;

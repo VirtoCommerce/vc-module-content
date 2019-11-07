@@ -1,26 +1,37 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.pagesListController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', function ($rootScope, $scope, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
 	var blade = $scope.blade;
 	blade.updatePermission = 'content:update';
 
 	$scope.selectedNodeId = null;
 
-	blade.refresh = function () {
+    blade.refresh = function () {
+        if ($scope.pageSettings.currentPage > 1) {
+            $scope.pageSettings.currentPage = 1;
+        } else {
+            loadData();
+        }
+    }
+
+	function loadData () {
 		blade.isLoading = true;
-		contentApi.query(
+		contentApi.search(
             {
+                objectType: "Pages",
             	contentType: blade.contentType,
             	storeId: blade.storeId,
-            	keyword: blade.searchKeyword,
-            	folderUrl: blade.currentEntity.url
+            	searchPhrase: blade.searchKeyword,
+                folderUrl: blade.currentEntity.url,
+                skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
+                take: $scope.pageSettings.itemsPerPageCount
             },
             function (data) {
-            	$scope.pageSettings.totalItems = data.length;
+            	$scope.pageSettings.totalItems = data.result.itemsCount;
             	_.each(data, function (x) {
             		x.isImage = x.mimeType && x.mimeType.startsWith('image/');
             		x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
             	});
-            	$scope.listEntries = data;
+            	$scope.listEntries = data.result.results;
             	blade.isLoading = false;
 
             	//Set navigation breadcrumbs
@@ -36,7 +47,7 @@
 			contentApi.createFolder(
                     { contentType: blade.contentType, storeId: blade.storeId },
                     { name: result, parentUrl: blade.currentEntity.url },
-                    blade.refresh,
+                    loadData,
                     function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
 		}
 	}
@@ -50,7 +61,7 @@
 					storeId: blade.storeId,
 					oldUrl: listItem.url,
 					newUrl: listItem.url.substring(0, listItem.url.length - listItem.name.length) + result
-				}, blade.refresh,
+				}, loadData,
                 function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
 			}
 		};
@@ -174,7 +185,7 @@
 							urls: listEntryIds
 						},
                         function () {
-                        	blade.refresh();
+                            loadData();
                         	$rootScope.$broadcast("cms-statistics-changed", blade.storeId);
                         },
                         function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
@@ -208,7 +219,7 @@
 	blade.toolbarCommands = [
           {
           	name: "platform.commands.refresh", icon: 'fa fa-refresh',
-          	executeMethod: blade.refresh,
+            executeMethod: loadData,
           	canExecuteMethod: function () {
           		return true;
           	}
@@ -285,13 +296,19 @@
 	}
 
 	// ui-grid
-	$scope.setGridOptions = function (gridOptions) {
+    $scope.setGridOptions = function (gridOptions) {
+        // gridOptions.paginationPageSize = 20;
+        // gridOptions.useExternalPagination = true;
 		uiGridHelper.initialize($scope, gridOptions,
         function (gridApi) {
         	$scope.$watch('pageSettings.currentPage', gridApi.pagination.seek);
-        });
+            });
+        bladeUtils.initializePagination($scope, true);
+        $scope.$watch('pageSettings.currentPage', loadData);
+
 	};
-	bladeUtils.initializePagination($scope, true);
+    // bladeUtils.initializePagination($scope, true);
+    
 
 	//Breadcrumbs
 	function setBreadcrumbs() {
@@ -324,5 +341,6 @@
 	}
 
 	blade.headIcon = isBlogs() ? 'fa-inbox' : 'fa-folder-o';
-	blade.refresh();
+
+    // blade.refresh();
 }]);
