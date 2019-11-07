@@ -14,7 +14,7 @@ angular.module('virtoCommerce.contentModule')
         } else {
             loadData();
         }
-    }
+    };
 
     function currentPageChanged() {
         if (isSearchingMode) {
@@ -31,7 +31,7 @@ angular.module('virtoCommerce.contentModule')
         }
     }
 
-    function   makeSearch() {
+    function makeSearch() {
             blade.isLoading = true;
             contentApi.search(
                 {
@@ -217,26 +217,26 @@ angular.module('virtoCommerce.contentModule')
 
 	function deleteList(selection) {
 		bladeNavigationService.closeChildrenBlades(blade, function () {
-			var dialog = {
-				id: "confirmDeleteItem",
-				title: "platform.dialogs.folders-delete.title",
-				message: "platform.dialogs.folders-delete.message",
-				callback: function (remove) {
-					if (remove) {
-						var listEntryIds = _.pluck(selection, 'url');
-						contentApi.delete({
-							contentType: blade.contentType,
-							storeId: blade.storeId,
-							urls: listEntryIds
-						},
-                        function () {
-                            loadData();
-                        	$rootScope.$broadcast("cms-statistics-changed", blade.storeId);
+            var dialog = {
+                id: "confirmDeleteItem",
+                title: "platform.dialogs.folders-delete.title",
+                message: "platform.dialogs.folders-delete.message",
+                callback: function (remove) {
+                    if (remove) {
+                        var listEntryIds = _.pluck(selection, 'url');
+                        contentApi.delete({
+                            contentType: blade.contentType,
+                            storeId: blade.storeId,
+                            urls: listEntryIds
                         },
-                        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-					}
-				}
-			}
+                            function () {
+                                loadData();
+                                $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
+                            },
+                            function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                    }
+                }
+            };
 
 			if (isBlogs() && !blade.currentEntity.type) {
 				angular.extend(dialog, {
@@ -373,16 +373,16 @@ angular.module('virtoCommerce.contentModule')
 	}
 
 	function generateBreadcrumb(id, name) {
-		return {
-			id: id,
-			name: name,
-			blade: blade,
-			navigate: function (breadcrumb) {
-				breadcrumb.blade.searchKeyword = null;
-				breadcrumb.blade.disableOpenAnimation = true;
-				bladeNavigationService.showBlade(breadcrumb.blade, breadcrumb.blade.parentBlade);
-			}
-		}
+        return {
+            id: id,
+            name: name,
+            blade: blade,
+            navigate: function (breadcrumb) {
+                breadcrumb.blade.searchKeyword = null;
+                breadcrumb.blade.disableOpenAnimation = true;
+                bladeNavigationService.showBlade(breadcrumb.blade, breadcrumb.blade.parentBlade);
+            }
+        };
 	}
 
 	blade.headIcon = isBlogs() ? 'fa-inbox' : 'fa-folder-o';
