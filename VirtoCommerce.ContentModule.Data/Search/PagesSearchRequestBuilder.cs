@@ -1,6 +1,8 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using VirtoCommerce.ContentModule.Data.Utility;
 using VirtoCommerce.CustomerModule.Data.Search.Indexing;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Search;
@@ -59,21 +61,13 @@ namespace VirtoCommerce.ContentModule.Data.Search
             {
                 result.Add(new IdsFilter { Values = criteria.ObjectIds });
             }
-
-            //if (!string.IsNullOrEmpty(criteria.ContentType))
-            //{
-            //    result.Add(CreateTermFilter("relativeUrl", $"{ContentTypeUtility.GetContentBasePath(criteria.ContentType, null)}/"));
-            //}
-
-            //if (!string.IsNullOrEmpty(criteria.StoreId))
-            //{
-            //    result.Add(CreateTermFilter("relativeUrl", $"/{criteria.StoreId}/"));
-            //}
+            var relativeUrl = new Uri(ContentTypeUtility.GetContentBasePath(criteria.ContentType, criteria.StoreId));
 
             if (!string.IsNullOrEmpty(criteria.FolderUrl))
             {
-                result.Add(CreateTermFilter("relativeUrl", criteria.FolderUrl));
+                relativeUrl = new Uri(relativeUrl, criteria.FolderUrl);
             }
+            result.Add(CreateTermFilter("relativeUrl", relativeUrl.ToString()));
 
             return result;
         }
