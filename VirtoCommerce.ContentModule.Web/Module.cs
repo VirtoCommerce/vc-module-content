@@ -48,7 +48,6 @@ namespace VirtoCommerce.ContentModule.Web
 
             _container.RegisterInstance(menuRepFactory);
             _container.RegisterType<IMenuService, MenuServiceImpl>();
-            _container.RegisterType<IContentSearchService, ContentIndexedSearchService>();
 
             var connectionString = ConfigurationHelper.GetConnectionStringValue("CmsContentConnectionString");
 
@@ -88,10 +87,12 @@ namespace VirtoCommerce.ContentModule.Web
             };
             _container.RegisterInstance(contentProviderFactory);
 
+            _container.RegisterType<ISearchRequestBuilder, PagesSearchRequestBuilder>(nameof(PagesSearchRequestBuilder));
+            _container.RegisterType<IContentSearchService, ContentIndexedSearchService>();
+
             var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
             eventHandlerRegistrar.RegisterHandler<ContentChangedEvent>(
                 async (message, token) => await _container.Resolve<IndexContentChangedEventHandler>().Handle(message));
-
         }
 
         public override void PostInitialize()
@@ -261,7 +262,7 @@ namespace VirtoCommerce.ContentModule.Web
             // Indexing configuration
             var contentIndexingConfiguration = new IndexDocumentConfiguration
             {
-                DocumentType = ContentKnownDocumentTypes.MarkdownPages,
+                DocumentType = ContentKnownDocumentTypes.Pages,
                 DocumentSource = new IndexDocumentSource
                 {
                     ChangesProvider = _container.Resolve<PagesDocumentChangesProvider>(),

@@ -12,33 +12,34 @@ namespace VirtoCommerce.ContentModule.Data.Search.Indexing
 {
     public class PagesDocumentBuilder : IIndexDocumentBuilder
     {
-        private readonly Func<string, IContentBlobStorageProvider> _contentStorageProviderFactory;
+        public static readonly string[] SupportedExtensions = new[] { ".md" };
+
         private readonly IContentBlobStorageProvider _storageProvider;
+
 
         public PagesDocumentBuilder(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory)
         {
-            _contentStorageProviderFactory = contentStorageProviderFactory;
-            _storageProvider = contentStorageProviderFactory("Pages");
+            _storageProvider = contentStorageProviderFactory(string.Empty);
         }
 
         public virtual Task<IList<IndexDocument>> GetDocumentsAsync(IList<string> documentIds)
         {
-            var members = GetMarkdownPages(documentIds);
+            var pages = GetMarkdownPages(documentIds);
 
-            IList<IndexDocument> result = members.Select(CreateDocument).ToArray();
+            IList<IndexDocument> result = pages.Select(CreateDocument).ToArray();
             return Task.FromResult(result);
         }
 
         protected virtual IList<BlobInfo> GetMarkdownPages(IList<string> documentIds)
         {
-            return documentIds.Where(x => x.ToLower().Trim().EndsWith(".md"))
+            return documentIds.Where(x => SupportedExtensions.Any(y => x.ToLower().Trim().EndsWith(y)))
                 .Select(x => _storageProvider.GetBlobInfo(x))
                 .ToList();
         }
 
         protected virtual IndexDocument CreateDocument(BlobInfo blobInfo)
         {
-            var document = new IndexDocument(blobInfo.Key);
+            var document = new IndexDocument(blobInfo.RelativeUrl);
             string pageStringContent = null;
             using (var stream = _storageProvider.OpenRead(blobInfo.RelativeUrl))
             {
@@ -53,7 +54,7 @@ namespace VirtoCommerce.ContentModule.Data.Search.Indexing
             document.AddFilterableAndSearchableValue("relativeUrl", blobInfo.RelativeUrl);
             document.AddFilterableValue("size", blobInfo.Size.ToString());
             document.AddFilterableAndSearchableValue("url", blobInfo.Url);
-            document.AddFilterableAndSearchableValue("pageContent", pageStringContent);
+            document.AddSearchableValue(pageStringContent);
 
             return document;
         }

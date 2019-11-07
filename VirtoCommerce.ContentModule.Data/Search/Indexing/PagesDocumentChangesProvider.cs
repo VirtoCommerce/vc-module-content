@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.Domain.Search;
@@ -18,21 +19,10 @@ namespace VirtoCommerce.ContentModule.Data.Search.Indexing
 
         public virtual Task<long> GetTotalChangesCountAsync(DateTime? startDate, DateTime? endDate)
         {
-            long result = 0;
+            long result;
 
-            //if (startDate == null && endDate == null)
-            //{
-            // Get total products count
-            //using (var repository = _memberRepositoryFactory())
-            //{
-            //    result = repository.Members.Count();
-            //}
-            //}
-            //else
-            //{
-            //    // Get changes count from operation log
-            //    result = _changeLogService.FindChangeHistory(ChangeLogObjectType, startDate, endDate).Count();
-            //}
+            var storageProvider = _contentStorageProviderFactory(string.Empty);
+            result = CountContentItemsRecursive("pages", storageProvider, startDate, endDate);
 
             return Task.FromResult(result);
         }
@@ -41,61 +31,57 @@ namespace VirtoCommerce.ContentModule.Data.Search.Indexing
         {
             IList<IndexDocumentChange> result = null;
 
-            //if (startDate == null && endDate == null)
-            //{
-            // Get documents from repository and return them as changes
-            //using (var repository = _memberRepositoryFactory())
-            //{
-            //    var productIds = repository.Members
-            //        .OrderBy(i => i.CreatedDate)
-            //        .Select(i => i.Id)
-            //        .Skip((int)skip)
-            //        .Take((int)take)
-            //        .ToArray();
+            var storageProvider = _contentStorageProviderFactory(string.Empty);
+            var searchResult = storageProvider.Search("pages", null);
+            var blobInfos = GetItemInfos(storageProvider, searchResult);
 
-            //    result = productIds.Select(id =>
-            //        new IndexDocumentChange
-            //        {
-            //            DocumentId = id,
-            //            ChangeType = IndexDocumentChangeType.Modified,
-            //            ChangeDate = DateTime.UtcNow
-            //        }
-            //    ).ToArray();
-            //}
-            //}
-            //else
-            //{
-            //    // Get changes from operation log
-            //    var operations = _changeLogService.FindChangeHistory(ChangeLogObjectType, startDate, endDate)
-            //        .Skip((int)skip)
-            //        .Take((int)take)
-            //        .ToArray();
+            var itemUrls = blobInfos
+                .Where(x => PagesDocumentBuilder.SupportedExtensions.Any(y => x.RelativeUrl.ToLower().Trim().EndsWith(y)))
+                .Where(x => (startDate == null || x.ModifiedDate >= startDate) && (endDate == null || x.ModifiedDate <= endDate))
+                .OrderBy(x => x.ModifiedDate)
+                .Select(x => x.RelativeUrl)
+                .Skip((int)skip)
+                .Take((int)take)
+                .ToArray();
 
-            //    result = operations.Select(o =>
-            //        new IndexDocumentChange
-            //        {
-            //            DocumentId = o.ObjectId,
-            //            ChangeType = o.OperationType == EntryState.Deleted ? IndexDocumentChangeType.Deleted : IndexDocumentChangeType.Modified,
-            //            ChangeDate = o.ModifiedDate ?? o.CreatedDate,
-            //        }
-            //    ).ToArray();
-            //}
+            result = itemUrls.Select(x =>
+                new IndexDocumentChange
+                {
+                    DocumentId = x,
+                    ChangeType = IndexDocumentChangeType.Modified,
+                    ChangeDate = DateTime.UtcNow
+                }
+            ).ToArray();
 
             return Task.FromResult(result);
         }
 
-        private static ICollection<string> GetItemUrls(IContentBlobStorageProvider storageProvider, BlobSearchResult searchResult)
+        //TechDebt: CopyPaste from ContentController
+        private int CountContentItemsRecursive(string folderUrl, IContentBlobStorageProvider _contentStorageProvider, DateTime? startDate, DateTime? endDate, string excludedFolderUrl = null)
         {
-            var urls = new List<string>();
+            var searchResult = _contentStorageProvider.Search(folderUrl, null);
+            var retVal = searchResult.Items.Count(x => (startDate == null || x.ModifiedDate >= startDate) && (endDate == null || x.ModifiedDate <= endDate))
+                        + searchResult.Folders
+                            .Where(x => excludedFolderUrl == null || !x.RelativeUrl.EndsWith(excludedFolderUrl, StringComparison.InvariantCultureIgnoreCase))
+                            .Select(x => CountContentItemsRecursive(x.RelativeUrl, _contentStorageProvider, startDate, endDate))
+                            .Sum();
+
+            return retVal;
+        }
+
+        //TechDebt: CopyPaste GetItemUrls from sitemaps module StaticContentSitemapItemRecordProvider 
+        private static ICollection<BlobInfo> GetItemInfos(IContentBlobStorageProvider storageProvider, BlobSearchResult searchResult)
+        {
+            var urls = new List<BlobInfo>();
 
             foreach (var item in searchResult.Items)
             {
-                urls.Add(item.RelativeUrl);
+                urls.Add(item);
             }
             foreach (var folder in searchResult.Folders)
             {
                 var folderSearchResult = storageProvider.Search(folder.RelativeUrl, null);
-                urls.AddRange(GetItemUrls(storageProvider, folderSearchResult));
+                urls.AddRange(GetItemInfos(storageProvider, folderSearchResult));
             }
 
             return urls;

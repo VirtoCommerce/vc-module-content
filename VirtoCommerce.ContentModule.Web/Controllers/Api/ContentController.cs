@@ -176,10 +176,10 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <param name="criteria">searching criteria</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("search")]
+        [Route("~/api/content/search")]
         [ResponseType(typeof(ContentSearchResult))]
         [CheckPermission(Permission = ContentPredefinedPermissions.Read)]
-        public IHttpActionResult SearchContent(ContentSearchCriteria criteria)
+        public IHttpActionResult SearchContentIndexed(ContentSearchCriteria criteria)
         {
             var result = _contentSearchService.SearchAsync(criteria);
             return Ok(result);
