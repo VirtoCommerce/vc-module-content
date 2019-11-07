@@ -5,11 +5,11 @@ namespace VirtoCommerce.ContentModule.Data.Search
 {
     public class ContentSearchCriteria : SearchCriteriaBase
     {
-        public string StoreId { get; set; }
+        //public string StoreId { get; set; }
 
-        public string ContentType { get; set; }
+        //public string ContentType { get; set; }
 
-        public string FolderUrl { get; set; }
+        public string[] FolderUrls { get; set; }
 
     }
 }

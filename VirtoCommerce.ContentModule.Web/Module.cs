@@ -7,10 +7,11 @@ using VirtoCommerce.ContentModule.Data;
 using VirtoCommerce.ContentModule.Data.Handlers;
 using VirtoCommerce.ContentModule.Data.Repositories;
 using VirtoCommerce.ContentModule.Data.Search;
+using VirtoCommerce.ContentModule.Data.Search.Indexing;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.ContentModule.Web.ExportImport;
 using VirtoCommerce.ContentModule.Web.Security;
-
+using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Domain.Store.Model;
 using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Bus;
@@ -88,7 +89,8 @@ namespace VirtoCommerce.ContentModule.Web
             _container.RegisterInstance(contentProviderFactory);
 
             var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
-            eventHandlerRegistrar.RegisterHandler<ContentChangedEvent>(async (message, token) => await _container.Resolve<IndexContentChangedEventHandler>().Handle(message));
+            eventHandlerRegistrar.RegisterHandler<ContentChangedEvent>(
+                async (message, token) => await _container.Resolve<IndexContentChangedEventHandler>().Handle(message));
 
         }
 
@@ -255,6 +257,19 @@ namespace VirtoCommerce.ContentModule.Web
             //Register bounded security scope types
             var securityScopeService = _container.Resolve<IPermissionScopeService>();
             securityScopeService.RegisterSope(() => new ContentSelectedStoreScope());
+
+            // Indexing configuration
+            var contentIndexingConfiguration = new IndexDocumentConfiguration
+            {
+                DocumentType = ContentKnownDocumentTypes.MarkdownPages,
+                DocumentSource = new IndexDocumentSource
+                {
+                    ChangesProvider = _container.Resolve<PagesDocumentChangesProvider>(),
+                    DocumentBuilder = _container.Resolve<PagesDocumentBuilder>(),
+                },
+            };
+
+            _container.RegisterInstance(contentIndexingConfiguration.DocumentType, contentIndexingConfiguration);
         }
 
         public override void SetupDatabase()

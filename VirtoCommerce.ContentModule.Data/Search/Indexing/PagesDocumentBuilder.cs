@@ -1,21 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.CustomerModule.Data.Search.Indexing;
 using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.Assets;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.ContentModule.Data.Search.Indexing
 {
-    public class MarkdownPagesDocumentBuilder : IIndexDocumentBuilder
+    public class PagesDocumentBuilder : IIndexDocumentBuilder
     {
+        private readonly Func<string, IContentBlobStorageProvider> _contentStorageProviderFactory;
         private readonly IContentBlobStorageProvider _storageProvider;
 
-        public MarkdownPagesDocumentBuilder(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory)
+        public PagesDocumentBuilder(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory)
         {
+            _contentStorageProviderFactory = contentStorageProviderFactory;
             _storageProvider = contentStorageProviderFactory("Pages");
         }
 
@@ -37,22 +39,21 @@ namespace VirtoCommerce.ContentModule.Data.Search.Indexing
         protected virtual IndexDocument CreateDocument(BlobInfo blobInfo)
         {
             var document = new IndexDocument(blobInfo.Key);
-            var stream = _storageProvider.OpenRead(blobInfo.RelativeUrl);
             string pageStringContent = null;
-            using (var reader = new StreamReader(stream))
+            using (var stream = _storageProvider.OpenRead(blobInfo.RelativeUrl))
             {
-                pageStringContent = reader.ReadToEnd();
+                pageStringContent = stream.ReadToString();
             }
 
             document.AddFilterableValue("contentType", blobInfo.ContentType);
             document.AddFilterableAndSearchableValue("name", blobInfo.Name);
             document.AddFilterableAndSearchableValue("fileName", blobInfo.FileName);
-            document.AddFilterableAndSearchableValue("mimeType", blobInfo.MimeType);
+            document.AddFilterableValue("mimeType", blobInfo.MimeType);
             document.AddFilterableValue("modifiedDate", blobInfo.ModifiedDate);
             document.AddFilterableAndSearchableValue("relativeUrl", blobInfo.RelativeUrl);
-            document.AddFilterableAndSearchableValue("size", blobInfo.Size.ToString());
+            document.AddFilterableValue("size", blobInfo.Size.ToString());
             document.AddFilterableAndSearchableValue("url", blobInfo.Url);
-            document.AddFilterableValue("pageContent", pageStringContent);
+            document.AddFilterableAndSearchableValue("pageContent", pageStringContent);
 
             return document;
         }
