@@ -26,7 +26,7 @@ angular.module('virtoCommerce.contentModule')
                 take: $scope.pageSettings.itemsPerPageCount
             },
             function (data) {
-            	$scope.pageSettings.totalItems = data.result.itemsCount;
+                $scope.pageSettings.totalItems = data.result.totalCount;
             	_.each(data, function (x) {
             		x.isImage = x.mimeType && x.mimeType.startsWith('image/');
             		x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
