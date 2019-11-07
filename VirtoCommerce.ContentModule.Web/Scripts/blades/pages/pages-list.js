@@ -1,126 +1,34 @@
-angular.module('virtoCommerce.contentModule')
-    .controller('virtoCommerce.contentModule.pagesListController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', function ($rootScope, $scope, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
-        $scope.listEntries = [];
-        $scope.hasMore = true;
-
-
+﻿angular.module('virtoCommerce.contentModule')
+.controller('virtoCommerce.contentModule.pagesListController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', function ($rootScope, $scope, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
 	var blade = $scope.blade;
 	blade.updatePermission = 'content:update';
-        blade.isLoading = true;
+
 	$scope.selectedNodeId = null;
 
-	//blade.refresh = function () {
-	//	blade.isLoading = true;
-	//	contentApi.query(
- //           {
- //           	contentType: blade.contentType,
- //           	storeId: blade.storeId,
- //           	keyword: blade.searchKeyword,
- //           	folderUrl: blade.currentEntity.url
- //           },
- //           function (data) {
- //           	$scope.pageSettings.totalItems = data.length;
- //           	_.each(data, function (x) {
- //           		x.isImage = x.mimeType && x.mimeType.startsWith('image/');
- //           		x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
- //           	});
- //           	$scope.listEntries = data;
- //           	blade.isLoading = false;
+	blade.refresh = function () {
+		blade.isLoading = true;
+		contentApi.query(
+            {
+            	contentType: blade.contentType,
+            	storeId: blade.storeId,
+            	keyword: blade.searchKeyword,
+            	folderUrl: blade.currentEntity.url
+            },
+            function (data) {
+            	$scope.pageSettings.totalItems = data.length;
+            	_.each(data, function (x) {
+            		x.isImage = x.mimeType && x.mimeType.startsWith('image/');
+            		x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
+            	});
+            	$scope.listEntries = data;
+            	blade.isLoading = false;
 
- //           	//Set navigation breadcrumbs
- //           	setBreadcrumbs();
- //           }, function (error) {
- //           	bladeNavigationService.setError('Error ' + error.status, blade);
- //           });
- //   };
-
-        blade.refresh = function () {
-            $scope.listEntries = [];
-
-            if ($scope.pageSettings.currentPage !== 1) {
-                $scope.pageSettings.currentPage = 1;
-            }
-
-            loadData();
-
-            resetStateGrid();
-            
-        };
-
-    loadData(callback) {
-            lade.isLoading = true;
-            var criteria = {
-                contentType: blade.contentType,
-                storeId: blade.storeId,
-                searchPhrase: blade.searchKeyword,
-                folderUrl: blade.currentEntity.url
-            }
-            contentApi.search(
-                criteria,
-                function (data) {
-                    $scope.pageSettings.totalItems = data.totalCount;
-                    _.each(data, function (x) {
-                        x.isImage = x.mimeType && x.mimeType.startsWith('image/');
-                        x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
-                    });
-                    $scope.listEntries = $scope.listEntries.concat(data.results);
-                    $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
-                    blade.isLoading = false;
-
-                    //Set navigation breadcrumbs
-                    setBreadcrumbs();
-                }, function (error) {
-                    bladeNavigationService.setError('Error ' + error.status, blade);
-                });
-    }
-
-
-        function showMore() {
-            if ($scope.hasMore) {
-                ++$scope.pageSettings.currentPage;
-                $scope.gridApi.infiniteScroll.saveScrollPercentage();
-                loadData(function () {
-                    $scope.gridApi.infiniteScroll.dataLoaded();
-
-                    $timeout(function () {
-                        // wait for grid to ingest data changes
-                        if ($scope.gridApi.selection.getSelectAllState()) {
-                            $scope.gridApi.selection.selectAllRows();
-                        }
-                    });
-                });
-            }
-        }
-
-        $scope.setGridOptions = function (gridOptions) {
-            bladeUtils.initializePagination($scope, true);
-            $scope.pageSettings.itemsPerPageCount = 20;
-
-            uiGridHelper.initialize($scope, gridOptions, function (gridApi) {
-                //update gridApi for current grid
-                $scope.gridApi = gridApi;
-
-                uiGridHelper.bindRefreshOnSortChanged($scope);
-                $scope.gridApi.infiniteScroll.on.needLoadMoreData($scope, showMore);
-
+            	//Set navigation breadcrumbs
+            	setBreadcrumbs();
+            }, function (error) {
+            	bladeNavigationService.setError('Error ' + error.status, blade);
             });
-
-            // need to call refresh after digest cycle as we do not "$watch" for $scope.pageSettings.currentPage
-            $timeout(function () {
-                blade.refresh();
-            });
-        };
-
-        function resetStateGrid() {
-            if ($scope.gridApi) {
-                $scope.listEntries = [];
-                $scope.gridApi.selection.clearSelectedRows();
-                $scope.gridApi.infiniteScroll.resetScroll(true, true);
-                $scope.gridApi.infiniteScroll.dataLoaded();
-            }
-        }
-
-       
+	};
 
 	function newFolder(value, prefix) {
 		var result = prompt(prefix ? prefix + "\n\nEnter folder name:" : "Enter folder name:", value);
