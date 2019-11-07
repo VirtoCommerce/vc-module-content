@@ -21,8 +21,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             _searchRequestBuilders = searchRequestBuilders;
             _searchProvider = searchProvider;
-            _storageProvider = contentStorageProviderFactory("Pages");
-
+            _storageProvider = contentStorageProviderFactory(string.Empty);
         }
 
         public virtual async Task<GenericSearchResult<BlobInfo>> SearchAsync(ContentSearchCriteria criteria)

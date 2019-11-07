@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Hangfire;
+using VirtoCommerce.ContentModule.Data.Search;
 using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
@@ -24,48 +25,48 @@ namespace VirtoCommerce.ContentModule.Data.Handlers
                 throw new ArgumentNullException(nameof(message));
             }
 
-            var indexMemberIds = message.ChangedEntries.Where(x => (x.EntryState == EntryState.Modified || x.EntryState == EntryState.Added) && x.OldEntry.Key != null)
+            var updatedIds = message.ChangedEntries.Where(x => (x.EntryState == EntryState.Modified || x.EntryState == EntryState.Added) && x.OldEntry.Key != null)
                                                           .Select(x => x.OldEntry.Key)
                                                           .Distinct().ToArray();
 
-            if (!indexMemberIds.IsNullOrEmpty())
+            if (!updatedIds.IsNullOrEmpty())
             {
-                BackgroundJob.Enqueue(() => TryIndexMemberBackgroundJob(indexMemberIds));
+                BackgroundJob.Enqueue(() => TryIndexBackgroundJob(updatedIds));
             }
 
-            var deletedIndexMemberIds = message.ChangedEntries.Where(x => x.EntryState == EntryState.Deleted && x.OldEntry.Key != null)
+            var deletedIds = message.ChangedEntries.Where(x => x.EntryState == EntryState.Deleted && x.OldEntry.Key != null)
                                                           .Select(x => x.OldEntry.Key)
                                                           .Distinct().ToArray();
 
-            if (!deletedIndexMemberIds.IsNullOrEmpty())
+            if (!deletedIds.IsNullOrEmpty())
             {
-                BackgroundJob.Enqueue(() => TryDeleteIndexMemberBackgroundJob(deletedIndexMemberIds));
+                BackgroundJob.Enqueue(() => TryDeleteIndexBackgroundJob(deletedIds));
             }
 
             return Task.CompletedTask;
         }
 
         [DisableConcurrentExecution(60 * 60 * 24)]
-        public Task TryIndexMemberBackgroundJob(string[] indexMemberIds)
+        public Task TryIndexBackgroundJob(string[] updatedIds)
         {
-            return TryIndexMember(indexMemberIds);
+            return TryIndex(updatedIds);
         }
 
         [DisableConcurrentExecution(60 * 60 * 24)]
-        public Task TryDeleteIndexMemberBackgroundJob(string[] deletedIndexMemberIds)
+        public Task TryDeleteIndexBackgroundJob(string[] deletedIds)
         {
-            return TryDeleteIndexMember(deletedIndexMemberIds);
+            return TryDeleteIndex(deletedIds);
         }
 
 
-        protected virtual Task TryIndexMember(string[] indexMemberIds)
+        protected virtual Task TryIndex(string[] updatedIds)
         {
-            return _indexingManager.IndexDocumentsAsync(KnownDocumentTypes.Member, indexMemberIds);
+            return _indexingManager.IndexDocumentsAsync(ContentKnownDocumentTypes.MarkdownPages, updatedIds);
         }
 
-        protected virtual Task TryDeleteIndexMember(string[] deletedIndexMemberIds)
+        protected virtual Task TryDeleteIndex(string[] deletedIds)
         {
-            return _indexingManager.DeleteDocumentsAsync(KnownDocumentTypes.Member, deletedIndexMemberIds);
+            return _indexingManager.DeleteDocumentsAsync(ContentKnownDocumentTypes.MarkdownPages, deletedIds);
         }
 
     }

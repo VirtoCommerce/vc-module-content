@@ -36,9 +36,10 @@ namespace VirtoCommerce.ContentModule.Data.Search.Indexing
             var blobInfos = GetItemInfos(storageProvider, searchResult);
 
             var itemUrls = blobInfos
+                .Where(x => PagesDocumentBuilder.SupportedExtensions.Any(y => x.RelativeUrl.ToLower().Trim().EndsWith(y)))
                 .Where(x => (startDate == null || x.ModifiedDate >= startDate) && (endDate == null || x.ModifiedDate <= endDate))
                 .OrderBy(x => x.ModifiedDate)
-                .Select(x => x.Key)
+                .Select(x => x.RelativeUrl)
                 .Skip((int)skip)
                 .Take((int)take)
                 .ToArray();
