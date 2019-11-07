@@ -9,7 +9,7 @@ angular.module('virtoCommerce.contentModule')
         if ($scope.pageSettings.currentPage > 1) {
             $scope.pageSettings.currentPage = 1;
         } else {
-            blade.loadData();
+            loadData();
         }
     }
 
@@ -26,12 +26,12 @@ angular.module('virtoCommerce.contentModule')
                 take: $scope.pageSettings.itemsPerPageCount
             },
             function (data) {
-            	$scope.pageSettings.totalItems = data.itemsCount;
+            	$scope.pageSettings.totalItems = data.result.itemsCount;
             	_.each(data, function (x) {
             		x.isImage = x.mimeType && x.mimeType.startsWith('image/');
             		x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
             	});
-            	$scope.listEntries = data.results;
+            	$scope.listEntries = data.result.results;
             	blade.isLoading = false;
 
             	//Set navigation breadcrumbs

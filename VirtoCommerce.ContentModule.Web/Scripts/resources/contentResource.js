@@ -19,8 +19,7 @@ angular.module('virtoCommerce.contentModule')
         query: { url: 'api/content/:contentType/:storeId/search', isArray: true },
         search: {
             url: 'api/content/search',
-            method: 'POST',
-            headers: { 'Content-Type': undefined }
+            method: 'POST'            
         },
         get: {
             // using transformResponse to:
