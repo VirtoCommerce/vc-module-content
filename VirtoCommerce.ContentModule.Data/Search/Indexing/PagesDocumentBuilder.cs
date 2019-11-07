@@ -12,12 +12,10 @@ namespace VirtoCommerce.ContentModule.Data.Search.Indexing
 {
     public class PagesDocumentBuilder : IIndexDocumentBuilder
     {
-        private readonly Func<string, IContentBlobStorageProvider> _contentStorageProviderFactory;
         private readonly IContentBlobStorageProvider _storageProvider;
 
         public PagesDocumentBuilder(Func<string, IContentBlobStorageProvider> contentStorageProviderFactory)
         {
-            _contentStorageProviderFactory = contentStorageProviderFactory;
             _storageProvider = contentStorageProviderFactory("Pages");
         }
 

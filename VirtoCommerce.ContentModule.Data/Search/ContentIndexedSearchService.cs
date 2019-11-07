@@ -14,12 +14,14 @@ namespace VirtoCommerce.ContentModule.Data.Search
     {
         private readonly ISearchRequestBuilder[] _searchRequestBuilders;
         private readonly ISearchProvider _searchProvider;
+        private readonly IContentBlobStorageProvider _storageProvider;
 
 
-        public ContentIndexedSearchService(ISearchRequestBuilder[] searchRequestBuilders, ISearchProvider searchProvider)
+        public ContentIndexedSearchService(ISearchRequestBuilder[] searchRequestBuilders, ISearchProvider searchProvider, Func<string, IContentBlobStorageProvider> contentStorageProviderFactory)
         {
             _searchRequestBuilders = searchRequestBuilders;
             _searchProvider = searchProvider;
+            _storageProvider = contentStorageProviderFactory("Pages");
 
         }
 
@@ -61,23 +63,17 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
         protected virtual ICollection<BlobInfo> ConvertDocuments(IList<SearchDocument> documents, ContentSearchCriteria criteria)
         {
+
             var result = new List<BlobInfo>();
+            if (documents?.Any() == true)
+            {
+                var itemIds = documents.Select(doc => doc.Id).ToArray();
+                var items = itemIds.Where(x => x.ToLower().Trim().EndsWith(".md"))
+                    .Select(x => _storageProvider.GetBlobInfo(x))
+                    .ToList();
 
-            //if (documents?.Any() == true)
-            //{
-            //    var itemIds = documents.Select(doc => doc.Id).ToArray();
-            //    var items = GeMembersByIds(itemIds, criteria);
-            //    var itemsMap = items.ToDictionary(m => m.Id, m => m);
-
-            //    // Preserve documents order
-            //    var members = documents
-            //        .Select(doc => itemsMap.ContainsKey(doc.Id) ? itemsMap[doc.Id] : null)
-            //        .Where(m => m != null)
-            //        .ToArray();
-
-            //    result.AddRange(members);
-            //}
-
+                result.AddRange(items);
+            }
             return result;
         }
     }
