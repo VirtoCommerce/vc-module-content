@@ -63,17 +63,16 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
         protected virtual ICollection<BlobInfo> ConvertDocuments(IList<SearchDocument> documents, ContentSearchCriteria criteria)
         {
-
             var result = new List<BlobInfo>();
             if (documents?.Any() == true)
             {
                 var itemIds = documents.Select(doc => doc.Id).ToArray();
-                var items = itemIds.Where(x => x.ToLower().Trim().EndsWith(".md"))
-                    .Select(x => _storageProvider.GetBlobInfo(x))
+                var items = itemIds.Select(x => _storageProvider.GetBlobInfo(x))
                     .ToList();
 
                 result.AddRange(items);
             }
+
             return result;
         }
     }
