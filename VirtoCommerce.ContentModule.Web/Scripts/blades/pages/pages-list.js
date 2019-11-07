@@ -17,6 +17,7 @@ angular.module('virtoCommerce.contentModule')
 		blade.isLoading = true;
 		contentApi.search(
             {
+                objectType: "Pages",
             	contentType: blade.contentType,
             	storeId: blade.storeId,
             	searchPhrase: blade.searchKeyword,
