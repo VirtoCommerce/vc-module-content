@@ -61,12 +61,12 @@ namespace VirtoCommerce.ContentModule.Data.Handlers
 
         protected virtual Task TryIndex(string[] updatedIds)
         {
-            return _indexingManager.IndexDocumentsAsync(ContentKnownDocumentTypes.MarkdownPages, updatedIds);
+            return _indexingManager.IndexDocumentsAsync(ContentKnownDocumentTypes.Pages, updatedIds);
         }
 
         protected virtual Task TryDeleteIndex(string[] deletedIds)
         {
-            return _indexingManager.DeleteDocumentsAsync(ContentKnownDocumentTypes.MarkdownPages, deletedIds);
+            return _indexingManager.DeleteDocumentsAsync(ContentKnownDocumentTypes.Pages, deletedIds);
         }
 
     }

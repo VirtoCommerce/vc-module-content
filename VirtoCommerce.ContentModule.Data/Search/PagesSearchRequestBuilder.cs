@@ -17,7 +17,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
             _searchPhraseParser = searchPhraseParser;
         }
 
-        public virtual string DocumentType { get; } = ContentKnownDocumentTypes.MarkdownPages;
+        public virtual string DocumentType { get; } = ContentKnownDocumentTypes.Pages;
 
         public virtual SearchRequest BuildRequest(SearchCriteriaBase criteria)
         {

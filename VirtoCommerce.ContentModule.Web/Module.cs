@@ -262,7 +262,7 @@ namespace VirtoCommerce.ContentModule.Web
             // Indexing configuration
             var contentIndexingConfiguration = new IndexDocumentConfiguration
             {
-                DocumentType = ContentKnownDocumentTypes.MarkdownPages,
+                DocumentType = ContentKnownDocumentTypes.Pages,
                 DocumentSource = new IndexDocumentSource
                 {
                     ChangesProvider = _container.Resolve<PagesDocumentChangesProvider>(),
