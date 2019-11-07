@@ -3,7 +3,10 @@ angular.module('virtoCommerce.contentModule')
 	var blade = $scope.blade;
 	blade.updatePermission = 'content:update';
 
-	$scope.selectedNodeId = null;
+    $scope.selectedNodeId = null;
+    function isSearchingMode() {
+        return !!blade.searchKeyword;
+    }
 
     blade.refresh = function () {
         if ($scope.pageSettings.currentPage > 1) {
@@ -13,33 +16,75 @@ angular.module('virtoCommerce.contentModule')
         }
     }
 
-	function loadData () {
-		blade.isLoading = true;
-		contentApi.search(
+    function currentPageChanged() {
+        if (isSearchingMode) {
+            loadData();
+        }
+    }
+
+    function loadData() {
+        if (isSearchingMode()) {
+            makeSearch();
+        }
+        else {
+            makeNavigation();
+        }
+    }
+
+    function   makeSearch() {
+            blade.isLoading = true;
+            contentApi.search(
+                {
+                    objectType: "Pages",
+                    contentType: blade.contentType,
+                    storeId: blade.storeId,
+                    searchPhrase: blade.searchKeyword,
+                    folderUrl: blade.currentEntity.relativeUrl,
+                    skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
+                    take: $scope.pageSettings.itemsPerPageCount
+                },
+                function (data) {
+                    $scope.pageSettings.totalItems = data.result.totalCount;
+                    adjustResponsedDataList(data.result.results);
+                    $scope.listEntries = data.result.results;
+                    blade.isLoading = false;
+
+                    //Set navigation breadcrumbs
+                    setBreadcrumbs();
+                }, function (error) {
+                    bladeNavigationService.setError('Error ' + error.status, blade);
+                });        
+
+    }
+
+    function adjustResponsedDataList(data) {
+        _.each(data, function (x) {
+            x.isImage = x.mimeType && x.mimeType.startsWith('image/');
+            x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
+        });
+    }
+
+    function makeNavigation() {
+        blade.isLoading = true;
+        contentApi.query(
             {
-                objectType: "Pages",
-            	contentType: blade.contentType,
-            	storeId: blade.storeId,
-            	searchPhrase: blade.searchKeyword,
-                folderUrl: blade.currentEntity.url,
-                skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
-                take: $scope.pageSettings.itemsPerPageCount
+                contentType: blade.contentType,
+                storeId: blade.storeId,
+                keyword: blade.searchKeyword,
+                folderUrl: blade.currentEntity.url
             },
             function (data) {
-                $scope.pageSettings.totalItems = data.result.totalCount;
-            	_.each(data, function (x) {
-            		x.isImage = x.mimeType && x.mimeType.startsWith('image/');
-            		x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
-            	});
-            	$scope.listEntries = data.result.results;
-            	blade.isLoading = false;
+                $scope.pageSettings.totalItems = data.length;
+                adjustResponsedDataList(data);
+                $scope.listEntries = data;
+                blade.isLoading = false;
 
-            	//Set navigation breadcrumbs
-            	setBreadcrumbs();
+                //Set navigation breadcrumbs
+                setBreadcrumbs();
             }, function (error) {
-            	bladeNavigationService.setError('Error ' + error.status, blade);
+                bladeNavigationService.setError('Error ' + error.status, blade);
             });
-	};
+    }
 
 	function newFolder(value, prefix) {
 		var result = prompt(prefix ? prefix + "\n\nEnter folder name:" : "Enter folder name:", value);
@@ -304,7 +349,7 @@ angular.module('virtoCommerce.contentModule')
         	$scope.$watch('pageSettings.currentPage', gridApi.pagination.seek);
             });
         bladeUtils.initializePagination($scope, true);
-        $scope.$watch('pageSettings.currentPage', loadData);
+        $scope.$watch('pageSettings.currentPage', currentPageChanged);
 
 	};
     // bladeUtils.initializePagination($scope, true);
