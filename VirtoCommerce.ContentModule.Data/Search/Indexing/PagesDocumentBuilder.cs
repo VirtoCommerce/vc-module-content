@@ -53,7 +53,6 @@ namespace VirtoCommerce.ContentModule.Data.Search.Indexing
             document.AddFilterableValue("modifiedDate", blobInfo.ModifiedDate);
             document.AddFilterableAndSearchableValue("relativeUrl", blobInfo.RelativeUrl);
             document.AddFilterableValue("size", blobInfo.Size.ToString());
-            document.AddFilterableAndSearchableValue("url", blobInfo.Url);
             document.AddSearchableValue(pageStringContent);
 
             return document;
