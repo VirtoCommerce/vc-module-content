@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
@@ -188,7 +188,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("unpack")]
         [ResponseType(typeof(void))]
         [CheckPermission(Permission = ContentPredefinedPermissions.Update)]
-        public IHttpActionResult Unpack(string contentType, string storeId, string archivePath, string destPath)
+        public IHttpActionResult Unpack(string contentType, string storeId, string archivePath, string destPath = "default")
         {
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
 
