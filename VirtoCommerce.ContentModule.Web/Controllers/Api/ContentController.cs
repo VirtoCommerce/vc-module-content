@@ -191,20 +191,39 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         public IHttpActionResult Unpack(string contentType, string storeId, string archivePath, string destPath = "default")
         {
             var storageProvider = _contentStorageProviderFactory(GetContentBasePath(contentType, storeId));
+            const char separator = '/';
 
             using (var stream = storageProvider.OpenRead(archivePath))
             using (var archive = new ZipArchive(stream))
             {
                 foreach (var entry in archive.Entries)
                 {
-                    if (!entry.FullName.EndsWith("/"))
+                    var segments = entry.FullName.Split(separator);
+
+                    if (!entry.FullName.EndsWith(separator.ToString()))
                     {
-                        var fileName = String.Join("/", entry.FullName.Split('/').Skip(1));
+                        var exceptFirst = segments.Skip(1);
+                        var fileName = string.Join(separator.ToString(), exceptFirst);
+                        var targetPath = $"{destPath}{separator}{fileName}";
+
                         using (var entryStream = entry.Open())
-                        using (var targetStream = storageProvider.OpenWrite(destPath + "/" + fileName))
+                        using (var targetStream = storageProvider.OpenWrite(targetPath))
                         {
                             entryStream.CopyTo(targetStream);
                         }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            destPath = segments.First();
+                        }
+                        catch (Exception exception)
+                        {
+                            throw new FormatException("Can't find root segment in provided file", exception);
+                        }
+
+                        storageProvider.CreateFolder(new BlobFolder { Name = destPath });
                     }
                 }
 
