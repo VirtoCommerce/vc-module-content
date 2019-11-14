@@ -342,7 +342,7 @@ angular.module('virtoCommerce.contentModule')
 
 	// ui-grid
     $scope.setGridOptions = function (gridOptions) {
-        // gridOptions.paginationPageSize = 20;
+        gridOptions.paginationPageSize = 20;
         // gridOptions.useExternalPagination = true;
 		uiGridHelper.initialize($scope, gridOptions,
         function (gridApi) {
