@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.themeUploadController', ['$rootScope', '$scope', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', 'FileUploader', 'platformWebApp.bladeNavigationService', function ($rootScope, $scope, dialogService, contentApi, FileUploader, bladeNavigationService) {
     var blade = $scope.blade;
 
@@ -27,11 +27,15 @@
     };
 
     uploader.onSuccessItem = function (fileItem, files) {
+
+        var filename = fileItem.file.name;
+        var filenameWithoutExt = filename.substring(0, filename.lastIndexOf('.'));
+
         contentApi.unpack({
             contentType: 'themes',
             storeId: blade.storeId,
             archivepath: files[0].name,
-            destPath: $scope.themeName
+            destPath: filenameWithoutExt
         }, function (data) {
             if (blade.isActivateAfterSave) {
                 var prop = _.findWhere(blade.store.dynamicProperties, { name: 'DefaultThemeName' });
