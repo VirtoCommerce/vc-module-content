@@ -7,6 +7,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -87,6 +88,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpDelete]
         [Route("")]
         [Authorize(Permissions.Delete)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteContent(string contentType, string storeId, [FromQuery] string[] urls)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
@@ -154,6 +156,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("move")]
         [Authorize(Permissions.Update)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public ActionResult MoveContent(string contentType, string storeId, [FromQuery] string oldUrl, [FromQuery] string newUrl)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
@@ -171,6 +174,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("~/api/content/copy")]
         [Authorize(Permissions.Update)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public ActionResult CopyContent([FromQuery] string srcPath, [FromQuery] string destPath)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(string.Empty);
@@ -191,6 +195,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("unpack")]
         [Authorize(Permissions.Update)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Unpack(string contentType, string storeId, [FromQuery] string archivePath, [FromQuery] string destPath)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
@@ -227,6 +232,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpPost]
         [Route("folder")]
         [Authorize(Permissions.Create)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> CreateContentFolder(string contentType, string storeId, [FromBody] ContentFolder folder)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
