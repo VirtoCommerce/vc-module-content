@@ -1,6 +1,6 @@
 # VirtoCommerce.Content
 
-## Overview 
+## Overview
 
 VirtoCommerce.Content module is a  Content Management System.
 
