@@ -36,3 +36,6 @@ The new theme can be activated. In order to activate the theme, the admin should
 
 ## Manage Theme Assets
 
+The Theme assets blade contains folders and files that can be managed. 
+
+![Theme Assets](media/screen-theme-assets.png)
