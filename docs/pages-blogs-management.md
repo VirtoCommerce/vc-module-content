@@ -20,7 +20,7 @@ Managing the pages on admin side will result in changing the content and view on
 
 To edit the page, the admin should select a page from the list and click on it. The system will open the 'Edit Page' blade.
 
-### Markdown tab
+#### Markdown tab
 
 The Markdown tab consists of the Markdown subtab and Preview. Here you can add and edit the Page text.
 
@@ -28,7 +28,7 @@ The Markdown tab consists of the Markdown subtab and Preview. Here you can add a
 
 ![Preview text](media/screen-markdown-preview.png)
 
-### Metadata tab
+#### Metadata tab
 
 Here you can edit the page settings
 
@@ -50,5 +50,16 @@ The system allows to create a specific Main menu for each language.
 
 ## Blogs
 
+The admin can use the Blogs widget in VC Content Module to post news on the Storefront. The blog content should be created in markdown and then published so that it can be viewed on Storefront.
 
+### View Blogs list
 
+![Blogs](media/screen-blogs.png)
+
+### Edit Blogs
+
+![Edit Blogs](media/screen-edit-blogs.png)
+
+### Edit Blog Content
+
+![Blogs Content](media/screen-blogs-content.png)
