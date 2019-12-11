@@ -36,6 +36,19 @@ The new theme can be activated. In order to activate the theme, the admin should
 
 ## Manage Theme Assets
 
-The Theme assets blade contains folders and files that can be managed. 
+The Theme assets blade contains folders and files that can be managed. The admin can add new folders and files, delete the existing ones and rename them. The system also allows the admin to upload new folders and files and download the existing documents.
+
+### Theme Assets
 
 ![Theme Assets](media/screen-theme-assets.png)
+
+### Manage folders
+
+![Manage theme assets](media/screen-manage-theme-assets.png)
+
+### Manage documents
+
+![Manage files](media/screen-manage-files.png)
+
+
+
