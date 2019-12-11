@@ -55,7 +55,7 @@ Virto Commerce implements a variation of so called NO-CMS approach (similar to J
 
 Pages and blog articles are created using templating engine that supports both markdown and liquid. During runtime those templates are converted to html and persisted in memory until files are changed at which point content is regenerated.
 
-
+[Pages and Blogs Management](/docs/pages-and-blogs-management.md)
 
 ## Documentation
 

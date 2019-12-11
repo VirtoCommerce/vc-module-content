@@ -49,6 +49,3 @@ The Theme assets blade contains folders and files that can be managed. The admin
 ### Manage documents
 
 ![Manage files](media/screen-manage-files.png)
-
-
-
