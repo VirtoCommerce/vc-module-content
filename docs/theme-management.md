@@ -20,7 +20,7 @@ A new theme can also be added using the 'Add' button on the 'Themes list'
 
 ### Upload New Theme
 
-The system also allows add a new theme by uploading a theme zip file on 'Upload theme' blade. In order to upload the zip file, the admin should clicks the 'Upload' button on 'Themes list' blade and then simply drag and drop or browse the zip file on the opened 'Theme upload' blade
+The system also allows add a new theme by uploading a theme zip file on 'Upload theme' blade. In order to upload the zip file, the admin should click the 'Upload' button on 'Themes list' blade and then simply drag and drop or browse the zip file on the opened 'Theme upload' blade
 
 ![Upload theme](media/screen-upload-theme.png)
 

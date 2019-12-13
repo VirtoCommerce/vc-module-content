@@ -15,7 +15,7 @@ VirtoCommerce.Content module is a  Content Management System. The Content Module
 
 1. Themes Management on UI;
 1. Pages and blogs management on UI;
-1. link lists management;
+1. Link lists management;
 1. Manage documents in markdown format.
 
 The VC Content module can be accessed both ways: directly and via Stores module.
@@ -24,7 +24,7 @@ To access the VC Content directly you should navigate to More->Content Module
 
 ![Direct Access](docs/media/screen-access-content-directly.png)
 
-To access the VC Content Module via Stores module, you should navigate to More->Stores->select a Store-> Content module widget
+To access the VC Content Module via Stores module, you should navigate to More->Stores->Store name-> Content module widget
 
 ![Access from Store Module](docs/media/screen-access-from-store-module.png)
 
@@ -32,7 +32,7 @@ To access the VC Content Module via Stores module, you should navigate to More->
 
 ### Virto Commerce Theme
 
-Each theme template comes with its own theme settings. These settings allow you to customize your ecommerce website's design without requiring HTML or CSS knowledge.
+Each theme template comes with its own settings. These settings allow you to customize your ecommerce website's design without requiring HTML or CSS knowledge.
 
 Change logo, fonts, colors and more. Make your ecommerce website have the look you like.
 
@@ -45,10 +45,6 @@ You get full control over all the ecommerce templates and can translate them to 
 Depending on the theme used, the following translations are available: Danish, Dutch, Spanish, French, German, Greek, Italian, Japanese, Portuguese, Chinese, Swedish and over 50 other languages.
 
 Virto Commerce gives you 100% control over the design and HTML/CSS used by your ecommerce website and online shopping cart.
-
-Virto Commerce utilizes template language called Liquid. Liquid makes it easy to turn your HTML & CSS into a beautiful ecommerce website design.
-
-You can edit templates right in Virto Commerce Manager or using any other editor that you want. Templates can be saved in file system, database or remote repository (github) in order to be able to track all changes.
 
 [Theme Management](/docs/theme-management.md)
 
@@ -64,7 +60,7 @@ Pages and blog articles are created using templating engine that supports both m
 
 To view the link lists related to a specific Store, the admin should select the Store and click on the 'Link lists' widget. The system will open the 'Link lists' blade.
 
-The list contains all the links displayed on Storefront, example 'Footer', 'Main menu', etc. The admin can add additional links which will be displayed on the Storefront and edit the existing ones.
+The list contains all the links displayed on Storefront, example 'Footer', 'Main menu', etc. The admin can add additional links that will be displayed on the Storefront and edit the existing ones.
 
 The Main menu and Footer are hard-coded. Any other links can be added by the admin, but they should relate to one of the hard coded link.
 
