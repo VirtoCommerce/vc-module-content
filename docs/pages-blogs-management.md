@@ -34,20 +34,6 @@ Here you can edit the page settings
 
 ![Metadata](media/screen-metadata.png)
 
-## Link Lists
-
-To view the link lists related to a specific Store, the admin should select the Store and click on the 'Link lists' widget. The system will open the 'Link lists' blade.
-
-The list contains all the links displayed on Storefront, example 'Footer', 'Main menu', etc. The admin can add additional links which will be displayed on the Storefront and edit the existing ones.
-
-The Main menu and Footer are hard-coded. Any other links can be added by the admin, but they should relate to one of the hard coded link.
-
-![Links list](media/screen-link-lists.png)
-
-![Main menu](media/screen-main-menu-link.png)
-
-The system allows to create a specific Main menu for each language.
-
 ## Blogs
 
 The admin can use the Blogs widget in VC Content Module to post news on the Storefront. The blog content should be created in markdown and then published so that it can be viewed on Storefront.

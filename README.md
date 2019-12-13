@@ -11,7 +11,7 @@ VirtoCommerce.Content module is a  Content Management System.
 1. Themes Management on UI;
 1. Pages and blogs management on UI;
 1. link lists management;
-1. Documents in markdown format.
+1. Manage documents in markdown format.
 
 The VC Content module can be accessed both ways: directly and via Stores module.
 
@@ -23,9 +23,9 @@ To access the VC Content Module via Stores module, you should navigate to More->
 
 ![Access from Store Module](docs/media/screen-access-from-store-module.png)
 
-## Virto Commerce Theme
+## Feature Description
 
-### Introduction
+### Virto Commerce Theme
 
 Each theme template comes with its own theme settings. These settings allow you to customize your ecommerce website's design without requiring HTML or CSS knowledge.
 
@@ -47,9 +47,7 @@ You can edit templates right in Virto Commerce Manager or using any other editor
 
 [Theme Management](/docs/theme-management.md)
 
-## Pages and Blogs
-
-### Summary
+### Pages and Blogs
 
 Virto Commerce implements a variation of so called NO-CMS approach (similar to Jekyll) for pages and blogs (and themes to some extent). That means there is no hard dependency on where CMS content like pages, articles and templates are stored. They can be stored in database, github or local file system. This can be configured using CMS config. The content is downloaded from the remote location at runtime and is saved in the local website folder structure under App_Data folder from where local runtime generator picks it up and renders as html.
 
@@ -57,12 +55,19 @@ Pages and blog articles are created using templating engine that supports both m
 
 [Pages and Blogs Management](/docs/pages-blogs-management.md)
 
-## Documentation
+### Link lists
 
-Developer guide:
+To view the link lists related to a specific Store, the admin should select the Store and click on the 'Link lists' widget. The system will open the 'Link lists' blade.
 
-* <a href="https://virtocommerce.com/docs/vc2devguide/working-with-storefront/theme-development" target="_blank">Theme development</a>
-* <a href="https://virtocommerce.com/docs/vc2devguide/working-with-storefront/pages-and-blogs" target="_blank">Pages and Blogs</a>
+The list contains all the links displayed on Storefront, example 'Footer', 'Main menu', etc. The admin can add additional links which will be displayed on the Storefront and edit the existing ones.
+
+The Main menu and Footer are hard-coded. Any other links can be added by the admin, but they should relate to one of the hard coded link.
+
+![Links list](docs/media/screen-link-lists.png)
+
+![Main menu](docs/media/screen-main-menu-link.png)
+
+The system allows to create a specific Main menu for each language.
 
 ## Installation
 
