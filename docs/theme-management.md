@@ -1,8 +1,20 @@
 # Theme Management
 
-The theme structure should be predefined in advance, containing folders and files for editing the theme. The files are used for creating the Storefront UI.
+Virtocommerce Theme is a frontend application for your ecommerce websites.
+The default Theme is included into the VC Content Module and provided out of the box. The default theme consists of the following folders:
 
-VirtoCommenrce Content Module provides one default theme and possibility to add as many themes as necessary. There is also a possibility to set an active theme, that will be displayed on Storefront.
+1. Assets;
+1. Config;
+1. Layouts;
+1. Locales;
+1. Snippets;
+1. Social;
+1. Templates.
+
+Each folder contains files that define the Storefront UI.
+The theme structure should be predefined in advance and is created by a developer.
+
+VirtoCommenrce Content Module allows adding as many themes as necessary. There is also a possibility to set an active theme, that will be displayed on Storefront.
 
 ![Theme View](media/screen-theme-view.png)
 
