@@ -1,5 +1,6 @@
 # Pages and Blogs Management
 
+
 ## Pages
 
 Pages displayed on the Storefront can be managed in VC Content Module. The admin should select the Store and then click on 'Pages'. The system will display the 'Pages list' blade and allow the admin to manage each page from the list. The following actions are allowed by the system:

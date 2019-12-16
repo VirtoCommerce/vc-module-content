@@ -46,7 +46,7 @@ Depending on the theme used, the following translations are available: Danish, D
 
 Virto Commerce gives you 100% control over the design and HTML/CSS used by your ecommerce website and online shopping cart.
 
-[Theme Management](/docs/theme-management.md)
+How to add and activate Theme in Store described in the [Theme Management](/docs/theme-management.md) article.
 
 ### Pages and Blogs
 
@@ -54,7 +54,7 @@ Virto Commerce implements a variation of so called NO-CMS approach (similar to J
 
 Pages and blog articles are created using templating engine that supports both markdown and liquid. During runtime those templates are converted to html and persisted in memory until files are changed at which point content is regenerated.
 
-[Pages and Blogs Management](/docs/pages-blogs-management.md)
+How to edit Pages and blogs in Store is described in the [Pages and Blogs Management](/docs/pages-blogs-management.md) article
 
 ### Link lists
 
