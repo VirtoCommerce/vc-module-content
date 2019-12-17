@@ -1,9 +1,11 @@
 # Pages and Blogs Management
 
+Blogs in Virtocommerce are used to update the Blog content (news and articles) on the Storefront.
+On Storefront the Blog contains static pages, like 'About us', 'Search', 'Terms & Conditions', 'Contact us' that also can be edited in Virtocommerce Content module.
 
 ## Pages
 
-Pages displayed on the Storefront can be managed in VC Content Module. The admin should select the Store and then click on 'Pages'. The system will display the 'Pages list' blade and allow the admin to manage each page from the list. The following actions are allowed by the system:
+In order to edit the pages in VC Content module, the admin should select the Store and then click on 'Pages'. The system will display the 'Pages list' blade and allow the admin to manage each page from the list. The following actions are allowed by the system:
 
 1. Download the file that contains page content;
 1. Copy link;
