@@ -32,31 +32,39 @@ To access the VC Content Module via Stores module, you should navigate to More->
 
 ### Virto Commerce Theme
 
-Each theme template comes with its own settings. These settings allow you to customize your ecommerce website's design without requiring HTML or CSS knowledge.
+Virtocommerce Theme is a frontend application for your ecommerce websites.
+The default Theme is included into the VC Content Module and provided out of the box. The default theme consists of the following folders:
 
-Change logo, fonts, colors and more. Make your ecommerce website have the look you like.
+1. Assets;
+1. Config;
+1. Layouts;
+1. Locales;
+1. Snippets;
+1. Social;
+1. Templates.
 
-You can also customize homepage and product layouts, add banners, ads, slideshows and more.
+Each folder contains files that define the Storefront UI.
+The theme structure should be predefined in advance and is created by a developer.
 
-Your ecommerce website can be displayed in any language you want. You can allow customers to pick a language they want or auto detect based on location. Virto Commerce supports local currencies, tax rates, prices etc.
+VirtoCommenrce Content Module allows adding as many themes as necessary. There is also a possibility to set an active theme, that will be displayed on Storefront.
 
-You get full control over all the ecommerce templates and can translate them to any language. If page doesn’t have any translation available then default one can be used instead.
-
-Depending on the theme used, the following translations are available: Danish, Dutch, Spanish, French, German, Greek, Italian, Japanese, Portuguese, Chinese, Swedish and over 50 other languages.
-
-Virto Commerce gives you 100% control over the design and HTML/CSS used by your ecommerce website and online shopping cart.
+![Theme View](docs/media/screen-theme-view.png)
 
 How to add and activate Theme in Store described in the [Theme Management](/docs/theme-management.md) article.
 
 ### Pages and Blogs
 
-Virto Commerce implements a variation of so called NO-CMS approach (similar to Jekyll) for pages and blogs (and themes to some extent). That means there is no hard dependency on where CMS content like pages, articles and templates are stored. They can be stored in database, github or local file system. This can be configured using CMS config. The content is downloaded from the remote location at runtime and is saved in the local website folder structure under App_Data folder from where local runtime generator picks it up and renders as html.
+Blogs in Virtocommerce are used to update the Blog content (news and articles) on the Storefront.
 
-Pages and blog articles are created using templating engine that supports both markdown and liquid. During runtime those templates are converted to html and persisted in memory until files are changed at which point content is regenerated.
+On Storefront the Blog contains static pages, like 'About us', 'Search', 'Terms & Conditions', 'Contact us' that also can be edited in Virtocommerce Content module.
+
+ The content is downloaded from the remote location at runtime and is saved in the local website folder structure under App_Data folder from where local runtime generator picks it up and renders as html.
 
 How to edit Pages and blogs in Store is described in the [Pages and Blogs Management](/docs/pages-blogs-management.md) article
 
 ### Link lists
+
+The Link lists contain links to all pages in Store and show how links to different pages appear sorted in web store.
 
 To view the link lists related to a specific Store, the admin should select the Store and click on the 'Link lists' widget. The system will open the 'Link lists' blade.
 

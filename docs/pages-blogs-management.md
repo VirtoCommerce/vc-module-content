@@ -1,7 +1,6 @@
 # Pages and Blogs Management
 
-Blogs in Virtocommerce are used to update the Blog content (news and articles) on the Storefront.
-On Storefront the Blog contains static pages, like 'About us', 'Search', 'Terms & Conditions', 'Contact us' that also can be edited in Virtocommerce Content module.
+
 
 ## Pages
 
