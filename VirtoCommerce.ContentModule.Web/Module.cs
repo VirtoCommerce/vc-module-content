@@ -1,14 +1,20 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Web;
 using System.Web.Hosting;
 using Microsoft.Practices.Unity;
+using VirtoCommerce.ContentModule.Data;
+using VirtoCommerce.ContentModule.Data.Handlers;
 using VirtoCommerce.ContentModule.Data.Repositories;
+using VirtoCommerce.ContentModule.Data.Search;
+using VirtoCommerce.ContentModule.Data.Search.Indexing;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.ContentModule.Web.ExportImport;
 using VirtoCommerce.ContentModule.Web.Security;
+using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Domain.Store.Model;
 using VirtoCommerce.Platform.Core.Assets;
+using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
@@ -80,6 +86,13 @@ namespace VirtoCommerce.ContentModule.Web
                 throw new InvalidOperationException("Unknown storage provider: " + blobConnectionString.Provider);
             };
             _container.RegisterInstance(contentProviderFactory);
+
+            _container.RegisterType<ISearchRequestBuilder, PagesSearchRequestBuilder>(nameof(PagesSearchRequestBuilder));
+            _container.RegisterType<IContentSearchService, ContentIndexedSearchService>();
+
+            var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
+            eventHandlerRegistrar.RegisterHandler<ContentChangedEvent>(
+                async (message, token) => await _container.Resolve<IndexContentChangedEventHandler>().Handle(message));
         }
 
         public override void PostInitialize()
@@ -92,7 +105,7 @@ namespace VirtoCommerce.ContentModule.Web
             //Register special ContentItem.FrontMatterHeaders type which will be used to define YAML headers for pages, blogs and posts
             const string frontMatterHeaderType = "VirtoCommerce.ContentModule.Web.FrontMatterHeaders";
             dynamicPropertyService.RegisterType(frontMatterHeaderType);
-            
+
             //Title
             var titleHeader = new DynamicProperty
             {
@@ -224,27 +237,40 @@ namespace VirtoCommerce.ContentModule.Web
                 CreatedBy = "Auto"
             };
 
-			//Create Authorize dynamic property for  Store 
-			var authorizeProperty = new DynamicProperty
-			{
-				Id = "Authorize_FrontMatterHeader",
-				Name = "authorize",
-				ObjectType = frontMatterHeaderType,
-				ValueType = DynamicPropertyValueType.Boolean,
-				CreatedBy = "Auto"
-			};
+            //Create Authorize dynamic property for  Store 
+            var authorizeProperty = new DynamicProperty
+            {
+                Id = "Authorize_FrontMatterHeader",
+                Name = "authorize",
+                ObjectType = frontMatterHeaderType,
+                ValueType = DynamicPropertyValueType.Boolean,
+                CreatedBy = "Auto"
+            };
 
-			dynamicPropertyService.SaveProperties(new[] {
-				templateHeader, titleHeader, defaultThemeNameProperty,
-				permalinkHeader, aliasesHeader, layoutHeader,
-				publishedHeader, categoryHeader, categoriesHeader,
-				tagsHeader, isTrendingHeader, isStickedHeader,
-				mainImageHeader, dateHeader, authorizeProperty
-			});
+            dynamicPropertyService.SaveProperties(new[] {
+                templateHeader, titleHeader, defaultThemeNameProperty,
+                permalinkHeader, aliasesHeader, layoutHeader,
+                publishedHeader, categoryHeader, categoriesHeader,
+                tagsHeader, isTrendingHeader, isStickedHeader,
+                mainImageHeader, dateHeader, authorizeProperty
+            });
 
             //Register bounded security scope types
             var securityScopeService = _container.Resolve<IPermissionScopeService>();
             securityScopeService.RegisterSope(() => new ContentSelectedStoreScope());
+
+            // Indexing configuration
+            var contentIndexingConfiguration = new IndexDocumentConfiguration
+            {
+                DocumentType = ContentKnownDocumentTypes.Pages,
+                DocumentSource = new IndexDocumentSource
+                {
+                    ChangesProvider = _container.Resolve<PagesDocumentChangesProvider>(),
+                    DocumentBuilder = _container.Resolve<PagesDocumentBuilder>(),
+                },
+            };
+
+            _container.RegisterInstance(contentIndexingConfiguration.DocumentType, contentIndexingConfiguration);
         }
 
         public override void SetupDatabase()

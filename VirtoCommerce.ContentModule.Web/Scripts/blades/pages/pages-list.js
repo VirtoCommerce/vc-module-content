@@ -1,34 +1,90 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.pagesListController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', function ($rootScope, $scope, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
 	var blade = $scope.blade;
 	blade.updatePermission = 'content:update';
 
-	$scope.selectedNodeId = null;
+    $scope.selectedNodeId = null;
+    function isSearchingMode() {
+        return !!blade.searchKeyword;
+    }
 
-	blade.refresh = function () {
-		blade.isLoading = true;
-		contentApi.query(
+    blade.refresh = function () {
+        if ($scope.pageSettings.currentPage > 1) {
+            $scope.pageSettings.currentPage = 1;
+        } else {
+            loadData();
+        }
+    };
+
+    function currentPageChanged() {
+        if (isSearchingMode) {
+            loadData();
+        }
+    }
+
+    function loadData() {
+        if (isSearchingMode()) {
+            makeSearch();
+        }
+        else {
+            makeNavigation();
+        }
+    }
+
+    function makeSearch() {
+            blade.isLoading = true;
+            contentApi.search(
+                {
+                    objectType: "Pages",
+                    contentType: blade.contentType,
+                    storeId: blade.storeId,
+                    searchPhrase: blade.searchKeyword,
+                    folderUrl: blade.currentEntity.relativeUrl,
+                    skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
+                    take: $scope.pageSettings.itemsPerPageCount
+                },
+                function (data) {
+                    $scope.pageSettings.totalItems = data.result.totalCount;
+                    adjustResponsedDataList(data.result.results);
+                    $scope.listEntries = data.result.results;
+                    blade.isLoading = false;
+
+                    //Set navigation breadcrumbs
+                    setBreadcrumbs();
+                }, function (error) {
+                    bladeNavigationService.setError('Error ' + error.status, blade);
+                });        
+
+    }
+
+    function adjustResponsedDataList(data) {
+        _.each(data, function (x) {
+            x.isImage = x.mimeType && x.mimeType.startsWith('image/');
+            x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
+        });
+    }
+
+    function makeNavigation() {
+        blade.isLoading = true;
+        contentApi.query(
             {
-            	contentType: blade.contentType,
-            	storeId: blade.storeId,
-            	keyword: blade.searchKeyword,
-            	folderUrl: blade.currentEntity.url
+                contentType: blade.contentType,
+                storeId: blade.storeId,
+                keyword: blade.searchKeyword,
+                folderUrl: blade.currentEntity.url
             },
             function (data) {
-            	$scope.pageSettings.totalItems = data.length;
-            	_.each(data, function (x) {
-            		x.isImage = x.mimeType && x.mimeType.startsWith('image/');
-            		x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
-            	});
-            	$scope.listEntries = data;
-            	blade.isLoading = false;
+                $scope.pageSettings.totalItems = data.length;
+                adjustResponsedDataList(data);
+                $scope.listEntries = data;
+                blade.isLoading = false;
 
-            	//Set navigation breadcrumbs
-            	setBreadcrumbs();
+                //Set navigation breadcrumbs
+                setBreadcrumbs();
             }, function (error) {
-            	bladeNavigationService.setError('Error ' + error.status, blade);
+                bladeNavigationService.setError('Error ' + error.status, blade);
             });
-	};
+    }
 
 	function newFolder(value, prefix) {
 		var result = prompt(prefix ? prefix + "\n\nEnter folder name:" : "Enter folder name:", value);
@@ -36,7 +92,7 @@
 			contentApi.createFolder(
                     { contentType: blade.contentType, storeId: blade.storeId },
                     { name: result, parentUrl: blade.currentEntity.url },
-                    blade.refresh,
+                    loadData,
                     function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
 		}
 	}
@@ -50,7 +106,7 @@
 					storeId: blade.storeId,
 					oldUrl: listItem.url,
 					newUrl: listItem.url.substring(0, listItem.url.length - listItem.name.length) + result
-				}, blade.refresh,
+				}, loadData,
                 function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
 			}
 		};
@@ -161,26 +217,26 @@
 
 	function deleteList(selection) {
 		bladeNavigationService.closeChildrenBlades(blade, function () {
-			var dialog = {
-				id: "confirmDeleteItem",
-				title: "platform.dialogs.folders-delete.title",
-				message: "platform.dialogs.folders-delete.message",
-				callback: function (remove) {
-					if (remove) {
-						var listEntryIds = _.pluck(selection, 'url');
-						contentApi.delete({
-							contentType: blade.contentType,
-							storeId: blade.storeId,
-							urls: listEntryIds
-						},
-                        function () {
-                        	blade.refresh();
-                        	$rootScope.$broadcast("cms-statistics-changed", blade.storeId);
+            var dialog = {
+                id: "confirmDeleteItem",
+                title: "platform.dialogs.folders-delete.title",
+                message: "platform.dialogs.folders-delete.message",
+                callback: function (remove) {
+                    if (remove) {
+                        var listEntryIds = _.pluck(selection, 'url');
+                        contentApi.delete({
+                            contentType: blade.contentType,
+                            storeId: blade.storeId,
+                            urls: listEntryIds
                         },
-                        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-					}
-				}
-			}
+                            function () {
+                                loadData();
+                                $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
+                            },
+                            function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                    }
+                }
+            };
 
 			if (isBlogs() && !blade.currentEntity.type) {
 				angular.extend(dialog, {
@@ -208,7 +264,7 @@
 	blade.toolbarCommands = [
           {
           	name: "platform.commands.refresh", icon: 'fa fa-refresh',
-          	executeMethod: blade.refresh,
+            executeMethod: loadData,
           	canExecuteMethod: function () {
           		return true;
           	}
@@ -285,13 +341,19 @@
 	}
 
 	// ui-grid
-	$scope.setGridOptions = function (gridOptions) {
+    $scope.setGridOptions = function (gridOptions) {
+        gridOptions.paginationPageSize = 20;
+        // gridOptions.useExternalPagination = true;
 		uiGridHelper.initialize($scope, gridOptions,
         function (gridApi) {
         	$scope.$watch('pageSettings.currentPage', gridApi.pagination.seek);
-        });
+            });
+        bladeUtils.initializePagination($scope, true);
+        $scope.$watch('pageSettings.currentPage', currentPageChanged);
+
 	};
-	bladeUtils.initializePagination($scope, true);
+    // bladeUtils.initializePagination($scope, true);
+    
 
 	//Breadcrumbs
 	function setBreadcrumbs() {
@@ -311,18 +373,19 @@
 	}
 
 	function generateBreadcrumb(id, name) {
-		return {
-			id: id,
-			name: name,
-			blade: blade,
-			navigate: function (breadcrumb) {
-				breadcrumb.blade.searchKeyword = null;
-				breadcrumb.blade.disableOpenAnimation = true;
-				bladeNavigationService.showBlade(breadcrumb.blade, breadcrumb.blade.parentBlade);
-			}
-		}
+        return {
+            id: id,
+            name: name,
+            blade: blade,
+            navigate: function (breadcrumb) {
+                breadcrumb.blade.searchKeyword = null;
+                breadcrumb.blade.disableOpenAnimation = true;
+                bladeNavigationService.showBlade(breadcrumb.blade, breadcrumb.blade.parentBlade);
+            }
+        };
 	}
 
 	blade.headIcon = isBlogs() ? 'fa-inbox' : 'fa-folder-o';
-	blade.refresh();
+
+    // blade.refresh();
 }]);
