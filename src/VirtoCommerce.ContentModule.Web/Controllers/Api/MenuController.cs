@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
@@ -27,7 +28,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("menu")]
         [Authorize(Permissions.Read)]
-        public async Task<ActionResult<MenuLinkList[]>> GetListsAsync([FromRoute]string storeId)
+        public async Task<ActionResult<MenuLinkList[]>> GetLists([FromRoute]string storeId)
         {
             var lists = (await _menuService.GetListsByStoreIdAsync(storeId)).ToArray();
 
@@ -46,7 +47,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("menu/{listId}")]
         [Authorize(Permissions.Read)]
-        public async Task<ActionResult<MenuLinkList>> GetListAsync([FromRoute]string storeId, [FromRoute]string listId)
+        public async Task<ActionResult<MenuLinkList>> GetList([FromRoute]string storeId, [FromRoute]string listId)
         {
             var item = await _menuService.GetListByIdAsync(listId);
             return Ok(item);
@@ -63,7 +64,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("menu/checkname")]
         [Authorize(Permissions.Read)]
-        public async Task<ActionResult<bool>> CheckNameAsync([FromRoute]string storeId, [FromQuery]string name, [FromQuery]string language = "", [FromQuery]string id = "")
+        public async Task<ActionResult<bool>> CheckName([FromRoute]string storeId, [FromQuery]string name, [FromQuery]string language = "", [FromQuery]string id = "")
         {
             var retVal = await _menuService.CheckListAsync(storeId, name, language, id);
             return Ok(new { Result = retVal });
@@ -76,6 +77,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpPost]
         [Route("menu")]
         [Authorize(Permissions.Update)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> UpdateMenuLinkList([FromBody]MenuLinkList list)
         {
             if (list == null)
@@ -94,6 +96,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpDelete]
         [Route("menu")]
         [Authorize(Permissions.Delete)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteMenuLinkLists([FromQuery] string[] listIds)
         {
             if (listIds == null)

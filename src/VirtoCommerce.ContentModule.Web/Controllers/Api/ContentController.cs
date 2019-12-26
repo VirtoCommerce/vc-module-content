@@ -7,6 +7,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -48,7 +49,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("~/api/content/{storeId}/stats")]
         [Authorize(Permissions.Read)]
-        public async Task<ActionResult<ContentStatistic>> GetStoreContentStatsAsync(string storeId)
+        public async Task<ActionResult<ContentStatistic>> GetStoreContentStats(string storeId)
         {
             var contentStorageProvider = _blobContentStorageProviderFactory.CreateProvider("");
             var cacheKey = CacheKey.With(GetType(), "pagesCount", $"content-{storeId}");
@@ -87,7 +88,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpDelete]
         [Route("")]
         [Authorize(Permissions.Delete)]
-        public async Task<ActionResult> DeleteContentAsync(string contentType, string storeId, [FromQuery] string[] urls)
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> DeleteContent(string contentType, string storeId, [FromQuery] string[] urls)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
             await storageProvider.RemoveAsync(urls);
@@ -130,7 +132,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("search")]
         [Authorize(Permissions.Read)]
-        public async Task<ActionResult<ContentItem[]>> SearchContentAsync(string contentType, string storeId, [FromQuery] string folderUrl = null, [FromQuery] string keyword = null)
+        public async Task<ActionResult<ContentItem[]>> SearchContent(string contentType, string storeId, [FromQuery] string folderUrl = null, [FromQuery] string keyword = null)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
 
@@ -154,6 +156,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("move")]
         [Authorize(Permissions.Update)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public ActionResult MoveContent(string contentType, string storeId, [FromQuery] string oldUrl, [FromQuery] string newUrl)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
@@ -171,6 +174,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("~/api/content/copy")]
         [Authorize(Permissions.Update)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public ActionResult CopyContent([FromQuery] string srcPath, [FromQuery] string destPath)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(string.Empty);
@@ -191,7 +195,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("unpack")]
         [Authorize(Permissions.Update)]
-        public async Task<ActionResult> UnpackAsync(string contentType, string storeId, [FromQuery] string archivePath, [FromQuery] string destPath)
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> Unpack(string contentType, string storeId, [FromQuery] string archivePath, [FromQuery] string destPath = "default")
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
 
@@ -227,7 +232,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpPost]
         [Route("folder")]
         [Authorize(Permissions.Create)]
-        public async Task<ActionResult> CreateContentFolderAsync(string contentType, string storeId, [FromBody] ContentFolder folder)
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> CreateContentFolder(string contentType, string storeId, [FromBody] ContentFolder folder)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
 
