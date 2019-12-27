@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="VirtoCommerce.Platform.Assets.AzureBlobStorage" Version="3.0.0-v3-feature-vp-7-0001" />
+        <PackageReference Include="VirtoCommerce.Platform.Assets.AzureBlobStorage" Version="3.0.0-rc.2" />
     </ItemGroup>
 
     <ItemGroup>
