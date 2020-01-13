@@ -21,7 +21,7 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
             #region MenuLinkList
 
             modelBuilder.Entity<MenuLinkListEntity>().ToTable("ContentMenuLinkList").HasKey(x => x.Id);
-            modelBuilder.Entity<MenuLinkListEntity>().Property(x => x.Id).HasMaxLength(128);
+            modelBuilder.Entity<MenuLinkListEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
             modelBuilder.Entity<MenuLinkListEntity>().Property(x => x.CreatedBy).HasMaxLength(64);
             modelBuilder.Entity<MenuLinkListEntity>().Property(x => x.ModifiedBy).HasMaxLength(64);
 
@@ -30,7 +30,7 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
             #region MenuLink
 
             modelBuilder.Entity<MenuLinkEntity>().ToTable("ContentMenuLink").HasKey(x => x.Id);
-            modelBuilder.Entity<MenuLinkEntity>().Property(x => x.Id).HasMaxLength(128);
+            modelBuilder.Entity<MenuLinkEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
             modelBuilder.Entity<MenuLinkEntity>().Property(x => x.CreatedBy).HasMaxLength(64);
             modelBuilder.Entity<MenuLinkEntity>().Property(x => x.ModifiedBy).HasMaxLength(64);
 

@@ -1,12 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <noWarn>1591</noWarn>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <IsPackable>true</IsPackable>
+        <noWarn>1591</noWarn>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-rc2-0109" />
-  </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-rc2-0134" />
+    </ItemGroup>
 
 </Project>
