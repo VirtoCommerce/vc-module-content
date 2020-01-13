@@ -33,7 +33,7 @@ angular.module('virtoCommerce.contentModule')
         $scope.themeName = item.file.name.substring(0, item.file.name.lastIndexOf('.'));
 
         if (!!blade.currentEntities && blade.currentEntities.length > 0
-            && _.any(blade.currentEntities, function (item) { return item.name === $scope.themeName; })) {
+            && _.any(blade.currentEntities, function (theme) { return theme.name === $scope.themeName; })) {
 
             var dialog = {
                 id: "confirmUploadTheme",
@@ -85,6 +85,6 @@ angular.module('virtoCommerce.contentModule')
         bladeNavigationService.setError(item._file.name + ' failed: ' + (response.message ? response.message : status), blade);
     };
 
-    blade.title = 'content.blades.theme-upload.title',
+    blade.title = 'content.blades.theme-upload.title';
     blade.isLoading = false;
 }]);
