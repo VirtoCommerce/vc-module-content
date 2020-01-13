@@ -1,4 +1,4 @@
-﻿{
+{
   "content": {
     "main-menu-title": "Content",
     "blades": {
@@ -194,63 +194,67 @@
       }
     },
     "dialogs": {
-      "theme-clone": {
-        "title": "Clone confirmation",
-        "message": "Are you sure you want to clone selected Theme?"
-      },
-      "link-list-delete": {
-        "title": "Delete confirmation",
-        "message": "Are you sure you want to delete selected Link lists?"
-      },
-      "links-delete": {
-        "title": "Delete confirmation",
-        "message": "Are you sure you want to delete selected links?"
-      },
-      "blog-delete": {
-        "title": "Delete confirmation",
-        "message": "Are you sure you want to delete selected Blog?"
-      },
-      "page-delete": {
-        "title": "Delete confirmation",
-        "message": "Are you sure you want to delete this page?"
-      },
-      "blog-save": {
-        "title": "Save changes",
-        "message": "The blog has been modified. Do you want to save changes?"
-      },
-      "page-save": {
-        "title": "Save changes",
-        "message": "The page has been modified. Do you want to save changes?"
-      },
-      "theme-save": {
-        "title": "Save changes",
-        "message": "The theme has been modified. Do you want to save changes?"
-      },
-      "theme-delete": {
-        "title": "Delete confirmation",
-        "message": "Are you sure you want to delete '{{name}}'?",
-        "message-last-one": "This theme is the last one. If you delete it, you could break your storefront. Are you sure you want to delete '{{name}}'?"
-      },
-      "asset-delete": {
-        "title": "Delete confirmation",
-        "message": "Are you sure you want to delete this asset?"
-      },
-      "asset-save": {
-        "title": "Save changes",
-        "message": "The asset has been modified. Do you want to save changes?"
-      },
-      "link-list-save": {
-        "title": "Save changes",
-        "message": "The menu link list has been modified. Do you want to save changes?"
-      },
-      "set-store-url": {
-        "title": "Url is not set for the store",
-        "message": "Please, set store url before previewing!"
-      },
-      "name-must-unique": {
-        "title": "Name not unique",
-        "message": "Name must be unique for this language!"
-      }
+        "theme-upload-confirmation": {
+            "title": "Theme uploading confirmation",
+            "message": "A theme with the same name already exists. Files will be unpacked on top of existing files of this theme. Are you sure?"
+        },
+        "theme-clone": {
+            "title": "Clone confirmation",
+            "message": "Are you sure you want to clone selected Theme?"
+        },
+        "link-list-delete": {
+            "title": "Delete confirmation",
+            "message": "Are you sure you want to delete selected Link lists?"
+        },
+        "links-delete": {
+            "title": "Delete confirmation",
+            "message": "Are you sure you want to delete selected links?"
+        },
+        "blog-delete": {
+            "title": "Delete confirmation",
+            "message": "Are you sure you want to delete selected Blog?"
+        },
+        "page-delete": {
+            "title": "Delete confirmation",
+            "message": "Are you sure you want to delete this page?"
+        },
+        "blog-save": {
+            "title": "Save changes",
+            "message": "The blog has been modified. Do you want to save changes?"
+        },
+        "page-save": {
+            "title": "Save changes",
+            "message": "The page has been modified. Do you want to save changes?"
+        },
+        "theme-save": {
+            "title": "Save changes",
+            "message": "The theme has been modified. Do you want to save changes?"
+        },
+        "theme-delete": {
+            "title": "Delete confirmation",
+            "message": "Are you sure you want to delete '{{name}}'?",
+            "message-last-one": "This theme is the last one. If you delete it, you could break your storefront. Are you sure you want to delete '{{name}}'?"
+        },
+        "asset-delete": {
+            "title": "Delete confirmation",
+            "message": "Are you sure you want to delete this asset?"
+        },
+        "asset-save": {
+            "title": "Save changes",
+            "message": "The asset has been modified. Do you want to save changes?"
+        },
+        "link-list-save": {
+            "title": "Save changes",
+            "message": "The menu link list has been modified. Do you want to save changes?"
+        },
+        "set-store-url": {
+            "title": "Url is not set for the store",
+            "message": "Please, set store url before previewing!"
+        },
+        "name-must-unique": {
+            "title": "Name not unique",
+            "message": "Name must be unique for this language!"
+        }
     },
     "commands": {
       "add-link": "Add link",
@@ -269,16 +273,16 @@
       "set-active": "Set Active",
       "preview-page": "Preview page"
     },
-			"front-matter-description": {
-				"Title_FrontMatterHeader": "The page title",
-				"Layout_FrontMatterHeader": "If set, this specifies the theme layout file to use. Use the layout file name without the file extension. e.g. 'Theme'",
-				"Template_FrontMatterHeader": "Name of liquid template in theme witch will be used for display this page by including  {{ page.content }} expression",
-				"Permalink_FrontMatterHeader": "Refer to the URLs (excluding the domain name or directory folder) for your pages, posts. Possible values :folder/:categories/:year/:month/:day/:title, my-page, :folder/my-page",
-				"Published_FrontMatterHeader": "Set to false if you don’t want a specific post to show up when the site is generated.",
-				"Category_FrontMatterHeader": "Instead of placing posts inside of folders, you can specify one or more categories that the post belongs to. When the site is generated the post will act as though it had been set with these categories normally. Categories (plural key) can be specified as a YAML list or a comma-separated string.",
-				"Tags_FrontMatterHeader": "Similar to categories, one or multiple tags can be added to a post. Also like categories, tags can be specified as a YAML list or a comma-separated string.",
-				"Alias_FrontMatterHeader": "It allows  to specify aliases on a per page basis, in the YAML front matter. This aliases can be used for redirection.",
-				"Authorize_FrontMatterHeader": "Set to true if you want to block anonymous access to the page."
-			}
+            "front-matter-description": {
+                "Title_FrontMatterHeader": "The page title",
+                "Layout_FrontMatterHeader": "If set, this specifies the theme layout file to use. Use the layout file name without the file extension. e.g. 'Theme'",
+                "Template_FrontMatterHeader": "Name of liquid template in theme witch will be used for display this page by including  {{ page.content }} expression",
+                "Permalink_FrontMatterHeader": "Refer to the URLs (excluding the domain name or directory folder) for your pages, posts. Possible values :folder/:categories/:year/:month/:day/:title, my-page, :folder/my-page",
+                "Published_FrontMatterHeader": "Set to false if you don’t want a specific post to show up when the site is generated.",
+                "Category_FrontMatterHeader": "Instead of placing posts inside of folders, you can specify one or more categories that the post belongs to. When the site is generated the post will act as though it had been set with these categories normally. Categories (plural key) can be specified as a YAML list or a comma-separated string.",
+                "Tags_FrontMatterHeader": "Similar to categories, one or multiple tags can be added to a post. Also like categories, tags can be specified as a YAML list or a comma-separated string.",
+                "Alias_FrontMatterHeader": "It allows  to specify aliases on a per page basis, in the YAML front matter. This aliases can be used for redirection.",
+                "Authorize_FrontMatterHeader": "Set to true if you want to block anonymous access to the page."
+            }
   }
 }
