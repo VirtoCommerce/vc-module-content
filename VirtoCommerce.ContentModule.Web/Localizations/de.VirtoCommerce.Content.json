@@ -194,63 +194,67 @@
       }
     },
     "dialogs": {
-      "theme-clone": {
-        "title": "Klon Bestätigung",
-        "message": "Sind Sie sicher, dass Sie das ausgewählte Theme klonen möchten?"
-      },
-      "link-list-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Sind Sie sicher, dass Sie ausgewählte Linklisten löschen möchten?"
-      },
-      "links-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Sind Sie sicher, dass Sie ausgewählte Links löschen möchten?"
-      },
-      "blog-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Sind Sie sicher, dass Sie den ausgewählten Blog löschen möchten?"
-      },
-      "page-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Möchten Sie diese Seite wirklich löschen?"
-      },
-      "blog-save": {
-        "title": "Änderungen speichern",
-        "message": "Der Blog wurde geändert. Möchten Sie die Änderungen speichern?"
-      },
-      "page-save": {
-        "title": "Änderungen speichern",
-        "message": "Die Seite wurde geändert. Möchten Sie die Änderungen speichern?"
-      },
-      "theme-save": {
-        "title": "Änderungen speichern",
-        "message": "Das Theme wurde geändert. Möchten Sie die Änderungen speichern?"
-      },
-      "theme-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Sind Sie sicher, dass Sie die '{{name}}' löschen möchten?",
-        "message-last-one": "Dieses Theme ist das letzte. Wenn du es löschst, kannst du deine Schaufenster brechen. Bist du sicher, dass du '{{name}} löschen möchtest?"
-      },
-      "asset-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Sind Sie sicher, dass Sie diese Anlagen löschen möchten?"
-      },
-      "asset-save": {
-        "title": "Änderungen speichern",
-        "message": "Das Asset wurde geändert. Möchten Sie die Änderungen speichern?"
-      },
-      "link-list-save": {
-        "title": "Änderungen speichern",
-        "message": "Das Menü Link Liste wurde geändert. Möchten Sie die Änderungen speichern?"
-      },
-      "set-store-url": {
-        "title": "URL ist nicht für den Shop eingestellt",
-        "message": "Bitte, stellen Sie Shop url vor der Vorschau!"
-      },
-      "name-must-unique": {
-        "title": "Name nicht eindeutig",
-        "message": "Name muss eindeutig für diese Sprache!"
-      }
+        "theme-upload-confirmation": {
+            "title": "Bestätigung für das Hochladen des Themas",
+            "message": "Es ist bereits ein Thema mit demselben Namen vorhanden. Dateien werden über vorhandene Dateien dieses Themas entpackt. Bist du sicher?"
+        },
+        "theme-clone": {
+            "title": "Klon Bestätigung",
+            "message": "Sind Sie sicher, dass Sie das ausgewählte Theme klonen möchten?"
+        },
+        "link-list-delete": {
+            "title": "Bestätigung löschen",
+            "message": "Sind Sie sicher, dass Sie ausgewählte Linklisten löschen möchten?"
+        },
+        "links-delete": {
+            "title": "Bestätigung löschen",
+            "message": "Sind Sie sicher, dass Sie ausgewählte Links löschen möchten?"
+        },
+        "blog-delete": {
+            "title": "Bestätigung löschen",
+            "message": "Sind Sie sicher, dass Sie den ausgewählten Blog löschen möchten?"
+        },
+        "page-delete": {
+            "title": "Bestätigung löschen",
+            "message": "Möchten Sie diese Seite wirklich löschen?"
+        },
+        "blog-save": {
+            "title": "Änderungen speichern",
+            "message": "Der Blog wurde geändert. Möchten Sie die Änderungen speichern?"
+        },
+        "page-save": {
+            "title": "Änderungen speichern",
+            "message": "Die Seite wurde geändert. Möchten Sie die Änderungen speichern?"
+        },
+        "theme-save": {
+            "title": "Änderungen speichern",
+            "message": "Das Theme wurde geändert. Möchten Sie die Änderungen speichern?"
+        },
+        "theme-delete": {
+            "title": "Bestätigung löschen",
+            "message": "Sind Sie sicher, dass Sie die '{{name}}' löschen möchten?",
+            "message-last-one": "Dieses Theme ist das letzte. Wenn du es löschst, kannst du deine Schaufenster brechen. Bist du sicher, dass du '{{name}} löschen möchtest?"
+        },
+        "asset-delete": {
+            "title": "Bestätigung löschen",
+            "message": "Sind Sie sicher, dass Sie diese Anlagen löschen möchten?"
+        },
+        "asset-save": {
+            "title": "Änderungen speichern",
+            "message": "Das Asset wurde geändert. Möchten Sie die Änderungen speichern?"
+        },
+        "link-list-save": {
+            "title": "Änderungen speichern",
+            "message": "Das Menü Link Liste wurde geändert. Möchten Sie die Änderungen speichern?"
+        },
+        "set-store-url": {
+            "title": "URL ist nicht für den Shop eingestellt",
+            "message": "Bitte, stellen Sie Shop url vor der Vorschau!"
+        },
+        "name-must-unique": {
+            "title": "Name nicht eindeutig",
+            "message": "Name muss eindeutig für diese Sprache!"
+        }
     },
     "commands": {
       "add-link": "Link hinzufügen",
