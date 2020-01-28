@@ -35,7 +35,9 @@
         }, function (data) {
             if (blade.isActivateAfterSave) {
                 var prop = _.findWhere(blade.store.dynamicProperties, { name: 'DefaultThemeName' });
-                prop.values = [{ value: $scope.themeName }];
+                if (prop) {
+                    prop.values = [{ value: $scope.themeName }];
+                }
 
                 blade.store.$update(refreshParentAndClose, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             } else {
