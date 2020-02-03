@@ -1,6 +1,6 @@
 ﻿angular.module('virtoCommerce.contentModule')
-.controller('virtoCommerce.contentModule.themesListController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.themes', 'virtoCommerce.contentModule.contentApi', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper',
-    function ($rootScope, $scope, themes, contentApi, stores, bladeNavigationService, dialogService, uiGridHelper) {
+.controller('virtoCommerce.contentModule.themesListController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.themes', 'virtoCommerce.contentModule.contentApi', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.dynamicProperties.api',
+    function ($rootScope, $scope, themes, contentApi, stores, bladeNavigationService, dialogService, uiGridHelper, dynamicPropertiesApi) {
         $scope.uiGridConstants = uiGridHelper.uiGridConstants;
         var blade = $scope.blade;
         blade.updatePermission = 'content:update';
@@ -15,10 +15,22 @@
 
                 stores.get({ id: blade.storeId }, function (data) {
                     blade.store = data;
-                    var prop = _.findWhere(blade.store.dynamicProperties, { name: 'DefaultThemeName' });
-                    blade.defaultThemeName = prop && _.any(prop.values) && prop.values[0].value;
 
-                    blade.isLoading = false;
+                    dynamicPropertiesApi.search({objectType: blade.store.objectType, objectId: blade.store.id},
+                        function (response) {
+                            var rawProperties = response.results;
+                            _.each(rawProperties, function(prop) {
+                                prop.values = [];
+                                var filteredProperty = _.find(blade.store.dynamicProperties, function (o) { return o.id === prop.id; });
+                                if (filteredProperty) {
+                                    prop.values = filteredProperty.values;
+                                }
+                            });
+                            blade.store.dynamicProperties = rawProperties;
+                            var prop = _.findWhere(blade.store.dynamicProperties, { name: 'DefaultThemeName' });
+                            blade.defaultThemeName = prop && _.any(prop.values) && prop.values[0].value;
+                            blade.isLoading = false;
+                    });
                 },
                 function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             },
