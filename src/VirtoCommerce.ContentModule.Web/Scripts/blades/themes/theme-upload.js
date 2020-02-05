@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.themeUploadController', ['$rootScope', '$scope', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', 'FileUploader', 'platformWebApp.bladeNavigationService', function ($rootScope, $scope, dialogService, contentApi, FileUploader, bladeNavigationService) {
     var blade = $scope.blade;
 
@@ -8,7 +8,7 @@
         headers: { Accept: 'application/json' },
         url: 'api/content/themes/' + blade.storeId + '?folderUrl=',
         queueLimit: 1,
-        autoUpload: true,
+        autoUpload: false,
         removeAfterUpload: false
     });
 
@@ -21,9 +21,32 @@
         }
     });
 
+    uploader.onWhenAddingFileFailed = function (item, filter, options) {
+        if (filter.name === "queueLimit") {
+            uploader.clearQueue();
+            uploader.addToQueue(item);
+        }
+    };
+
     uploader.onAfterAddingFile = function (item) {
         $scope.themeName = item.file.name.substring(0, item.file.name.lastIndexOf('.'));
-        blade.isLoading = true;
+        if (!!blade.currentEntities && blade.currentEntities.length > 0
+            && _.any(blade.currentEntities, function (theme) { return theme.name === $scope.themeName; })) {
+
+            var dialog = {
+                id: "confirmUploadTheme",
+                title: "content.dialogs.theme-upload-confirmation.title",
+                message: "content.dialogs.theme-upload-confirmation.message",
+                callback: function (upload) {
+                    if (upload) {
+                        uploader.uploadAll();
+                    }
+                }
+            };
+            dialogService.showConfirmationDialog(dialog);
+        } else {
+            uploader.uploadAll();
+        }
     };
 
     uploader.onSuccessItem = function (fileItem, files) {
@@ -60,6 +83,6 @@
         bladeNavigationService.setError(item._file.name + ' failed: ' + (response.message ? response.message : status), blade);
     };
 
-    blade.title = 'content.blades.theme-upload.title',
+    blade.title = 'content.blades.theme-upload.title';
     blade.isLoading = false;
 }]);
