@@ -194,6 +194,10 @@
       }
     },
     "dialogs": {
+      "theme-upload-confirmation": {
+        "title": "Bestätigung für das Hochladen des Themas",
+        "message": "Es ist bereits ein Thema mit demselben Namen vorhanden. Dateien werden über vorhandene Dateien dieses Themas entpackt. Bist du sicher?"
+      },
       "theme-clone": {
         "title": "Klon Bestätigung",
         "message": "Sind Sie sicher, dass Sie das ausgewählte Theme klonen möchten?"

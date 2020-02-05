@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.themesListController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.themes', 'virtoCommerce.contentModule.contentApi', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.dynamicProperties.api',
     function ($rootScope, $scope, themes, contentApi, stores, bladeNavigationService, dialogService, uiGridHelper, dynamicPropertiesApi) {
         $scope.uiGridConstants = uiGridHelper.uiGridConstants;
@@ -35,7 +35,7 @@
                 function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             },
             function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-        }
+        };
 
         $scope.openBladeNew = function () {
             $scope.openDetailsBlade();
@@ -86,7 +86,7 @@
                     title: "content.dialogs.set-store-url.title",
                     message: "content.dialogs.set-store-url.message",
                     callback: function () { }
-                }
+                };
                 dialogService.showNotificationDialog(dialog);
             }
         };
@@ -159,6 +159,7 @@
                     var newBlade = {
                         id: "themeUpload",
                         isActivateAfterSave: !_.any(blade.currentEntities),
+                        currentEntities: blade.currentEntities,
                         store: blade.store,
                         storeId: blade.storeId,
                         controller: 'virtoCommerce.contentModule.themeUploadController',
