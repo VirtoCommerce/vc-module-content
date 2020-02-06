@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.ContentModule.Core.Services;
@@ -61,18 +62,19 @@ namespace VirtoCommerce.ContentModule.Azure
         /// <returns></returns>
         private string NormalizeUrl(string url)
         {
-            var retVal = _options.RootPath;
+            var result = _options.RootPath;
             if (!string.IsNullOrEmpty(url))
             {
                 if (url.IsAbsoluteUrl())
                 {
                     url = Uri.UnescapeDataString(new Uri(url).AbsolutePath);
                 }
-                retVal = Path.DirectorySeparatorChar + url.Replace('/', Path.DirectorySeparatorChar).TrimStart(Path.DirectorySeparatorChar);
-                retVal = _options.RootPath + Path.DirectorySeparatorChar + retVal.Replace(_options.RootPath, string.Empty);
-                retVal = retVal.Replace($"{Path.DirectorySeparatorChar}{Path.DirectorySeparatorChar}", $"{Path.DirectorySeparatorChar}");
+                result = Path.DirectorySeparatorChar + url.Replace('/', Path.DirectorySeparatorChar).TrimStart(Path.DirectorySeparatorChar);
+                result = _options.RootPath + Path.DirectorySeparatorChar + result.Replace(_options.RootPath, string.Empty);
+                //TODO: need to use Path.DirectorySeparatorChar instead of hardcoded value
+                result = Regex.Replace(result, @"\\+", $"{Path.DirectorySeparatorChar}");
             }
-            return retVal;
+            return result;
         }
     }
 }
