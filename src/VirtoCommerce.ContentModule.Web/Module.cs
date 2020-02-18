@@ -10,15 +10,18 @@ using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.ContentModule.Azure;
 using VirtoCommerce.ContentModule.Azure.Extensions;
 using VirtoCommerce.ContentModule.Core;
+using VirtoCommerce.ContentModule.Core.Events;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.ExportImport;
+using VirtoCommerce.ContentModule.Data.Handlers;
 using VirtoCommerce.ContentModule.Data.Repositories;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.ContentModule.FileSystem;
 using VirtoCommerce.ContentModule.FileSystem.Extensions;
 using VirtoCommerce.ContentModule.Web.Extensions;
 using VirtoCommerce.Platform.Assets.AzureBlobStorage;
+using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
@@ -38,6 +41,9 @@ namespace VirtoCommerce.ContentModule.Web
             var snapshot = serviceCollection.BuildServiceProvider();
             var configuration = snapshot.GetService<IConfiguration>();
             var hostingEnvironment = snapshot.GetService<IWebHostEnvironment>();
+
+
+            serviceCollection.AddTransient<LogChangesChangedEventHandler>();
 
             serviceCollection.AddDbContext<MenuDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("VirtoCommerce")));
             serviceCollection.AddTransient<IMenuRepository, MenuRepository>();
@@ -80,6 +86,10 @@ namespace VirtoCommerce.ContentModule.Web
                     Name = x
                 }).ToArray());
 
+            //Events handlers registration
+            var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
+            inProcessBus.RegisterHandler<MenuLinkListChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
+        
             //Force migrations
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {

@@ -62,8 +62,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
                 if (targetEntity != null)
                 {
-                    changedEntries.Add(new GenericChangedEntry<MenuLinkList>(list, targetEntity.ToModel(AbstractTypeFactory<MenuLinkList>.TryCreateInstance()),
-                        EntryState.Modified));
+                    changedEntries.Add(new GenericChangedEntry<MenuLinkList>(list, targetEntity.ToModel(AbstractTypeFactory<MenuLinkList>.TryCreateInstance()), EntryState.Modified));
                     sourceEntity.Patch(targetEntity);
                 }
                 else
@@ -86,8 +85,11 @@ namespace VirtoCommerce.ContentModule.Data.Services
         public async Task DeleteListsAsync(string[] listIds)
         {
             if (listIds == null)
+            {
                 throw new ArgumentNullException(nameof(listIds));
+            }
 
+            var changedEntries = new List<GenericChangedEntry<MenuLinkList>>();
             using (var repository = _menuRepositoryFactory())
             {
                 foreach (var listId in listIds)
@@ -95,10 +97,14 @@ namespace VirtoCommerce.ContentModule.Data.Services
                     var existList = await repository.GetListByIdAsync(listId);
                     if (existList != null)
                     {
+                        changedEntries.Add(new GenericChangedEntry<MenuLinkList>(existList.ToModel(AbstractTypeFactory<MenuLinkList>.TryCreateInstance()), EntryState.Deleted));
                         repository.Remove(existList);
                     }
                 }
                 await repository.UnitOfWork.CommitAsync();
+
+                await _eventPublisher.Publish(new MenuLinkListChangedEvent(changedEntries));
+
             }
         }
         
