@@ -2,7 +2,7 @@ angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope', '$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'platformWebApp.settings', 'FileUploader', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.i18n', function ($rootScope, $scope, validators, dialogService, contentApi, $timeout, bladeNavigationService, dynamicPropertiesApi, settings, FileUploader, dictionaryItemsApi, i18n) {
     var blade = $scope.blade;
     blade.currentLanguage = i18n.getLanguage();
-    blade.frontMatterHeaders = 'VirtoCommerce.ContentModule.Web.Model.FrontMatterHeaders'
+    blade.frontMatterHeaders = 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders'
     $scope.validators = validators;
     var contentType = blade.contentType.substr(0, 1).toUpperCase() + blade.contentType.substr(1, blade.contentType.length - 1);
     $scope.fileUploader = new FileUploader({
@@ -54,9 +54,9 @@ angular.module('virtoCommerce.contentModule')
 
         blade.currentEntity.content = data.content;
 
-        dynamicPropertiesApi.query({ id: 'VirtoCommerce.ContentModule.Web.FrontMatterHeaders' },
+        dynamicPropertiesApi.search({objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders' },
             function (results) {
-                fillDynamicProperties(data.metadata, results);
+                fillDynamicProperties(data.metadata, results.results);
                 $scope.$broadcast('resetContent', { body: blade.currentEntity.content });
                 $timeout(function () {
                     blade.origEntity = angular.copy(blade.currentEntity);
@@ -200,7 +200,7 @@ angular.module('virtoCommerce.contentModule')
 		    executeMethod: function () {
 		        var newBlade = {
 		            id: 'dynamicPropertyList',
-		            objectType: 'VirtoCommerce.ContentModule.Web.FrontMatterHeaders',
+		            objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders',
 		            parentRefresh: function (props) { fillDynamicProperties(blade.currentEntity.dynamicProperties, props); },
 		            controller: 'platformWebApp.dynamicPropertyListController',
 		            template: '$(Platform)/Scripts/app/dynamicProperties/blades/dynamicProperty-list.tpl.html'
