@@ -19,7 +19,7 @@ angular.module('virtoCommerce.contentModule')
     };
 
     function fillMetadata(data) {
-        dynamicPropertiesApi.query({ id: 'VirtoCommerce.ContentModule.Web.FrontMatterHeaders' },
+        dynamicPropertiesApi.search({objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders' },
             function (results) {
                 fillDynamicProperties(data.metadata, results);
                 blade.origEntity = angular.copy(blade.currentEntity);
@@ -143,7 +143,7 @@ angular.module('virtoCommerce.contentModule')
 		    executeMethod: function () {
 		        var newBlade = {
 		            id: 'dynamicPropertyList',
-		            objectType: 'VirtoCommerce.ContentModule.Web.FrontMatterHeaders',
+		            objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders',
 		            parentRefresh: function (props) { fillDynamicProperties(blade.currentEntity.dynamicProperties, props); },
 		            controller: 'platformWebApp.dynamicPropertyListController',
 		            template: '$(Platform)/Scripts/app/dynamicProperties/blades/dynamicProperty-list.tpl.html'
