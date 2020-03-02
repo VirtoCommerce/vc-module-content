@@ -25,6 +25,11 @@ namespace VirtoCommerce.ContentModule.Azure
             return base.OpenRead(NormalizeUrl(url));
         }
 
+        public override Task<BlobInfo> GetBlobInfoAsync(string url)
+        {
+            return base.GetBlobInfoAsync(NormalizeUrl(url));
+        }
+
         public override async Task CreateFolderAsync(BlobFolder folder)
         {
             if (folder == null)
