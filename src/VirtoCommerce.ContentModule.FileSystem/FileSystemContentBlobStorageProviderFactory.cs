@@ -17,7 +17,7 @@ namespace VirtoCommerce.ContentModule.FileSystem
         {
             var clonedOptions = _options.Clone() as FileSystemContentBlobOptions;
 
-            var storagePath = Path.Combine(clonedOptions.RootPath, basePath.Replace("/", "\\"));
+            var storagePath = Path.Combine(clonedOptions.RootPath, basePath.Replace('/', Path.DirectorySeparatorChar));
             //Use content api/content as public url by default             
             var publicPath = $"~/api/content/{basePath}?relativeUrl=";
             if (!string.IsNullOrEmpty(clonedOptions.PublicUrl))
