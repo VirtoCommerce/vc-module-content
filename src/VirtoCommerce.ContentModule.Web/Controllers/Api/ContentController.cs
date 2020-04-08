@@ -203,11 +203,15 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             using (var stream = storageProvider.OpenRead(archivePath))
             using (var archive = new ZipArchive(stream))
             {
+                // count number of root folders, if one, we use our standard approach of ignoring root folder
+                var foldersCount = archive.Entries.Where(x => x.FullName.Split('/').Length > 1 || x.FullName.EndsWith("/")).Select(f => f.FullName.Split('/')[0]).Distinct().Count();
+
                 foreach (var entry in archive.Entries)
                 {
                     if (!entry.FullName.EndsWith("/"))
                     {
-                        var fileName = string.Join("/", entry.FullName.Split('/').Skip(1));
+                        var fileName = foldersCount == 1 ? string.Join("/", entry.FullName.Split('/').Skip(1)) : entry.FullName;
+
                         using (var entryStream = entry.Open())
                         using (var targetStream = storageProvider.OpenWrite(destPath + "/" + fileName))
                         {
