@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="VirtoCommerce.Platform.Assets.AzureBlobStorage" Version="3.0.0-rc4" />
+      <PackageReference Include="VirtoCommerce.Platform.Assets.AzureBlobStorage" Version="3.0.0-rc4-0243" />
     </ItemGroup>
 
     <ItemGroup>
