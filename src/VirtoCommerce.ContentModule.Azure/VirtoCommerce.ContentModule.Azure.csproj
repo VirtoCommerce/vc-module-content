@@ -5,7 +5,7 @@
     <noWarn>1591</noWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="VirtoCommerce.Platform.Assets.AzureBlobStorage" Version="3.0.0-rc5" />
+    <PackageReference Include="VirtoCommerce.Platform.Assets.AzureBlobStorage" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Core\VirtoCommerce.ContentModule.Core.csproj" />
