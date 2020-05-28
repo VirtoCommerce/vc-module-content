@@ -21,7 +21,7 @@ angular.module('virtoCommerce.contentModule')
     function fillMetadata(data) {
         dynamicPropertiesApi.search({objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders' },
             function (results) {
-                fillDynamicProperties(data.metadata, results);
+                fillDynamicProperties(data.metadata, results.results);
                 blade.origEntity = angular.copy(blade.currentEntity);
                 blade.isLoading = false;
             },
@@ -138,20 +138,20 @@ angular.module('virtoCommerce.contentModule')
 
     blade.toolbarCommands = blade.toolbarCommands || [];
     blade.toolbarCommands.push(
-		{
-		    name: "content.commands.manage-metadata", icon: 'fa fa-edit',
-		    executeMethod: function () {
-		        var newBlade = {
-		            id: 'dynamicPropertyList',
-		            objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders',
-		            parentRefresh: function (props) { fillDynamicProperties(blade.currentEntity.dynamicProperties, props); },
-		            controller: 'platformWebApp.dynamicPropertyListController',
-		            template: '$(Platform)/Scripts/app/dynamicProperties/blades/dynamicProperty-list.tpl.html'
-		        };
-		        bladeNavigationService.showBlade(newBlade, blade);
-		    },
-		    canExecuteMethod: function () { return true; }
-		}
+        {
+            name: "content.commands.manage-metadata", icon: 'fa fa-edit',
+            executeMethod: function () {
+                var newBlade = {
+                    id: 'dynamicPropertyList',
+                    objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders',
+                    parentRefresh: function (props) { fillDynamicProperties(blade.currentEntity.dynamicProperties, props); },
+                    controller: 'platformWebApp.dynamicPropertyListController',
+                    template: '$(Platform)/Scripts/app/dynamicProperties/blades/dynamicProperty-list.tpl.html'
+                };
+                bladeNavigationService.showBlade(newBlade, blade);
+            },
+            canExecuteMethod: function () { return true; }
+        }
     );
 
     function getBlogBlobName() {
