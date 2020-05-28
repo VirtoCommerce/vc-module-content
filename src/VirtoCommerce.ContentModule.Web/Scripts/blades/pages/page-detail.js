@@ -116,8 +116,7 @@ angular.module('virtoCommerce.contentModule')
                         blade.currentEntity = blade.origEntity;
                         $scope.bladeClose();
                         blade.parentBlade.refresh();
-                    },
-                        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                    });
                 }
             }
         };
