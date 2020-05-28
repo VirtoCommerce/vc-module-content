@@ -116,11 +116,10 @@ angular.module('virtoCommerce.contentModule')
                         blade.currentEntity = blade.origEntity;
                         $scope.bladeClose();
                         blade.parentBlade.refresh();
-                    },
-                    function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                    });
                 }
             }
-        }
+        };
         dialogService.showConfirmationDialog(dialog);
     };
 
@@ -174,18 +173,20 @@ angular.module('virtoCommerce.contentModule')
                         var fileNameArray = blade.currentEntity.relativeUrl.split('.');
                         var fileName = _.first(fileNameArray);
                         var locale = '';
-                        if (_.size(fileNameArray) > 2)
+                        if (_.size(fileNameArray) > 2) {
                             locale = '/' + fileNameArray[1];
+                        }
+
                         var contentType = '/' + blade.contentType;
 
-                        window.open(blade.storeUrl + locale + contentType + fileName, '_blank');
+                        window.open(blade.storeUrl.replace(/\/$/, "") + locale + contentType + fileName, '_blank');
                     }
                     else {
                         var dialog = {
                             id: "noUrlInStore",
                             title: "content.dialogs.set-store-url.title",
                             message: "content.dialogs.set-store-url.message"
-                        }
+                        };
                         dialogService.showNotificationDialog(dialog);
                     }
                 },
@@ -195,24 +196,24 @@ angular.module('virtoCommerce.contentModule')
 
     blade.toolbarCommands = blade.toolbarCommands || [];
     blade.toolbarCommands.push(
-		{
-		    name: "content.commands.manage-metadata", icon: 'fa fa-edit',
-		    executeMethod: function () {
-		        var newBlade = {
-		            id: 'dynamicPropertyList',
-		            objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders',
-		            parentRefresh: function (props) { fillDynamicProperties(blade.currentEntity.dynamicProperties, props); },
-		            controller: 'platformWebApp.dynamicPropertyListController',
-		            template: '$(Platform)/Scripts/app/dynamicProperties/blades/dynamicProperty-list.tpl.html'
-		        };
-		        bladeNavigationService.showBlade(newBlade, blade);
-		    },
-		    canExecuteMethod: function () { return true; }
-		}
+        {
+            name: "content.commands.manage-metadata", icon: 'fa fa-edit',
+            executeMethod: function () {
+                var newBlade = {
+                    id: 'dynamicPropertyList',
+                    objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders',
+                    parentRefresh: function (props) { fillDynamicProperties(blade.currentEntity.dynamicProperties, props); },
+                    controller: 'platformWebApp.dynamicPropertyListController',
+                    template: '$(Platform)/Scripts/app/dynamicProperties/blades/dynamicProperty-list.tpl.html'
+                };
+                bladeNavigationService.showBlade(newBlade, blade);
+            },
+            canExecuteMethod: function () { return true; }
+        }
     );
 
     var formScope;
-    $scope.setForm = function (form) { formScope = form; }
+    $scope.setForm = function (form) { formScope = form; };
 
     function isDirty() {
         return !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
@@ -245,7 +246,7 @@ angular.module('virtoCommerce.contentModule')
     $scope.getDictionaryValues = function (property, callback) {
         getDictionaryValuesCallback = callback;
         dictionaryItemsApi.query({ id: property.objectType, propertyId: property.id }, callback);
-    }
+    };
 
     //settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' }, function (data) {
     //    $scope.languages = data;
