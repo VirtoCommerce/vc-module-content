@@ -1,4 +1,6 @@
-﻿<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>
+<div class="blade-static __bottom" ng-if="blade.isNew">
+    <button class="btn" ng-click="saveChanges()" ng-disabled="!isValid()">{{ 'platform.commands.create' | translate }}</button>
+</div>
 <div class="blade-static" style="height: 150px;padding: 0 17px;">
     <form name="formScope">
         <div class="clearfix">

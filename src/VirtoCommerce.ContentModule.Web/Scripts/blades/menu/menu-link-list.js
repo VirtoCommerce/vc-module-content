@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.menuLinkListController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.menus', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.menuLinkList-associationTypesService', 'uiGridConstants', 'platformWebApp.uiGridHelper',
  function ($rootScope, $scope, menus, stores, bladeNavigationService, dialogService, associationTypesService, uiGridConstants, uiGridHelper) {
      var blade = $scope.blade;
@@ -111,6 +111,10 @@
          });
          return isDirty() && listNameIsRight && linksAreRight && _.any(blade.currentEntity.menuLinks);
      }
+
+     $scope.isValid = function () {
+         return canSave();
+     };
 
      $scope.deleteRows = function (rows) {
          //var dialog = {
