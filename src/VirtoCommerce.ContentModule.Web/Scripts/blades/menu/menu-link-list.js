@@ -117,19 +117,19 @@ angular.module('virtoCommerce.contentModule')
      };
 
      $scope.deleteRows = function (rows) {
-         //var dialog = {
-         //    id: "confirmDelete",
-         //    title: "content.dialogs.links-delete.title",
-         //    message: "content.dialogs.links-delete.message",
-         //    callback: function (remove) {
-         //        if (remove) {
-         _.each(rows, function (row) {
-             blade.currentEntity.menuLinks.splice(blade.currentEntity.menuLinks.indexOf(row), 1);
-         });
-         //        }
-         //    }
-         //}
-         //dialogService.showConfirmationDialog(dialog);
+         var dialog = {
+             id: "confirmDelete",
+             title: "content.dialogs.links-delete.title",
+             message: "content.dialogs.links-delete.message",
+             callback: function (remove) {
+                 if (remove) {
+                     _.each(rows, function (row) {
+                         blade.currentEntity.menuLinks.splice(blade.currentEntity.menuLinks.indexOf(row), 1);
+                     });
+                 }
+             }
+         }
+         dialogService.showConfirmationDialog(dialog);
      };
 
      blade.onClose = function (closeCallback) {
