@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.menuLinkListController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.menus', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.menuLinkList-associationTypesService', 'uiGridConstants', 'platformWebApp.uiGridHelper',
  function ($rootScope, $scope, menus, stores, bladeNavigationService, dialogService, associationTypesService, uiGridConstants, uiGridHelper) {
      var blade = $scope.blade;
@@ -113,19 +113,19 @@
      }
 
      $scope.deleteRows = function (rows) {
-         //var dialog = {
-         //    id: "confirmDelete",
-         //    title: "content.dialogs.links-delete.title",
-         //    message: "content.dialogs.links-delete.message",
-         //    callback: function (remove) {
-         //        if (remove) {
-         _.each(rows, function (row) {
-             blade.currentEntity.menuLinks.splice(blade.currentEntity.menuLinks.indexOf(row), 1);
-         });
-         //        }
-         //    }
-         //}
-         //dialogService.showConfirmationDialog(dialog);
+         var dialog = {
+             id: "confirmDelete",
+             title: "content.dialogs.links-delete.title",
+             message: "content.dialogs.links-delete.message",
+             callback: function (remove) {
+                 if (remove) {
+                     _.each(rows, function (row) {
+                         blade.currentEntity.menuLinks.splice(blade.currentEntity.menuLinks.indexOf(row), 1);
+                     });
+                 }
+             }
+         }
+         dialogService.showConfirmationDialog(dialog);
      };
 
      blade.onClose = function (closeCallback) {
