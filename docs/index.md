@@ -1,6 +1,5 @@
-# VirtoCommerce.Content
 
-## Overview
+# Overview
 
 VirtoCommerce.Content module is a  Content Management System. The Content Module structure consists of Stores and related widgets :
 

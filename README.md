@@ -1,6 +1,5 @@
-# VirtoCommerce.Content
 
-## Overview
+# Overview
 
 VirtoCommerce.Content module is a  Content Management System. The Content Module structure consists of Stores and related widgets :
 
@@ -22,12 +21,19 @@ VirtoCommerce.Content module is a  Content Management System. The Content Module
 
 [Content Module Documentation](docs/index.md)
 
-## Installation
+## Installation:
 
-Installing the module:
 * Automatically: in VC Manager go to Configuration -> Modules -> CMS Content module -> Install
 
 * Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-content/releases. In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
+
+## References
+
+1. Deploy: https://virtocommerce.com/docs/latest/developer-guide/deploy-module-from-source-code/
+1. Installation: https://www.virtocommerce.com/docs/latest/user-guide/modules/
+1. Home: https://virtocommerce.com
+1. Community: https://www.virtocommerce.org
+1. Download Latest Release
 
 ## License
 
