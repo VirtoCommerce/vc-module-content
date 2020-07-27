@@ -18,6 +18,10 @@ VirtoCommerce.Content module is a  Content Management System. The Content Module
 1. Link lists management;
 1. Manage documents in markdown format.
 
+## Documentation
+
+[Content Module Documentation](docs/index.md)
+
 ## Installation
 
 Installing the module:
