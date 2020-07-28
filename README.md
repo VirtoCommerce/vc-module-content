@@ -33,7 +33,7 @@ VirtoCommerce.Content module is a  Content Management System. The Content Module
 1. Installation: https://www.virtocommerce.com/docs/latest/user-guide/modules/
 1. Home: https://virtocommerce.com
 1. Community: https://www.virtocommerce.org
-1. Download Latest Release
+1. [Download Latest Release](https://github.com/VirtoCommerce/vc-module-content/releases/)
 
 ## License
 
