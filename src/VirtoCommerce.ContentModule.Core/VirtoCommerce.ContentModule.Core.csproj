@@ -5,6 +5,6 @@
     <noWarn>1591</noWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.5.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.9.0" />
   </ItemGroup>
 </Project>
