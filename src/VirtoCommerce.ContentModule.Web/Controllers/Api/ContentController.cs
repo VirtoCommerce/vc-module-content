@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Net.Http.Headers;
+using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Extensions;
@@ -22,7 +23,8 @@ using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Helpers;
-using Permissions = VirtoCommerce.ContentModule.Core.ContentConstants.Security.Permissions;
+using VirtoCommerce.StoreModule.Core.Model;
+using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 {
@@ -31,24 +33,27 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
     {
         private readonly IBlobContentStorageProviderFactory _blobContentStorageProviderFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
+        private readonly IStoreService _storeService;
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
         public ContentController(
-            IBlobContentStorageProviderFactory blobContentStorageProviderFactory
-            , IPlatformMemoryCache platformMemoryCache)
+            IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
+            IPlatformMemoryCache platformMemoryCache,
+            IStoreService storeService)
         {
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _platformMemoryCache = platformMemoryCache;
+            _storeService = storeService;
         }
 
         /// <summary>
-        /// Return summary content statistic 
+        ///     Return summary content statistic
         /// </summary>
         /// <param name="storeId"></param>
         /// <returns>Object contains counters with main content types</returns>
         [HttpGet]
         [Route("~/api/content/{storeId}/stats")]
-        [Authorize(Permissions.Read)]
+        [Authorize(ContentConstants.Security.Permissions.Read)]
         public async Task<ActionResult<ContentStatistic>> GetStoreContentStats(string storeId)
         {
             var contentStorageProvider = _blobContentStorageProviderFactory.CreateProvider("");
@@ -59,27 +64,24 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 var result = CountContentItemsRecursive(GetContentBasePath("pages", storeId), contentStorageProvider, GetContentBasePath("blogs", storeId));
                 return result;
             });
+
+            var storeTask = _storeService.GetByIdAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
             var themesTask = contentStorageProvider.SearchAsync(GetContentBasePath("themes", storeId), null);
             var blogsTask = contentStorageProvider.SearchAsync(GetContentBasePath("blogs", storeId), null);
 
-            await Task.WhenAll(themesTask, blogsTask);
+            await Task.WhenAll(themesTask, blogsTask, storeTask);
 
+            var store = storeTask.Result;
             var themes = themesTask.Result;
             var blogs = blogsTask.Result;
 
-            var retVal = new ContentStatistic
-            {
-                ActiveThemeName = "default",
-                ThemesCount = themes.Results.OfType<BlobFolder>().Count(),
-                BlogsCount = blogs.Results.OfType<BlobFolder>().Count(),
-                PagesCount = pagesCount
-            };
+            var retVal = new ContentStatistic {ActiveThemeName = store.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value.ToString() ?? "default", ThemesCount = themes.Results.OfType<BlobFolder>().Count(), BlogsCount = blogs.Results.OfType<BlobFolder>().Count(), PagesCount = pagesCount};
 
             return Ok(retVal);
         }
 
         /// <summary>
-        /// Delete content from server
+        ///     Delete content from server
         /// </summary>
         /// <param name="contentType">possible values Themes or Pages</param>
         /// <param name="storeId">Store id </param>
@@ -87,7 +89,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns></returns>
         [HttpDelete]
         [Route("")]
-        [Authorize(Permissions.Delete)]
+        [Authorize(ContentConstants.Security.Permissions.Delete)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteContent(string contentType, string storeId, [FromQuery] string[] urls)
         {
@@ -101,7 +103,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         }
 
         /// <summary>
-        /// Return streamed data for requested by relativeUrl content (Used to prevent Cross domain requests in manager)
+        ///     Return streamed data for requested by relativeUrl content (Used to prevent Cross domain requests in manager)
         /// </summary>
         /// <param name="contentType">possible values Themes or Pages</param>
         /// <param name="storeId">Store id</param>
@@ -109,7 +111,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns>stream</returns>
         [HttpGet]
         [Route("")]
-        [Authorize(Permissions.Read)]
+        [Authorize(ContentConstants.Security.Permissions.Read)]
         public async Task<ActionResult<byte[]>> GetContentItemDataStream(string contentType, string storeId, [FromQuery] string relativeUrl)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
@@ -118,11 +120,12 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 var fileStream = storageProvider.OpenRead(relativeUrl);
                 return File(fileStream, MimeTypeResolver.ResolveContentType(relativeUrl));
             }
+
             return NotFound();
         }
 
         /// <summary>
-        /// Search content items in specified folder and using search keyword
+        ///     Search content items in specified folder and using search keyword
         /// </summary>
         /// <param name="contentType">possible values Themes or Pages</param>
         /// <param name="storeId">Store id</param>
@@ -131,22 +134,22 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns>content items</returns>
         [HttpGet]
         [Route("search")]
-        [Authorize(Permissions.Read)]
+        [Authorize(ContentConstants.Security.Permissions.Read)]
         public async Task<ActionResult<ContentItem[]>> SearchContent(string contentType, string storeId, [FromQuery] string folderUrl = null, [FromQuery] string keyword = null)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
 
             var result = await storageProvider.SearchAsync(folderUrl, keyword);
             var retVal = result.Results.OfType<BlobFolder>()
-                                .Select(x => x.ToContentModel())
-                                .OfType<ContentItem>()
-                                .Concat(result.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()))
-                                .ToArray();
+                .Select(x => x.ToContentModel())
+                .OfType<ContentItem>()
+                .Concat(result.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()))
+                .ToArray();
             return Ok(retVal);
         }
 
         /// <summary>
-        /// Rename or move content item
+        ///     Rename or move content item
         /// </summary>
         /// <param name="contentType">possible values Themes or Pages</param>
         /// <param name="storeId">Store id</param>
@@ -155,7 +158,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         [Route("move")]
-        [Authorize(Permissions.Update)]
+        [Authorize(ContentConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public ActionResult MoveContent(string contentType, string storeId, [FromQuery] string oldUrl, [FromQuery] string newUrl)
         {
@@ -166,14 +169,14 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         }
 
         /// <summary>
-        /// Copy contents
+        ///     Copy contents
         /// </summary>
         /// <param name="srcPath">source content  relative path</param>
         /// <param name="destPath">destination content relative path</param>
         /// <returns></returns>
         [HttpGet]
         [Route("~/api/content/copy")]
-        [Authorize(Permissions.Update)]
+        [Authorize(ContentConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public ActionResult CopyContent([FromQuery] string srcPath, [FromQuery] string destPath)
         {
@@ -185,7 +188,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         }
 
         /// <summary>
-        /// Unpack contents
+        ///     Unpack contents
         /// </summary>
         /// <param name="contentType">possible values Themes or Pages</param>
         /// <param name="storeId">Store id</param>
@@ -194,7 +197,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         [Route("unpack")]
-        [Authorize(Permissions.Update)]
+        [Authorize(ContentConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Unpack(string contentType, string storeId, [FromQuery] string archivePath, [FromQuery] string destPath = "default")
         {
@@ -207,7 +210,6 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 var foldersCount = archive.Entries.Where(x => x.FullName.Split('/').Length > 1 || x.FullName.EndsWith("/")).Select(f => f.FullName.Split('/')[0]).Distinct().Count();
 
                 foreach (var entry in archive.Entries)
-                {
                     if (!entry.FullName.EndsWith("/"))
                     {
                         var fileName = foldersCount == 1 ? string.Join("/", entry.FullName.Split('/').Skip(1)) : entry.FullName;
@@ -218,16 +220,16 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                             entryStream.CopyTo(targetStream);
                         }
                     }
-                }
             }
+
             //remove archive after unpack
-            await storageProvider.RemoveAsync(new[] { archivePath });
+            await storageProvider.RemoveAsync(new[] {archivePath});
 
             return NoContent();
         }
 
         /// <summary>
-        /// Create content folder 
+        ///     Create content folder
         /// </summary>
         /// <param name="contentType">possible values Themes or Pages</param>
         /// <param name="storeId">Store id</param>
@@ -235,7 +237,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns></returns>
         [HttpPost]
         [Route("folder")]
-        [Authorize(Permissions.Create)]
+        [Authorize(ContentConstants.Security.Permissions.Create)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> CreateContentFolder(string contentType, string storeId, [FromBody] ContentFolder folder)
         {
@@ -247,7 +249,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         }
 
         /// <summary>
-        /// Upload content item 
+        ///     Upload content item
         /// </summary>
         /// <param name="contentType">possible values Themes or Pages</param>
         /// <param name="storeId">Store id</param>
@@ -257,8 +259,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpPost]
         [Route("")]
         [DisableFormValueModelBinding]
-        [Authorize(Permissions.Create)]
-        public async Task<ActionResult<ContentItem[]>> UploadContent(string contentType, string storeId, [FromQuery] string folderUrl, [FromQuery]string url = null)
+        [Authorize(ContentConstants.Security.Permissions.Create)]
+        public async Task<ActionResult<ContentItem[]>> UploadContent(string contentType, string storeId, [FromQuery] string folderUrl, [FromQuery] string url = null)
         {
             if (url == null && !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
@@ -335,6 +337,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             {
                 retVal = "Pages/" + storeId + "/blogs";
             }
+
             return retVal;
         }
 
@@ -342,10 +345,10 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         {
             var searchResult = blobContentStorageProvider.SearchAsync(folderUrl, null).GetAwaiter().GetResult();
             var retVal = searchResult.TotalCount
-                        + searchResult.Results.OfType<BlobFolder>()
-                            .Where(x => excludedFolderUrl == null || !x.RelativeUrl.EndsWith(excludedFolderUrl, StringComparison.InvariantCultureIgnoreCase))
-                            .Select(x => CountContentItemsRecursive(x.RelativeUrl, blobContentStorageProvider))
-                            .Sum();
+                         + searchResult.Results.OfType<BlobFolder>()
+                             .Where(x => excludedFolderUrl == null || !x.RelativeUrl.EndsWith(excludedFolderUrl, StringComparison.InvariantCultureIgnoreCase))
+                             .Select(x => CountContentItemsRecursive(x.RelativeUrl, blobContentStorageProvider))
+                             .Sum();
 
             return retVal;
         }
