@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Net.Http.Headers;
-using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Extensions;
@@ -25,6 +24,7 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
+using Permissions = VirtoCommerce.ContentModule.Core.ContentConstants.Security.Permissions;
 
 namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 {
@@ -53,7 +53,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns>Object contains counters with main content types</returns>
         [HttpGet]
         [Route("~/api/content/{storeId}/stats")]
-        [Authorize(ContentConstants.Security.Permissions.Read)]
+        [Authorize(Permissions.Read)]
         public async Task<ActionResult<ContentStatistic>> GetStoreContentStats(string storeId)
         {
             var contentStorageProvider = _blobContentStorageProviderFactory.CreateProvider("");
@@ -75,7 +75,13 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             var themes = themesTask.Result;
             var blogs = blogsTask.Result;
 
-            var retVal = new ContentStatistic {ActiveThemeName = store.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value.ToString() ?? "default", ThemesCount = themes.Results.OfType<BlobFolder>().Count(), BlogsCount = blogs.Results.OfType<BlobFolder>().Count(), PagesCount = pagesCount};
+            var retVal = new ContentStatistic
+            {
+                ActiveThemeName = store.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value.ToString() ?? "default",
+                ThemesCount = themes.Results.OfType<BlobFolder>().Count(),
+                BlogsCount = blogs.Results.OfType<BlobFolder>().Count(),
+                PagesCount = pagesCount
+            };
 
             return Ok(retVal);
         }
@@ -89,7 +95,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns></returns>
         [HttpDelete]
         [Route("")]
-        [Authorize(ContentConstants.Security.Permissions.Delete)]
+        [Authorize(Permissions.Delete)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteContent(string contentType, string storeId, [FromQuery] string[] urls)
         {
@@ -111,7 +117,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns>stream</returns>
         [HttpGet]
         [Route("")]
-        [Authorize(ContentConstants.Security.Permissions.Read)]
+        [Authorize(Permissions.Read)]
         public async Task<ActionResult<byte[]>> GetContentItemDataStream(string contentType, string storeId, [FromQuery] string relativeUrl)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
@@ -134,7 +140,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns>content items</returns>
         [HttpGet]
         [Route("search")]
-        [Authorize(ContentConstants.Security.Permissions.Read)]
+        [Authorize(Permissions.Read)]
         public async Task<ActionResult<ContentItem[]>> SearchContent(string contentType, string storeId, [FromQuery] string folderUrl = null, [FromQuery] string keyword = null)
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
@@ -158,7 +164,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         [Route("move")]
-        [Authorize(ContentConstants.Security.Permissions.Update)]
+        [Authorize(Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public ActionResult MoveContent(string contentType, string storeId, [FromQuery] string oldUrl, [FromQuery] string newUrl)
         {
@@ -176,7 +182,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         [Route("~/api/content/copy")]
-        [Authorize(ContentConstants.Security.Permissions.Update)]
+        [Authorize(Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public ActionResult CopyContent([FromQuery] string srcPath, [FromQuery] string destPath)
         {
@@ -197,7 +203,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         [Route("unpack")]
-        [Authorize(ContentConstants.Security.Permissions.Update)]
+        [Authorize(Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Unpack(string contentType, string storeId, [FromQuery] string archivePath, [FromQuery] string destPath = "default")
         {
@@ -237,7 +243,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <returns></returns>
         [HttpPost]
         [Route("folder")]
-        [Authorize(ContentConstants.Security.Permissions.Create)]
+        [Authorize(Permissions.Create)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> CreateContentFolder(string contentType, string storeId, [FromBody] ContentFolder folder)
         {
@@ -259,7 +265,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpPost]
         [Route("")]
         [DisableFormValueModelBinding]
-        [Authorize(ContentConstants.Security.Permissions.Create)]
+        [Authorize(Permissions.Create)]
         public async Task<ActionResult<ContentItem[]>> UploadContent(string contentType, string storeId, [FromQuery] string folderUrl, [FromQuery] string url = null)
         {
             if (url == null && !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
