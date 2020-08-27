@@ -188,7 +188,7 @@ angular.module('virtoCommerce.contentModule')
                     name: "content.commands.preview-page",
                     icon: 'fa fa-eye',
                     executeMethod: function() {
-                        var urlListBlade = {
+                        const urlListBlade = {
                             id: "storeUrlList",
                             storeId: blade.storeId,
                             contentType: blade.contentType,

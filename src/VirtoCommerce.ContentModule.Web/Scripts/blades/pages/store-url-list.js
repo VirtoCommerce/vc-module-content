@@ -1,9 +1,9 @@
 angular
     .module('virtoCommerce.contentModule')
     .controller('virtoCommerce.contentModule.storeUrlListController', ['$scope', 'platformWebApp.bladeNavigationService', '$localStorage', 'platformWebApp.validators', function ($scope, bladeNavigationService, $localStorage, validators) {
-        var blade = $scope.blade;
+        const blade = $scope.blade;
         blade.headIcon = 'fa-key';
-        var nameStoreUrlList = 'storeUrlList-' + blade.storeId;
+        const nameStoreUrlList = 'storeUrlList-' + blade.storeId;
 
         blade.refresh = function() {
             if ($localStorage[nameStoreUrlList]) {
@@ -21,21 +21,21 @@ angular
         }
 
         function openUrlForPreview(url) {
-            var fileNameArray = blade.relativeUrl.split('.');
-            var fileName = _.first(fileNameArray);
-            var locale = '';
+            const fileNameArray = blade.relativeUrl.split('.');
+            const fileName = _.first(fileNameArray);
+            let locale = '';
 
             if (_.size(fileNameArray) > 2) {
                 locale = '/' + fileNameArray[1];
             }
 
-            var contentType = '/' + blade.contentType;
+            const contentType = '/' + blade.contentType;
 
             window.open(url.replace(/\/$/, '') + locale + contentType + fileName, '_blank');
         }
 
         function editstoreUrls() {
-            var newBlade = {
+            const newBlade = {
                 id: "editRedirectUris",
                 updatePermission: 'platform:security:update',
                 data: blade.currentEntities,
