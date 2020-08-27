@@ -1,4 +1,4 @@
-﻿<div class="blade-static" ng-if="blade.currentEntities.length">
+<div class="blade-static" ng-if="blade.currentEntities.length">
     <div class="form-group">
         <div class="form-input __search">
             <input placeholder="{{'platform.placeholders.search-keyword' | translate }}" ng-model="blade.searchText">
@@ -37,12 +37,16 @@
                                     {{ 'content.blades.content-main.labels.preview-theme' | translate }}
                                 </a>
                             </li>
+                            <!--
                             <li class="menu-item" ng-click="blade.customizeTheme(data); $event.stopPropagation();">
                                 <a class="menu-link">
                                     <i class="menu-ico fa fa-wrench"></i>
                                     {{ 'content.blades.content-main.labels.customize-theme' | translate }}
                                 </a>
                             </li>
+                            // TODO: Uncomment when and if this feature would be impleented in page builder
+                            // TODO: After uncommenting add check for page builder installed or controller overloaded.
+                            -->
                         </ul>
                     </div>
                     <div class="tile" ng-click="blade.openThemes(data.store)">
