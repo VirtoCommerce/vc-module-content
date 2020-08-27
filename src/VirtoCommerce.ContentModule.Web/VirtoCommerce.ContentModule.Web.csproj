@@ -16,6 +16,7 @@
   <ItemGroup>
     <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.9.0" />
     <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.9.0" />
+    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.3.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Azure\VirtoCommerce.ContentModule.Azure.csproj" />
