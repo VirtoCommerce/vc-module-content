@@ -1,198 +1,209 @@
 angular.module('virtoCommerce.contentModule')
-.controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope', '$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'platformWebApp.settings', 'FileUploader', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.i18n', function ($rootScope, $scope, validators, dialogService, contentApi, $timeout, bladeNavigationService, dynamicPropertiesApi, settings, FileUploader, dictionaryItemsApi, i18n) {
-    var blade = $scope.blade;
-    blade.currentLanguage = i18n.getLanguage();
-    blade.frontMatterHeaders = 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders'
-    $scope.validators = validators;
-    var contentType = blade.contentType.substr(0, 1).toUpperCase() + blade.contentType.substr(1, blade.contentType.length - 1);
-    $scope.fileUploader = new FileUploader({
-        url: 'api/platform/assets?folderUrl=cms-content/' + contentType + '/' + blade.storeId + '/assets',
-        headers: { Accept: 'application/json' },
-        autoUpload: true,
-        removeAfterUpload: true,
-        onBeforeUploadItem: function (fileItem) {
-            blade.isLoading = true;
-        },
-        onSuccessItem: function (fileItem, response, status, headers) {
-            $scope.$broadcast('filesUploaded', { items: response });
-        },
-        onErrorItem: function (fileItem, response, status, headers) {
-            bladeNavigationService.setError(fileItem._file.name + ' failed: ' + (response.message ? response.message : status), blade);
-        },
-        onCompleteAll: function () {
-            blade.isLoading = false;
-        }
-    });
-
-    blade.editAsMarkdown = true;
-    blade.editAsHtml = false;
-
-    blade.initializeBlade = function () {
-        if (blade.isNew) {
-            fillMetadata({});
-        } else {
-            contentApi.getWithMetadata({
-                contentType: blade.contentType,
-                storeId: blade.storeId,
-                relativeUrl: blade.currentEntity.relativeUrl
+.controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope', '$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'platformWebApp.settings', 'FileUploader', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.i18n',
+    function($rootScope,
+        $scope,
+        validators,
+        dialogService,
+        contentApi,
+        $timeout,
+        bladeNavigationService,
+        dynamicPropertiesApi,
+        settings,
+        FileUploader,
+        dictionaryItemsApi,
+        i18n) {
+        var blade = $scope.blade;
+        blade.currentLanguage = i18n.getLanguage();
+        blade.frontMatterHeaders = 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders'
+        $scope.validators = validators;
+        var contentType = blade.contentType.substr(0, 1).toUpperCase() +
+            blade.contentType.substr(1, blade.contentType.length - 1);
+        $scope.fileUploader = new FileUploader({
+            url: 'api/platform/assets?folderUrl=cms-content/' + contentType + '/' + blade.storeId + '/assets',
+            headers: { Accept: 'application/json' },
+            autoUpload: true,
+            removeAfterUpload: true,
+            onBeforeUploadItem: function(fileItem) {
+                blade.isLoading = true;
             },
-            fillMetadata,
-            function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-        }
-    };
-
-    function fillMetadata(data) {
-        var blobName = blade.currentEntity.name || '';
-        var idx = blobName.lastIndexOf('.');
-        if (idx >= 0) {
-            blobName = blobName.substring(0, idx);
-            idx = blobName.lastIndexOf('.'); // language
-            if (idx >= 0) {
-                blade.currentEntity.language = blobName.substring(idx + 1);
-            }
-        }
-
-        blade.currentEntity.content = data.content;
-
-        dynamicPropertiesApi.search({objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders' },
-            function (results) {
-                fillDynamicProperties(data.metadata, results.results);
-                $scope.$broadcast('resetContent', { body: blade.currentEntity.content });
-                $timeout(function () {
-                    blade.origEntity = angular.copy(blade.currentEntity);
-                });
+            onSuccessItem: function(fileItem, response, status, headers) {
+                $scope.$broadcast('filesUploaded', { items: response });
+            },
+            onErrorItem: function(fileItem, response, status, headers) {
+                bladeNavigationService.setError(
+                    fileItem._file.name + ' failed: ' + (response.message ? response.message : status),
+                    blade);
+            },
+            onCompleteAll: function() {
                 blade.isLoading = false;
-            }, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-    }
-
-    function fillDynamicProperties(metadata, props) {
-        _.each(props, function (x) {
-            //x.displayNames = undefined;
-            var metadataRecord = _.findWhere(metadata, { name: x.name });
-            if (metadataRecord && x.isMultilingual && !x.isDictionary) {
-                metadataRecord.values = _.pluck(metadataRecord.values, 'value');
             }
-
-            x.values = metadataRecord ? metadataRecord.values : [];
         });
 
-        blade.currentEntity.dynamicProperties = props;
-    }
+        blade.editAsMarkdown = true;
+        blade.editAsHtml = false;
 
-    $scope.saveChanges = function () {
-        blade.isLoading = true;
-
-        contentApi.saveWithMetadata({
-            contentType: blade.contentType,
-            storeId: blade.storeId,
-            folderUrl: blade.folderUrl || ''
-        }, blade.currentEntity,
-        function () {
-            blade.isLoading = false;
-            blade.origEntity = angular.copy(blade.currentEntity);
+        blade.initializeBlade = function() {
             if (blade.isNew) {
-                $scope.bladeClose();
-                $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
-            }
-
-            blade.parentBlade.refresh();
-        }, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-    };
-
-    blade.deleteEntry = function () {
-        var dialog = {
-            id: "confirmDelete",
-            title: "content.dialogs.page-delete.title",
-            message: "content.dialogs.page-delete.message",
-            callback: function (remove) {
-                if (remove) {
-                    blade.isLoading = true;
-
-                    contentApi.delete({
+                fillMetadata({});
+            } else {
+                contentApi.getWithMetadata({
                         contentType: blade.contentType,
                         storeId: blade.storeId,
-                        urls: [blade.currentEntity.url]
-                    }, function () {
-                        blade.currentEntity = blade.origEntity;
-                        $scope.bladeClose();
-                        blade.parentBlade.refresh();
-                    });
-                }
+                        relativeUrl: blade.currentEntity.relativeUrl
+                    },
+                    fillMetadata,
+                    function(error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             }
         };
-        dialogService.showConfirmationDialog(dialog);
-    };
 
-    if (!blade.isNew)
-        blade.toolbarCommands = [
-            {
-                name: "platform.commands.save", icon: 'fa fa-save',
-                executeMethod: $scope.saveChanges,
-                canExecuteMethod: function () { return isDirty() && formScope && formScope.$valid; },
-                permission: blade.updatePermission
-            },
-            {
-                name: "platform.commands.reset", icon: 'fa fa-undo',
-                executeMethod: function () {
-                    angular.copy(blade.origEntity, blade.currentEntity);
-                    $scope.$broadcast('resetContent', { body: blade.currentEntity.content });
-                },
-                canExecuteMethod: isDirty,
-                permission: blade.updatePermission
-            },
-            //{
-            //    name: "platform.commands.delete", icon: 'fa fa-trash-o',
-            //    executeMethod: blade.deleteEntry,
-            //    canExecuteMethod: function () { return true; },
-            //    permission: 'content:delete'
-            //},
-            {
-                name: "content.commands.edit-as-markdown", icon: 'fa fa-code',
-                executeMethod: function () {
-                    blade.editAsMarkdown = true;
-                    blade.editAsHtml = false;
-                    $scope.$broadcast('changeEditType', { editAsMarkdown: true, editAsHtml: false });
-                },
-                canExecuteMethod: function () { return !blade.editAsMarkdown; },
-                permission: blade.updatePermission
-            },
-            {
-                name: "content.commands.edit-as-html", icon: 'fa fa-code',
-                executeMethod: function () {
-                    blade.editAsHtml = true;
-                    blade.editAsMarkdown = false;
-                    $scope.$broadcast('changeEditType', { editAsHtml: true, editAsMarkdown: false });
-                },
-                canExecuteMethod: function () { return !blade.editAsHtml; },
-                permission: blade.updatePermission
-            },
-            {
-                name: "content.commands.preview-page", icon: 'fa fa-eye',
-                executeMethod: function () {
-                    if (blade.storeUrl) {
-                        var fileNameArray = blade.currentEntity.relativeUrl.split('.');
-                        var fileName = _.first(fileNameArray);
-                        var locale = '';
-                        if (_.size(fileNameArray) > 2) {
-                            locale = '/' + fileNameArray[1];
-                        }
-
-                        var contentType = '/' + blade.contentType;
-
-                        window.open(blade.storeUrl.replace(/\/$/, "") + locale + contentType + fileName, '_blank');
-                    }
-                    else {
-                        var dialog = {
-                            id: "noUrlInStore",
-                            title: "content.dialogs.set-store-url.title",
-                            message: "content.dialogs.set-store-url.message"
-                        };
-                        dialogService.showNotificationDialog(dialog);
-                    }
-                },
-                canExecuteMethod: function () { return true; }
+        function fillMetadata(data) {
+            var blobName = blade.currentEntity.name || '';
+            var idx = blobName.lastIndexOf('.');
+            if (idx >= 0) {
+                blobName = blobName.substring(0, idx);
+                idx = blobName.lastIndexOf('.'); // language
+                if (idx >= 0) {
+                    blade.currentEntity.language = blobName.substring(idx + 1);
+                }
             }
-        ];
+
+            blade.currentEntity.content = data.content;
+
+            dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders' },
+                function(results) {
+                    fillDynamicProperties(data.metadata, results.results);
+                    $scope.$broadcast('resetContent', { body: blade.currentEntity.content });
+                    $timeout(function() {
+                        blade.origEntity = angular.copy(blade.currentEntity);
+                    });
+                    blade.isLoading = false;
+                },
+                function(error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+        }
+
+        function fillDynamicProperties(metadata, props) {
+            _.each(props,
+                function(x) {
+                    //x.displayNames = undefined;
+                    var metadataRecord = _.findWhere(metadata, { name: x.name });
+                    if (metadataRecord && x.isMultilingual && !x.isDictionary) {
+                        metadataRecord.values = _.pluck(metadataRecord.values, 'value');
+                    }
+
+                    x.values = metadataRecord ? metadataRecord.values : [];
+                });
+
+            blade.currentEntity.dynamicProperties = props;
+        }
+
+        $scope.saveChanges = function() {
+            blade.isLoading = true;
+
+            contentApi.saveWithMetadata({
+                    contentType: blade.contentType,
+                    storeId: blade.storeId,
+                    folderUrl: blade.folderUrl || ''
+                },
+                blade.currentEntity,
+                function() {
+                    blade.isLoading = false;
+                    blade.origEntity = angular.copy(blade.currentEntity);
+                    if (blade.isNew) {
+                        $scope.bladeClose();
+                        $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
+                    }
+
+                    blade.parentBlade.refresh();
+                },
+                function(error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+        };
+
+        blade.deleteEntry = function() {
+            var dialog = {
+                id: "confirmDelete",
+                title: "content.dialogs.page-delete.title",
+                message: "content.dialogs.page-delete.message",
+                callback: function(remove) {
+                    if (remove) {
+                        blade.isLoading = true;
+
+                        contentApi.delete({
+                            contentType: blade.contentType,
+                            storeId: blade.storeId,
+                            urls: [blade.currentEntity.url]
+                        },
+                        function() {
+                            blade.currentEntity = blade.origEntity;
+                            $scope.bladeClose();
+                            blade.parentBlade.refresh();
+                        });
+                    }
+                }
+            };
+            dialogService.showConfirmationDialog(dialog);
+        };
+
+        if (!blade.isNew) {
+            blade.toolbarCommands = [
+                {
+                    name: "platform.commands.save",
+                    icon: 'fa fa-save',
+                    executeMethod: $scope.saveChanges,
+                    canExecuteMethod: function() { return isDirty() && formScope && formScope.$valid; },
+                    permission: blade.updatePermission
+                },
+                {
+                    name: "platform.commands.reset",
+                    icon: 'fa fa-undo',
+                    executeMethod: function() {
+                        angular.copy(blade.origEntity, blade.currentEntity);
+                        $scope.$broadcast('resetContent', { body: blade.currentEntity.content });
+                    },
+                    canExecuteMethod: isDirty,
+                    permission: blade.updatePermission
+                },
+                {
+                    name: "content.commands.edit-as-markdown",
+                    icon: 'fa fa-code',
+                    executeMethod: function() {
+                        blade.editAsMarkdown = true;
+                        blade.editAsHtml = false;
+                        $scope.$broadcast('changeEditType', { editAsMarkdown: true, editAsHtml: false });
+                    },
+                    canExecuteMethod: function() { return !blade.editAsMarkdown; },
+                    permission: blade.updatePermission
+                },
+                {
+                    name: "content.commands.edit-as-html",
+                    icon: 'fa fa-code',
+                    executeMethod: function() {
+                        blade.editAsHtml = true;
+                        blade.editAsMarkdown = false;
+                        $scope.$broadcast('changeEditType', { editAsHtml: true, editAsMarkdown: false });
+                    },
+                    canExecuteMethod: function() { return !blade.editAsHtml; },
+                    permission: blade.updatePermission
+                },
+                {
+                    name: "content.commands.preview-page",
+                    icon: 'fa fa-eye',
+                    executeMethod: function() {
+                        const urlListBlade = {
+                            id: "storeUrlList",
+                            storeId: blade.storeId,
+                            contentType: blade.contentType,
+                            relativeUrl: blade.currentEntity.relativeUrl,
+                            headIcon: 'fa-plus-square-o',
+                            controller: 'virtoCommerce.contentModule.storeUrlListController',
+                            template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/store-url-list.tpl.html'
+                        };
+
+                        bladeNavigationService.showBlade(urlListBlade, blade);
+                    },
+                    canExecuteMethod: function() { return true; }
+                }
+            ];
+        }
 
     blade.toolbarCommands = blade.toolbarCommands || [];
     blade.toolbarCommands.push(

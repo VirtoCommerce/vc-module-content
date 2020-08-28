@@ -1,0 +1,13 @@
+<div class="blade-content">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <div class="sub-t">{{ 'content.blades.store-url-list.labels.pick-url-to-preview' | translate }}</div>
+            <ul class="list __items" ng-if="blade.currentEntities.length">
+                <li class="list-item" ng-click='selectNode(data)' ng-repeat="data in blade.currentEntities" ng-class="{'__selected': data === selectedNodeId}">
+                    {{data}}
+                </li>
+            </ul>
+            <p class="note" ng-if="!blade.currentEntities.length">{{ 'content.blades.store-url-list.labels.no-store-urls' | translate }}</p>
+        </div>
+    </div>
+</div>

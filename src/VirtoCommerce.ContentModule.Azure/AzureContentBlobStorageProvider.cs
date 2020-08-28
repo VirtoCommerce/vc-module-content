@@ -57,7 +57,17 @@ namespace VirtoCommerce.ContentModule.Azure
         public override async Task<BlobEntrySearchResult> SearchAsync(string folderUrl, string keyword)
         {
             folderUrl = NormalizeUrl(folderUrl);
-            return await base.SearchAsync(folderUrl, keyword);
+
+            var result = await base.SearchAsync(folderUrl, keyword);
+
+            var rootAzurePath = _options.RootPath.Replace('\\', '/');
+
+            foreach (var blobEntry in result.Results)
+            {
+                blobEntry.RelativeUrl = blobEntry.RelativeUrl.Replace($"/{rootAzurePath}", string.Empty);
+            }
+
+            return result;
         }
 
         /// <summary>

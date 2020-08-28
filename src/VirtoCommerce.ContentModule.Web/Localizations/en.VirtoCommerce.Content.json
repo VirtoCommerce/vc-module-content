@@ -168,13 +168,19 @@
                 }
             },
             "theme-asset-list": {
-                "title": "Edit {{path}}",
-                "subtitle": "Theme asset list",
-                "labels": {
-                    "add-new": "Add new",
-                    "nodata": "No Assets yet"
-                }
+            "title": "Edit {{path}}",
+            "subtitle": "Theme asset list",
+            "labels": {
+              "add-new": "Add new",
+              "nodata": "No Assets yet"
             }
+          },
+            "store-url-list": {
+              "labels": {
+                "pick-url-to-preview": "Pick a store url to preview",
+                "no-store-urls": "No store urls yet" 
+              } 
+            } 
         },
         "widgets": {
             "menu": {
