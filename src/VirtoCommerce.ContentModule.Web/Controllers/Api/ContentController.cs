@@ -306,7 +306,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
                     if (hasContentDispositionHeader)
                     {
-                        var fileName = contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty);
+                        var fileName = Path.GetFileName(contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty));
 
                         var targetFilePath = folderUrl + "/" + fileName;
 
