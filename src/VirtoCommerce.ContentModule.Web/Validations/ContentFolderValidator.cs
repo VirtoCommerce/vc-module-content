@@ -9,9 +9,9 @@ namespace VirtoCommerce.ContentModule.Web.Validations
         public ContentFolderValidator()
         {
             RuleFor(context => context.Name)
-                .Cascade(CascadeMode.Continue)
-                .NotEmpty()
+                .Cascade(CascadeMode.Stop)
                 .NotNull()
+                .NotEmpty()
                 .MinimumLength(3)
                 .MaximumLength(63)
                 .Must(x => !x.StartsWith("-") && !x.EndsWith("-") && !x.Contains("--"))
