@@ -1,4 +1,4 @@
-﻿angular.module('platformWebApp')
+angular.module('platformWebApp')
     .controller('virtoCommerce.contentModule.assetListController', ['$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils',
         function ($scope, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
             var blade = $scope.blade;
@@ -29,7 +29,11 @@
             };
 
             function newFolder(value, prefix) {
-                var result = prompt(prefix ? prefix + "\n\nEnter folder name:" : "Enter folder name:", value);
+                var tooltip = "Rules:\n1) Folder name must be from 3 through 63 characters long;\n2)Folder name must start with a letter or number, and can contain only letters, numbers, and the dash - character;\n3) Every dash - character must be immediately preceded and followed by a letter or number;\n4) Consecutive dashes are not permitted;\n5) All letters in a folder name must be lowercase.\n"
+                    + prefix ? prefix + "\n\nEnter folder name:" : "Enter folder name:";
+
+                var result = prompt(tooltip, value);
+
                 if (result != null) {
                     contentApi.createFolder(
                         { contentType: blade.contentType, storeId: blade.storeId },
@@ -48,10 +52,9 @@
             };
 
             $scope.rename = function (listItem) {
-
                 var isFolder = /\/$/.test(listItem.url);
                 var result = prompt("Enter new name", listItem.name);
-                // if rename folder, then ulr name ends '/' 
+                // if rename folder, then ulr name ends '/'
                 var substrNameLenght = isFolder ? listItem.name.length + 1 : listItem.name.length;
 
                 if (result) {

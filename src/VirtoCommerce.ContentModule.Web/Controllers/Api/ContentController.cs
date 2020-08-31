@@ -18,6 +18,7 @@ using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.ContentModule.Web.Filters;
+using VirtoCommerce.ContentModule.Web.Validations;
 using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
@@ -229,7 +230,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             }
 
             //remove archive after unpack
-            await storageProvider.RemoveAsync(new[] {archivePath});
+            await storageProvider.RemoveAsync(new[] { archivePath });
 
             return NoContent();
         }
@@ -247,6 +248,11 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> CreateContentFolder(string contentType, string storeId, [FromBody] ContentFolder folder)
         {
+            if (!new ContentFolderValidator().Validate(folder).IsValid)
+            {
+                return NoContent();
+            }
+
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
 
             await storageProvider.CreateFolderAsync(folder.ToBlobModel(AbstractTypeFactory<BlobFolder>.TryCreateInstance()));
@@ -293,7 +299,6 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                     retVal.Add(сontentFile);
                 }
             }
-
             else
             {
                 var boundary = MultipartRequestHelper.GetBoundary(MediaTypeHeaderValue.Parse(Request.ContentType), _defaultFormOptions.MultipartBoundaryLengthLimit);
