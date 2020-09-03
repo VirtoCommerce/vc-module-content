@@ -1,6 +1,6 @@
-﻿angular.module('platformWebApp')
-    .controller('virtoCommerce.contentModule.assetListController', ['$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils',
-        function ($scope, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
+angular.module('platformWebApp')
+    .controller('virtoCommerce.contentModule.assetListController', ['$scope', '$translate', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils',
+        function ($scope, translate, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
             var blade = $scope.blade;
 
             blade.refresh = function () {
@@ -28,14 +28,24 @@
                     });
             };
 
-            function newFolder(value, prefix) {
-                var result = prompt(prefix ? prefix + "\n\nEnter folder name:" : "Enter folder name:", value);
+            function newFolder() {
+                var tooltip = translate.instant('platform.dialogs.create-folder.title');
+
+                var result = prompt(tooltip + "\n\nEnter folder name:");
+
                 if (result != null) {
-                    contentApi.createFolder(
-                        { contentType: blade.contentType, storeId: blade.storeId },
-                        { name: result, parentUrl: blade.currentEntity.url },
+                    contentApi.createFolder({
+                        contentType: blade.contentType,
+                        storeId: blade.storeId
+                    }, {
+                        name: result,
+                        parentUrl: blade.currentEntity.url
+                    },
                         blade.refresh,
-                        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                        function (error) {
+                            var text = error.data.map(x => "ErrorCode: " + x.errorCode + " Message: " + x.errorMessage).join('\n');
+                            bladeNavigationService.setError('Error ' + error.status + '\n' + text, blade);
+                        });
                 }
             }
 
@@ -48,10 +58,9 @@
             };
 
             $scope.rename = function (listItem) {
-
                 var isFolder = /\/$/.test(listItem.url);
                 var result = prompt("Enter new name", listItem.name);
-                // if rename folder, then ulr name ends '/' 
+                // if rename folder, then ulr name ends '/'
                 var substrNameLenght = isFolder ? listItem.name.length + 1 : listItem.name.length;
 
                 if (result) {
@@ -162,7 +171,7 @@
                 },
                 {
                     name: "platform.commands.new-folder", icon: 'fa fa-folder-o',
-                    executeMethod: function () { newFolder(undefined); },
+                    executeMethod: function () { newFolder(); },
                     canExecuteMethod: function () { return true; },
                     permission: 'content:create'
                 },
