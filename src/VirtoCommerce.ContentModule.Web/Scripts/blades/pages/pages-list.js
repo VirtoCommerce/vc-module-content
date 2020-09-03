@@ -278,7 +278,7 @@ angular.module('virtoCommerce.contentModule')
             blade.contextMenuItems = [
                 {
                     name: 'platform.commands.manage', icon: 'fa fa-edit',
-                    action: function (data) { openBlogDetailsBlade(data); },
+                    action: function (data) { openBlogDetailsBlade(data, false); },
                     permission: blade.updatePermission
                 }
             ];

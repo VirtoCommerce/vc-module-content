@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.contentModule').factory('virtoCommerce.contentModule.menus', ['$resource', function ($resource) {
+angular.module('virtoCommerce.contentModule').factory('virtoCommerce.contentModule.menus', ['$resource', function ($resource) {
     return $resource('api/cms/:storeId/menu/', {}, {
         get: { url: 'api/cms/:storeId/menu/', method: 'GET', isArray: true },
         getList: { url: 'api/cms/:storeId/menu/:listId', method: 'GET' },
@@ -116,6 +116,7 @@
         unpack: { url: 'api/content/:contentType/:storeId/unpack' },
         createFolder: { url: 'api/content/:contentType/:storeId/folder', method: 'POST' },
         copy: { url: 'api/content/copy' },
-        move: { url: 'api/content/:contentType/:storeId/move' }
+        move: { url: 'api/content/:contentType/:storeId/move' },
+        delete: {url: 'api/content/:contentType/:storeId', method: 'DELETE'}
     });
 }]);
