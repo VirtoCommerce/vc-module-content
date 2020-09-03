@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.contentModule')
     .controller('virtoCommerce.contentModule.pagesListController', ['$rootScope', '$scope', '$translate', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils',
-        function ($rootScope, $scope, translate, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
+        function ($rootScope, $scope, $translate, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
             var blade = $scope.blade;
             blade.updatePermission = 'content:update';
 
@@ -32,7 +32,7 @@ angular.module('virtoCommerce.contentModule')
             };
 
             function newFolder() {
-                var tooltip = translate.instant('platform.dialogs.create-folder.title');
+                var tooltip = $translate.instant('platform.dialogs.create-folder.title');
 
                 var result = prompt(tooltip + "\n\nEnter folder name:");
 

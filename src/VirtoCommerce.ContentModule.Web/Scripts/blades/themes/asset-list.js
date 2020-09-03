@@ -1,6 +1,6 @@
 angular.module('platformWebApp')
     .controller('virtoCommerce.contentModule.assetListController', ['$scope', '$translate', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils',
-        function ($scope, translate, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
+        function ($scope, $translate, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
             var blade = $scope.blade;
 
             blade.refresh = function () {
@@ -29,7 +29,7 @@ angular.module('platformWebApp')
             };
 
             function newFolder() {
-                var tooltip = translate.instant('platform.dialogs.create-folder.title');
+                var tooltip = $translate.instant('platform.dialogs.create-folder.title');
 
                 var result = prompt(tooltip + "\n\nEnter folder name:");
 
