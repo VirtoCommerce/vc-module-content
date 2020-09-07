@@ -253,7 +253,11 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
             if (!validation.IsValid)
             {
-                return BadRequest(validation.Errors);
+                return BadRequest(new
+                {
+                    Message = string.Join(" ", validation.Errors.Select(x => x.ErrorMessage)),
+                    Errors = validation.Errors
+                });
             }
 
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));

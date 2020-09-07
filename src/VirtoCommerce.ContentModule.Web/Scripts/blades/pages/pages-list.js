@@ -37,18 +37,7 @@ angular.module('virtoCommerce.contentModule')
                 var result = prompt(tooltip + "\n\nEnter folder name:");
 
                 if (result != null) {
-                    contentApi.createFolder({
-                        contentType: blade.contentType,
-                        storeId: blade.storeId
-                    }, {
-                        name: result,
-                        parentUrl: blade.currentEntity.url
-                    },
-                        blade.refresh,
-                        function (error) {
-                            var text = error.data.map(x => "ErrorCode: " + x.errorCode + " Message: " + x.errorMessage).join('\n');
-                            bladeNavigationService.setError('Error ' + error.status + '\n' + text, blade);
-                        });
+                    contentApi.createFolder({ contentType: blade.contentType, storeId: blade.storeId }, { name: result, parentUrl: blade.currentEntity.url }, blade.refresh);
                 }
             }
 
