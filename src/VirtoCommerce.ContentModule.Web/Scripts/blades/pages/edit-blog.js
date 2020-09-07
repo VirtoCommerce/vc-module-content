@@ -5,6 +5,7 @@ angular.module('virtoCommerce.contentModule')
                 var blade = $scope.blade;
                 blade.updatePermission = 'content:update';
                 $scope.validators = validators;
+                const mdFileExtension = '.md';
 
                 blade.initialize = function() {
                     if (blade.isNew) {
@@ -20,6 +21,17 @@ angular.module('virtoCommerce.contentModule')
                     }
                 };
 
+                $scope.isNameCanBeUsed = (value) => {
+                    // need while blade.origEntity not loaded 
+                    if (blade.isNew === false && !blade.origEntity) {
+                        return true;
+                    }
+                    if (blade.origEntity && value === blade.origEntity.name) {
+                        return true;
+                    }
+                    return !(blade.existedBlogsName && blade.existedBlogsName.includes(value));
+                };
+                
                 function fillMetadata(data) {
                     dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders' },
                         function(results) {
@@ -75,9 +87,9 @@ angular.module('virtoCommerce.contentModule')
 
                 $scope.saveChanges = async function() {
                     blade.isLoading = true;
-
                     const parentUrl = blade.currentEntity.url;
                     const folderName = blade.currentEntity.name;
+
                     if (!parentUrl) {
                         contentApi.createFolder(
                             { contentType: blade.contentType, storeId: blade.storeId },
@@ -87,17 +99,16 @@ angular.module('virtoCommerce.contentModule')
                     } else {
                         if (blade.origEntity.name !== blade.currentEntity.name) {
                             let urlsToDelete = [];
-                            let oldFilename = blade.origEntity.name + '.md';
+                            let oldFilename = blade.origEntity.name + mdFileExtension;
                             urlsToDelete.push(blade.currentEntity.parentUrl + folderName +'/'+ oldFilename);
                             urlsToDelete.push(parentUrl);
-                            
+
                             await contentApi.createFolder({ contentType: blade.contentType, storeId: blade.storeId }, { name: folderName, parentUrl: blade.currentEntity.parentUrl }).$promise;
                             $scope.saveWithMetadata();
                             await contentApi.copy({ srcPath: parentUrl, destPath: blade.currentEntity.parentUrl + folderName }).$promise;
                             await contentApi.delete({ contentType: blade.contentType, storeId: blade.storeId, urls: urlsToDelete }).$promise;
 
                             blade.parentBlade.refresh();
-
                         } else {
                             $scope.saveWithMetadata();
                         }
@@ -180,7 +191,7 @@ angular.module('virtoCommerce.contentModule')
                 );
 
                 function getBlogBlobName() {
-                    return blade.currentEntity.name + '/' + blade.currentEntity.name + '.md'
+                    return blade.currentEntity.name + '/' + blade.currentEntity.name + mdFileExtension;
                 }
 
                 function isDirty() {

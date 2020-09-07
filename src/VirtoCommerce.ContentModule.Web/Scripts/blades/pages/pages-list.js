@@ -138,6 +138,7 @@ angular.module('virtoCommerce.contentModule')
                 contentType: blade.contentType,
                 storeId: blade.storeId,
                 currentEntity: listItem,
+                existedBlogsName: $scope.listEntries.map((blog) => blog.name),
                 isNew: isNew,
                 title: listItem.name,
                 subtitle: 'content.blades.edit-blog.subtitle',

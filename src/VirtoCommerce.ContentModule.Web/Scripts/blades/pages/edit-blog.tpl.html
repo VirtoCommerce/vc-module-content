@@ -1,4 +1,4 @@
-﻿<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>
+<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>
 <div class="blade-content">
     <div class="blade-inner">
         <div class="inner-block">
@@ -6,10 +6,16 @@
                 <div class="form-group" ng-init="setForm(formScope)">
                     <label class="form-label">{{'content.blades.edit-blog.labels.blog-name' | translate }}</label>
                     <div class="form-input">
-                        <input focus-on="" required class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.edit-blog.placeholders.blog-name' | translate }}" name="name" ui-validate=" 'validators.webSafeFileNameValidator($value)' " />
+                        <input focus-on="" required class="form-control"
+                               ng-model="blade.currentEntity.name"
+                               placeholder="{{ 'content.blades.edit-blog.placeholders.blog-name' | translate }}"
+                               name="name"
+                               ui-validate=" 'validators.webSafeFileNameValidator($value)' "
+                               ui-validate-async=" {nameUsed: 'isNameCanBeUsed($value)'} "/>
                     </div>
                     <div class="form-error" ng-show="formScope.name.$dirty">
                         <span ng-show="formScope.name.$error.validator">{{ 'content.blades.edit-blog.validations.name-invalid' | translate }}</span>
+                        <span ng-show="formScope.name.$error.nameUsed">{{ 'content.blades.edit-blog.validations.name-used' | translate }}</span>
                     </div>
                 </div>
                 <div class="sub-t">{{'content.blades.edit-blog.labels.metadata' | translate }}</div>
