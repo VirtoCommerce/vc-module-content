@@ -23,7 +23,7 @@ angular.module('virtoCommerce.contentModule')
 
                 $scope.isNameCanBeUsed = (value) => {
                     // need while blade.origEntity not loaded 
-                    if (blade.isNew === false && !blade.origEntity) {
+                    if (!blade.isNew && !blade.origEntity) {
                         return true;
                     }
                     if (blade.origEntity && value === blade.origEntity.name) {
