@@ -149,25 +149,6 @@ angular.module('virtoCommerce.contentModule')
                             canExecuteMethod: isDirty,
                             permission: blade.updatePermission
                         }
-                        //{
-                        //    name: "platform.commands.delete", icon: 'fa fa-trash',
-                        //    executeMethod: function () {
-                        //        var dialog = {
-                        //            id: "confirmDeleteContentItem",
-                        //            title: "content.dialogs.blog-delete.title",
-                        //            message: "content.dialogs.blog-delete.message",
-                        //            callback: function (remove) {
-                        //                if (remove) {
-                        //                    blade.deleteBlog();                                
-                        //                }
-                        //            }
-                        //        };
-
-                        //        dialogService.showConfirmationDialog(dialog);
-                        //    },
-                        //    canExecuteMethod: function () { return true; },
-                        //    permission: blade.updatePermission
-                        //}
                     ];
                 }
 
