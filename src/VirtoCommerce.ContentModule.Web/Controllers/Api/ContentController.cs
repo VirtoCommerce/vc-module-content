@@ -66,21 +66,22 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 return result;
             });
 
-            var storeTask = _storeService.GetByIdAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
-            var themesTask = contentStorageProvider.SearchAsync(GetContentBasePath("themes", storeId), null);
-            var blogsTask = contentStorageProvider.SearchAsync(GetContentBasePath("blogs", storeId), null);
+            cacheKey = CacheKey.With(GetType(), "blogsCount", $"content-{storeId}");
+            var blogsCount = _platformMemoryCache.GetOrCreateExclusive(cacheKey, cacheEntry =>
+            {
+                cacheEntry.AddExpirationToken(ContentCacheRegion.CreateChangeToken($"content-{storeId}"));
+                var result = CountContentItemsRecursive(GetContentBasePath("blogs", storeId), contentStorageProvider);
+                return result;
+            });
 
-            await Task.WhenAll(themesTask, blogsTask, storeTask);
-
-            var store = storeTask.Result;
-            var themes = themesTask.Result;
-            var blogs = blogsTask.Result;
+            var store = await _storeService.GetByIdAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
+            var themes = await contentStorageProvider.SearchAsync(GetContentBasePath("themes", storeId), null);
 
             var retVal = new ContentStatistic
             {
                 ActiveThemeName = store.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value.ToString() ?? "default",
                 ThemesCount = themes.Results.OfType<BlobFolder>().Count(),
-                BlogsCount = blogs.Results.OfType<BlobFolder>().Count(),
+                BlogsCount = blogsCount,
                 PagesCount = pagesCount
             };
 
@@ -146,13 +147,16 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         {
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
 
-            var result = await storageProvider.SearchAsync(folderUrl, keyword);
-            var retVal = result.Results.OfType<BlobFolder>()
+            var searchResult = await storageProvider.SearchAsync(folderUrl, keyword);
+
+            var result = searchResult.Results.OfType<BlobFolder>()
                 .Select(x => x.ToContentModel())
                 .OfType<ContentItem>()
-                .Concat(result.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()))
+                .Concat(searchResult.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()))
+                .Where(x => !x.Name.EqualsInvariant("blogs"))
                 .ToArray();
-            return Ok(retVal);
+
+            return Ok(result);
         }
 
         /// <summary>
@@ -359,10 +363,13 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             return retVal;
         }
 
-        private int CountContentItemsRecursive(string folderUrl, IBlobStorageProvider blobContentStorageProvider, string excludedFolderUrl = null)
+        private static int CountContentItemsRecursive(string folderUrl, IBlobStorageProvider blobContentStorageProvider, string excludedFolderUrl = null)
         {
             var searchResult = blobContentStorageProvider.SearchAsync(folderUrl, null).GetAwaiter().GetResult();
-            var retVal = searchResult.TotalCount
+
+            var folders = searchResult.Results.OfType<BlobFolder>();
+
+            var retVal = searchResult.TotalCount - folders.Count()
                          + searchResult.Results.OfType<BlobFolder>()
                              .Where(x => excludedFolderUrl == null || !x.RelativeUrl.EndsWith(excludedFolderUrl, StringComparison.InvariantCultureIgnoreCase))
                              .Select(x => CountContentItemsRecursive(x.RelativeUrl, blobContentStorageProvider))
