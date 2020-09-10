@@ -152,7 +152,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 .Select(x => x.ToContentModel())
                 .OfType<ContentItem>()
                 .Concat(searchResult.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()))
-                .Where(x => !x.Name.EqualsInvariant("blogs"))
+                .Where(x => folderUrl != null || !x.Name.EqualsInvariant("blogs"))
                 .ToArray();
 
             return Ok(result);
