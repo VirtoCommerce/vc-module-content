@@ -157,7 +157,7 @@
                     "blog-name": "Enter blog name"
                 },
                 "validations": {
-                    "name-invalid": "Name can contain alphanumeric, \"_\", \"-\" and \".\" characters only.",
+                    "name-invalid": "Name can contain alphanumeric lower case, \"_\", \"-\" and \".\" characters only.",
                     "name-used":  "This name already used"
                 }
             },

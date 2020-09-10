@@ -1,10 +1,9 @@
 angular.module('virtoCommerce.contentModule')
     .controller('virtoCommerce.contentModule.editBlogController',
         [
-            '$rootScope', '$scope', 'platformWebApp.validators', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.dynamicProperties.api', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings', function($rootScope, $scope, validators, contentApi, dynamicPropertiesApi, bladeNavigationService, dialogService, dictionaryItemsApi, settings) {
+            '$rootScope', '$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.dynamicProperties.api', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings', function($rootScope, $scope, contentApi, dynamicPropertiesApi, bladeNavigationService, dialogService, dictionaryItemsApi, settings) {
                 var blade = $scope.blade;
                 blade.updatePermission = 'content:update';
-                $scope.validators = validators;
                 const mdFileExtension = '.md';
 
                 blade.initialize = function() {
@@ -31,7 +30,12 @@ angular.module('virtoCommerce.contentModule')
                     }
                     return !(blade.existedBlogsName && blade.existedBlogsName.includes(value));
                 };
-                
+
+                $scope.validateName = (value) => {
+                    var pattern = /^[a-z0-9_.-]+$/;
+                    return pattern.test(value);
+                };
+
                 function fillMetadata(data) {
                     dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders' },
                         function(results) {
