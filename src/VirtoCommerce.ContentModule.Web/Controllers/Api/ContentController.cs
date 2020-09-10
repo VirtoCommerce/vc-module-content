@@ -66,22 +66,21 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 return result;
             });
 
-            cacheKey = CacheKey.With(GetType(), "blogsCount", $"content-{storeId}");
-            var blogsCount = _platformMemoryCache.GetOrCreateExclusive(cacheKey, cacheEntry =>
-            {
-                cacheEntry.AddExpirationToken(ContentCacheRegion.CreateChangeToken($"content-{storeId}"));
-                var result = CountContentItemsRecursive(GetContentBasePath("blogs", storeId), contentStorageProvider);
-                return result;
-            });
+            var storeTask = _storeService.GetByIdAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
+            var themesTask = contentStorageProvider.SearchAsync(GetContentBasePath("themes", storeId), null);
+            var blogsTask = contentStorageProvider.SearchAsync(GetContentBasePath("blogs", storeId), null);
 
-            var store = await _storeService.GetByIdAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
-            var themes = await contentStorageProvider.SearchAsync(GetContentBasePath("themes", storeId), null);
+            await Task.WhenAll(themesTask, blogsTask, storeTask);
+
+            var store = storeTask.Result;
+            var themes = themesTask.Result;
+            var blogs = blogsTask.Result;
 
             var retVal = new ContentStatistic
             {
                 ActiveThemeName = store.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value.ToString() ?? "default",
                 ThemesCount = themes.Results.OfType<BlobFolder>().Count(),
-                BlogsCount = blogsCount,
+                BlogsCount = blogs.Results.OfType<BlobFolder>().Count(),
                 PagesCount = pagesCount
             };
 
