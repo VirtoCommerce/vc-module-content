@@ -32,8 +32,8 @@ angular.module('virtoCommerce.contentModule')
                 };
 
                 $scope.validateName = (value) => {
-                    var pattern = /^[a-z0-9_.-]+$/;
-                    return pattern.test(value);
+                    var pattern = /[^0-9a-z -]/;
+                    return !pattern.test(value);
                 };
 
                 function fillMetadata(data) {

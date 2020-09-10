@@ -1,4 +1,4 @@
-﻿using AutoFixture;
+using AutoFixture;
 using FluentAssertions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Web.Validators;
@@ -135,7 +135,7 @@ namespace VirtoCommerce.ContentModule.Tests.Validators
 
             // Assert
             result.IsValid.Should().BeFalse();
-            result.Errors.Should().ContainSingle(x => x.PropertyName == "Name" && x.ErrorMessage.Contains("specsymbols"));
+            result.Errors.Should().ContainSingle(x => x.PropertyName == "Name" && x.ErrorMessage.Contains("alphanumeric lower case"));
         }
 
         [Fact]
