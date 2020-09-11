@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -64,7 +63,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             var pagesCount = _platformMemoryCache.GetOrCreateExclusive(cacheKey, cacheEntry =>
             {
                 cacheEntry.AddExpirationToken(ContentCacheRegion.CreateChangeToken($"content-{storeId}"));
-                var result = CountContentItemsRecursive(GetContentBasePath("pages", storeId), contentStorageProvider, GetContentBasePath(_blogsFolderName, storeId));
+                var result = CountContentItemsRecursive(GetContentBasePath("pages", storeId), contentStorageProvider, _blogsFolderName);
                 return result;
             });
 
@@ -364,7 +363,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             return retVal;
         }
 
-        private static int CountContentItemsRecursive(string folderUrl, IBlobStorageProvider blobContentStorageProvider, string excludedFolderUrl = null)
+        private static int CountContentItemsRecursive(string folderUrl, IBlobStorageProvider blobContentStorageProvider, string excludedFolderName = null)
         {
             var searchResult = blobContentStorageProvider.SearchAsync(folderUrl, null).GetAwaiter().GetResult();
 
@@ -372,7 +371,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
             var retVal = searchResult.TotalCount - folders.Count()
                          + searchResult.Results.OfType<BlobFolder>()
-                             .Where(x => excludedFolderUrl == null || !x.RelativeUrl.EndsWith(excludedFolderUrl, StringComparison.InvariantCultureIgnoreCase))
+                             .Where(x => string.IsNullOrEmpty(excludedFolderName) || !x.Name.EqualsInvariant(excludedFolderName))
                              .Select(x => CountContentItemsRecursive(x.RelativeUrl, blobContentStorageProvider))
                              .Sum();
 
