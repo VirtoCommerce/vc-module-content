@@ -37,6 +37,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IStoreService _storeService;
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
+        private const string _blogsFolderName = "blogs";
+
         public ContentController(
             IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
             IPlatformMemoryCache platformMemoryCache,
@@ -62,13 +64,13 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             var pagesCount = _platformMemoryCache.GetOrCreateExclusive(cacheKey, cacheEntry =>
             {
                 cacheEntry.AddExpirationToken(ContentCacheRegion.CreateChangeToken($"content-{storeId}"));
-                var result = CountContentItemsRecursive(GetContentBasePath("pages", storeId), contentStorageProvider, GetContentBasePath("blogs", storeId));
+                var result = CountContentItemsRecursive(GetContentBasePath("pages", storeId), contentStorageProvider, GetContentBasePath(_blogsFolderName, storeId));
                 return result;
             });
 
             var storeTask = _storeService.GetByIdAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
             var themesTask = contentStorageProvider.SearchAsync(GetContentBasePath("themes", storeId), null);
-            var blogsTask = contentStorageProvider.SearchAsync(GetContentBasePath("blogs", storeId), null);
+            var blogsTask = contentStorageProvider.SearchAsync(GetContentBasePath(_blogsFolderName, storeId), null);
 
             await Task.WhenAll(themesTask, blogsTask, storeTask);
 
@@ -152,7 +154,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 .Select(x => x.ToContentModel())
                 .OfType<ContentItem>()
                 .Concat(searchResult.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()))
-                .Where(x => folderUrl != null || !x.Name.EqualsInvariant("blogs"))
+                .Where(x => folderUrl != null || !x.Name.EqualsInvariant(_blogsFolderName))
                 .ToArray();
 
             return Ok(result);
@@ -354,9 +356,9 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             {
                 retVal = "Pages/" + storeId;
             }
-            else if (contentType.EqualsInvariant("blogs"))
+            else if (contentType.EqualsInvariant(_blogsFolderName))
             {
-                retVal = "Pages/" + storeId + "/blogs";
+                retVal = "Pages/" + storeId + $"/{_blogsFolderName}";
             }
 
             return retVal;
