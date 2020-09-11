@@ -156,10 +156,10 @@
                 "placeholders": {
                     "blog-name": "Enter blog name"
                 },
-                "validations": {
-                    "name-invalid": "Name can contain alphanumeric, \"_\", \"-\" and \".\" characters only.",
-                    "name-used":  "This name already used"
-                }
+              "validations": {
+                "name-invalid": "Name can contain alphanumeric lower case, \" \" and \"-\" characters only.",
+                "name-used": "This name already used"
+              }
             },
             "asset-list": {
                 "subtitle": "Manage theme assets",
