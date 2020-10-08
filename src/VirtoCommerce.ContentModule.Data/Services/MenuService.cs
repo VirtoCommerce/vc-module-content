@@ -9,6 +9,7 @@ using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.ContentModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.ContentModule.Data.Services
 {
@@ -62,6 +63,11 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
                 if (targetEntity != null)
                 {
+                    /// This extension is allow to get around breaking changes is introduced in EF Core 3.0 that leads to throw
+                    /// Database operation expected to affect 1 row(s) but actually affected 0 row(s) exception when trying to add the new children entities with manually set keys
+                    /// https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.0/breaking-changes#detectchanges-honors-store-generated-key-values
+                    repository.TrackModifiedAsAddedForNewChildEntities(targetEntity);
+
                     changedEntries.Add(new GenericChangedEntry<MenuLinkList>(list, targetEntity.ToModel(AbstractTypeFactory<MenuLinkList>.TryCreateInstance()), EntryState.Modified));
                     sourceEntity.Patch(targetEntity);
                 }
@@ -107,7 +113,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
             }
         }
-        
+
         public async Task<bool> CheckListAsync(string storeId, string name, string language, string id)
         {
             using (var repository = _menuRepositoryFactory())
