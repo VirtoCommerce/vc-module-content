@@ -3,7 +3,7 @@
   <id>VirtoCommerce.Content</id>
   <version>3.9.0</version>
   <version-tag />
-  <platformVersion>3.9.0</platformVersion>
+  <platformVersion>3.25.0</platformVersion>
   <title>CMS Content module</title>
   <description>Front-end CMS functionality based on liquid technology</description>
   <authors>
