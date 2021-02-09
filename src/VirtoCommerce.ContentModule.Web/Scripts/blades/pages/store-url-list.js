@@ -2,7 +2,7 @@ angular
     .module('virtoCommerce.contentModule')
     .controller('virtoCommerce.contentModule.storeUrlListController', ['$scope', 'platformWebApp.bladeNavigationService', '$localStorage', 'platformWebApp.validators', function ($scope, bladeNavigationService, $localStorage, validators) {
         const blade = $scope.blade;
-        blade.headIcon = 'fa-key';
+        blade.headIcon = 'fas fa-key';
         const nameStoreUrlList = 'storeUrlList-' + blade.storeId;
 
         blade.refresh = function() {

@@ -142,7 +142,7 @@ angular.module('virtoCommerce.contentModule')
          }
      };
 
-     blade.headIcon = 'fa-list-ol';
+     blade.headIcon = 'fa fa-list-ol';
 
      // ui-grid
      $scope.setGridOptions = function (gridOptions) {

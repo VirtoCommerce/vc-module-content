@@ -1,4 +1,4 @@
-﻿angular.module('platformWebApp')
+angular.module('platformWebApp')
 .controller('virtoCommerce.contentModule.assetUploadController', ['$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'FileUploader', function ($scope, contentApi, bladeNavigationService, FileUploader) {
     var blade = $scope.blade;
     var currentEntities;
@@ -77,7 +77,7 @@
         }
     };
 
-    blade.headIcon = 'fa-file-o';
+    blade.headIcon = 'fa fa-file-o';
 
     initialize();
 }]);

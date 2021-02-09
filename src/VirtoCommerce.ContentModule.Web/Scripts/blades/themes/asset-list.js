@@ -250,7 +250,7 @@ angular.module('platformWebApp')
                 }
             }
 
-            blade.headIcon = 'fa-folder-o';
+            blade.headIcon = 'fa fa-folder-o';
             blade.title = blade.currentEntity.name;
             blade.refresh();
         }

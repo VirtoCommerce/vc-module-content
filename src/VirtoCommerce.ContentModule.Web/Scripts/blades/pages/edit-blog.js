@@ -216,7 +216,7 @@ angular.module('virtoCommerce.contentModule')
 
                 $scope.languages = settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' });
 
-                blade.headIcon = 'fa-inbox';
+                blade.headIcon = 'fa fa-inbox';
 
                 blade.initialize();
             }

@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.assetDetailController', ['$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', '$http',
     function ($scope, validators, dialogService, contentApi, $timeout, bladeNavigationService, $http) {
         var blade = $scope.blade;
@@ -6,7 +6,7 @@
         var codemirrorEditor;
 
         $scope.validators = validators;
-		$scope.setForm = function (form) { $scope.formScope = form; }
+        $scope.setForm = function (form) { $scope.formScope = form; }
 
         blade.initializeBlade = function () {
             if (blade.isNew) {
@@ -183,6 +183,6 @@
             mode: getEditorMode()
         };
 
-        blade.headIcon = 'fa-file-o';
+        blade.headIcon = 'fa fa-file-o';
         blade.initializeBlade();
     }]);

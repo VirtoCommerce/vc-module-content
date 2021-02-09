@@ -264,6 +264,6 @@ angular.module('virtoCommerce.contentModule')
     //});
     $scope.languages = settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' });
 
-    blade.headIcon = 'fa-file-o';
+    blade.headIcon = 'fa fa-file-o';
     blade.initializeBlade();
 }]);
