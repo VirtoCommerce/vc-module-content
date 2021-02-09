@@ -214,7 +214,7 @@ angular.module('virtoCommerce.contentModule')
 	        $state.go('workspace.storeModule');
 	    };
 
-	    blade.headIcon = 'fa-code';
+	    blade.headIcon = 'fa fa-code';
 
 	    blade.initialize();
 	}]);

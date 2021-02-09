@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.contentModule')
+angular.module('virtoCommerce.contentModule')
 .controller('virtoCommerce.contentModule.linkListsController', ['$rootScope', '$scope', 'virtoCommerce.contentModule.menus', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'uiGridConstants', 'platformWebApp.uiGridHelper',
     function ($rootScope, $scope, menus, stores, bladeNavigationService, dialogService, uiGridConstants, uiGridHelper) {
         $scope.uiGridConstants = uiGridConstants;
@@ -65,7 +65,7 @@
             });
         };
 
-        blade.headIcon = 'fa-list-ol';
+        blade.headIcon = 'fa fa-list-ol';
 
         blade.toolbarCommands = [
             {
@@ -74,14 +74,14 @@
                 canExecuteMethod: function () { return true; },
                 permission: 'content:create'
             },
-			{
-			    name: "platform.commands.delete", icon: 'fa fa-trash-o',
-			    executeMethod: function () { blade.deleteList($scope.gridApi.selection.getSelectedRows()); },
-			    canExecuteMethod: function () {
-			        return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
-			    },
-			    permission: 'content:delete'
-			}
+            {
+                name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                executeMethod: function () { blade.deleteList($scope.gridApi.selection.getSelectedRows()); },
+                canExecuteMethod: function () {
+                    return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
+                },
+                permission: 'content:delete'
+            }
         ];
 
         // ui-grid
