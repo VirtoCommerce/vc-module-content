@@ -325,6 +325,6 @@ angular.module('virtoCommerce.contentModule')
                 }
             }
 
-            blade.headIcon = isBlogs() ? 'fa-inbox' : 'fa-folder-o';
+            blade.headIcon = isBlogs() ? 'fa fa-inbox' : 'fa fa-folder-o';
             blade.refresh();
         }]);
