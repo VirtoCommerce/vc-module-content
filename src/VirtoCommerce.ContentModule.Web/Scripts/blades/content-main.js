@@ -47,12 +47,10 @@ angular.module('virtoCommerce.contentModule')
 	                return menus.get({ storeId: storeId }, function (data) {
 	                    entity.listLinksCount = data.length;
 	                }, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); }).$promise;
-	                break;
 	            case 'stats':
 	                return contentApi.getStatistics({ storeId: storeId }, function (data) {
 	                    angular.extend(entity, data);
 	                }, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); }).$promise;
-	                break;
 	            case 'defaultTheme':
 	                entity.activeThemeName = data;
 	            default:
