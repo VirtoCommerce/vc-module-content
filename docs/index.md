@@ -49,7 +49,7 @@ VirtoCommenrce Content Module allows adding as many themes as necessary. There i
 
 ![Theme View](media/screen-theme-view.png)
 
-How to add and activate Theme in Store described in the [Theme Management](/docs/theme-management.md) article.
+How to add and activate Theme in Store described in the [Theme Management](theme-management.md) article.
 
 ### Pages and Blogs
 
@@ -59,7 +59,7 @@ On Storefront the Blog contains static pages, like 'About us', 'Search', 'Terms 
 
  The content is downloaded from the remote location at runtime and is saved in the local website folder structure under App_Data folder from where local runtime generator picks it up and renders as html.
 
-How to edit Pages and blogs in Store is described in the [Pages and Blogs Management](/docs/pages-blogs-management.md) article
+How to edit Pages and blogs in Store is described in the [Pages and Blogs Management](pages-blogs-management.md) article
 
 ### Link lists
 
