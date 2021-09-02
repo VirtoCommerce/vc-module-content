@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.Platform.Assets.AzureBlobStorage;
+using VirtoCommerce.Platform.Core;
 using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.ContentModule.Azure
 {
     public class AzureContentBlobStorageProvider : AzureBlobProvider, IBlobContentStorageProvider
     {
-        private AzureContentBlobOptions _options;
-        public AzureContentBlobStorageProvider(IOptions<AzureContentBlobOptions> options)
-            : base(options)
+        private readonly AzureContentBlobOptions _options;
+        public AzureContentBlobStorageProvider(IOptions<AzureContentBlobOptions> options, IOptions<PlatformOptions> platformOptions, ISettingsManager settingsManager)
+            : base(options, platformOptions, settingsManager)
         {
             _options = options.Value;
         }
@@ -30,7 +32,7 @@ namespace VirtoCommerce.ContentModule.Azure
             return base.GetBlobInfoAsync(NormalizeUrl(url));
         }
 
-        public override async Task CreateFolderAsync(BlobFolder folder)
+        public override Task CreateFolderAsync(BlobFolder folder)
         {
             if (folder == null)
                 throw new ArgumentNullException(nameof(folder));
@@ -39,7 +41,7 @@ namespace VirtoCommerce.ContentModule.Azure
             {
                 folder.Name = NormalizeUrl(folder.Name);
             }
-            await base.CreateFolderAsync(folder);
+            return base.CreateFolderAsync(folder);
         }
 
         public override Stream OpenWrite(string url)
@@ -47,11 +49,11 @@ namespace VirtoCommerce.ContentModule.Azure
             return base.OpenWrite(NormalizeUrl(url));
         }
 
-        public override async Task RemoveAsync(string[] urls)
+        public override Task RemoveAsync(string[] urls)
         {
             urls = urls.Select(NormalizeUrl).ToArray();
 
-            await base.RemoveAsync(urls);
+            return base.RemoveAsync(urls);
         }
 
         public override async Task<BlobEntrySearchResult> SearchAsync(string folderUrl, string keyword)

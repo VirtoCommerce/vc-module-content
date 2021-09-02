@@ -36,7 +36,7 @@ angular.module('platformWebApp')
             bladeNavigationService.setError(item._file.name + ' failed: ' + (response.message ? response.message : status), blade);
         };
 
-        uploader.onCompleteAll = function () {
+        uploader.onSuccessItem = function () {
             blade.parentBlade.refresh();
             blade.uploadCompleted = true;
         };
