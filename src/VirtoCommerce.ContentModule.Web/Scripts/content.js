@@ -39,7 +39,7 @@ angular.module(moduleName, [])
                         subtitle: 'content.blades.scope-value-pick-from-simple-list.subtitle',
                         currentEntity: this,
                         onChangesConfirmedFn: callback,
-                        dataPromise: stores.query().$promise,
+                        dataService: stores,
                         controller: 'platformWebApp.security.scopeValuePickFromSimpleListController',
                         template: '$(Platform)/Scripts/app/security/blades/common/scope-value-pick-from-simple-list.tpl.html'
                     };
