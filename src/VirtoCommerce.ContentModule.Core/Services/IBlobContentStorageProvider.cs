@@ -1,4 +1,4 @@
-using VirtoCommerce.Platform.Core.Assets;
+using VirtoCommerce.AssetsModule.Core.Assets;
 
 namespace VirtoCommerce.ContentModule.Core.Services
 {
