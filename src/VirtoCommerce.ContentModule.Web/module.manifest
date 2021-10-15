@@ -23,9 +23,9 @@
   <dependencies>
     <dependency id="VirtoCommerce.Core" version="3.0.0" />
     <dependency id="VirtoCommerce.Store" version="3.0.0" />
-    <dependency id="VirtoCommerce.Assets" version="3.0.0" />
-    <dependency id="VirtoCommerce.AzureBlobAssets" version="3.0.0" />
-    <dependency id="VirtoCommerce.FileSystemAssets" version="3.0.0" />
+    <dependency id="VirtoCommerce.Assets" version="1.0.0" />
+    <dependency id="VirtoCommerce.AzureBlobAssets" version="1.0.0" />
+    <dependency id="VirtoCommerce.FileSystemAssets" version="1.0.0" />
   </dependencies>
   <groups>
     <group>commerce</group>
