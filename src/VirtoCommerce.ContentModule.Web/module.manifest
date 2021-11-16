@@ -3,7 +3,7 @@
   <id>VirtoCommerce.Content</id>
   <version>3.14.0</version>
   <version-tag />
-  <platformVersion>3.76.0</platformVersion>
+  <platformVersion>3.81.0</platformVersion>
   <title>CMS Content module</title>
   <description>Front-end CMS functionality based on liquid technology</description>
   <authors>
@@ -23,6 +23,9 @@
   <dependencies>
     <dependency id="VirtoCommerce.Core" version="3.0.0" />
     <dependency id="VirtoCommerce.Store" version="3.0.0" />
+    <dependency id="VirtoCommerce.Assets" version="1.0.0" />
+    <dependency id="VirtoCommerce.AzureBlobAssets" version="1.0.0" />
+    <dependency id="VirtoCommerce.FileSystemAssets" version="1.0.0" />
   </dependencies>
   <groups>
     <group>commerce</group>

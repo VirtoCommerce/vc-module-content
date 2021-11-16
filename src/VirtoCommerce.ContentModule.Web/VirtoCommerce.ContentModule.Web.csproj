@@ -15,9 +15,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.6.3" />
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.78.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.78.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.81.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.81.0" />
     <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.3.0" />
+    <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Azure\VirtoCommerce.ContentModule.Azure.csproj" />

@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using VirtoCommerce.Platform.Assets.AzureBlobStorage;
+using VirtoCommerce.AzureBlobAssetsModule.Core;
 
 namespace VirtoCommerce.ContentModule.Azure
 {

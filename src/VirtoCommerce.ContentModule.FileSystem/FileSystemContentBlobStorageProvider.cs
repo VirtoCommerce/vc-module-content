@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Options;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.Platform.Assets.FileSystem;
 using VirtoCommerce.Platform.Core;
 using VirtoCommerce.Platform.Core.Settings;
+using VirtoCommerce.FileSystemAssetsModule.Core;
 
 namespace VirtoCommerce.ContentModule.FileSystem
 {
