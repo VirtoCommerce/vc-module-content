@@ -5,9 +5,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.Platform.Assets.AzureBlobStorage;
+using VirtoCommerce.AzureBlobAssetsModule.Core;
 using VirtoCommerce.Platform.Core;
-using VirtoCommerce.Platform.Core.Assets;
+using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Settings;
 

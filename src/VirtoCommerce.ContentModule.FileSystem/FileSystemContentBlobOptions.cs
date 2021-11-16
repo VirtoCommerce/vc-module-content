@@ -1,5 +1,5 @@
 using System;
-using VirtoCommerce.Platform.Assets.FileSystem;
+using VirtoCommerce.FileSystemAssetsModule.Core;
 
 namespace VirtoCommerce.ContentModule.FileSystem
 {

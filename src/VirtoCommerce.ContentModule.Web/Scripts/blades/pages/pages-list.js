@@ -41,20 +41,18 @@ angular.module('virtoCommerce.contentModule')
                 }
             }
 
-            if (!isBlogs() || (blade.currentEntity.type && blade.currentEntity.type === 'folder')) {
-                $scope.rename = function (listItem) {
-                    var result = prompt("Enter new name", listItem.name);
-                    if (result) {
-                        contentApi.move({
-                            contentType: blade.contentType,
-                            storeId: blade.storeId,
-                            oldUrl: listItem.url,
-                            newUrl: listItem.url.substring(0, listItem.url.length - listItem.name.length) + result
-                        }, blade.refresh,
-                            function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-                    }
-                };
-            }
+            $scope.rename = function (listItem) {
+                var result = prompt("Enter new name", listItem.name);
+                if (result) {
+                    contentApi.move({
+                        contentType: blade.contentType,
+                        storeId: blade.storeId,
+                        oldUrl: listItem.url,
+                        newUrl: listItem.url.substring(0, listItem.url.length - listItem.name.length) + result
+                    }, blade.refresh,
+                        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                }
+            };
 
             $scope.copyUrl = function (data) {
                 window.prompt("Copy to clipboard: Ctrl+C, Enter", data.url);
