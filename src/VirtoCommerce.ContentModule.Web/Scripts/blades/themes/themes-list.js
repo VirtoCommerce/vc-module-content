@@ -230,7 +230,7 @@ angular.module('virtoCommerce.contentModule')
                 themeId: data.name,
                 subtitle: 'content.blades.asset-list.subtitle',
                 controller: 'virtoCommerce.contentModule.assetListController',
-                template: '$(Platform)/Scripts/app/assets/blades/asset-list.tpl.html'
+                template: 'Modules/$(VirtoCommerce.Assets)/Scripts/blades/asset-list.tpl.html'
             };
             bladeNavigationService.showBlade(newBlade, blade);
         };

@@ -184,7 +184,7 @@ angular.module('platformWebApp')
                             currentEntityId: blade.currentEntity.url,
                             title: 'platform.blades.asset-upload.title',
                             controller: 'virtoCommerce.contentModule.assetUploadController',
-                            template: '$(Platform)/Scripts/app/assets/blades/asset-upload.tpl.html'
+                            template: 'Modules/$(VirtoCommerce.Assets)/Scripts/blades/asset-upload.tpl.html'
                         };
                         bladeNavigationService.showBlade(newBlade, blade);
                     },
