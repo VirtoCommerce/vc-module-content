@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <noWarn>1591</noWarn>
     <IsPackable>False</IsPackable>
     <OutputType>Library</OutputType>
@@ -15,10 +15,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.6.3" />
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.81.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.81.0" />
-    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.3.0" />
-    <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="1.0.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.200.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.200.0" />
+    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.200.0" />
+    <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="3.200.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Azure\VirtoCommerce.ContentModule.Azure.csproj" />
