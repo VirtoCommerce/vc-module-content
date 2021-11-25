@@ -12,9 +12,14 @@ angular.module('virtoCommerce.contentModule')
         FileUploader,
         dictionaryItemsApi,
         i18n) {
+
         var blade = $scope.blade;
         blade.currentLanguage = i18n.getLanguage();
         blade.frontMatterHeaders = 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders'
+
+        blade.dynamicPropertiesTotalCount = 0;
+        blade.currentEntity.dynamicProperties = blade.currentEntity.dynamicProperties || [];
+
         $scope.validators = validators;
         var contentType = blade.contentType.substr(0, 1).toUpperCase() +
             blade.contentType.substr(1, blade.contentType.length - 1);
@@ -68,23 +73,35 @@ angular.module('virtoCommerce.contentModule')
             }
 
             blade.currentEntity.content = data.content;
+            $scope.metadata = data.metadata;
 
-            dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders' },
-                function(results) {
-                    fillDynamicProperties(data.metadata, results.results);
+            getDynamicProperties();
+        }
+
+        function getDynamicProperties(take, skip) {
+            blade.isLoading = true;
+
+            dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders', take: take || 20, skip: skip || 0 },
+                function (results) {
+
+                    fillDynamicProperties($scope.metadata, results.results);
+
+                    $scope.dynamicPropertiesTotalCount = results.totalCount;
+
                     $scope.$broadcast('resetContent', { body: blade.currentEntity.content });
-                    $timeout(function() {
+
+                    $timeout(function () {
                         blade.origEntity = angular.copy(blade.currentEntity);
                     });
+
                     blade.isLoading = false;
                 },
-                function(error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
         }
 
         function fillDynamicProperties(metadata, props) {
             _.each(props,
                 function(x) {
-                    //x.displayNames = undefined;
                     var metadataRecord = _.findWhere(metadata, { name: x.name });
                     if (metadataRecord && x.isMultilingual && !x.isDictionary) {
                         metadataRecord.values = _.pluck(metadataRecord.values, 'value');
@@ -93,8 +110,17 @@ angular.module('virtoCommerce.contentModule')
                     x.values = metadataRecord ? metadataRecord.values : [];
                 });
 
-            blade.currentEntity.dynamicProperties = props;
+            blade.currentEntity.dynamicProperties = blade.currentEntity.dynamicProperties.concat(props);
         }
+
+        $scope.scrolled = () => {
+
+            if ($scope.dynamicPropertiesTotalCount > blade.currentEntity.dynamicProperties.length) {
+                getDynamicProperties(20, blade.currentEntity.dynamicProperties.length);
+                $scope.$broadcast('scrollCompleted');
+            }
+            
+        };
 
         $scope.saveChanges = function() {
             blade.isLoading = true;
