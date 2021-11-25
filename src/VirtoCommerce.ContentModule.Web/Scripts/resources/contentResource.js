@@ -47,6 +47,13 @@ angular.module('virtoCommerce.contentModule')
                             },
                             isArray: true
                         },
+                        uploadFromUrl: {
+                            method: 'POST', params:
+                            {
+                                contentType: '@contentType', storeId: '@storeId', folderUrl: '@folderUrl', url: '@url'
+                            },
+                            isArray: true
+                        },
                         getWithMetadata: {
                             // using transformResponse to:
                             // 1. avoid automatic response result string converting to array;
