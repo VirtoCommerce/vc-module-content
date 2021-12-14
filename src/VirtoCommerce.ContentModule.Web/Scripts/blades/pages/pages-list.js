@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.contentModule')
-    .controller('virtoCommerce.contentModule.pagesListController', ['$rootScope', '$scope', '$translate', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils',
-        function ($rootScope, $scope, $translate, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
+    .controller('virtoCommerce.contentModule.pagesListController', ['$rootScope', '$scope', '$translate', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', 'platformWebApp.validators',
+        function ($rootScope, $scope, $translate, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils, validators) {
             var blade = $scope.blade;
             blade.updatePermission = 'content:update';
 
@@ -44,13 +44,18 @@ angular.module('virtoCommerce.contentModule')
             $scope.rename = function (listItem) {
                 var result = prompt("Enter new name", listItem.name);
                 if (result) {
-                    contentApi.move({
-                        contentType: blade.contentType,
-                        storeId: blade.storeId,
-                        oldUrl: listItem.url,
-                        newUrl: listItem.url.substring(0, listItem.url.length - listItem.name.length) + result
-                    }, blade.refresh,
-                        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                    if (validators.webSafeFileNameValidator(result)) {
+                        contentApi.move({
+                            contentType: blade.contentType,
+                            storeId: blade.storeId,
+                            oldUrl: listItem.url,
+                            newUrl: listItem.url.substring(0, listItem.url.length - listItem.name.length) + result
+                        }, blade.refresh,
+                            function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                    } else {
+                        var errorMessage = $translate.instant('content.blades.edit-asset.validations.name-invalid');
+                        alert(errorMessage);
+                    }
                 }
             };
 
