@@ -64,12 +64,12 @@ angular.module('platformWebApp')
         if (blade.newExternalImageUrl) {
             blade.uploadCompleted = false;
 
-            contentApi.save({
+            contentApi.uploadFromUrl({
                 contentType: blade.contentType,
                 storeId: blade.storeId,
                 folderUrl: blade.currentEntityId,
                 url: blade.newExternalImageUrl
-            }, null, function (data) {
+            }, function () {
                 blade.parentBlade.refresh();
                 blade.newExternalImageUrl = undefined;
                 blade.uploadCompleted = true;

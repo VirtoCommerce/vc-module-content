@@ -1,6 +1,6 @@
 angular.module('platformWebApp')
-    .controller('virtoCommerce.contentModule.assetListController', ['$scope', '$translate', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils',
-        function ($scope, $translate, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils) {
+    .controller('virtoCommerce.contentModule.assetListController', ['$scope', '$translate', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', 'platformWebApp.validators',
+        function ($scope, $translate, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils, validators) {
             var blade = $scope.blade;
 
             blade.refresh = function () {
@@ -53,13 +53,18 @@ angular.module('platformWebApp')
                 var substrNameLenght = isFolder ? listItem.name.length + 1 : listItem.name.length;
 
                 if (result) {
-                    contentApi.move({
-                        contentType: blade.contentType,
-                        storeId: blade.storeId,
-                        oldUrl: listItem.url,
-                        newUrl: listItem.url.substring(0, listItem.url.length - substrNameLenght) + result
-                    }, blade.refresh,
-                        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                    if (validators.webSafeFileNameValidator(result)) {
+                        contentApi.move({
+                            contentType: blade.contentType,
+                            storeId: blade.storeId,
+                            oldUrl: listItem.url,
+                            newUrl: listItem.url.substring(0, listItem.url.length - substrNameLenght) + result
+                        }, blade.refresh,
+                            function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                    } else {
+                        var errorMessage = $translate.instant('content.blades.edit-asset.validations.name-invalid');
+                        alert(errorMessage);
+                    }
                 }
             };
 
