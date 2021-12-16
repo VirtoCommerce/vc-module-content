@@ -1,4 +1,3 @@
-using System.IO;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.Platform.Core;

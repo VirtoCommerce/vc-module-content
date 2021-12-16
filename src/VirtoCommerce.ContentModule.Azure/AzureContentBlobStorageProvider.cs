@@ -1,16 +1,15 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.AzureBlobAssetsModule.Core;
-using VirtoCommerce.Platform.Core;
 using VirtoCommerce.AssetsModule.Core.Assets;
+using VirtoCommerce.AzureBlobAssetsModule.Core;
+using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.Platform.Core;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Core.Extensions;
+using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.ContentModule.Azure
 {
