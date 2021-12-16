@@ -2,6 +2,7 @@ using System.IO;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.Platform.Core;
+using VirtoCommerce.Platform.Core.Extensions;
 using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.ContentModule.Azure
@@ -19,11 +20,8 @@ namespace VirtoCommerce.ContentModule.Azure
         }
         public IBlobContentStorageProvider CreateProvider(string basePath)
         {
-            basePath = basePath?.Replace('/', Path.DirectorySeparatorChar)
-                           .Replace($"{Path.DirectorySeparatorChar}{Path.DirectorySeparatorChar}", $"{Path.DirectorySeparatorChar}");
-
             var clonedOptions = _options.Clone() as AzureContentBlobOptions;
-            clonedOptions.RootPath = Path.Combine(clonedOptions.RootPath, basePath);
+            clonedOptions.RootPath = UrlHelperExtensions.Combine(clonedOptions.RootPath, basePath);
             return new AzureContentBlobStorageProvider(new OptionsWrapper<AzureContentBlobOptions>(clonedOptions), _platformOptions, _settingsManager);
         }
     }

@@ -10,6 +10,7 @@ using VirtoCommerce.Platform.Core;
 using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Settings;
+using VirtoCommerce.Platform.Core.Extensions;
 
 namespace VirtoCommerce.ContentModule.Azure
 {
@@ -86,10 +87,7 @@ namespace VirtoCommerce.ContentModule.Azure
                 {
                     url = Uri.UnescapeDataString(new Uri(url).AbsolutePath);
                 }
-                result = Path.DirectorySeparatorChar + url.Replace('/', Path.DirectorySeparatorChar).TrimStart(Path.DirectorySeparatorChar);
-                result = _options.RootPath + Path.DirectorySeparatorChar + result.Replace(_options.RootPath, string.Empty);
-                //TODO: need to use Path.DirectorySeparatorChar instead of hardcoded value
-                result = Regex.Replace(result, @"\\+", $"{Path.DirectorySeparatorChar}");
+                result = UrlHelperExtensions.Combine(_options.RootPath, url.Replace(_options.RootPath, string.Empty));
             }
             return result;
         }
