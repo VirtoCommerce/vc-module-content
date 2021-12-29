@@ -17,7 +17,7 @@ angular.module('virtoCommerce.contentModule')
             blade.frontMatterHeaders = 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders'
 
             blade.dynamicPropertiesTotalCount = 0;
-            blade.currentEntity.dynamicProperties = [];
+            blade.currentEntity.dynamicProperties = blade.currentEntity.dynamicProperties || [];
 
             $scope.validators = validators;
             var contentType = blade.contentType.substr(0, 1).toUpperCase() +
@@ -47,6 +47,7 @@ angular.module('virtoCommerce.contentModule')
             blade.editAsHtml = false;
 
             blade.initializeBlade = function () {
+                blade.currentEntity.dynamicProperties = [];
                 if (blade.isNew) {
                     fillMetadata({});
                 } else {
