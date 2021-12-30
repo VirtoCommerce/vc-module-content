@@ -109,8 +109,9 @@ angular.module('virtoCommerce.contentModule')
                         x.values = metadataRecord ? metadataRecord.values : [];
                     });
 
+            if(props)
                 blade.currentEntity.dynamicProperties = blade.currentEntity.dynamicProperties.concat(props);
-            }
+        }
 
             $scope.scrolled = () => {
                 if ($scope.dynamicPropertiesTotalCount > blade.currentEntity.dynamicProperties.length) {
