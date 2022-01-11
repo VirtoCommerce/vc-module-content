@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
@@ -34,6 +35,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IBlobContentStorageProviderFactory _blobContentStorageProviderFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly IStoreService _storeService;
+        private readonly IHttpClientFactory _httpClientFactory;
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
         private const string _blogsFolderName = "blogs";
@@ -41,11 +43,12 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         public ContentController(
             IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
             IPlatformMemoryCache platformMemoryCache,
-            IStoreService storeService)
+            IStoreService storeService, IHttpClientFactory httpClientFactory)
         {
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _platformMemoryCache = platformMemoryCache;
             _storeService = storeService;
+            _httpClientFactory = httpClientFactory;
         }
 
         /// <summary>
@@ -297,9 +300,9 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 var fileName = HttpUtility.UrlDecode(Path.GetFileName(url));
                 var fileUrl = folderUrl + "/" + fileName;
 
-                using (var client = new WebClient())
+                using (var client = _httpClientFactory.CreateClient())
                 using (var blobStream = storageProvider.OpenWrite(fileUrl))
-                using (var remoteStream = client.OpenRead(url))
+                using (var remoteStream = await client.GetStreamAsync(url))
                 {
                     remoteStream.CopyTo(blobStream);
 
