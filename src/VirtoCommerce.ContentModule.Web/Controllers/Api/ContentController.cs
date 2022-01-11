@@ -42,7 +42,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         public ContentController(
             IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
             IPlatformMemoryCache platformMemoryCache,
-            IStoreService storeService, IHttpClientFactory httpClientFactory)
+            IStoreService storeService,
+            IHttpClientFactory httpClientFactory)
         {
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _platformMemoryCache = platformMemoryCache;
