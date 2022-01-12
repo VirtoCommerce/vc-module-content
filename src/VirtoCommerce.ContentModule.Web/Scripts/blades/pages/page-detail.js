@@ -17,7 +17,7 @@ angular.module('virtoCommerce.contentModule')
             blade.frontMatterHeaders = 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders'
 
             blade.dynamicPropertiesTotalCount = 0;
-            blade.currentEntity.dynamicProperties = blade.currentEntity.dynamicProperties || [];
+            blade.currentEntity.dynamicProperties = [];
 
             $scope.validators = validators;
             var contentType = blade.contentType.substr(0, 1).toUpperCase() +
@@ -47,7 +47,6 @@ angular.module('virtoCommerce.contentModule')
             blade.editAsHtml = false;
 
             blade.initializeBlade = function () {
-                blade.currentEntity.dynamicProperties = [];
                 if (blade.isNew) {
                     fillMetadata({});
                 } else {
@@ -88,6 +87,7 @@ angular.module('virtoCommerce.contentModule')
                         $scope.dynamicPropertiesTotalCount = results.totalCount;
 
                         $scope.$broadcast('resetContent', { body: blade.currentEntity.content });
+                        $scope.$broadcast('scrollCompleted');
 
                         $timeout(function () {
                             blade.origEntity = angular.copy(blade.currentEntity);
@@ -109,14 +109,13 @@ angular.module('virtoCommerce.contentModule')
                         x.values = metadataRecord ? metadataRecord.values : [];
                     });
 
-            if(props)
-                blade.currentEntity.dynamicProperties = blade.currentEntity.dynamicProperties.concat(props);
-        }
+                if (props)
+                    blade.currentEntity.dynamicProperties = blade.currentEntity.dynamicProperties.concat(props);
+            }
 
             $scope.scrolled = () => {
                 if ($scope.dynamicPropertiesTotalCount > blade.currentEntity.dynamicProperties.length) {
                     getDynamicProperties(20, blade.currentEntity.dynamicProperties.length);
-                    $scope.$broadcast('scrollCompleted');
                 }
             };
 
