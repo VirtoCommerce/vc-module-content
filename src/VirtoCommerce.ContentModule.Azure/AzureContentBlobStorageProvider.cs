@@ -1,14 +1,14 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.AzureBlobAssetsModule.Core;
-using VirtoCommerce.Platform.Core;
 using VirtoCommerce.AssetsModule.Core.Assets;
+using VirtoCommerce.AzureBlobAssetsModule.Core;
+using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.Platform.Core;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Extensions;
 using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.ContentModule.Azure
@@ -86,10 +86,7 @@ namespace VirtoCommerce.ContentModule.Azure
                 {
                     url = Uri.UnescapeDataString(new Uri(url).AbsolutePath);
                 }
-                result = Path.DirectorySeparatorChar + url.Replace('/', Path.DirectorySeparatorChar).TrimStart(Path.DirectorySeparatorChar);
-                result = _options.RootPath + Path.DirectorySeparatorChar + result.Replace(_options.RootPath, string.Empty);
-                //TODO: need to use Path.DirectorySeparatorChar instead of hardcoded value
-                result = Regex.Replace(result, @"\\+", $"{Path.DirectorySeparatorChar}");
+                result = UrlHelperExtensions.Combine(_options.RootPath, url.Replace(_options.RootPath, string.Empty));
             }
             return result;
         }
