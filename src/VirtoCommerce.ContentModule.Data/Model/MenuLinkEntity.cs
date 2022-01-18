@@ -31,7 +31,7 @@ namespace VirtoCommerce.ContentModule.Data.Model
         [StringLength(128)]
         public string OuterId { get; set; }
 
-        public void Patch(MenuLinkEntity target)
+        public virtual void Patch(MenuLinkEntity target)
         {
             target.Title = Title;
             target.Url = Url;
@@ -42,7 +42,7 @@ namespace VirtoCommerce.ContentModule.Data.Model
             target.AssociatedObjectType = AssociatedObjectType;
         }
 
-        public MenuLink ToModel(MenuLink link)
+        public virtual MenuLink ToModel(MenuLink link)
         {
             link.Id = Id;
             link.OuterId = OuterId;
@@ -58,7 +58,7 @@ namespace VirtoCommerce.ContentModule.Data.Model
             return link;
         }
 
-        public MenuLinkEntity FromModel(MenuLink link)
+        public virtual MenuLinkEntity FromModel(MenuLink link)
         {
             Id = link.Id;
             OuterId = link.OuterId;
