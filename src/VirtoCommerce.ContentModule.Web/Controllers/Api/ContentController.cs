@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core.Model;
@@ -36,6 +38,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly IStoreService _storeService;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogger<ContentController> _logger;
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
         private const string _blogsFolderName = "blogs";
@@ -44,12 +47,14 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
             IPlatformMemoryCache platformMemoryCache,
             IStoreService storeService,
-            IHttpClientFactory httpClientFactory)
+            IHttpClientFactory httpClientFactory,
+            ILogger<ContentController> logger)
         {
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _platformMemoryCache = platformMemoryCache;
             _storeService = storeService;
             _httpClientFactory = httpClientFactory;
+            _logger = logger;
         }
 
         /// <summary>
@@ -287,9 +292,10 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("")]
         [DisableFormValueModelBinding]
         [Authorize(Permissions.Create)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status405MethodNotAllowed)]
         public async Task<ActionResult<ContentItem[]>> UploadContent(string contentType, string storeId, [FromQuery] string folderUrl, [FromQuery] string url = null)
         {
-            if (url == null && !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
+            if (url is null && !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
                 return BadRequest($"Expected a multipart request, but got {Request.ContentType}");
             }
@@ -298,10 +304,10 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
             try
             {
-                if (url != null)
+                if (url is not null)
                 {
                     var fileName = HttpUtility.UrlDecode(Path.GetFileName(url));
-                    var fileUrl = folderUrl + "/" + fileName;
+                    var fileUrl = $"{folderUrl}/{fileName}";
 
                     using (var client = _httpClientFactory.CreateClient())
                     using (var blobStream = storageProvider.OpenWrite(fileUrl))
@@ -322,8 +328,12 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                     var reader = new MultipartReader(boundary, HttpContext.Request.Body);
 
                     var section = await reader.ReadNextSectionAsync();
+                    if (section is null)
+                    {
+                        throw new InvalidOperationException(nameof(section));
+                    }
 
-                    var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section?.ContentDisposition, out var contentDisposition);
+                    var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
 
                     if (hasContentDispositionHeader)
                     {
@@ -333,7 +343,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
                         using (var targetStream = storageProvider.OpenWrite(targetFilePath))
                         {
-                            await section?.Body.CopyToAsync(targetStream);
+                            await section.Body.CopyToAsync(targetStream);
                         }
 
                         var contentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
@@ -346,6 +356,11 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             catch (PlatformException exc)
             {
                 return new ObjectResult(new { exc.Message }) { StatusCode = StatusCodes.Status405MethodNotAllowed };
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError(exc.Message);
+                return BadRequest();
             }
 
             ContentCacheRegion.ExpireContent(($"content-{storeId}"));
