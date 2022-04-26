@@ -12,20 +12,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Net.Http.Headers;
+using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.ContentModule.Web.Filters;
 using VirtoCommerce.ContentModule.Web.Validators;
-using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Exceptions;
 using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
 using Permissions = VirtoCommerce.ContentModule.Core.ContentConstants.Security.Permissions;
-using VirtoCommerce.Platform.Core.Exceptions;
 
 namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 {
@@ -329,11 +329,11 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                     {
                         var fileName = Path.GetFileName(contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty));
 
-                        var targetFilePath = folderUrl + "/" + fileName;
+                        var targetFilePath = $"{folderUrl}/{fileName}";
 
                         using (var targetStream = storageProvider.OpenWrite(targetFilePath))
                         {
-                            await section.Body.CopyToAsync(targetStream);
+                            await section?.Body.CopyToAsync(targetStream);
                         }
 
                         var contentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
