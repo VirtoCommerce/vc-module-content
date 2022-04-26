@@ -322,26 +322,24 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                     var reader = new MultipartReader(boundary, HttpContext.Request.Body);
 
                     var section = await reader.ReadNextSectionAsync();
-                    if (section != null)
+
+                    var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section?.ContentDisposition, out var contentDisposition);
+
+                    if (hasContentDispositionHeader)
                     {
-                        var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
+                        var fileName = Path.GetFileName(contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty));
 
-                        if (hasContentDispositionHeader)
+                        var targetFilePath = folderUrl + "/" + fileName;
+
+                        using (var targetStream = storageProvider.OpenWrite(targetFilePath))
                         {
-                            var fileName = Path.GetFileName(contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty));
-
-                            var targetFilePath = folderUrl + "/" + fileName;
-
-                            using (var targetStream = storageProvider.OpenWrite(targetFilePath))
-                            {
-                                await section.Body.CopyToAsync(targetStream);
-                            }
-
-                            var contentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
-                            contentFile.Name = fileName;
-                            contentFile.Url = storageProvider.GetAbsoluteUrl(targetFilePath);
-                            retVal.Add(contentFile);
+                            await section.Body.CopyToAsync(targetStream);
                         }
+
+                        var contentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
+                        contentFile.Name = fileName;
+                        contentFile.Url = storageProvider.GetAbsoluteUrl(targetFilePath);
+                        retVal.Add(contentFile);
                     }
                 }
             }
