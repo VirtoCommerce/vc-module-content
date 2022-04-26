@@ -25,6 +25,7 @@ using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
 using Permissions = VirtoCommerce.ContentModule.Core.ContentConstants.Security.Permissions;
+using VirtoCommerce.Platform.Core.Exceptions;
 
 namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 {
@@ -295,51 +296,58 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
             var retVal = new List<ContentFile>();
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
-            if (url != null)
+            try
             {
-                var fileName = HttpUtility.UrlDecode(Path.GetFileName(url));
-                var fileUrl = folderUrl + "/" + fileName;
-
-                using (var client = _httpClientFactory.CreateClient())
-                using (var blobStream = storageProvider.OpenWrite(fileUrl))
-                using (var remoteStream = await client.GetStreamAsync(url))
+                if (url != null)
                 {
-                    remoteStream.CopyTo(blobStream);
+                    var fileName = HttpUtility.UrlDecode(Path.GetFileName(url));
+                    var fileUrl = folderUrl + "/" + fileName;
 
-                    var сontentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
-
-                    сontentFile.Name = fileName;
-                    сontentFile.Url = storageProvider.GetAbsoluteUrl(fileUrl);
-                    retVal.Add(сontentFile);
-                }
-            }
-            else
-            {
-                var boundary = MultipartRequestHelper.GetBoundary(MediaTypeHeaderValue.Parse(Request.ContentType), _defaultFormOptions.MultipartBoundaryLengthLimit);
-                var reader = new MultipartReader(boundary, HttpContext.Request.Body);
-
-                var section = await reader.ReadNextSectionAsync();
-                if (section != null)
-                {
-                    var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
-
-                    if (hasContentDispositionHeader)
+                    using (var client = _httpClientFactory.CreateClient())
+                    using (var blobStream = storageProvider.OpenWrite(fileUrl))
+                    using (var remoteStream = await client.GetStreamAsync(url))
                     {
-                        var fileName = Path.GetFileName(contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty));
+                        remoteStream.CopyTo(blobStream);
 
-                        var targetFilePath = folderUrl + "/" + fileName;
+                        var сontentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
 
-                        using (var targetStream = storageProvider.OpenWrite(targetFilePath))
-                        {
-                            await section.Body.CopyToAsync(targetStream);
-                        }
-
-                        var contentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
-                        contentFile.Name = fileName;
-                        contentFile.Url = storageProvider.GetAbsoluteUrl(targetFilePath);
-                        retVal.Add(contentFile);
+                        сontentFile.Name = fileName;
+                        сontentFile.Url = storageProvider.GetAbsoluteUrl(fileUrl);
+                        retVal.Add(сontentFile);
                     }
                 }
+                else
+                {
+                    var boundary = MultipartRequestHelper.GetBoundary(MediaTypeHeaderValue.Parse(Request.ContentType), _defaultFormOptions.MultipartBoundaryLengthLimit);
+                    var reader = new MultipartReader(boundary, HttpContext.Request.Body);
+
+                    var section = await reader.ReadNextSectionAsync();
+                    if (section != null)
+                    {
+                        var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
+
+                        if (hasContentDispositionHeader)
+                        {
+                            var fileName = Path.GetFileName(contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty));
+
+                            var targetFilePath = folderUrl + "/" + fileName;
+
+                            using (var targetStream = storageProvider.OpenWrite(targetFilePath))
+                            {
+                                await section.Body.CopyToAsync(targetStream);
+                            }
+
+                            var contentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
+                            contentFile.Name = fileName;
+                            contentFile.Url = storageProvider.GetAbsoluteUrl(targetFilePath);
+                            retVal.Add(contentFile);
+                        }
+                    }
+                }
+            }
+            catch (PlatformException exc)
+            {
+                return new ObjectResult(new { exc.Message }) { StatusCode = StatusCodes.Status405MethodNotAllowed };
             }
 
             ContentCacheRegion.ExpireContent(($"content-{storeId}"));
