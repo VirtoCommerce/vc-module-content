@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -11,16 +12,18 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.ContentModule.Web.Filters;
 using VirtoCommerce.ContentModule.Web.Validators;
-using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Exceptions;
 using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
@@ -35,6 +38,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly IStoreService _storeService;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogger<ContentController> _logger;
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
         private const string _blogsFolderName = "blogs";
@@ -43,12 +47,14 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
             IPlatformMemoryCache platformMemoryCache,
             IStoreService storeService,
-            IHttpClientFactory httpClientFactory)
+            IHttpClientFactory httpClientFactory,
+            ILogger<ContentController> logger)
         {
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _platformMemoryCache = platformMemoryCache;
             _storeService = storeService;
             _httpClientFactory = httpClientFactory;
+            _logger = logger;
         }
 
         /// <summary>
@@ -286,48 +292,54 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("")]
         [DisableFormValueModelBinding]
         [Authorize(Permissions.Create)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status405MethodNotAllowed)]
         public async Task<ActionResult<ContentItem[]>> UploadContent(string contentType, string storeId, [FromQuery] string folderUrl, [FromQuery] string url = null)
         {
-            if (url == null && !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
+            if (url is null && !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
                 return BadRequest($"Expected a multipart request, but got {Request.ContentType}");
             }
 
             var retVal = new List<ContentFile>();
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(GetContentBasePath(contentType, storeId));
-            if (url != null)
+            try
             {
-                var fileName = HttpUtility.UrlDecode(Path.GetFileName(url));
-                var fileUrl = folderUrl + "/" + fileName;
-
-                using (var client = _httpClientFactory.CreateClient())
-                using (var blobStream = storageProvider.OpenWrite(fileUrl))
-                using (var remoteStream = await client.GetStreamAsync(url))
+                if (url is not null)
                 {
-                    remoteStream.CopyTo(blobStream);
+                    var fileName = HttpUtility.UrlDecode(Path.GetFileName(url));
+                    var fileUrl = $"{folderUrl}/{fileName}";
 
-                    var сontentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
+                    using (var client = _httpClientFactory.CreateClient())
+                    using (var blobStream = storageProvider.OpenWrite(fileUrl))
+                    using (var remoteStream = await client.GetStreamAsync(url))
+                    {
+                        remoteStream.CopyTo(blobStream);
 
-                    сontentFile.Name = fileName;
-                    сontentFile.Url = storageProvider.GetAbsoluteUrl(fileUrl);
-                    retVal.Add(сontentFile);
+                        var сontentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
+
+                        сontentFile.Name = fileName;
+                        сontentFile.Url = storageProvider.GetAbsoluteUrl(fileUrl);
+                        retVal.Add(сontentFile);
+                    }
                 }
-            }
-            else
-            {
-                var boundary = MultipartRequestHelper.GetBoundary(MediaTypeHeaderValue.Parse(Request.ContentType), _defaultFormOptions.MultipartBoundaryLengthLimit);
-                var reader = new MultipartReader(boundary, HttpContext.Request.Body);
-
-                var section = await reader.ReadNextSectionAsync();
-                if (section != null)
+                else
                 {
+                    var boundary = MultipartRequestHelper.GetBoundary(MediaTypeHeaderValue.Parse(Request.ContentType), _defaultFormOptions.MultipartBoundaryLengthLimit);
+                    var reader = new MultipartReader(boundary, HttpContext.Request.Body);
+
+                    var section = await reader.ReadNextSectionAsync();
+                    if (section is null)
+                    {
+                        throw new InvalidOperationException(nameof(section));
+                    }
+
                     var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
 
                     if (hasContentDispositionHeader)
                     {
                         var fileName = Path.GetFileName(contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty));
 
-                        var targetFilePath = folderUrl + "/" + fileName;
+                        var targetFilePath = $"{folderUrl}/{fileName}";
 
                         using (var targetStream = storageProvider.OpenWrite(targetFilePath))
                         {
@@ -340,6 +352,15 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                         retVal.Add(contentFile);
                     }
                 }
+            }
+            catch (PlatformException ex)
+            {
+                return new ObjectResult(new { ex.Message }) { StatusCode = StatusCodes.Status405MethodNotAllowed };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("An error occurred while uploading the file. Error message: {error}", ex.Message);
+                return BadRequest();
             }
 
             ContentCacheRegion.ExpireContent(($"content-{storeId}"));
