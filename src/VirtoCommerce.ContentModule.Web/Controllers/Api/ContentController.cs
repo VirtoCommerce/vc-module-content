@@ -353,13 +353,13 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                     }
                 }
             }
-            catch (PlatformException exc)
+            catch (PlatformException ex)
             {
-                return new ObjectResult(new { exc.Message }) { StatusCode = StatusCodes.Status405MethodNotAllowed };
+                return new ObjectResult(new { ex.Message }) { StatusCode = StatusCodes.Status405MethodNotAllowed };
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                _logger.LogError(exc.Message);
+                _logger.LogError("An error occurred while uploading the file. Error message: {error}", ex.Message);
                 return BadRequest();
             }
 
