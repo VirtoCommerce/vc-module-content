@@ -70,10 +70,10 @@ namespace VirtoCommerce.ContentModule.Web
                 serviceCollection.AddSingleton<IBlobContentStorageProvider, FileSystemContentBlobStorageProvider>();
                 serviceCollection.AddSingleton<IBlobContentStorageProviderFactory, FileSystemContentBlobStorageProviderFactory>((provider) =>
                 {
-                    var platformOptions = provider.GetService<IOptions<PlatformOptions>>();
-                    var settingManager = provider.GetService<ISettingsManager>();
-                    var hostingEnvironment = provider.GetService<IWebHostEnvironment>();
-                    var fileOptions = provider.GetService<IOptions<FileSystemContentBlobOptions>>();
+                    var platformOptions = provider.GetRequiredService<IOptions<PlatformOptions>>();
+                    var settingManager = provider.GetRequiredService<ISettingsManager>();
+                    var hostingEnvironment = provider.GetRequiredService<IWebHostEnvironment>();
+                    var fileOptions = provider.GetRequiredService<IOptions<FileSystemContentBlobOptions>>();
                     fileOptions.Value.RootPath = hostingEnvironment.MapPath(fileOptions.Value.RootPath);
                     return new FileSystemContentBlobStorageProviderFactory(fileOptions, platformOptions, settingManager);
                 });
