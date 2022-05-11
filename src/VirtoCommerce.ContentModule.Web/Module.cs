@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using VirtoCommerce.AzureBlobAssetsModule.Core;
 using VirtoCommerce.ContentModule.Azure;
 using VirtoCommerce.ContentModule.Azure.Extensions;
@@ -19,33 +20,36 @@ using VirtoCommerce.ContentModule.Data.Handlers;
 using VirtoCommerce.ContentModule.Data.Repositories;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.ContentModule.FileSystem;
-using VirtoCommerce.ContentModule.FileSystem.Extensions;
 using VirtoCommerce.ContentModule.Web.Extensions;
+using VirtoCommerce.Platform.Core;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
+using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
 
 namespace VirtoCommerce.ContentModule.Web
 {
-    public class Module : IModule, IExportSupport, IImportSupport
+    public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
     {
         private IApplicationBuilder _appBuilder;
         public ManifestModuleInfo ModuleInfo { get; set; }
+        public IConfiguration Configuration { get; set; }
 
         public void Initialize(IServiceCollection serviceCollection)
         {
-            var snapshot = serviceCollection.BuildServiceProvider();
-            var configuration = snapshot.GetService<IConfiguration>();
-            var hostingEnvironment = snapshot.GetService<IWebHostEnvironment>();
-
 
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
 
-            serviceCollection.AddDbContext<MenuDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("VirtoCommerce")));
+            serviceCollection.AddDbContext<MenuDbContext>((provider, options) =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+            });
+
             serviceCollection.AddTransient<IMenuRepository, MenuRepository>();
             serviceCollection.AddTransient<Func<IMenuRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetService<IMenuRepository>());
 
@@ -53,18 +57,25 @@ namespace VirtoCommerce.ContentModule.Web
 
             serviceCollection.AddTransient<ContentExportImport>();
 
-            var contentProvider = configuration.GetSection("Content:Provider").Value;
+            var contentProvider = Configuration.GetSection("Content:Provider").Value;
             if (contentProvider.EqualsInvariant(AzureBlobProvider.ProviderName))
             {
-                serviceCollection.AddOptions<AzureContentBlobOptions>().Bind(configuration.GetSection("Content:AzureBlobStorage")).ValidateDataAnnotations();
+                serviceCollection.AddOptions<AzureContentBlobOptions>().Bind(Configuration.GetSection("Content:AzureBlobStorage")).ValidateDataAnnotations();
                 serviceCollection.AddAzureContentBlobProvider();
             }
             else
             {
-                serviceCollection.AddOptions<FileSystemContentBlobOptions>().Bind(configuration.GetSection("Content:FileSystem")).ValidateDataAnnotations();
-                serviceCollection.AddFileSystemContentBlobProvider(options =>
+                serviceCollection.AddOptions<FileSystemContentBlobOptions>().Bind(Configuration.GetSection("Content:FileSystem")).ValidateDataAnnotations();
+
+                serviceCollection.AddSingleton<IBlobContentStorageProvider, FileSystemContentBlobStorageProvider>();
+                serviceCollection.AddSingleton<IBlobContentStorageProviderFactory, FileSystemContentBlobStorageProviderFactory>((provider) =>
                 {
-                    options.RootPath = hostingEnvironment.MapPath(options.RootPath);
+                    var platformOptions = provider.GetRequiredService<IOptions<PlatformOptions>>();
+                    var settingManager = provider.GetRequiredService<ISettingsManager>();
+                    var hostingEnvironment = provider.GetRequiredService<IWebHostEnvironment>();
+                    var fileOptions = provider.GetRequiredService<IOptions<FileSystemContentBlobOptions>>();
+                    fileOptions.Value.RootPath = hostingEnvironment.MapPath(fileOptions.Value.RootPath);
+                    return new FileSystemContentBlobStorageProviderFactory(fileOptions, platformOptions, settingManager);
                 });
             }
         }
@@ -89,7 +100,7 @@ namespace VirtoCommerce.ContentModule.Web
             //Events handlers registration
             var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
             inProcessBus.RegisterHandler<MenuLinkListChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
-        
+
             //Force migrations
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
