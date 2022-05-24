@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using VirtoCommerce.AzureBlobAssetsModule.Core;
 using VirtoCommerce.ContentModule.Azure;
 using VirtoCommerce.ContentModule.Azure.Extensions;
@@ -20,15 +19,14 @@ using VirtoCommerce.ContentModule.Data.Handlers;
 using VirtoCommerce.ContentModule.Data.Repositories;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.ContentModule.FileSystem;
+using VirtoCommerce.ContentModule.FileSystem.Extensions;
 using VirtoCommerce.ContentModule.Web.Extensions;
-using VirtoCommerce.Platform.Core;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
-using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
 
 namespace VirtoCommerce.ContentModule.Web
@@ -65,18 +63,14 @@ namespace VirtoCommerce.ContentModule.Web
             }
             else
             {
-                serviceCollection.AddOptions<FileSystemContentBlobOptions>().Bind(Configuration.GetSection("Content:FileSystem")).ValidateDataAnnotations();
+                serviceCollection.AddOptions<FileSystemContentBlobOptions>().Bind(Configuration.GetSection("Content:FileSystem"))
+                    .PostConfigure<IWebHostEnvironment>((options, env) =>
+                    {
+                        options.RootPath = env.MapPath(options.RootPath);
+                    })
+                    .ValidateDataAnnotations();
 
-                serviceCollection.AddSingleton<IBlobContentStorageProvider, FileSystemContentBlobStorageProvider>();
-                serviceCollection.AddSingleton<IBlobContentStorageProviderFactory, FileSystemContentBlobStorageProviderFactory>((provider) =>
-                {
-                    var platformOptions = provider.GetRequiredService<IOptions<PlatformOptions>>();
-                    var settingManager = provider.GetRequiredService<ISettingsManager>();
-                    var hostingEnvironment = provider.GetRequiredService<IWebHostEnvironment>();
-                    var fileOptions = provider.GetRequiredService<IOptions<FileSystemContentBlobOptions>>();
-                    fileOptions.Value.RootPath = hostingEnvironment.MapPath(fileOptions.Value.RootPath);
-                    return new FileSystemContentBlobStorageProviderFactory(fileOptions, platformOptions, settingManager);
-                });
+                serviceCollection.AddFileSystemContentBlobProvider();
             }
         }
 
