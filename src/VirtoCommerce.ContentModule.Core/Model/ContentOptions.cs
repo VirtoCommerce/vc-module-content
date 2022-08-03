@@ -8,6 +8,6 @@ namespace VirtoCommerce.ContentModule.Core.Model
 {
     public class ContentOptions
     {
-        public IDictionary<string, string[]> TypeMappings { get; set; }
+        public IDictionary<string, string[]> PathMappings { get; set; }
     }
 }

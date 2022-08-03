@@ -47,6 +47,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private const string _blogsFolderName = "blogs";
         private const string _pages = "pages";
         private const string _themes = "themes";
+        private const string _defaultTheme = "default";
 
         public ContentController(
             IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
@@ -377,10 +378,15 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
         private string GetContentBasePath(string contentType, string storeId)
         {
-            if (_options.TypeMappings != null && _options.TypeMappings.Count() > 0 && _options.TypeMappings.ContainsKey(contentType))
+            if (_options.PathMappings != null && _options.PathMappings.Count() > 0 && _options.PathMappings.ContainsKey(contentType))
             {
-                var mapping = _options.TypeMappings[contentType];
-                return string.Join('/', mapping.Select(x => x == "_storeId" ? storeId : x));
+                var mapping = _options.PathMappings[contentType];
+                return string.Join('/', mapping.Select(x => x switch
+                {
+                    "_storeId" => storeId,
+                    "_theme" => _defaultTheme,
+                    _ => x,
+                }));
             }
 
             var retVal = string.Empty;
