@@ -378,7 +378,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
         private string GetContentBasePath(string contentType, string storeId)
         {
-            if (_options.PathMappings != null && _options.PathMappings.Count() > 0 && _options.PathMappings.ContainsKey(contentType))
+            if (_options.PathMappings != null && _options.PathMappings.Any() && _options.PathMappings.ContainsKey(contentType))
             {
                 var mapping = _options.PathMappings[contentType];
                 return string.Join('/', mapping.Select(x => x switch
