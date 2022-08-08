@@ -12,7 +12,9 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core.Model;
@@ -38,22 +40,28 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly IStoreService _storeService;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ContentOptions _options;
         private readonly ILogger<ContentController> _logger;
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
         private const string _blogsFolderName = "blogs";
+        private const string _pages = "pages";
+        private const string _themes = "themes";
+        private const string _defaultTheme = "default";
 
         public ContentController(
             IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
             IPlatformMemoryCache platformMemoryCache,
             IStoreService storeService,
             IHttpClientFactory httpClientFactory,
+            IOptions<ContentOptions> options,
             ILogger<ContentController> logger)
         {
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _platformMemoryCache = platformMemoryCache;
             _storeService = storeService;
             _httpClientFactory = httpClientFactory;
+            _options = options.Value;
             _logger = logger;
         }
 
@@ -72,12 +80,12 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             var pagesCount = _platformMemoryCache.GetOrCreateExclusive(cacheKey, cacheEntry =>
             {
                 cacheEntry.AddExpirationToken(ContentCacheRegion.CreateChangeToken($"content-{storeId}"));
-                var result = CountContentItemsRecursive(GetContentBasePath("pages", storeId), contentStorageProvider, _blogsFolderName);
+                var result = CountContentItemsRecursive(GetContentBasePath(_pages, storeId), contentStorageProvider, _blogsFolderName);
                 return result;
             });
 
             var storeTask = _storeService.GetByIdAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
-            var themesTask = contentStorageProvider.SearchAsync(GetContentBasePath("themes", storeId), null);
+            var themesTask = contentStorageProvider.SearchAsync(GetContentBasePath(_themes, storeId), null);
             var blogsTask = contentStorageProvider.SearchAsync(GetContentBasePath(_blogsFolderName, storeId), null);
 
             await Task.WhenAll(themesTask, blogsTask, storeTask);
@@ -370,12 +378,23 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
         private string GetContentBasePath(string contentType, string storeId)
         {
+            if (_options.PathMappings != null && _options.PathMappings.Any() && _options.PathMappings.ContainsKey(contentType))
+            {
+                var mapping = _options.PathMappings[contentType];
+                return string.Join('/', mapping.Select(x => x switch
+                {
+                    "_storeId" => storeId,
+                    "_theme" => _defaultTheme,
+                    _ => x,
+                }));
+            }
+
             var retVal = string.Empty;
-            if (contentType.EqualsInvariant("themes"))
+            if (contentType.EqualsInvariant(_themes))
             {
                 retVal = "Themes/" + storeId;
             }
-            else if (contentType.EqualsInvariant("pages"))
+            else if (contentType.EqualsInvariant(_pages))
             {
                 retVal = "Pages/" + storeId;
             }
