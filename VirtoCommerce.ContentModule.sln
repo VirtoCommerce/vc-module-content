@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.ContentModule
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.ContentModule.Web", "src\VirtoCommerce.ContentModule.Web\VirtoCommerce.ContentModule.Web.csproj", "{64ED6720-C728-4F7C-9115-D50366B707C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.ContentModule.Tests", "VirtoCommerce.ContentModule.Tests\VirtoCommerce.ContentModule.Tests.csproj", "{052BDD5C-15AF-4EC2-97B2-2C3EF282F0EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.ContentModule.Tests", "tests\VirtoCommerce.ContentModule.Tests\VirtoCommerce.ContentModule.Tests.csproj", "{052BDD5C-15AF-4EC2-97B2-2C3EF282F0EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

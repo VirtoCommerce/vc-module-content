@@ -55,6 +55,8 @@ namespace VirtoCommerce.ContentModule.Web
 
             serviceCollection.AddTransient<ContentExportImport>();
 
+            serviceCollection.AddOptions<ContentOptions>().Bind(Configuration.GetSection("Content"));
+
             var contentProvider = Configuration.GetSection("Content:Provider").Value;
             if (contentProvider.EqualsInvariant(AzureBlobProvider.ProviderName))
             {
