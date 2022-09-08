@@ -26,9 +26,11 @@ using VirtoCommerce.ContentModule.Web.Validators;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Exceptions;
+using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
+using static Humanizer.In;
 using Permissions = VirtoCommerce.ContentModule.Core.ContentConstants.Security.Permissions;
 
 namespace VirtoCommerce.ContentModule.Web.Controllers.Api
@@ -38,7 +40,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
     {
         private readonly IBlobContentStorageProviderFactory _blobContentStorageProviderFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
-        private readonly IStoreService _storeService;
+        private readonly ICrudService<Store> _storeService;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ContentOptions _options;
         private readonly ILogger<ContentController> _logger;
@@ -59,7 +61,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         {
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _platformMemoryCache = platformMemoryCache;
-            _storeService = storeService;
+            _storeService = (ICrudService<Store>)storeService;
             _httpClientFactory = httpClientFactory;
             _options = options.Value;
             _logger = logger;
@@ -96,7 +98,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
             var retVal = new ContentStatistic
             {
-                ActiveThemeName = store.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value.ToString() ?? "default",
+                ActiveThemeName = store.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value.ToString() ?? _defaultTheme,
                 ThemesCount = themes.Results.OfType<BlobFolder>().Count(),
                 BlogsCount = blogs.Results.OfType<BlobFolder>().Count(),
                 PagesCount = pagesCount
@@ -378,15 +380,21 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
         private string GetContentBasePath(string contentType, string storeId)
         {
-            if (_options.PathMappings != null && _options.PathMappings.Any() && _options.PathMappings.ContainsKey(contentType))
+            if (_options.PathMappings != null && _options.PathMappings.Count() > 0 && _options.PathMappings.ContainsKey(contentType))
             {
-                var mapping = _options.PathMappings[contentType];
-                return string.Join('/', mapping.Select(x => x switch
+                var themeName = _defaultTheme; // string.IsNullOrEmpty(theme) ? _defaultTheme : theme;
+                if (_options.PathMappings.ContainsKey(contentType))
                 {
-                    "_storeId" => storeId,
-                    "_theme" => _defaultTheme,
-                    _ => x,
-                }));
+                    var mapping = _options.PathMappings[contentType];
+                    var result = string.Join('/', mapping.Select(x => x switch
+                    {
+                        "_storeId" => storeId,
+                        "_theme" => themeName,
+                        "_blog" => _blogsFolderName,
+                        _ => x,
+                    }));
+                    return result;
+                }
             }
 
             var retVal = string.Empty;
