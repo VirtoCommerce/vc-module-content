@@ -16,7 +16,8 @@ angular.module('platformWebApp')
                         $scope.pageSettings.totalItems = data.length;
                         _.each(data, function (x) {
                             x.isImage = x.mimeType && x.mimeType.startsWith('image/');
-                            x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/') || x.name.endsWith('.page') || x.name.endsWith('.template'));
+                            x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j')
+                                    || x.mimeType.startsWith('text/') || x.name.endsWith('.page') || x.name.endsWith('.template'));
                         });
                         $scope.listEntries = data;
                         blade.isLoading = false;

@@ -380,21 +380,18 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
         private string GetContentBasePath(string contentType, string storeId)
         {
-            if (_options.PathMappings != null && _options.PathMappings.Count() > 0 && _options.PathMappings.ContainsKey(contentType))
+            if (_options.PathMappings != null && _options.PathMappings.Any() && _options.PathMappings.ContainsKey(contentType))
             {
-                var themeName = _defaultTheme; // string.IsNullOrEmpty(theme) ? _defaultTheme : theme;
-                if (_options.PathMappings.ContainsKey(contentType))
+                var themeName = _defaultTheme;
+                var mapping = _options.PathMappings[contentType];
+                var result = string.Join('/', mapping.Select(x => x switch
                 {
-                    var mapping = _options.PathMappings[contentType];
-                    var result = string.Join('/', mapping.Select(x => x switch
-                    {
-                        "_storeId" => storeId,
-                        "_theme" => themeName,
-                        "_blog" => _blogsFolderName,
-                        _ => x,
-                    }));
-                    return result;
-                }
+                    "_storeId" => storeId,
+                    "_theme" => themeName,
+                    "_blog" => _blogsFolderName,
+                    _ => x,
+                }));
+                return result;
             }
 
             var retVal = string.Empty;
