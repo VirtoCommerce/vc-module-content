@@ -19,6 +19,7 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
             contentFolder.ParentUrl = blobFolder.ParentUrl;
             contentFolder.RelativeUrl = blobFolder.RelativeUrl;
             contentFolder.CreatedDate = blobFolder.CreatedDate;
+            contentFolder.ModifiedDate = blobFolder.ModifiedDate;
             contentFolder.Type = blobFolder.Type;
 
             return contentFolder;
