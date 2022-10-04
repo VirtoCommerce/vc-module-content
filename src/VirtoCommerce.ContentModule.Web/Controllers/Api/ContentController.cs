@@ -30,7 +30,6 @@ using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
-using static Humanizer.In;
 using Permissions = VirtoCommerce.ContentModule.Core.ContentConstants.Security.Permissions;
 
 namespace VirtoCommerce.ContentModule.Web.Controllers.Api
