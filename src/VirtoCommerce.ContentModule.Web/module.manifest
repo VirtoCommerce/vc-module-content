@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.Content</id>
-  <version>3.205.0</version>
+  <version>3.206.0</version>
   <version-tag />
   <platformVersion>3.200.0</platformVersion>
   <title>CMS Content module</title>
@@ -16,7 +16,7 @@
   <iconUrl>Modules/$(VirtoCommerce.Content)/Content/logo.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <releaseNotes>First version.</releaseNotes>
-  <copyright>Copyright © 2011-2021 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2011-2022 Virto Commerce. All rights reserved</copyright>
   <tags>cms menu</tags>
   <assemblyFile>VirtoCommerce.ContentModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.ContentModule.Web.Module, VirtoCommerce.ContentModule.Web</moduleType>
