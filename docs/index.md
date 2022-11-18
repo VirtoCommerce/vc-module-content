@@ -85,4 +85,3 @@ The system allows to create a specific Main menu for each language.
 
 * Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.ContentModule.Data" target="_blank">NuGet package</a>
 * API client as a <a href="https://www.nuget.org/packages/VirtoCommerce.ContentModule.Client" target="_blank">NuGet package</a>
-* API client documentation http://demo.virtocommerce.com/admin/docs/ui/index#!/CMS_Content_module
