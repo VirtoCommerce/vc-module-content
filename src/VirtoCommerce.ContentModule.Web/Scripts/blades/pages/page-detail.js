@@ -46,6 +46,9 @@ angular.module('virtoCommerce.contentModule')
             blade.editAsMarkdown = true;
             blade.editAsHtml = false;
 
+            var formScopes = [];
+            $scope.setForm = function (form) { formScopes.push(form); };
+
             blade.initializeBlade = function () {
                 if (blade.isNew) {
                     fillMetadata({});
@@ -245,9 +248,6 @@ angular.module('virtoCommerce.contentModule')
                     canExecuteMethod: function () { return true; }
                 }
             );
-
-            var formScopes = [];
-            $scope.setForm = function (form) { formScopes.push(form); };
 
             function isDirty() {
                 return !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
