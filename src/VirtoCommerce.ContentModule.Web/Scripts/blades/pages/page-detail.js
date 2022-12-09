@@ -47,7 +47,9 @@ angular.module('virtoCommerce.contentModule')
             blade.editAsHtml = false;
 
             var formScopes = [];
-            $scope.setForm = function (form) { formScopes.push(form); };
+            $scope.setForm = function (form) {
+                formScopes.push(form);
+            };
 
             blade.initializeBlade = function () {
                 if (blade.isNew) {
