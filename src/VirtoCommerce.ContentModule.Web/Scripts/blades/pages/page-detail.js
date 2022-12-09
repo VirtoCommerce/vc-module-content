@@ -72,6 +72,8 @@ angular.module('virtoCommerce.contentModule')
                 }
 
                 blade.currentEntity.content = data.content;
+                blade.origEntity = angular.copy(blade.currentEntity);
+
                 $scope.metadata = data.metadata;
 
                 getDynamicProperties();
@@ -89,10 +91,6 @@ angular.module('virtoCommerce.contentModule')
                         $scope.$broadcast('resetContent', { body: blade.currentEntity.content });
                         $scope.$broadcast('scrollCompleted');
 
-                        $timeout(function () {
-                            blade.origEntity = angular.copy(blade.currentEntity);
-                        });
-
                         blade.isLoading = false;
                     },
                     function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
@@ -108,9 +106,10 @@ angular.module('virtoCommerce.contentModule')
 
                         x.values = metadataRecord ? metadataRecord.values : [];
                     });
-
-                if (props)
+                if (props) {
                     blade.currentEntity.dynamicProperties = blade.currentEntity.dynamicProperties.concat(props);
+                    blade.origEntity.dynamicProperties = blade.origEntity.dynamicProperties.concat(angular.copy(props));
+                }
             }
 
             $scope.scrolled = () => {
