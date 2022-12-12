@@ -1,5 +1,16 @@
 angular.module('virtoCommerce.contentModule')
-    .controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope', '$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'platformWebApp.settings', 'FileUploader', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.i18n',
+    .controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope',
+        '$scope',
+        'platformWebApp.validators',
+        'platformWebApp.dialogService',
+        'virtoCommerce.contentModule.contentApi',
+        '$timeout',
+        'platformWebApp.bladeNavigationService',
+        'platformWebApp.dynamicProperties.api',
+        'platformWebApp.settings',
+        'FileUploader',
+        'platformWebApp.dynamicProperties.dictionaryItemsApi',
+        'platformWebApp.i18n',
         function ($rootScope,
             $scope,
             validators,
@@ -85,7 +96,7 @@ angular.module('virtoCommerce.contentModule')
             function getDynamicProperties(take, skip) {
                 blade.isLoading = true;
 
-                dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders', take: take || 20, skip: skip || 0 },
+                dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders', take: take || 200, skip: skip || 0 },
                     function (results) {
                         fillDynamicProperties($scope.metadata, results.results);
 
@@ -120,7 +131,7 @@ angular.module('virtoCommerce.contentModule')
 
             $scope.scrolled = () => {
                 if ($scope.dynamicPropertiesTotalCount > blade.currentEntity.dynamicProperties.length) {
-                    getDynamicProperties(20, blade.currentEntity.dynamicProperties.length);
+                    getDynamicProperties(200, blade.currentEntity.dynamicProperties.length);
                 }
             };
 
