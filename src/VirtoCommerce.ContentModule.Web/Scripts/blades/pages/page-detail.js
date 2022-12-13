@@ -57,9 +57,8 @@ angular.module('virtoCommerce.contentModule')
             blade.editAsMarkdown = true;
             blade.editAsHtml = false;
 
-            var formScopes = [];
             $scope.setForm = function (form) {
-                formScopes.push(form);
+                $scope.formScope = form;
             };
 
             blade.initializeBlade = function () {
@@ -188,7 +187,7 @@ angular.module('virtoCommerce.contentModule')
                         name: "platform.commands.save",
                         icon: 'fa fa-save',
                         executeMethod: $scope.saveChanges,
-                        canExecuteMethod: function () { return isDirty() && formScopes.length && formScopes.every(f => f.$valid); },
+                        canExecuteMethod: function () { return isDirty() && $scope.formScope && $scope.formScope.$valid; },
                         permission: blade.updatePermission
                     },
                     {
