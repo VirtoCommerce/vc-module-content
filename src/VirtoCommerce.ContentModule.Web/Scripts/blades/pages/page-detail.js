@@ -1,5 +1,16 @@
 angular.module('virtoCommerce.contentModule')
-    .controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope', '$scope', 'platformWebApp.validators', 'platformWebApp.dialogService', 'virtoCommerce.contentModule.contentApi', '$timeout', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'platformWebApp.settings', 'FileUploader', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.i18n',
+    .controller('virtoCommerce.contentModule.pageDetailController', ['$rootScope',
+        '$scope',
+        'platformWebApp.validators',
+        'platformWebApp.dialogService',
+        'virtoCommerce.contentModule.contentApi',
+        '$timeout',
+        'platformWebApp.bladeNavigationService',
+        'platformWebApp.dynamicProperties.api',
+        'platformWebApp.settings',
+        'FileUploader',
+        'platformWebApp.dynamicProperties.dictionaryItemsApi',
+        'platformWebApp.i18n',
         function ($rootScope,
             $scope,
             validators,
@@ -46,6 +57,10 @@ angular.module('virtoCommerce.contentModule')
             blade.editAsMarkdown = true;
             blade.editAsHtml = false;
 
+            $scope.setForm = function (form) {
+                $scope.formScope = form;
+            };
+
             blade.initializeBlade = function () {
                 if (blade.isNew) {
                     fillMetadata({});
@@ -72,6 +87,8 @@ angular.module('virtoCommerce.contentModule')
                 }
 
                 blade.currentEntity.content = data.content;
+                blade.origEntity = angular.copy(blade.currentEntity);
+
                 $scope.metadata = data.metadata;
 
                 getDynamicProperties();
@@ -80,7 +97,7 @@ angular.module('virtoCommerce.contentModule')
             function getDynamicProperties(take, skip) {
                 blade.isLoading = true;
 
-                dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders', take: take || 20, skip: skip || 0 },
+                dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders', take: take || 200, skip: skip || 0 },
                     function (results) {
                         fillDynamicProperties($scope.metadata, results.results);
 
@@ -88,10 +105,6 @@ angular.module('virtoCommerce.contentModule')
 
                         $scope.$broadcast('resetContent', { body: blade.currentEntity.content });
                         $scope.$broadcast('scrollCompleted');
-
-                        $timeout(function () {
-                            blade.origEntity = angular.copy(blade.currentEntity);
-                        });
 
                         blade.isLoading = false;
                     },
@@ -108,14 +121,15 @@ angular.module('virtoCommerce.contentModule')
 
                         x.values = metadataRecord ? metadataRecord.values : [];
                     });
-
-                if (props)
+                if (props) {
                     blade.currentEntity.dynamicProperties = blade.currentEntity.dynamicProperties.concat(props);
+                    blade.origEntity.dynamicProperties = blade.origEntity.dynamicProperties.concat(angular.copy(props));
+                }
             }
 
             $scope.scrolled = () => {
                 if ($scope.dynamicPropertiesTotalCount > blade.currentEntity.dynamicProperties.length) {
-                    getDynamicProperties(20, blade.currentEntity.dynamicProperties.length);
+                    getDynamicProperties(200, blade.currentEntity.dynamicProperties.length);
                 }
             };
 
@@ -172,7 +186,7 @@ angular.module('virtoCommerce.contentModule')
                         name: "platform.commands.save",
                         icon: 'fa fa-save',
                         executeMethod: $scope.saveChanges,
-                        canExecuteMethod: function () { return isDirty() && formScope && formScope.$valid; },
+                        canExecuteMethod: function () { return isDirty() && $scope.formScope && $scope.formScope.$valid; },
                         permission: blade.updatePermission
                     },
                     {
@@ -245,9 +259,6 @@ angular.module('virtoCommerce.contentModule')
                     canExecuteMethod: function () { return true; }
                 }
             );
-
-            var formScope;
-            $scope.setForm = function (form) { formScope = form; };
 
             function isDirty() {
                 return !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
