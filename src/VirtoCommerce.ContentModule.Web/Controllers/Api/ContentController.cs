@@ -404,7 +404,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             return null;
         }
 
-        private string GetDefaultContentPath(string contentType, string storeId)
+        private static string GetDefaultContentPath(string contentType, string storeId)
         {
             var retVal = contentType switch
             {
