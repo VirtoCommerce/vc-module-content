@@ -37,7 +37,7 @@ angular.module('virtoCommerce.contentModule')
                 };
 
                 function fillMetadata(data) {
-                    dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders' },
+                    dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders', take: 200, skip: 0 },
                         function(results) {
                             fillDynamicProperties(data.metadata, results.results);
                             blade.origEntity = angular.copy(blade.currentEntity);
@@ -95,11 +95,7 @@ angular.module('virtoCommerce.contentModule')
                     const folderName = blade.currentEntity.name;
 
                     if (!parentUrl) {
-                        contentApi.createFolder(
-                            { contentType: blade.contentType, storeId: blade.storeId },
-                            { name: folderName, parentUrl: parentUrl },
-                            $scope.saveWithMetadata
-                        );
+                        $scope.saveWithMetadata();
                     } else {
                         if (blade.origEntity.name !== blade.currentEntity.name) {
                             let urlsToDelete = [];
@@ -107,7 +103,6 @@ angular.module('virtoCommerce.contentModule')
                             urlsToDelete.push(blade.currentEntity.parentUrl + folderName +'/'+ oldFilename);
                             urlsToDelete.push(parentUrl);
 
-                            await contentApi.createFolder({ contentType: blade.contentType, storeId: blade.storeId }, { name: folderName, parentUrl: blade.currentEntity.parentUrl }).$promise;
                             $scope.saveWithMetadata();
                             await contentApi.copy({ srcPath: parentUrl, destPath: blade.currentEntity.parentUrl + folderName }).$promise;
                             await contentApi.delete({ contentType: blade.contentType, storeId: blade.storeId, urls: urlsToDelete }).$promise;
