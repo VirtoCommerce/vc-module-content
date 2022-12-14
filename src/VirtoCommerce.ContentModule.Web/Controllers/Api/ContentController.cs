@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
@@ -379,6 +380,12 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
         private string GetContentBasePath(string contentType, string storeId)
         {
+            return GetContentPathFromMappings(contentType, storeId)
+                ?? GetDefaultContentPath(contentType, storeId);
+        }
+
+        private string GetContentPathFromMappings(string contentType, string storeId)
+        {
             if (_options.PathMappings != null && _options.PathMappings.Any() && _options.PathMappings.ContainsKey(contentType))
             {
                 var themeName = _defaultTheme;
@@ -394,12 +401,17 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 return result;
             }
 
+            return null;
+        }
+
+        private string GetDefaultContentPath(string contentType, string storeId)
+        {
             var retVal = contentType switch
             {
                 var x when x.EqualsInvariant(_themes) => "Themes/" + storeId,
                 var x when x.EqualsInvariant(_pages) => "Pages/" + storeId,
                 var x when x.EqualsInvariant(_blogsFolderName) => "Pages/" + storeId + $"/{_blogsFolderName}",
-                var x => string.Empty
+                var _ => string.Empty
             };
 
             return retVal;
