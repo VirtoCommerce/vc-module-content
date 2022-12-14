@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
@@ -26,6 +27,7 @@ using VirtoCommerce.ContentModule.Web.Validators;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Exceptions;
+using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
@@ -38,7 +40,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
     {
         private readonly IBlobContentStorageProviderFactory _blobContentStorageProviderFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
-        private readonly IStoreService _storeService;
+        private readonly ICrudService<Store> _storeService;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ContentOptions _options;
         private readonly ILogger<ContentController> _logger;
@@ -59,7 +61,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         {
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _platformMemoryCache = platformMemoryCache;
-            _storeService = storeService;
+            _storeService = (ICrudService<Store>)storeService;
             _httpClientFactory = httpClientFactory;
             _options = options.Value;
             _logger = logger;
@@ -96,7 +98,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
             var retVal = new ContentStatistic
             {
-                ActiveThemeName = store.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value.ToString() ?? "default",
+                ActiveThemeName = store.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value.ToString() ?? _defaultTheme,
                 ThemesCount = themes.Results.OfType<BlobFolder>().Count(),
                 BlogsCount = blogs.Results.OfType<BlobFolder>().Count(),
                 PagesCount = pagesCount
@@ -378,30 +380,39 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 
         private string GetContentBasePath(string contentType, string storeId)
         {
+            return GetContentPathFromMappings(contentType, storeId)
+                ?? GetDefaultContentPath(contentType, storeId);
+        }
+
+        private string GetContentPathFromMappings(string contentType, string storeId)
+        {
             if (_options.PathMappings != null && _options.PathMappings.Any() && _options.PathMappings.ContainsKey(contentType))
             {
+                var themeName = _defaultTheme;
                 var mapping = _options.PathMappings[contentType];
-                return string.Join('/', mapping.Select(x => x switch
+                var parts = mapping.Select(x => x switch
                 {
                     "_storeId" => storeId,
-                    "_theme" => _defaultTheme,
+                    "_theme" => themeName,
+                    "_blog" => _blogsFolderName,
                     _ => x,
-                }));
+                });
+                var result = string.Join('/', parts);
+                return result;
             }
 
-            var retVal = string.Empty;
-            if (contentType.EqualsInvariant(_themes))
+            return null;
+        }
+
+        private static string GetDefaultContentPath(string contentType, string storeId)
+        {
+            var retVal = contentType switch
             {
-                retVal = "Themes/" + storeId;
-            }
-            else if (contentType.EqualsInvariant(_pages))
-            {
-                retVal = "Pages/" + storeId;
-            }
-            else if (contentType.EqualsInvariant(_blogsFolderName))
-            {
-                retVal = "Pages/" + storeId + $"/{_blogsFolderName}";
-            }
+                var x when x.EqualsInvariant(_themes) => "Themes/" + storeId,
+                var x when x.EqualsInvariant(_pages) => "Pages/" + storeId,
+                var x when x.EqualsInvariant(_blogsFolderName) => "Pages/" + storeId + $"/{_blogsFolderName}",
+                var _ => string.Empty
+            };
 
             return retVal;
         }
