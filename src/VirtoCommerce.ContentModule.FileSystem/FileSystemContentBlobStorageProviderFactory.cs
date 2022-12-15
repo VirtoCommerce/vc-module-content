@@ -2,6 +2,7 @@ using System.IO;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.Platform.Core;
+using VirtoCommerce.Platform.Core.Extensions;
 using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.ContentModule.FileSystem
@@ -29,7 +30,7 @@ namespace VirtoCommerce.ContentModule.FileSystem
             var publicPath = $"~/api/content/{basePath}?relativeUrl=";
             if (!string.IsNullOrEmpty(clonedOptions.PublicUrl))
             {
-                publicPath = clonedOptions.PublicUrl + "/" + basePath;
+                publicPath = UrlHelperExtensions.Combine(clonedOptions.PublicUrl, basePath);
             }
             clonedOptions.RootPath = storagePath;
             clonedOptions.PublicUrl = publicPath;

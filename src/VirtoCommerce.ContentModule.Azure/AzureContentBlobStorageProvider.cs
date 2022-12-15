@@ -22,6 +22,8 @@ namespace VirtoCommerce.ContentModule.Azure
             _options = options.Value;
         }
 
+        
+
         public override Stream OpenRead(string url)
         {
             return base.OpenRead(NormalizeUrl(url));
@@ -66,7 +68,9 @@ namespace VirtoCommerce.ContentModule.Azure
 
             foreach (var blobEntry in result.Results)
             {
-                blobEntry.RelativeUrl = blobEntry.RelativeUrl.Replace($"/{rootAzurePath}", string.Empty);
+                blobEntry.RelativeUrl = blobEntry.RelativeUrl
+                    .Replace($"/{rootAzurePath}", string.Empty)
+                    .Replace($"{rootAzurePath}", string.Empty); // can be case when start '/' doesn't exist
             }
 
             return result;
