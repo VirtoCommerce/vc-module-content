@@ -350,7 +350,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                     {
                         var fileName = Path.GetFileName(contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty));
 
-                        var targetFilePath = UrlHelperExtensions.Combine(folderUrl, fileName);
+                        var targetFilePath = UrlHelperExtensions.Combine(folderUrl ?? "", fileName);
 
                         using (var targetStream = storageProvider.OpenWrite(targetFilePath))
                         {
