@@ -318,7 +318,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 if (url is not null)
                 {
                     var fileName = HttpUtility.UrlDecode(Path.GetFileName(url));
-                    var fileUrl = UrlHelperExtensions.Combine(folderUrl, fileName);
+                    var fileUrl = UrlHelperExtensions.Combine(folderUrl ?? "", fileName);
 
                     using (var client = _httpClientFactory.CreateClient())
                     using (var blobStream = storageProvider.OpenWrite(fileUrl))
