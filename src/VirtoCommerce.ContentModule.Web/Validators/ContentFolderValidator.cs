@@ -9,7 +9,7 @@ namespace VirtoCommerce.ContentModule.Web.Validators
         public ContentFolderValidator()
         {
             RuleFor(context => context.Name)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotNull()
                 .WithMessage("Folder name must not be null.")
                 .NotEmpty()
