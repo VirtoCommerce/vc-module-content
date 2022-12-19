@@ -20,9 +20,7 @@ namespace VirtoCommerce.ContentModule.Azure
             : base(options, platformOptions, settingsManager)
         {
             _options = options.Value;
-        }
-
-        
+        }        
 
         public override Stream OpenRead(string url)
         {
@@ -63,7 +61,6 @@ namespace VirtoCommerce.ContentModule.Azure
             folderUrl = NormalizeUrl(folderUrl);
 
             var result = await base.SearchAsync(folderUrl, keyword);
-
             var rootAzurePath = _options.RootPath.Replace('\\', '/');
 
             foreach (var blobEntry in result.Results)
