@@ -20,7 +20,7 @@ namespace VirtoCommerce.ContentModule.Azure
             : base(options, platformOptions, settingsManager)
         {
             _options = options.Value;
-        }        
+        }
 
         public override Stream OpenRead(string url)
         {
