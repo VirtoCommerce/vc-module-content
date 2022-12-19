@@ -32,6 +32,7 @@ using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
 using Permissions = VirtoCommerce.ContentModule.Core.ContentConstants.Security.Permissions;
+using UrlHelperExtensions = VirtoCommerce.Platform.Core.Extensions.UrlHelperExtensions;
 
 namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 {
@@ -317,7 +318,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 if (url is not null)
                 {
                     var fileName = HttpUtility.UrlDecode(Path.GetFileName(url));
-                    var fileUrl = $"{folderUrl}/{fileName}";
+                    var fileUrl = UrlHelperExtensions.Combine(folderUrl ?? "", fileName);
 
                     using (var client = _httpClientFactory.CreateClient())
                     using (var blobStream = storageProvider.OpenWrite(fileUrl))
@@ -349,7 +350,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                     {
                         var fileName = Path.GetFileName(contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty));
 
-                        var targetFilePath = $"{folderUrl}/{fileName}";
+                        var targetFilePath = UrlHelperExtensions.Combine(folderUrl ?? "", fileName);
 
                         using (var targetStream = storageProvider.OpenWrite(targetFilePath))
                         {
