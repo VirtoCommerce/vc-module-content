@@ -37,7 +37,7 @@ angular.module('virtoCommerce.contentModule')
                 };
 
                 function fillMetadata(data) {
-                    dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders' },
+                    dynamicPropertiesApi.search({ objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders', take: 200, skip: 0 },
                         function(results) {
                             fillDynamicProperties(data.metadata, results.results);
                             blade.origEntity = angular.copy(blade.currentEntity);
