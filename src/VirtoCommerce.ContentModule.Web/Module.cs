@@ -124,7 +124,6 @@ namespace VirtoCommerce.ContentModule.Web
                         menuDbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
                     }
 
-                    menuDbContext.Database.EnsureCreated();
                     menuDbContext.Database.Migrate();
                 }
             }
