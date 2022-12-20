@@ -3,21 +3,19 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.ContentModule.Data.Repositories;
 
-namespace VirtoCommerce.ContentModule.Data.Migrations
+namespace VirtoCommerce.ContentModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(MenuDbContext))]
-    [Migration("20180629125447_InitialContent")]
-    partial class InitialContent
+    partial class MenuDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.0-rtm-30799")
+                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -47,6 +45,9 @@ namespace VirtoCommerce.ContentModule.Data.Migrations
                         .HasMaxLength(64);
 
                     b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("OuterId")
+                        .HasMaxLength(128);
 
                     b.Property<int>("Priority");
 
@@ -85,6 +86,9 @@ namespace VirtoCommerce.ContentModule.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired();
+
+                    b.Property<string>("OuterId")
+                        .HasMaxLength(128);
 
                     b.Property<string>("StoreId")
                         .IsRequired();

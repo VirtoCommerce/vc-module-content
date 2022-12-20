@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace VirtoCommerce.ContentModule.Data.Migrations
+namespace VirtoCommerce.ContentModule.Data.SqlServer.Migrations
 {
     public partial class AddContentOuterId : Migration
     {

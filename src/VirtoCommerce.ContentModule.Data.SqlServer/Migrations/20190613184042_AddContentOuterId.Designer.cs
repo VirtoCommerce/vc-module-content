@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.ContentModule.Data.Repositories;
 
-namespace VirtoCommerce.ContentModule.Data.Migrations
+namespace VirtoCommerce.ContentModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(MenuDbContext))]
-    [Migration("20000000000000_UpdateContentV2")]
-    partial class UpdateContentV2
+    [Migration("20190613184042_AddContentOuterId")]
+    partial class AddContentOuterId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,6 +47,9 @@ namespace VirtoCommerce.ContentModule.Data.Migrations
                         .HasMaxLength(64);
 
                     b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("OuterId")
+                        .HasMaxLength(128);
 
                     b.Property<int>("Priority");
 
@@ -84,6 +88,9 @@ namespace VirtoCommerce.ContentModule.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired();
+
+                    b.Property<string>("OuterId")
+                        .HasMaxLength(128);
 
                     b.Property<string>("StoreId")
                         .IsRequired();

@@ -1,7 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace VirtoCommerce.ContentModule.Data.Migrations
+namespace VirtoCommerce.ContentModule.Data.SqlServer.Migrations
 {
     public partial class InitialContent : Migration
     {
