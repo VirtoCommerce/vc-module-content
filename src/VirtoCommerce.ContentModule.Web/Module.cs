@@ -16,8 +16,11 @@ using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.ExportImport;
 using VirtoCommerce.ContentModule.Data.Handlers;
+using VirtoCommerce.ContentModule.Data.MySql;
+using VirtoCommerce.ContentModule.Data.PostgreSql;
 using VirtoCommerce.ContentModule.Data.Repositories;
 using VirtoCommerce.ContentModule.Data.Services;
+using VirtoCommerce.ContentModule.Data.SqlServer;
 using VirtoCommerce.ContentModule.FileSystem;
 using VirtoCommerce.ContentModule.FileSystem.Extensions;
 using VirtoCommerce.ContentModule.Web.Extensions;
@@ -44,8 +47,21 @@ namespace VirtoCommerce.ContentModule.Web
 
             serviceCollection.AddDbContext<MenuDbContext>((provider, options) =>
             {
-                var configuration = provider.GetRequiredService<IConfiguration>();
-                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
+                var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
+
+                switch (databaseProvider)
+                {
+                    case "MySql":
+                        options.UseMySqlDatabase(connectionString);
+                        break;
+                    case "PostgreSql":
+                        options.UsePostgreSqlDatabase(connectionString);
+                        break;
+                    default:
+                        options.UseSqlServerDatabase(connectionString);
+                        break;
+                }
             });
 
             serviceCollection.AddTransient<IMenuRepository, MenuRepository>();
@@ -102,8 +118,12 @@ namespace VirtoCommerce.ContentModule.Web
             {
                 using (var menuDbContext = serviceScope.ServiceProvider.GetRequiredService<MenuDbContext>())
                 {
-                    menuDbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
-                    menuDbContext.Database.EnsureCreated();
+                    var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
+                    if (databaseProvider == "SqlServer")
+                    {
+                        menuDbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
+                    }
+
                     menuDbContext.Database.Migrate();
                 }
             }

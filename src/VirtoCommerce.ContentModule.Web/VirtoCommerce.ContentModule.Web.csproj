@@ -23,6 +23,9 @@
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Azure\VirtoCommerce.ContentModule.Azure.csproj" />
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Core\VirtoCommerce.ContentModule.Core.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.ContentModule.Data.MySql\VirtoCommerce.ContentModule.Data.MySql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.ContentModule.Data.PostgreSql\VirtoCommerce.ContentModule.Data.PostgreSql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.ContentModule.Data.SqlServer\VirtoCommerce.ContentModule.Data.SqlServer.csproj" />
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Data\VirtoCommerce.ContentModule.Data.csproj" />
     <ProjectReference Include="..\VirtoCommerce.ContentModule.FileSystem\VirtoCommerce.ContentModule.FileSystem.csproj" />
   </ItemGroup>
