@@ -14,11 +14,13 @@ using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Events;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.ContentModule.Core.Services.Indexing;
 using VirtoCommerce.ContentModule.Data.ExportImport;
 using VirtoCommerce.ContentModule.Data.Handlers;
 using VirtoCommerce.ContentModule.Data.MySql;
 using VirtoCommerce.ContentModule.Data.PostgreSql;
 using VirtoCommerce.ContentModule.Data.Repositories;
+using VirtoCommerce.ContentModule.Data.Search;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.ContentModule.Data.SqlServer;
 using VirtoCommerce.ContentModule.FileSystem;
@@ -68,6 +70,10 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<Func<IMenuRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetService<IMenuRepository>());
 
             serviceCollection.AddTransient<IMenuService, MenuService>();
+            serviceCollection.AddTransient<IFullTextContentSearchService, FullTextContentSearchService>();
+            serviceCollection.AddTransient<IContentService, ContentService>();
+            serviceCollection.AddTransient<IContentStatisticService, ContentStatisticService>();
+            serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
 
             serviceCollection.AddTransient<ContentExportImport>();
 

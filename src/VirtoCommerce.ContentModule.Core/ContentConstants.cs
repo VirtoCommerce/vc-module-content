@@ -15,5 +15,15 @@ namespace VirtoCommerce.ContentModule.Core
                 public static string[] AllPermissions = { Read, Access, Create, Delete, Update };
             }
         }
+
+        public static class ContentTypes
+        {
+            public const string Blogs = "blogs";
+            public const string Pages = "pages";
+            public const string Themes = "themes";
+        }
+
+        public const string DefaultTheme = "default";
+
     }
 }
