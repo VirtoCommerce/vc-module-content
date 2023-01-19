@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
@@ -17,6 +18,7 @@ using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core;
@@ -79,6 +81,29 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
             // note: This method used only for default themes copying that we use string.Empty instead storeId because default themes placed only in root content folder
             await storageProvider.CopyAsync(srcPath, destPath);
+        }
+
+        public async Task<ContentFile> GetFileAsync(string contentType, string storeId, string relativeUrl)
+        {
+            var path = _contentPathResolver.GetContentBasePath(contentType, storeId);
+            var storageProvider = _blobContentStorageProviderFactory.CreateProvider(path);
+            var blobInfo = await storageProvider.GetBlobInfoAsync(relativeUrl);
+
+            var result = blobInfo.ToContentModel();
+            return result;
+        }
+
+        public async Task<IndexableContentFile> GetFileContentAsync(string contentType, string storeId, string relativeUrl)
+        {
+            var path = _contentPathResolver.GetContentBasePath(contentType, storeId);
+            var storageProvider = _blobContentStorageProviderFactory.CreateProvider(path);
+            var blobInfo = await storageProvider.GetBlobInfoAsync(relativeUrl);
+
+            var result = blobInfo.ToIndexableContentModel();
+            var fileStream = await storageProvider.OpenReadAsync(relativeUrl);
+            using var reader = new StreamReader(fileStream);
+            result.Content = await reader.ReadToEndAsync();
+            return result;
         }
 
         public async Task CreateFolderAsync(string contentType, string storeId, ContentFolder folder)

@@ -22,19 +22,19 @@ namespace VirtoCommerce.ContentModule.Data.Services
         private readonly IBlobContentStorageProviderFactory _blobContentStorageProviderFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly ICrudService<Store> _storeService;
-        private readonly IContentPathResolver _contentFolderResolver;
+        private readonly IContentPathResolver _contentPathResolver;
 
         public ContentStatisticService(
                 IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
                 IPlatformMemoryCache platformMemoryCache,
                 IStoreService storeService,
-                IContentPathResolver contentFolderResolver
+                IContentPathResolver contentPathResolver
             )
         {
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _platformMemoryCache = platformMemoryCache;
             _storeService = (ICrudService<Store>)storeService;
-            _contentFolderResolver = contentFolderResolver;
+            _contentPathResolver = contentPathResolver;
         }
 
         public async Task<ContentStatistic> GetStoreContentStatsAsync(string storeId)
@@ -44,13 +44,13 @@ namespace VirtoCommerce.ContentModule.Data.Services
             var pagesCount = _platformMemoryCache.GetOrCreateExclusive(cacheKey, cacheEntry =>
             {
                 cacheEntry.AddExpirationToken(ContentCacheRegion.CreateChangeToken($"content-{storeId}"));
-                var path = _contentFolderResolver.GetContentBasePath(ContentConstants.ContentTypes.Pages, storeId);
+                var path = _contentPathResolver.GetContentBasePath(ContentConstants.ContentTypes.Pages, storeId);
                 var result = CountContentItemsRecursive(path, contentStorageProvider, ContentConstants.ContentTypes.Blogs);
                 return result;
             });
 
-            var themesPath = _contentFolderResolver.GetContentBasePath(ContentConstants.ContentTypes.Themes, storeId);
-            var blogsPath = _contentFolderResolver.GetContentBasePath(ContentConstants.ContentTypes.Blogs, storeId);
+            var themesPath = _contentPathResolver.GetContentBasePath(ContentConstants.ContentTypes.Themes, storeId);
+            var blogsPath = _contentPathResolver.GetContentBasePath(ContentConstants.ContentTypes.Blogs, storeId);
 
             var storeTask = _storeService.GetByIdAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
             var themesTask = contentStorageProvider.SearchAsync(themesPath, null);

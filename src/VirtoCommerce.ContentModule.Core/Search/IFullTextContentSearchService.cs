@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using VirtoCommerce.ContentModule.Core.Model;
 
-namespace VirtoCommerce.ContentModule.Core.Services.Indexing
+namespace VirtoCommerce.ContentModule.Core.Search
 {
     public interface IFullTextContentSearchService
     {

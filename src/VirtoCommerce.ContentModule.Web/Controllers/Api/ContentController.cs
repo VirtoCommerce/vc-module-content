@@ -1,39 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Mime;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
-using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core.Model;
+using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.ContentModule.Web.Filters;
 using VirtoCommerce.ContentModule.Web.Validators;
-using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Exceptions;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Data.Helpers;
-using VirtoCommerce.StoreModule.Core.Model;
-using VirtoCommerce.StoreModule.Core.Services;
 using Permissions = VirtoCommerce.ContentModule.Core.ContentConstants.Security.Permissions;
-using UrlHelperExtensions = VirtoCommerce.Platform.Core.Extensions.UrlHelperExtensions;
 
 namespace VirtoCommerce.ContentModule.Web.Controllers.Api
 {
@@ -43,6 +29,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IContentStatisticService _contentStats;
         private readonly IContentService _contentService;
         private readonly IContentSearchService _contentSearchService;
+        private readonly IFullTextContentSearchService _fullTextContentSearchService;
         private readonly ILogger<ContentController> _logger;
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
@@ -50,11 +37,13 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             IContentStatisticService contentStats,
             IContentService contentService,
             IContentSearchService contentSearchService,
+            IFullTextContentSearchService fullTextContentSearchService,
             ILogger<ContentController> logger)
         {
             _contentStats = contentStats;
             _contentService = contentService;
             _contentSearchService = contentSearchService;
+            _fullTextContentSearchService = fullTextContentSearchService;
             _logger = logger;
         }
 
@@ -123,6 +112,25 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         public async Task<ActionResult<ContentItem[]>> SearchContent(string contentType, string storeId, [FromQuery] string folderUrl = null, [FromQuery] string keyword = null)
         {
             var result = await _contentSearchService.FilterContentAsync(contentType, storeId, folderUrl, keyword);
+            return Ok(result);
+        }
+
+        /// <summary>
+        ///     Fulltext content search
+        /// </summary>
+        /// <param name="storeId">Store id</param>
+        /// <param name="query">search keyword</param>
+        /// <returns>content items</returns>
+        [HttpPost]
+        [Route("fulltext-search")]
+        [Authorize(Permissions.Read)]
+        public async Task<ActionResult<ContentItem[]>> FulltextSearchContent(string storeId, [FromBody] ContentSearchCriteria criteria)
+        {
+            if (criteria.StoreId.IsNullOrEmpty())
+            {
+                criteria.StoreId = storeId;
+            }
+            var result = await _fullTextContentSearchService.SearchContentAsync(criteria);
             return Ok(result);
         }
 

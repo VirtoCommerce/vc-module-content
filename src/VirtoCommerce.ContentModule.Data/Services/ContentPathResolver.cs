@@ -35,7 +35,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
                 var parts = mapping.Select(x => x switch
                 {
                     "_storeId" => storeId,
-                    "_theme" => themeName,
+                    "_theme" => theme,
                     "_blog" => ContentConstants.ContentTypes.Blogs,
                     _ => x,
                 });

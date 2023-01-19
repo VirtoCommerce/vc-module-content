@@ -13,8 +13,8 @@ using VirtoCommerce.ContentModule.Azure.Extensions;
 using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Events;
 using VirtoCommerce.ContentModule.Core.Model;
+using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.ContentModule.Core.Services.Indexing;
 using VirtoCommerce.ContentModule.Data.ExportImport;
 using VirtoCommerce.ContentModule.Data.Handlers;
 using VirtoCommerce.ContentModule.Data.MySql;
@@ -33,6 +33,8 @@ using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Data.Extensions;
+using VirtoCommerce.SearchModule.Core.Model;
+using VirtoCommerce.SearchModule.Core.Services;
 
 namespace VirtoCommerce.ContentModule.Web
 {
@@ -73,7 +75,25 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<IFullTextContentSearchService, FullTextContentSearchService>();
             serviceCollection.AddTransient<IContentService, ContentService>();
             serviceCollection.AddTransient<IContentStatisticService, ContentStatisticService>();
+            serviceCollection.AddTransient<IContentSearchService, ContentSearchService>();
             serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
+
+            serviceCollection.AddSingleton<IContentItemTypeRegistrar, ContentItemTypeRegistrar>();
+            serviceCollection.AddTransient<ContentSearchRequestBuilder>();
+            serviceCollection.AddTransient<MarkdownContentItemBuilder>();
+            // todo: should be singleton?
+            serviceCollection.AddTransient<ContentIndexDocumentChangesProvider>();
+            serviceCollection.AddTransient<ContentIndexDocumentBuilder>();
+
+            serviceCollection.AddSingleton(provider => new IndexDocumentConfiguration
+            {
+                DocumentType = FullTextContentSearchService.ContentDocumentType,
+                DocumentSource = new IndexDocumentSource
+                {
+                    ChangesProvider = provider.GetService<ContentIndexDocumentChangesProvider>(),
+                    DocumentBuilder = provider.GetService<ContentIndexDocumentBuilder>(),
+                },
+            });
 
             serviceCollection.AddTransient<ContentExportImport>();
 
@@ -136,6 +156,13 @@ namespace VirtoCommerce.ContentModule.Web
 
             var dynamicPropertyService = appBuilder.ApplicationServices.GetRequiredService<IDynamicPropertyService>();
             dynamicPropertyService.SaveDynamicPropertiesAsync(FrontMatterHeaders.AllDynamicProperties.ToArray()).GetAwaiter().GetResult();
+
+            var searchRequestBuilderRegistrar = appBuilder.ApplicationServices.GetService<ISearchRequestBuilderRegistrar>();
+            searchRequestBuilderRegistrar.Register(FullTextContentSearchService.ContentDocumentType, appBuilder.ApplicationServices.GetService<ContentSearchRequestBuilder>);
+
+            var contentItemTypeRegistrar = appBuilder.ApplicationServices.GetService<IContentItemTypeRegistrar>();
+            contentItemTypeRegistrar.RegisterContentItemType(".md", appBuilder.ApplicationServices.GetService<MarkdownContentItemBuilder>);
+
         }
 
         public void Uninstall()

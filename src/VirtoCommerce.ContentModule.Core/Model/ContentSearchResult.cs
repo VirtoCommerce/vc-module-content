@@ -2,11 +2,7 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.ContentModule.Core.Model
 {
-    public class ContentSearchResult : SearchCriteriaBase
+    public class ContentSearchResult : GenericSearchResult<IndexableContentFile>
     {
-        public ContentSearchResult()
-        {
-            ObjectType = nameof(ContentFile);
-        }
     }
 }
