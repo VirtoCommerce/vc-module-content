@@ -8,11 +8,13 @@ using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.Platform.Core.ChangeLog;
 using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.SearchModule.Core.Extenstions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 using VirtoCommerce.StoreModule.Core.Model;
+using VirtoCommerce.StoreModule.Core.Model.Search;
 using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.ContentModule.Data.Search
@@ -20,33 +22,38 @@ namespace VirtoCommerce.ContentModule.Data.Search
     public class ContentIndexDocumentBuilder : IIndexDocumentBuilder
     {
         private readonly IContentService _contentService;
-        private readonly ICrudService<Store> _storeService;
+        private readonly ISearchService<StoreSearchCriteria, StoreSearchResult, Store> _storeService;
         private readonly IContentItemTypeRegistrar _contentItemTypeRegistrar;
 
         public ContentIndexDocumentBuilder(
             IContentService contentService,
-            IStoreService storeService,
+            IStoreSearchService storeService,
             IContentItemTypeRegistrar contentItemTypeRegistrar
         )
         {
             _contentService = contentService;
-            _storeService = (ICrudService<Store>)storeService;
+            _storeService = (ISearchService<StoreSearchCriteria, StoreSearchResult, Store>)storeService;
             _contentItemTypeRegistrar = contentItemTypeRegistrar;
         }
 
         public virtual async Task<IList<IndexDocument>> GetDocumentsAsync(IList<string> documentIds)
         {
-            var storeId = "B2B-store";
-            // todo: get all stores
-            var files = await GetFiles(storeId, documentIds);
+            var files = await GetFiles(documentIds);
             var result = new List<IndexDocument>();
 
-            foreach (var file in files)
+            foreach (var pair in files)
             {
-                var document = await CreateDocument(file, storeId);
-                if (document != null)
+                try
                 {
-                    result.Add(document);
+                    var document = await CreateDocument(pair.Value, pair.Key);
+                    if (document != null)
+                    {
+                        result.Add(document);
+                    }
+                }
+                catch (Exception e)
+                {
+                    // todo: how to log?
                 }
             }
 
@@ -66,18 +73,22 @@ namespace VirtoCommerce.ContentModule.Data.Search
             return null;
         }
 
-        private async Task<IEnumerable<ContentFile>> GetFiles(string storeId, IList<string> documentIds)
+        private async Task<IEnumerable<KeyValuePair<string, ContentFile>>> GetFiles(IList<string> documentIds)
         {
-            var result = new List<ContentFile>();
+            var result = new List<KeyValuePair<string, ContentFile>>();
             foreach (var id in documentIds)
             {
-                var file = await _contentService.GetFileAsync(ContentConstants.ContentTypes.Pages, storeId, id);
-                if (file != null)
+                var parts = id.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length > 1)
                 {
-                    result.Add(file);
+                    var file = await _contentService.GetFileAsync(ContentConstants.ContentTypes.Pages, parts[0], parts[1]);
+                    if (file != null)
+                    {
+                        result.Add(new KeyValuePair<string, ContentFile>(parts[0], file));
+                    }
                 }
             }
-            return result;            
+            return result;
         }
     }
 }

@@ -8,17 +8,23 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.ContentModule.Web.Filters;
 using VirtoCommerce.ContentModule.Web.Validators;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Exceptions;
+using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Data.Helpers;
+using VirtoCommerce.StoreModule.Core.Model;
+using VirtoCommerce.StoreModule.Core.Services;
 using Permissions = VirtoCommerce.ContentModule.Core.ContentConstants.Security.Permissions;
 
 namespace VirtoCommerce.ContentModule.Web.Controllers.Api
@@ -26,24 +32,30 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
     [Route("api/content/{contentType}/{storeId}")]
     public class ContentController : Controller
     {
+        private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly IContentStatisticService _contentStats;
         private readonly IContentService _contentService;
         private readonly IContentSearchService _contentSearchService;
         private readonly IFullTextContentSearchService _fullTextContentSearchService;
+        private readonly ICrudService<Store> _storeService;
         private readonly ILogger<ContentController> _logger;
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
         public ContentController(
+            IPlatformMemoryCache platformMemoryCache,
             IContentStatisticService contentStats,
             IContentService contentService,
             IContentSearchService contentSearchService,
             IFullTextContentSearchService fullTextContentSearchService,
+            IStoreService storeService,
             ILogger<ContentController> logger)
         {
+            _platformMemoryCache = platformMemoryCache;
             _contentStats = contentStats;
             _contentService = contentService;
             _contentSearchService = contentSearchService;
             _fullTextContentSearchService = fullTextContentSearchService;
+            _storeService = (ICrudService<Store>)storeService;
             _logger = logger;
         }
 
@@ -57,7 +69,32 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<ContentStatistic>> GetStoreContentStats(string storeId)
         {
-            var result = await _contentStats.GetStoreContentStatsAsync(storeId);
+            var cacheKey = CacheKey.With(GetType(), "contentStats", $"content-{storeId}");
+            var result = await _platformMemoryCache.GetOrCreateExclusive(cacheKey, async cacheEntry =>
+            {
+                cacheEntry.AddExpirationToken(ContentCacheRegion.CreateChangeToken($"content-{storeId}"));
+
+                var pagesTask = _contentStats.GetStorePagesCountAsync(storeId);
+                var blogsTask = _contentStats.GetStoreBlogsCountAsync(storeId);
+                var themesTask = _contentStats.GetStoreThemesCountAsync(storeId);
+
+                var storeTask = _storeService.GetByIdAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
+
+                await Task.WhenAll(themesTask, blogsTask, pagesTask, storeTask);
+
+                var activeThemeProperty = storeTask.Result.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName");
+                var activeTheme = activeThemeProperty?.Values?.FirstOrDefault()?.Value?.ToString();
+
+                var result = new ContentStatistic
+                {
+                    PagesCount = pagesTask.Result,
+                    BlogsCount = blogsTask.Result,
+                    ThemesCount = themesTask.Result,
+
+                    ActiveThemeName = activeTheme ?? ContentConstants.DefaultTheme
+                };
+                return result;
+            });
             return Ok(result);
         }
 

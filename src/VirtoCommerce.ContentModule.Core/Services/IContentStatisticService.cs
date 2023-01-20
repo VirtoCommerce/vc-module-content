@@ -9,6 +9,8 @@ namespace VirtoCommerce.ContentModule.Core.Services
 {
     public interface IContentStatisticService
     {
-        Task<ContentStatistic> GetStoreContentStatsAsync(string storeId);
+        Task<int> GetStorePagesCountAsync(string storeId);
+        Task<int> GetStoreThemesCountAsync(string storeId);
+        Task<int> GetStoreBlogsCountAsync(string storeId);
     }
 }

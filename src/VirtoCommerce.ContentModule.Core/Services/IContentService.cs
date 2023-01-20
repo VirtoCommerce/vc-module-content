@@ -13,7 +13,7 @@ namespace VirtoCommerce.ContentModule.Core.Services
         Task DeleteContentAsync(string contentType, string storeId, string[] urls);
         Task MoveContentAsync(string contentType, string storeId, string oldPath, string newPath);
         Task CopyContentAsync(string contentType, string storeId, string srcPath, string destPath);
-        Task<ContentFile> GetFileAsync(string contentType, string storeId, string relativeUrl); // todo: is this method requried?
+        Task<ContentFile> GetFileAsync(string contentType, string storeId, string relativeUrl);
         Task<IndexableContentFile> GetFileContentAsync(string contentType, string storeId, string relativeUrl);
         Task CreateFolderAsync(string contentType, string storeId, ContentFolder folder);
 

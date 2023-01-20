@@ -7,9 +7,11 @@ using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.Platform.Data.GenericCrud;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 using VirtoCommerce.StoreModule.Core.Model;
+using VirtoCommerce.StoreModule.Core.Model.Search;
 using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.ContentModule.Data.Search
@@ -17,43 +19,60 @@ namespace VirtoCommerce.ContentModule.Data.Search
     public class ContentIndexDocumentChangesProvider : IIndexDocumentChangesProvider
     {
         private readonly IContentSearchService _contentSearchService;
-        private readonly ICrudService<Store> _storeService;
-        private readonly IContentStatisticService _contentStatistcService;
+        private readonly ISearchService<StoreSearchCriteria, StoreSearchResult, Store> _storeService;
+        private readonly IContentStatisticService _contentStatisticService;
 
         public ContentIndexDocumentChangesProvider(
             IContentSearchService contentSearchService,
-            IStoreService storeService,
-            IContentStatisticService contentStatistcService
+            IStoreSearchService storeService,
+            IContentStatisticService contentStatisticService
         )
         {
             _contentSearchService = contentSearchService;
-            _storeService = (ICrudService<Store>)storeService;
-            _contentStatistcService = contentStatistcService;
+            _storeService = (ISearchService<StoreSearchCriteria, StoreSearchResult, Store>)storeService;
+            _contentStatisticService = contentStatisticService;
         }
 
+        // todo: use parameters
         public virtual async Task<IList<IndexDocumentChange>> GetChangesAsync(DateTime? startDate, DateTime? endDate, long skip, long take)
         {
-            var storeId = "B2B-store";
-            // todo: search in every store
-            var pages = await _contentSearchService.EnumerateItems(ContentConstants.ContentTypes.Pages, storeId, null);
-
-            var result = pages.Select(file =>
-                    new IndexDocumentChange
-                    {
-                        DocumentId = file.RelativeUrl,
-                        ChangeType = IndexDocumentChangeType.Modified,
-                        ChangeDate = DateTime.UtcNow
-                    }
-                ).ToArray();
+            var stores = await GetStores();
+            var result = new List<IndexDocumentChange>();
+            foreach (var store in stores)
+            {
+                var pages = await _contentSearchService.EnumerateItems(ContentConstants.ContentTypes.Pages, store.Id, null);
+                var pagesToIndex = pages.Select(file => new IndexDocumentChange
+                {
+                    DocumentId = $"{store.Id}::{file.RelativeUrl}",
+                    ChangeType = IndexDocumentChangeType.Modified,
+                    ChangeDate = DateTime.UtcNow
+                }).ToArray();
+                result.AddRange(pagesToIndex);
+            }
             return result;
         }
 
+        // todo: use parameters
         public virtual async Task<long> GetTotalChangesCountAsync(DateTime? startDate, DateTime? endDate)
         {
-            var storeId = "B2B-store";
-            // todo: search in every store
-            var result = await _contentStatistcService.GetStoreContentStatsAsync(storeId);
-            return result.PagesCount;
+            var stores = await GetStores();
+            var result = 0;
+            foreach (var store in stores)
+            {
+                var storeId = store.Id;
+                var pagesCount = await _contentStatisticService.GetStorePagesCountAsync(storeId);
+                result += pagesCount;
+            }
+            return result;
+        }
+
+        private async Task<IEnumerable<Store>> GetStores()
+        {
+            var stores = await _storeService.SearchAsync(new StoreSearchCriteria
+            {
+                ObjectType = typeof(Store).Name
+            });
+            return stores.Results;
         }
     }
 }

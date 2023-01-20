@@ -34,32 +34,24 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
         private void AddMetadata(IndexDocument result, IndexableContentFile file)
         {
-            try
-            {
-                IDictionary<string, IEnumerable<string>> metaHeaders = new Dictionary<string, IEnumerable<string>>();
-                ReadYamlHeader(file.Content, metaHeaders);
+            IDictionary<string, IEnumerable<string>> metaHeaders = new Dictionary<string, IEnumerable<string>>();
+            ReadYamlHeader(file.Content, metaHeaders);
 
-                foreach(var meta in metaHeaders)
+            foreach (var meta in metaHeaders)
+            {
+                if (meta.Value.Count() == 1)
                 {
-                    if (meta.Value.Count() == 1)
+                    result.AddFilterableAndSearchableValue(meta.Key, meta.Value.First());
+                }
+                else
+                {
+                    var index = 0;
+                    foreach (var value in meta.Value)
                     {
-                        result.AddFilterableAndSearchableValue(meta.Key, meta.Value.First());
-                    }
-                    else
-                    {
-                        var index = 0;
-                        foreach (var value in meta.Value)
-                        {
-                            result.AddFilterableAndSearchableValue($"{meta.Key}__{index}", value);
-                            index++;
-                        }
+                        result.AddFilterableAndSearchableValue($"{meta.Key}__{index}", value);
+                        index++;
                     }
                 }
-            }
-            catch
-            {
-                // todo: log? rethrow?
-                throw;
             }
         }
 
