@@ -20,9 +20,8 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
         public IndexDocument BuildIndexDocument(string storeId, IndexableContentFile file)
         {
-            // todo: id should be composed either from storeId and file url or something else
-            // todo: should the page depend on theme?
-            var result = new IndexDocument(file.RelativeUrl);
+            var documentId = DocumentIdentifierHelper.GenerateId(storeId, file);
+            var result = new IndexDocument(documentId);
             result.AddFilterableAndSearchableValue("StoreId", storeId);
 
             AddMetadata(result, file);

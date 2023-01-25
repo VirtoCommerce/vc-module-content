@@ -17,7 +17,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 {
     public class FullTextContentSearchService : IFullTextContentSearchService
     {
-        public const string ContentDocumentType = "StaticContent";
+        public const string ContentDocumentType = nameof(ContentFile);
 
         private readonly ISearchRequestBuilderRegistrar _searchRequestBuilderRegistrar;
         private readonly ISearchProvider _searchProvider;
@@ -85,6 +85,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 var contentItem = await _contentService.GetFileContentAsync(ContentConstants.ContentTypes.Pages, criteria.StoreId, item);
                 if (contentItem != null)
                 {
+                    contentItem.StoreId = criteria.StoreId;
                     result.Add(contentItem);
                 }
             }

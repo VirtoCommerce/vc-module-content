@@ -156,10 +156,10 @@
                 "placeholders": {
                     "blog-name": "Enter blog name"
                 },
-              "validations": {
-                "name-invalid": "Name can contain alphanumeric lower case, \" \" and \"-\" characters only.",
-                "name-used": "This name already used"
-              }
+                "validations": {
+                    "name-invalid": "Name can contain alphanumeric lower case, \" \" and \"-\" characters only.",
+                    "name-used": "This name already used"
+                }
             },
             "asset-list": {
                 "subtitle": "Manage theme assets",
@@ -169,19 +169,19 @@
                 }
             },
             "theme-asset-list": {
-            "title": "Edit {{path}}",
-            "subtitle": "Theme asset list",
-            "labels": {
-              "add-new": "Add new",
-              "nodata": "No Assets yet"
-            }
-          },
+                "title": "Edit {{path}}",
+                "subtitle": "Theme asset list",
+                "labels": {
+                    "add-new": "Add new",
+                    "nodata": "No Assets yet"
+                }
+            },
             "store-url-list": {
-              "labels": {
-                "pick-url-to-preview": "Pick a store url to preview",
-                "no-store-urls": "No store urls yet" 
-              } 
-            } 
+                "labels": {
+                    "pick-url-to-preview": "Pick a store url to preview",
+                    "no-store-urls": "No store urls yet"
+                }
+            }
         },
         "widgets": {
             "menu": {
@@ -200,69 +200,69 @@
                 "active-theme": "Active theme"
             }
         },
-      "dialogs": {
-        "theme-upload-confirmation": {
-          "title": "Theme uploading confirmation",
-          "message": "A theme with the same name already exists. Files will be unpacked on top of existing files of this theme. Are you sure?"
+        "dialogs": {
+            "theme-upload-confirmation": {
+                "title": "Theme uploading confirmation",
+                "message": "A theme with the same name already exists. Files will be unpacked on top of existing files of this theme. Are you sure?"
+            },
+            "theme-clone": {
+                "title": "Clone confirmation",
+                "message": "Are you sure you want to clone selected Theme?"
+            },
+            "link-list-delete": {
+                "title": "Delete confirmation",
+                "message": "Are you sure you want to delete selected Link lists?"
+            },
+            "links-delete": {
+                "title": "Delete confirmation",
+                "message": "Are you sure you want to delete selected links?"
+            },
+            "blog-delete": {
+                "title": "Delete confirmation",
+                "message": "Are you sure you want to delete selected Blog?"
+            },
+            "page-delete": {
+                "title": "Delete confirmation",
+                "message": "Are you sure you want to delete this page?"
+            },
+            "blog-save": {
+                "title": "Save changes",
+                "message": "The blog has been modified. Do you want to save changes?"
+            },
+            "page-save": {
+                "title": "Save changes",
+                "message": "The page has been modified. Do you want to save changes?"
+            },
+            "theme-save": {
+                "title": "Save changes",
+                "message": "The theme has been modified. Do you want to save changes?"
+            },
+            "theme-delete": {
+                "title": "Delete confirmation",
+                "message": "Are you sure you want to delete '{{name}}'?",
+                "message-last-one": "This theme is the last one. If you delete it, you could break your storefront. Are you sure you want to delete '{{name}}'?"
+            },
+            "asset-delete": {
+                "title": "Delete confirmation",
+                "message": "Are you sure you want to delete this asset?"
+            },
+            "asset-save": {
+                "title": "Save changes",
+                "message": "The asset has been modified. Do you want to save changes?"
+            },
+            "link-list-save": {
+                "title": "Save changes",
+                "message": "The menu link list has been modified. Do you want to save changes?"
+            },
+            "set-store-url": {
+                "title": "Url is not set for the store",
+                "message": "Please, set store url before previewing!"
+            },
+            "name-must-unique": {
+                "title": "Name not unique",
+                "message": "Name must be unique for this language!"
+            }
         },
-        "theme-clone": {
-          "title": "Clone confirmation",
-          "message": "Are you sure you want to clone selected Theme?"
-        },
-        "link-list-delete": {
-          "title": "Delete confirmation",
-          "message": "Are you sure you want to delete selected Link lists?"
-        },
-        "links-delete": {
-          "title": "Delete confirmation",
-          "message": "Are you sure you want to delete selected links?"
-        },
-        "blog-delete": {
-          "title": "Delete confirmation",
-          "message": "Are you sure you want to delete selected Blog?"
-        },
-        "page-delete": {
-          "title": "Delete confirmation",
-          "message": "Are you sure you want to delete this page?"
-        },
-        "blog-save": {
-          "title": "Save changes",
-          "message": "The blog has been modified. Do you want to save changes?"
-        },
-        "page-save": {
-          "title": "Save changes",
-          "message": "The page has been modified. Do you want to save changes?"
-        },
-        "theme-save": {
-          "title": "Save changes",
-          "message": "The theme has been modified. Do you want to save changes?"
-        },
-        "theme-delete": {
-          "title": "Delete confirmation",
-          "message": "Are you sure you want to delete '{{name}}'?",
-          "message-last-one": "This theme is the last one. If you delete it, you could break your storefront. Are you sure you want to delete '{{name}}'?"
-        },
-        "asset-delete": {
-          "title": "Delete confirmation",
-          "message": "Are you sure you want to delete this asset?"
-        },
-        "asset-save": {
-          "title": "Save changes",
-          "message": "The asset has been modified. Do you want to save changes?"
-        },
-        "link-list-save": {
-          "title": "Save changes",
-          "message": "The menu link list has been modified. Do you want to save changes?"
-        },
-        "set-store-url": {
-          "title": "Url is not set for the store",
-          "message": "Please, set store url before previewing!"
-        },
-        "name-must-unique": {
-          "title": "Name not unique",
-          "message": "Name must be unique for this language!"
-        }
-      },
         "commands": {
             "add-link": "Add link",
             "add-list": "Add list",
@@ -302,6 +302,20 @@
     "module": {
         "VirtoCommerce.Content": {
             "description": "Export/Import pages, themes, links, menu items"
+        }
+    },
+    "settings": {
+        "VirtoCommerce": {
+            "Search": {
+                "IndexingJobs": {
+                    "IndexationDate": {
+                        "ContentFile": {
+                            "title": "Content indexing date and time",
+                            "description": "Date and time the content indexing task will start at"
+                        }
+                    }
+                }
+            }
         }
     }
 }

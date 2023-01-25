@@ -38,15 +38,21 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             var stores = await GetStores();
             var result = new List<IndexDocumentChange>();
+            var now = DateTime.UtcNow;
             foreach (var store in stores)
             {
                 var pages = await _contentSearchService.EnumerateItems(ContentConstants.ContentTypes.Pages, store.Id, null);
-                var pagesToIndex = pages.Select(file => new IndexDocumentChange
-                {
-                    DocumentId = $"{store.Id}::{file.RelativeUrl}",
-                    ChangeType = IndexDocumentChangeType.Modified,
-                    ChangeDate = DateTime.UtcNow
-                }).ToArray();
+                var pagesToIndex = pages
+                    .Where(file => file.ModifiedDate == null || (startDate == null || file.ModifiedDate >= startDate) && (endDate == null || file.ModifiedDate <= endDate))
+                    .OrderByDescending(file => file.ModifiedDate ?? now)
+                    .Skip((int)skip)
+                    .Take((int)take)
+                    .Select(file => new IndexDocumentChange
+                    {
+                        DocumentId = DocumentIdentifierHelper.GenerateId(store.Id, file),
+                        ChangeType = IndexDocumentChangeType.Modified,
+                        ChangeDate = file.ModifiedDate ?? now
+                    }).ToArray();
                 result.AddRange(pagesToIndex);
             }
             return result;
@@ -70,7 +76,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             var stores = await _storeService.SearchAsync(new StoreSearchCriteria
             {
-                ObjectType = typeof(Store).Name
+                ObjectType = nameof(Store)
             });
             return stores.Results;
         }

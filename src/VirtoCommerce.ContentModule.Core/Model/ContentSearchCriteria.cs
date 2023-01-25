@@ -7,7 +7,7 @@ namespace VirtoCommerce.ContentModule.Core.Model
     {
         public ContentSearchCriteria()
         {
-            ObjectType = nameof(IndexableContentFile);
+            ObjectType = nameof(ContentFile);
         }
 
         public string StoreId { get; set; }

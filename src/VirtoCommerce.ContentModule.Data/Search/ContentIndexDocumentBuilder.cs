@@ -78,13 +78,13 @@ namespace VirtoCommerce.ContentModule.Data.Search
             var result = new List<KeyValuePair<string, ContentFile>>();
             foreach (var id in documentIds)
             {
-                var parts = id.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length > 1)
+                var parts = DocumentIdentifierHelper.ParseId(id);
+                if (parts.StoreId != null)
                 {
-                    var file = await _contentService.GetFileAsync(ContentConstants.ContentTypes.Pages, parts[0], parts[1]);
+                    var file = await _contentService.GetFileAsync(ContentConstants.ContentTypes.Pages, parts.StoreId, parts.RelativeUrl);
                     if (file != null)
                     {
-                        result.Add(new KeyValuePair<string, ContentFile>(parts[0], file));
+                        result.Add(new KeyValuePair<string, ContentFile>(parts.StoreId, file));
                     }
                 }
             }

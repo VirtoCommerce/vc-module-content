@@ -29,7 +29,11 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 {
                     SearchKeywords = searchCriteria.Keyword,
                     SearchFields = new[] { IndexDocumentExtensions.SearchableFieldName },
-                    //Filter = filters.And(),
+                    Filter = new TermFilter
+                    {
+                        FieldName = "StoreId",
+                        Values = new[] { searchCriteria.StoreId }
+                    },
                     //Sorting = GetSorting(searchCriteria),
                     Skip = criteria.Skip,
                     Take = criteria.Take,
