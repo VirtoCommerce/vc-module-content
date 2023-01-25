@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,7 +54,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 }
                 catch (Exception e)
                 {
-                    // todo: how to log?
+                    Debug.WriteLine($"{pair.Key}: The file '{pair.Value.RelativeUrl}' processing threw error: {e.ToString()}");
                 }
             }
 

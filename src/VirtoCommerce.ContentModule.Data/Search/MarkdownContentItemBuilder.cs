@@ -31,7 +31,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
             return result;
         }
 
-        private void AddMetadata(IndexDocument result, IndexableContentFile file)
+        private static void AddMetadata(IndexDocument result, IndexableContentFile file)
         {
             IDictionary<string, IEnumerable<string>> metaHeaders = new Dictionary<string, IEnumerable<string>>();
             ReadYamlHeader(file.Content, metaHeaders);
