@@ -76,13 +76,13 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<IFullTextContentSearchService, FullTextContentSearchService>();
             serviceCollection.AddTransient<IContentService, ContentService>();
             serviceCollection.AddTransient<IContentStatisticService, ContentStatisticService>();
-            serviceCollection.AddTransient<IContentSearchService, ContentSearchService>();
+            serviceCollection.AddTransient<IContentFileService, ContentFileService>();
             serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
 
             serviceCollection.AddSingleton<IContentItemTypeRegistrar, ContentItemTypeRegistrar>();
             serviceCollection.AddTransient<ContentSearchRequestBuilder>();
             serviceCollection.AddTransient<MarkdownContentItemBuilder>();
-            // todo: should be singleton?
+
             serviceCollection.AddTransient<ContentIndexDocumentChangesProvider>();
             serviceCollection.AddTransient<ContentIndexDocumentBuilder>();
 

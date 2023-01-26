@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using VirtoCommerce.ContentModule.Core;
+using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.ContentModule.Data.Services;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.GenericCrud;
-using VirtoCommerce.Platform.Data.GenericCrud;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 using VirtoCommerce.StoreModule.Core.Model;
@@ -18,30 +17,31 @@ namespace VirtoCommerce.ContentModule.Data.Search
 {
     public class ContentIndexDocumentChangesProvider : IIndexDocumentChangesProvider
     {
-        private readonly IContentSearchService _contentSearchService;
+        private readonly IContentFileService _contentFileService;
         private readonly ISearchService<StoreSearchCriteria, StoreSearchResult, Store> _storeService;
         private readonly IContentStatisticService _contentStatisticService;
 
         public ContentIndexDocumentChangesProvider(
-            IContentSearchService contentSearchService,
+            IContentFileService contentFileService,
             IStoreSearchService storeService,
             IContentStatisticService contentStatisticService
         )
         {
-            _contentSearchService = contentSearchService;
+            _contentFileService = contentFileService;
             _storeService = (ISearchService<StoreSearchCriteria, StoreSearchResult, Store>)storeService;
             _contentStatisticService = contentStatisticService;
         }
 
-        // todo: use parameters
         public virtual async Task<IList<IndexDocumentChange>> GetChangesAsync(DateTime? startDate, DateTime? endDate, long skip, long take)
         {
-            var stores = await GetStores();
             var result = new List<IndexDocumentChange>();
             var now = DateTime.UtcNow;
-            foreach (var store in stores)
+            await ApplyToStores(async store =>
             {
-                var pages = await _contentSearchService.EnumerateItems(ContentConstants.ContentTypes.Pages, store.Id, null);
+                var filter = AbstractTypeFactory<FilterFilesCriteria>.TryCreateInstance();
+                filter.ContentType = ContentConstants.ContentTypes.Pages;
+                filter.StoreId = store.Id;
+                var pages = await _contentFileService.EnumerateFiles(filter);
                 var pagesToIndex = pages
                     .Where(file => file.ModifiedDate == null || (startDate == null || file.ModifiedDate >= startDate) && (endDate == null || file.ModifiedDate <= endDate))
                     .OrderByDescending(file => file.ModifiedDate ?? now)
@@ -54,31 +54,48 @@ namespace VirtoCommerce.ContentModule.Data.Search
                         ChangeDate = file.ModifiedDate ?? now
                     }).ToArray();
                 result.AddRange(pagesToIndex);
-            }
+            });
             return result;
         }
 
-        // todo: use parameters
         public virtual async Task<long> GetTotalChangesCountAsync(DateTime? startDate, DateTime? endDate)
         {
-            var stores = await GetStores();
             var result = 0;
-            foreach (var store in stores)
+            await ApplyToStores(async store =>
             {
                 var storeId = store.Id;
-                var pagesCount = await _contentStatisticService.GetStorePagesCountAsync(storeId);
+                var pagesCount = await _contentStatisticService.GetStoreChangedPagesCountAsync(storeId, startDate, endDate);
                 result += pagesCount;
-            }
+            });
+
             return result;
         }
 
-        private async Task<IEnumerable<Store>> GetStores()
+        private async Task ApplyToStores(Func<Store, Task> action)
         {
-            var stores = await _storeService.SearchAsync(new StoreSearchCriteria
+            const int take = 50;
+            var skip = 0;
+            int totalStores;
+            do
             {
-                ObjectType = nameof(Store)
-            });
-            return stores.Results;
+                var stores = await GetStores(skip, take);
+                totalStores = stores.TotalCount;
+                foreach (var store in stores.Results)
+                {
+                    await action(store);
+                }
+
+                skip += take;
+            } while (skip < totalStores);
+        }
+
+        private async Task<StoreSearchResult> GetStores(int skip, int take)
+        {
+            var criteria = AbstractTypeFactory<StoreSearchCriteria>.TryCreateInstance();
+            criteria.Skip = skip;
+            criteria.Take = take;
+            var stores = await _storeService.SearchAsync(criteria);
+            return stores;
         }
     }
 }

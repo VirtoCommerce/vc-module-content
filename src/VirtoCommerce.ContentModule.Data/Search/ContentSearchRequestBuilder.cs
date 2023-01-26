@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
@@ -22,9 +18,6 @@ namespace VirtoCommerce.ContentModule.Data.Search
             var searchCriteria = criteria as ContentSearchCriteria;
             if (searchCriteria != null)
             {
-                // Getting filters modifies search phrase
-                //var filters = GetFilters(searchCriteria);
-
                 request = new SearchRequest
                 {
                     SearchKeywords = searchCriteria.Keyword,
@@ -34,7 +27,6 @@ namespace VirtoCommerce.ContentModule.Data.Search
                         FieldName = "StoreId",
                         Values = new[] { searchCriteria.StoreId }
                     },
-                    //Sorting = GetSorting(searchCriteria),
                     Skip = criteria.Skip,
                     Take = criteria.Take,
                 };

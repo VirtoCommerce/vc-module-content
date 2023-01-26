@@ -1,39 +1,30 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Polly;
+using Microsoft.Extensions.Logging;
 using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.Platform.Core.ChangeLog;
-using VirtoCommerce.Platform.Core.GenericCrud;
-using VirtoCommerce.SearchModule.Core.Extenstions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
-using VirtoCommerce.StoreModule.Core.Model;
-using VirtoCommerce.StoreModule.Core.Model.Search;
-using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.ContentModule.Data.Search
 {
     public class ContentIndexDocumentBuilder : IIndexDocumentBuilder
     {
         private readonly IContentService _contentService;
-        private readonly ISearchService<StoreSearchCriteria, StoreSearchResult, Store> _storeService;
         private readonly IContentItemTypeRegistrar _contentItemTypeRegistrar;
+        private readonly ILogger<ContentIndexDocumentBuilder> _log;
 
         public ContentIndexDocumentBuilder(
             IContentService contentService,
-            IStoreSearchService storeService,
+            ILogger<ContentIndexDocumentBuilder> log,
             IContentItemTypeRegistrar contentItemTypeRegistrar
         )
         {
             _contentService = contentService;
-            _storeService = (ISearchService<StoreSearchCriteria, StoreSearchResult, Store>)storeService;
+            _log = log;
             _contentItemTypeRegistrar = contentItemTypeRegistrar;
         }
 
@@ -54,7 +45,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine($"{pair.Key}: The file '{pair.Value.RelativeUrl}' processing threw error: {e.ToString()}");
+                    _log.LogError(e, "Error while creating document for file {file}", pair.Value.RelativeUrl);
                 }
             }
 

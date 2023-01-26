@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.AssetsModule.Core.Assets;
@@ -7,7 +8,7 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.ContentModule.Data.Services
 {
-    public class ContentStatisticService: IContentStatisticService
+    public class ContentStatisticService : IContentStatisticService
     {
         private readonly IBlobContentStorageProviderFactory _blobContentStorageProviderFactory;
         private readonly IContentPathResolver _contentPathResolver;
@@ -24,7 +25,14 @@ namespace VirtoCommerce.ContentModule.Data.Services
         public async Task<int> GetStorePagesCountAsync(string storeId)
         {
             var (contentStorageProvider, path) = Prepare(storeId, ContentConstants.ContentTypes.Pages);
-            var result = await CountContentItemsRecursive(path, contentStorageProvider, ContentConstants.ContentTypes.Blogs);
+            var result = await CountContentItemsRecursive(path, contentStorageProvider, null, null, ContentConstants.ContentTypes.Blogs);
+            return result;
+        }
+
+        public async Task<int> GetStoreChangedPagesCountAsync(string storeId, DateTime? startDate, DateTime? endDate)
+        {
+            var (contentStorageProvider, path) = Prepare(storeId, ContentConstants.ContentTypes.Pages);
+            var result = await CountContentItemsRecursive(path, contentStorageProvider, startDate, endDate);
             return result;
         }
 
@@ -55,53 +63,19 @@ namespace VirtoCommerce.ContentModule.Data.Services
             return (contentStorageProvider, targetPath);
         }
 
-        //public async Task<ContentStatistic> GetStoreContentStatsAsync(string storeId)
-        //{
-        //    var contentStorageProvider = _blobContentStorageProviderFactory.CreateProvider("");
-        //    var cacheKey = CacheKey.With(GetType(), "pagesCount", $"content-{storeId}");
-        //    var pagesCount = _platformMemoryCache.GetOrCreateExclusive(cacheKey, cacheEntry =>
-        //    {
-        //        cacheEntry.AddExpirationToken(ContentCacheRegion.CreateChangeToken($"content-{storeId}"));
-        //        var path = _contentPathResolver.GetContentBasePath(ContentConstants.ContentTypes.Pages, storeId);
-        //        var result = CountContentItemsRecursive(path, contentStorageProvider, ContentConstants.ContentTypes.Blogs);
-        //        return result;
-        //    });
-
-        //    var themesPath = _contentPathResolver.GetContentBasePath(ContentConstants.ContentTypes.Themes, storeId);
-        //    var blogsPath = _contentPathResolver.GetContentBasePath(ContentConstants.ContentTypes.Blogs, storeId);
-
-        //    var storeTask = _storeService.GetByIdAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
-        //    var themesTask = contentStorageProvider.SearchAsync(themesPath, null);
-        //    var blogsTask = contentStorageProvider.SearchAsync(blogsPath, null);
-
-        //    await Task.WhenAll(themesTask, blogsTask, storeTask);
-
-        //    var store = storeTask.Result;
-        //    var themes = themesTask.Result;
-        //    var blogs = blogsTask.Result;
-
-        //    var retVal = new ContentStatistic
-        //    {
-        //        ActiveThemeName = store.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value.ToString()
-        //                ?? ContentConstants.DefaultTheme,
-        //        ThemesCount = themes.Results.OfType<BlobFolder>().Count(),
-        //        BlogsCount = blogs.Results.OfType<BlobFolder>().Count(),
-        //        PagesCount = pagesCount
-        //    };
-        //    return retVal;
-        //}
-
-        private async Task<int> CountContentItemsRecursive(string folderUrl, IBlobStorageProvider blobContentStorageProvider, string excludedFolderName = null)
+        private async Task<int> CountContentItemsRecursive(string folderUrl, IBlobStorageProvider blobContentStorageProvider, DateTime? startDate, DateTime? endDate, string excludedFolderName = null)
         {
             var searchResult = await blobContentStorageProvider.SearchAsync(folderUrl, null);
 
             var folders = searchResult.Results.OfType<BlobFolder>();
 
-            var result = searchResult.TotalCount - folders.Count();
+            var blobs = searchResult.Results.OfType<BlobInfo>();
+
+            var result = blobs.Count(x => (startDate == null || x.ModifiedDate >= startDate) && (endDate == null || x.ModifiedDate <= endDate));
             var children = folders.Where(x => excludedFolderName.IsNullOrEmpty() || !x.Name.EqualsInvariant(excludedFolderName));
             foreach (var child in children)
             {
-                var childrenFilesCount = await CountContentItemsRecursive(child.Url, blobContentStorageProvider);
+                var childrenFilesCount = await CountContentItemsRecursive(child.Url, blobContentStorageProvider, startDate, endDate, excludedFolderName);
                 result += childrenFilesCount;
             }
             return result;

@@ -1,31 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Mime;
-using System.Security.Policy;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.AssetsModule.Core.Assets;
-using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.ContentModule.Data.Model;
-using VirtoCommerce.Platform.Caching;
-using VirtoCommerce.Platform.Core;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.GenericCrud;
-using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
 
@@ -62,7 +49,6 @@ namespace VirtoCommerce.ContentModule.Data.Services
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(path);
             await storageProvider.RemoveAsync(urls);
 
-            //ToDo Reset cached items
             //_cacheManager.ClearRegion($"content-{storeId}");
             ContentCacheRegion.ExpireRegion();
         }
@@ -79,7 +65,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             // question: here should be absolute urls only?
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(string.Empty);
 
-            // note: This method used only for default themes copying that we use string.Empty instead storeId because default themes placed only in root content folder
+            // note: This method used only for default themes copying that we use string. Empty instead storeId because default themes placed only in root content folder
             await storageProvider.CopyAsync(srcPath, destPath);
         }
 

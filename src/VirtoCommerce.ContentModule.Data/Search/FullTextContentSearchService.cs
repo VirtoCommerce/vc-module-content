@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
@@ -11,7 +8,6 @@ using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
-using VirtoCommerce.SearchModule.Data.Services;
 
 namespace VirtoCommerce.ContentModule.Data.Search
 {
@@ -33,17 +29,20 @@ namespace VirtoCommerce.ContentModule.Data.Search
         public async Task<ContentSearchResult> SearchContentAsync(ContentSearchCriteria criteria)
         {
             var requestBuilder = GetRequestBuilder(criteria);
-            var request = await requestBuilder?.BuildRequestAsync(criteria);
+            if (requestBuilder != null)
+            {
+                var request = await requestBuilder.BuildRequestAsync(criteria);
+                var response = await _searchProvider.SearchAsync(ContentDocumentType, request);
+                var result = await ConvertResponseAsync(response, criteria);
+                return result;
+            }
 
-            var response = await _searchProvider.SearchAsync(criteria.ObjectType, request);
-
-            var result = await ConvertResponseAsync(response, criteria);
-            return result;
+            return null;
         }
 
         protected virtual ISearchRequestBuilder GetRequestBuilder(ContentSearchCriteria criteria)
         {
-            return _searchRequestBuilderRegistrar.GetRequestBuilderByDocumentType(criteria.ObjectType);
+            return _searchRequestBuilderRegistrar.GetRequestBuilderByDocumentType(ContentDocumentType);
         }
 
         protected virtual async Task<ContentSearchResult> ConvertResponseAsync(SearchResponse response, ContentSearchCriteria criteria)
@@ -62,27 +61,20 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             if (documents?.Any() == true)
             {
-                var itemPaths = documents.Select(doc => doc.Id).ToArray();
-                var items = await GetItemsByPathsAsync(itemPaths, criteria);
+                var documentIds = documents.Select(doc => doc.Id).ToArray();
+                var items = await GetItemsByPathsAsync(documentIds, criteria);
                 return items;
-                //var itemsMap = items.ToDictionary(m => m.Name, m => m);
-
-                //// Preserve documents order
-                //var filteredItems = documents
-                //    .Select(doc => itemsMap.ContainsKey(doc.Id) ? itemsMap[doc.Id] : null)
-                //    .Where(m => m != null)
-                //.ToArray();
-                //result.AddRange(filteredItems);
             }
             return new List<IndexableContentFile>();
         }
 
-        protected virtual async Task<IList<IndexableContentFile>> GetItemsByPathsAsync(IList<string> itemPaths, ContentSearchCriteria criteria)
+        protected virtual async Task<IList<IndexableContentFile>> GetItemsByPathsAsync(IList<string> documentIds, ContentSearchCriteria criteria)
         {
             var result = new List<IndexableContentFile>();
-            foreach (var item in itemPaths)
+            foreach (var documentId in documentIds)
             {
-                var contentItem = await _contentService.GetFileContentAsync(ContentConstants.ContentTypes.Pages, criteria.StoreId, item);
+                var (storeId, relativeUrl) = DocumentIdentifierHelper.ParseId(documentId);
+                var contentItem = await _contentService.GetFileContentAsync(ContentConstants.ContentTypes.Pages, storeId, relativeUrl);
                 if (contentItem != null)
                 {
                     contentItem.StoreId = criteria.StoreId;

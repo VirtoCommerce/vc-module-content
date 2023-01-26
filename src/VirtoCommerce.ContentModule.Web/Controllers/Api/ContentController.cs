@@ -35,7 +35,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly IContentStatisticService _contentStats;
         private readonly IContentService _contentService;
-        private readonly IContentSearchService _contentSearchService;
+        private readonly IContentFileService _contentFileService;
         private readonly IFullTextContentSearchService _fullTextContentSearchService;
         private readonly ICrudService<Store> _storeService;
         private readonly ILogger<ContentController> _logger;
@@ -45,7 +45,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             IPlatformMemoryCache platformMemoryCache,
             IContentStatisticService contentStats,
             IContentService contentService,
-            IContentSearchService contentSearchService,
+            IContentFileService contentFileService,
             IFullTextContentSearchService fullTextContentSearchService,
             IStoreService storeService,
             ILogger<ContentController> logger)
@@ -53,7 +53,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             _platformMemoryCache = platformMemoryCache;
             _contentStats = contentStats;
             _contentService = contentService;
-            _contentSearchService = contentSearchService;
+            _contentFileService = contentFileService;
             _fullTextContentSearchService = fullTextContentSearchService;
             _storeService = (ICrudService<Store>)storeService;
             _logger = logger;
@@ -148,7 +148,12 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<ContentItem[]>> SearchContent(string contentType, string storeId, [FromQuery] string folderUrl = null, [FromQuery] string keyword = null)
         {
-            var result = await _contentSearchService.FilterContentAsync(contentType, storeId, folderUrl, keyword);
+            var criteria = AbstractTypeFactory<FilterFilesCriteria>.TryCreateInstance();
+            criteria.ContentType = contentType;
+            criteria.StoreId = storeId;
+            criteria.FolderUrl = folderUrl;
+            criteria.Keyword = keyword;
+            var result = await _contentFileService.FilterFilesAsync(criteria);
             return Ok(result);
         }
 
