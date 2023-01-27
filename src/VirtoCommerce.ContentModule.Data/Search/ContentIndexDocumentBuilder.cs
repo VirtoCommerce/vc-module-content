@@ -20,8 +20,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
         public ContentIndexDocumentBuilder(
             IContentService contentService,
             ILogger<ContentIndexDocumentBuilder> log,
-            IContentItemTypeRegistrar contentItemTypeRegistrar
-        )
+            IContentItemTypeRegistrar contentItemTypeRegistrar)
         {
             _contentService = contentService;
             _log = log;
@@ -70,13 +69,14 @@ namespace VirtoCommerce.ContentModule.Data.Search
             var result = new List<KeyValuePair<string, ContentFile>>();
             foreach (var id in documentIds)
             {
-                var parts = DocumentIdentifierHelper.ParseId(id);
-                if (parts.StoreId != null)
+                var (storeId, relativeUrl) = DocumentIdentifierHelper.ParseId(id);
+
+                if (storeId != null)
                 {
-                    var file = await _contentService.GetFileAsync(ContentConstants.ContentTypes.Pages, parts.StoreId, parts.RelativeUrl);
+                    var file = await _contentService.GetFileAsync(ContentConstants.ContentTypes.Pages, storeId, relativeUrl);
                     if (file != null)
                     {
-                        result.Add(new KeyValuePair<string, ContentFile>(parts.StoreId, file));
+                        result.Add(new KeyValuePair<string, ContentFile>(storeId, file));
                     }
                 }
             }

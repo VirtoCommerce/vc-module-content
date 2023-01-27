@@ -16,52 +16,53 @@ namespace VirtoCommerce.ContentModule.Data.Services
         private readonly IContentPathResolver _contentPathResolver;
 
         public ContentFileService(
-                IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
-                IContentPathResolver contentPathResolver
-            )
+            IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
+            IContentPathResolver contentPathResolver)
         {
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _contentPathResolver = contentPathResolver;
         }
 
-        public async Task<IList<ContentItem>> FilterFilesAsync(FilterFilesCriteria criteria)
+        public async Task<IList<ContentItem>> FilterItemsAsync(FilterItemsCriteria criteria)
         {
-            var path = _contentPathResolver.GetContentBasePath(criteria.ContentType, criteria.StoreId);
-            var storageProvider = _blobContentStorageProviderFactory.CreateProvider(path);
-
+            var storageProvider = GetStorageProvider(criteria.ContentType, criteria.StoreId);
             var searchResult = await storageProvider.SearchAsync(criteria.FolderUrl, criteria.Keyword);
 
-            var result = searchResult.Results.OfType<BlobFolder>()
-                .Select(x => x.ToContentModel())
-                .OfType<ContentItem>()
-                .Concat(searchResult.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()))
-                // question: here we exclude files that have "blogs" in name. It's wrong!
+            var folders = searchResult.Results.OfType<BlobFolder>().Select(x => x.ToContentModel()).OfType<ContentItem>();
+            var files = searchResult.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()).OfType<ContentItem>();
+
+            var result = folders.Concat(files)
+                // Exclude Blogs folder at root level
                 .Where(x => criteria.FolderUrl != null || !x.Name.EqualsInvariant(ContentConstants.ContentTypes.Blogs))
-                .ToArray();
+                .ToList();
 
             return result;
         }
 
-        public async Task<IList<ContentFile>> EnumerateFiles(FilterFilesCriteria criteria)
+        public async Task<IList<ContentFile>> EnumerateFiles(FilterItemsCriteria criteria)
         {
-            var path = _contentPathResolver.GetContentBasePath(criteria.ContentType, criteria.StoreId);
-            var storageProvider = _blobContentStorageProviderFactory.CreateProvider(path);
-
-            var result = await EnumerateItemsRecursively(storageProvider, criteria.FolderUrl);
+            var storageProvider = GetStorageProvider(criteria.ContentType, criteria.StoreId);
+            var result = await EnumerateFilesRecursively(storageProvider, criteria.FolderUrl);
             return result;
         }
 
-        private async Task<IList<ContentFile>> EnumerateItemsRecursively(IBlobContentStorageProvider storageProvider, string path)
+        private IBlobContentStorageProvider GetStorageProvider(string contentType, string storeId)
+        {
+            var path = _contentPathResolver.GetContentBasePath(contentType, storeId);
+            var storageProvider = _blobContentStorageProviderFactory.CreateProvider(path);
+            return storageProvider;
+        }
+
+        private static async Task<IList<ContentFile>> EnumerateFilesRecursively(IBlobContentStorageProvider storageProvider, string path)
         {
             var searchResult = await storageProvider.SearchAsync(path, null);
 
             var folders = searchResult.Results.OfType<BlobFolder>();
-            var result = searchResult.Results.OfType<BlobInfo>()
-                .Select(x => x.ToContentModel()).ToList();
+            var result = searchResult.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()).ToList();
 
             foreach (var item in folders)
             {
-                var children = await EnumerateItemsRecursively(storageProvider, item.Url);
+                var children = await EnumerateFilesRecursively(storageProvider, item.Url);
                 result.AddRange(children);
             }
 

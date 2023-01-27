@@ -14,9 +14,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
         private readonly IContentPathResolver _contentPathResolver;
 
         public ContentStatisticService(
-                IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
-                IContentPathResolver contentPathResolver
-            )
+            IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
+            IContentPathResolver contentPathResolver)
         {
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _contentPathResolver = contentPathResolver;
@@ -66,18 +65,18 @@ namespace VirtoCommerce.ContentModule.Data.Services
         private async Task<int> CountContentItemsRecursive(string folderUrl, IBlobStorageProvider blobContentStorageProvider, DateTime? startDate, DateTime? endDate, string excludedFolderName = null)
         {
             var searchResult = await blobContentStorageProvider.SearchAsync(folderUrl, null);
-
             var folders = searchResult.Results.OfType<BlobFolder>();
-
             var blobs = searchResult.Results.OfType<BlobInfo>();
 
             var result = blobs.Count(x => (startDate == null || x.ModifiedDate >= startDate) && (endDate == null || x.ModifiedDate <= endDate));
             var children = folders.Where(x => excludedFolderName.IsNullOrEmpty() || !x.Name.EqualsInvariant(excludedFolderName));
+
             foreach (var child in children)
             {
                 var childrenFilesCount = await CountContentItemsRecursive(child.Url, blobContentStorageProvider, startDate, endDate, excludedFolderName);
                 result += childrenFilesCount;
             }
+
             return result;
         }
     }

@@ -1,6 +1,6 @@
 using System;
-using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.AssetsModule.Core.Assets;
+using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.ContentModule.Data.Extensions

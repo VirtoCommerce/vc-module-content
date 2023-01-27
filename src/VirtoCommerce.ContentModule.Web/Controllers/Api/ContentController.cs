@@ -39,7 +39,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IFullTextContentSearchService _fullTextContentSearchService;
         private readonly ICrudService<Store> _storeService;
         private readonly ILogger<ContentController> _logger;
-        private static readonly FormOptions _defaultFormOptions = new FormOptions();
+        private static readonly FormOptions _defaultFormOptions = new();
 
         public ContentController(
             IPlatformMemoryCache platformMemoryCache,
@@ -148,12 +148,12 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<ContentItem[]>> SearchContent(string contentType, string storeId, [FromQuery] string folderUrl = null, [FromQuery] string keyword = null)
         {
-            var criteria = AbstractTypeFactory<FilterFilesCriteria>.TryCreateInstance();
+            var criteria = AbstractTypeFactory<FilterItemsCriteria>.TryCreateInstance();
             criteria.ContentType = contentType;
             criteria.StoreId = storeId;
             criteria.FolderUrl = folderUrl;
             criteria.Keyword = keyword;
-            var result = await _contentFileService.FilterFilesAsync(criteria);
+            var result = await _contentFileService.FilterItemsAsync(criteria);
             return Ok(result);
         }
 
@@ -161,7 +161,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         ///     Fulltext content search
         /// </summary>
         /// <param name="storeId">Store id</param>
-        /// <param name="query">search keyword</param>
+        /// <param name="criteria">Search criteria</param>
         /// <returns>content items</returns>
         [HttpPost]
         [Route("fulltext-search")]
@@ -242,14 +242,14 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateContentFolder(string contentType, string storeId, [FromBody] ContentFolder folder)
         {
-            var validation = new ContentFolderValidator().Validate(folder);
+            var validation = await new ContentFolderValidator().ValidateAsync(folder);
 
             if (!validation.IsValid)
             {
                 return BadRequest(new
                 {
                     Message = string.Join(" ", validation.Errors.Select(x => x.ErrorMessage)),
-                    Errors = validation.Errors
+                    Errors = validation.Errors,
                 });
             }
 

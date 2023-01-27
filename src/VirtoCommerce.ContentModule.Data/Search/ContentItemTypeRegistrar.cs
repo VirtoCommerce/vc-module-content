@@ -19,11 +19,12 @@ namespace VirtoCommerce.ContentModule.Data.Search
             {
                 return builderFactory();
             }
+
             return null;
         }
 
         public void RegisterContentItemType<TContentItemBuilder>(string contentItemType, Func<TContentItemBuilder> factory)
-             where TContentItemBuilder : class, IContentItemBuilder
+            where TContentItemBuilder : class, IContentItemBuilder
         {
             if (!_contentItemBuilders.TryAdd(contentItemType, factory))
             {

@@ -1,6 +1,6 @@
 namespace VirtoCommerce.ContentModule.Core.Model
 {
-    public class FilterFilesCriteria
+    public class FilterItemsCriteria
     {
         public string ContentType { get; set; }
         public string StoreId { get; set; }

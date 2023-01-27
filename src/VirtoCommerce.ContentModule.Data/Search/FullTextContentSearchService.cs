@@ -19,7 +19,10 @@ namespace VirtoCommerce.ContentModule.Data.Search
         private readonly ISearchProvider _searchProvider;
         private readonly IContentService _contentService;
 
-        public FullTextContentSearchService(ISearchRequestBuilderRegistrar searchRequestBuilderRegistrar, ISearchProvider searchProvider, IContentService contentService)
+        public FullTextContentSearchService(
+            ISearchRequestBuilderRegistrar searchRequestBuilderRegistrar,
+            ISearchProvider searchProvider,
+            IContentService contentService)
         {
             _searchRequestBuilderRegistrar = searchRequestBuilderRegistrar;
             _searchProvider = searchProvider;
@@ -29,15 +32,17 @@ namespace VirtoCommerce.ContentModule.Data.Search
         public async Task<ContentSearchResult> SearchContentAsync(ContentSearchCriteria criteria)
         {
             var requestBuilder = GetRequestBuilder(criteria);
-            if (requestBuilder != null)
+
+            if (requestBuilder == null)
             {
-                var request = await requestBuilder.BuildRequestAsync(criteria);
-                var response = await _searchProvider.SearchAsync(ContentDocumentType, request);
-                var result = await ConvertResponseAsync(response, criteria);
-                return result;
+                return null;
             }
 
-            return null;
+            var request = await requestBuilder.BuildRequestAsync(criteria);
+            var response = await _searchProvider.SearchAsync(ContentDocumentType, request);
+            var result = await ConvertResponseAsync(response, criteria);
+
+            return result;
         }
 
         protected virtual ISearchRequestBuilder GetRequestBuilder(ContentSearchCriteria criteria)
@@ -54,6 +59,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 result.TotalCount = (int)response.TotalCount;
                 result.Results = await ConvertDocumentsAsync(response.Documents, criteria);
             }
+
             return result;
         }
 
@@ -65,12 +71,14 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 var items = await GetItemsByPathsAsync(documentIds, criteria);
                 return items;
             }
+
             return new List<IndexableContentFile>();
         }
 
         protected virtual async Task<IList<IndexableContentFile>> GetItemsByPathsAsync(IList<string> documentIds, ContentSearchCriteria criteria)
         {
             var result = new List<IndexableContentFile>();
+
             foreach (var documentId in documentIds)
             {
                 var (storeId, relativeUrl) = DocumentIdentifierHelper.ParseId(documentId);
@@ -81,6 +89,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                     result.Add(contentItem);
                 }
             }
+
             return result;
         }
     }

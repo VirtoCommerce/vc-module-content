@@ -24,8 +24,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
         public ContentIndexDocumentChangesProvider(
             IContentFileService contentFileService,
             IStoreSearchService storeService,
-            IContentStatisticService contentStatisticService
-        )
+            IContentStatisticService contentStatisticService)
         {
             _contentFileService = contentFileService;
             _storeService = (ISearchService<StoreSearchCriteria, StoreSearchResult, Store>)storeService;
@@ -38,7 +37,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
             var now = DateTime.UtcNow;
             await ApplyToStores(async store =>
             {
-                var filter = AbstractTypeFactory<FilterFilesCriteria>.TryCreateInstance();
+                var filter = AbstractTypeFactory<FilterItemsCriteria>.TryCreateInstance();
                 filter.ContentType = ContentConstants.ContentTypes.Pages;
                 filter.StoreId = store.Id;
                 var pages = await _contentFileService.EnumerateFiles(filter);
@@ -86,7 +85,8 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 }
 
                 skip += take;
-            } while (skip < totalStores);
+            }
+            while (skip < totalStores);
         }
 
         private async Task<StoreSearchResult> GetStores(int skip, int take)

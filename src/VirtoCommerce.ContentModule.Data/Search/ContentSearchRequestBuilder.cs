@@ -13,12 +13,11 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
         public virtual Task<SearchRequest> BuildRequestAsync(SearchCriteriaBase criteria)
         {
-            SearchRequest request = null;
+            SearchRequest result = null;
 
-            var searchCriteria = criteria as ContentSearchCriteria;
-            if (searchCriteria != null)
+            if (criteria is ContentSearchCriteria searchCriteria)
             {
-                request = new SearchRequest
+                result = new SearchRequest
                 {
                     SearchKeywords = searchCriteria.Keyword,
                     SearchFields = new[] { IndexDocumentExtensions.SearchableFieldName },
@@ -32,7 +31,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 };
             }
 
-            return Task.FromResult(request);
+            return Task.FromResult(result);
         }
     }
 }

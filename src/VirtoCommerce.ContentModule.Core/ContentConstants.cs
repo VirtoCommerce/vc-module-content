@@ -30,7 +30,7 @@ namespace VirtoCommerce.ContentModule.Core
                     Name = $"VirtoCommerce.Search.IndexingJobs.IndexationDate.{nameof(ContentFile)}",
                     GroupName = "Content|Search",
                     ValueType = SettingValueType.DateTime,
-                    DefaultValue = default(DateTime)
+                    DefaultValue = default(DateTime),
                 };
             }
 
@@ -41,7 +41,6 @@ namespace VirtoCommerce.ContentModule.Core
                     yield return Search.IndexationDateContent;
                 }
             }
-
         }
 
         public static class ContentTypes
@@ -52,6 +51,5 @@ namespace VirtoCommerce.ContentModule.Core
         }
 
         public const string DefaultTheme = "default";
-
     }
 }

@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Xml;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.SearchModule.Core.Extenstions;
@@ -16,7 +12,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 {
     public class MarkdownContentItemBuilder : IContentItemBuilder
     {
-        private static readonly Regex _headerRegExp = new Regex(@"(?s:^---(.*?)---)");
+        private static readonly Regex _headerRegExp = new(@"(?s:^---(.*?)---)");
 
         public IndexDocument BuildIndexDocument(string storeId, IndexableContentFile file)
         {
@@ -28,6 +24,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             var content = RemoveYamlHeader(file.Content);
             result.AddSearchableValue(content);
+
             return result;
         }
 

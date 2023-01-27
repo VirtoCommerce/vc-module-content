@@ -10,9 +10,10 @@ namespace VirtoCommerce.ContentModule.Data.Search
             return $"{storeId}::{file.RelativeUrl}";
         }
 
-        public static (string StoreId, string RelativeUrl) ParseId(string id)
+        public static (string storeId, string relativeUrl) ParseId(string id)
         {
             var result = id.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+
             if (result.Length == 2)
             {
                 return (result[0], result[1]);
