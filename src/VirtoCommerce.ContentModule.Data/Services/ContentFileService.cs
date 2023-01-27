@@ -28,12 +28,14 @@ namespace VirtoCommerce.ContentModule.Data.Services
             var storageProvider = GetStorageProvider(criteria.ContentType, criteria.StoreId);
             var searchResult = await storageProvider.SearchAsync(criteria.FolderUrl, criteria.Keyword);
 
+            // display folders before files
             var folders = searchResult.Results.OfType<BlobFolder>().Select(x => x.ToContentModel()).OfType<ContentItem>();
             var files = searchResult.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()).OfType<ContentItem>();
 
-            var result = folders.Concat(files)
+            var result = folders
                 // Exclude Blogs folder at root level
                 .Where(x => criteria.FolderUrl != null || !x.Name.EqualsInvariant(ContentConstants.ContentTypes.Blogs))
+                .Concat(files)
                 .ToList();
 
             return result;
@@ -42,7 +44,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
         public async Task<IList<ContentFile>> EnumerateFiles(FilterItemsCriteria criteria)
         {
             var storageProvider = GetStorageProvider(criteria.ContentType, criteria.StoreId);
-            var result = await EnumerateFilesRecursively(storageProvider, criteria.FolderUrl);
+            var result = new List<ContentFile>();
+            await EnumerateFilesRecursively(storageProvider, criteria.FolderUrl, result);
             return result;
         }
 
@@ -53,20 +56,19 @@ namespace VirtoCommerce.ContentModule.Data.Services
             return storageProvider;
         }
 
-        private static async Task<IList<ContentFile>> EnumerateFilesRecursively(IBlobContentStorageProvider storageProvider, string path)
+        private static async Task EnumerateFilesRecursively(IBlobContentStorageProvider storageProvider, string path, IList<ContentFile> result)
         {
             var searchResult = await storageProvider.SearchAsync(path, null);
 
             var folders = searchResult.Results.OfType<BlobFolder>();
-            var result = searchResult.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()).ToList();
+            var files = searchResult.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()).ToList();
+
+            result.AddRange(files);
 
             foreach (var item in folders)
             {
-                var children = await EnumerateFilesRecursively(storageProvider, item.Url);
-                result.AddRange(children);
+                await EnumerateFilesRecursively(storageProvider, item.Url, result);
             }
-
-            return result;
         }
     }
 }

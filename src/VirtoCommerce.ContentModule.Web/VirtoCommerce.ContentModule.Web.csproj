@@ -14,6 +14,7 @@
     <None Remove="node_modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="10.3.4" />
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Azure\VirtoCommerce.ContentModule.Azure.csproj" />
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Core\VirtoCommerce.ContentModule.Core.csproj" />
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Data.MySql\VirtoCommerce.ContentModule.Data.MySql.csproj" />
