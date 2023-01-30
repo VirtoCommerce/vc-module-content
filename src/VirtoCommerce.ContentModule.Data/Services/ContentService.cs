@@ -93,7 +93,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
         public async Task<Stream> GetItemStreamAsync(string contentType, string storeId, string relativeUrl)
         {
             var storageProvider = GetStorageProvider(contentType, storeId);
-            var fileStream = await storageProvider.OpenReadAsync(relativeUrl);
+            var blobInfo = await storageProvider.GetBlobInfoAsync(relativeUrl);
+            var fileStream = await storageProvider.OpenReadAsync(blobInfo.RelativeUrl);
             return fileStream;
         }
 
