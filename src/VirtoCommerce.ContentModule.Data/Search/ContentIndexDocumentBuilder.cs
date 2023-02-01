@@ -36,7 +36,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
             {
                 try
                 {
-                    var document = await CreateDocument(pair.Value, pair.Key);
+                    var document = await CreateDocument(pair.Key, pair.Value);
                     if (document != null)
                     {
                         result.Add(document);
@@ -51,7 +51,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
             return result;
         }
 
-        private async Task<IndexDocument> CreateDocument(ContentFile file, string storeId)
+        private async Task<IndexDocument> CreateDocument(string storeId, ContentFile file)
         {
             var fileType = System.IO.Path.GetExtension(file.RelativeUrl);
             var builder = _contentItemTypeRegistrar.GetContentItemBuilderByType(fileType);

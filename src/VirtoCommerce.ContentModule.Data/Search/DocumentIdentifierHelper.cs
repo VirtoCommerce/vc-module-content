@@ -7,7 +7,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
     {
         public static string GenerateId(string storeId, ContentFile file)
         {
-            return $"{storeId}::{file.RelativeUrl}";
+            return $"{storeId}::{file.RelativeUrl.Replace('/', ':')}";
         }
 
         public static (string storeId, string relativeUrl) ParseId(string id)
@@ -16,7 +16,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             if (result.Length == 2)
             {
-                return (result[0], result[1]);
+                return (result[0], result[1].Replace(':', '/'));
             }
 
             return (null, null);

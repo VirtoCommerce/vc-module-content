@@ -12,6 +12,7 @@ using VirtoCommerce.ContentModule.Azure;
 using VirtoCommerce.ContentModule.Azure.Extensions;
 using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Events;
+using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
@@ -79,22 +80,27 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<IContentFileService, ContentFileService>();
             serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
 
-            serviceCollection.AddSingleton<IContentItemTypeRegistrar, ContentItemTypeRegistrar>();
-            serviceCollection.AddTransient<ContentSearchRequestBuilder>();
-            serviceCollection.AddTransient<MarkdownContentItemBuilder>();
+            var isFullTextSearchEnabled = Configuration.IsContentFullTextSearchEnabled();
 
-            serviceCollection.AddTransient<ContentIndexDocumentChangesProvider>();
-            serviceCollection.AddTransient<ContentIndexDocumentBuilder>();
-
-            serviceCollection.AddSingleton(provider => new IndexDocumentConfiguration
+            if (isFullTextSearchEnabled)
             {
-                DocumentType = FullTextContentSearchService.ContentDocumentType,
-                DocumentSource = new IndexDocumentSource
+                serviceCollection.AddSingleton<IContentItemTypeRegistrar, ContentItemTypeRegistrar>();
+                serviceCollection.AddTransient<ContentSearchRequestBuilder>();
+                serviceCollection.AddTransient<MarkdownContentItemBuilder>();
+
+                serviceCollection.AddTransient<ContentIndexDocumentChangesProvider>();
+                serviceCollection.AddTransient<ContentIndexDocumentBuilder>();
+
+                serviceCollection.AddSingleton(provider => new IndexDocumentConfiguration
                 {
-                    ChangesProvider = provider.GetService<ContentIndexDocumentChangesProvider>(),
-                    DocumentBuilder = provider.GetService<ContentIndexDocumentBuilder>(),
-                },
-            });
+                    DocumentType = FullTextContentSearchService.ContentDocumentType,
+                    DocumentSource = new IndexDocumentSource
+                    {
+                        ChangesProvider = provider.GetService<ContentIndexDocumentChangesProvider>(),
+                        DocumentBuilder = provider.GetService<ContentIndexDocumentBuilder>(),
+                    },
+                });
+            }
 
             serviceCollection.AddTransient<ContentExportImport>();
 
@@ -122,9 +128,6 @@ namespace VirtoCommerce.ContentModule.Web
         public void PostInitialize(IApplicationBuilder appBuilder)
         {
             _appBuilder = appBuilder;
-
-            var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
-            settingsRegistrar.RegisterSettings(ContentConstants.Settings.AllSettings, ModuleInfo.Id);
 
             var dynamicPropertyRegistrar = appBuilder.ApplicationServices.GetRequiredService<IDynamicPropertyRegistrar>();
             dynamicPropertyRegistrar.RegisterType<FrontMatterHeaders>();
@@ -161,12 +164,19 @@ namespace VirtoCommerce.ContentModule.Web
             var dynamicPropertyService = appBuilder.ApplicationServices.GetRequiredService<IDynamicPropertyService>();
             dynamicPropertyService.SaveDynamicPropertiesAsync(FrontMatterHeaders.AllDynamicProperties.ToArray()).GetAwaiter().GetResult();
 
-            var searchRequestBuilderRegistrar = appBuilder.ApplicationServices.GetService<ISearchRequestBuilderRegistrar>();
-            searchRequestBuilderRegistrar.Register(FullTextContentSearchService.ContentDocumentType, appBuilder.ApplicationServices.GetService<ContentSearchRequestBuilder>);
+            var isFullTextSearchEnabled = Configuration.IsContentFullTextSearchEnabled();
 
-            var contentItemTypeRegistrar = appBuilder.ApplicationServices.GetService<IContentItemTypeRegistrar>();
-            contentItemTypeRegistrar.RegisterContentItemType(".md", appBuilder.ApplicationServices.GetService<MarkdownContentItemBuilder>);
+            if (isFullTextSearchEnabled)
+            {
+                var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
+                settingsRegistrar.RegisterSettings(ContentConstants.Settings.AllSettings, ModuleInfo.Id);
 
+                var searchRequestBuilderRegistrar = appBuilder.ApplicationServices.GetService<ISearchRequestBuilderRegistrar>();
+                searchRequestBuilderRegistrar.Register(FullTextContentSearchService.ContentDocumentType, appBuilder.ApplicationServices.GetService<ContentSearchRequestBuilder>);
+
+                var contentItemTypeRegistrar = appBuilder.ApplicationServices.GetService<IContentItemTypeRegistrar>();
+                contentItemTypeRegistrar.RegisterContentItemType(".md", appBuilder.ApplicationServices.GetService<MarkdownContentItemBuilder>);
+            }
         }
 
         public void Uninstall()
