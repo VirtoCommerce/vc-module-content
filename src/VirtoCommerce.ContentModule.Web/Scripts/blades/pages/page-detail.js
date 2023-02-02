@@ -81,7 +81,7 @@ angular.module('virtoCommerce.contentModule')
                         fillMetadata,
                         function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
 
-                    loadIndex();
+                    loadSearchIndex();
                 }
             };
 
@@ -159,7 +159,7 @@ angular.module('virtoCommerce.contentModule')
                             $scope.bladeClose();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
                         }
-
+                        updateSearchIndex(!blade.isNew);
                         blade.parentBlade.refresh();
                     },
                     function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
@@ -278,36 +278,69 @@ angular.module('virtoCommerce.contentModule')
                 return blade.currentEntity && blade.currentEntity.name && ((isDirty() && !blade.isNew) || (blade.currentEntity.content && blade.isNew));
             }
 
-            function loadIndex() {
+            function addIndexToolbarButton(doc) {
+                blade.toolbarCommands.push({
+                    name: "content.commands.preview-index",
+                    icon: 'fa fa-file-alt',
+                    executeMethod: function () {
+                        const searchBlade = {
+                            id: 'sesarchDetails',
+                            currentEntityId: doc.documentId,
+                            currentEntity: blade.currentEntity,
+                            data: $scope.index,
+                            indexDate: $scope.indexDate,
+                            documentType: doc.documentType,
+                            controller: 'virtoCommerce.searchModule.indexDetailController',
+                            template: 'Modules/$(VirtoCommerce.Search)/Scripts/blades/index-detail.tpl.html'
+                        };
+
+                        bladeNavigationService.showBlade(searchBlade, blade);
+                    },
+                    canExecuteMethod: function () { return true; }
+                });
+            }
+
+            function updateIndexStatus(data, doc) {
+                if (_.any(data)) {
+                    $scope.index = data[0];
+                    $scope.indexDate = moment.utc($scope.index.indexationdate, momentFormat);                    
+                }
+            }
+
+            function updateSearchIndex(refreshIndex) {
+
+                var doc = getSearchDocument();
+
+                doc.documentIds = [doc.documentId];
+
+                searchApi.index([doc], function (data) {
+                    refreshIndex && searchIndexRefresh();
+                });
+            }
+
+            function getSearchDocument() {
+                var isBlog = blade.contentType === 'blogs';
+                var basePath = isBlog ? '/blogs' : '';
+
+                var documentId = `${blade.storeId}::${basePath}${blade.currentEntity.relativeUrl.replace('/', ':')}`;
+                var documentType = 'ContentFile';
+                return { documentType: documentType, documentId: documentId };
+            }
+
+            function searchIndexRefresh(callback) {
+
+                var doc = getSearchDocument();
+
+                searchApi.getDocIndex(doc, function (data) {
+                    updateIndexStatus(data, doc);
+                    callback && callback();
+                });
+            }
+
+            function loadSearchIndex() {
                 if (blade.isNew) return;
 
-                var documentId = `${blade.storeId}::${blade.currentEntity.relativeUrl.replace('/', ':')}`;
-                var documentType = 'ContentFile';
-                searchApi.getDocIndex({ documentType: documentType, documentId: documentId }, function (data) {
-                    if (_.any(data)) {
-                        $scope.index = data[0];
-                        $scope.indexDate = moment.utc($scope.index.indexationdate, momentFormat);
-                        blade.toolbarCommands.push({
-                            name: "content.commands.preview-index",
-                            icon: 'fa fa-file-alt',
-                            executeMethod: function () {
-                                const searchBlade = {
-                                    id: 'sesarchDetails',
-                                    currentEntityId: documentId,
-                                    currentEntity: blade.currentEntity,
-                                    data: $scope.index,
-                                    indexDate: $scope.indexDate,
-                                    documentType: documentType,
-                                    controller: 'virtoCommerce.searchModule.indexDetailController',
-                                    template: 'Modules/$(VirtoCommerce.Search)/Scripts/blades/index-detail.tpl.html'
-                                };
-
-                                bladeNavigationService.showBlade(searchBlade, blade);
-                            },
-                            canExecuteMethod: function () { return true; }
-                        });
-                    }
-                });
+                searchIndexRefresh(addIndexToolbarButton);
             }
 
 

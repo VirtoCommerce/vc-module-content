@@ -80,11 +80,12 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<IContentFileService, ContentFileService>();
             serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
 
+            serviceCollection.AddSingleton<IContentItemTypeRegistrar, ContentItemTypeRegistrar>();
+
             var isFullTextSearchEnabled = Configuration.IsContentFullTextSearchEnabled();
 
             if (isFullTextSearchEnabled)
             {
-                serviceCollection.AddSingleton<IContentItemTypeRegistrar, ContentItemTypeRegistrar>();
                 serviceCollection.AddTransient<ContentSearchRequestBuilder>();
                 serviceCollection.AddTransient<MarkdownContentItemBuilder>();
 
