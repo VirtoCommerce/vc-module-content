@@ -279,23 +279,24 @@ angular.module('virtoCommerce.contentModule')
             }
 
             function addIndexToolbarButton() {
-                const doc = getSearchDocumentInfo();
                 blade.toolbarCommands.push({
                     name: "content.commands.preview-index",
                     icon: 'fa fa-file-alt',
                     executeMethod: function () {
-                        const searchBlade = {
-                            id: 'sesarchDetails',
-                            currentEntityId: doc.documentId,
-                            currentEntity: blade.currentEntity,
-                            data: $scope.index,
-                            indexDate: $scope.indexDate,
-                            documentType: doc.documentType,
-                            controller: 'virtoCommerce.searchModule.indexDetailController',
-                            template: 'Modules/$(VirtoCommerce.Search)/Scripts/blades/index-detail.tpl.html'
-                        };
+                        getDocumentIndex(function (data) {
+                            const searchBlade = {
+                                id: 'sesarchDetails',
+                                currentEntityId: doc.documentId,
+                                currentEntity: blade.currentEntity,
+                                data: $scope.index,
+                                indexDate: $scope.indexDate,
+                                documentType: doc.documentType,
+                                controller: 'virtoCommerce.searchModule.indexDetailController',
+                                template: 'Modules/$(VirtoCommerce.Search)/Scripts/blades/index-detail.tpl.html'
+                            };
 
-                        bladeNavigationService.showBlade(searchBlade, blade);
+                            bladeNavigationService.showBlade(searchBlade, blade);
+                        });
                     },
                     canExecuteMethod: function () { return true; }
                 });
@@ -315,7 +316,7 @@ angular.module('virtoCommerce.contentModule')
                 doc.documentIds = [doc.documentId];
 
                 searchApi.index([doc], function (data) {
-                    refreshIndex && searchIndexRefresh();
+                    refreshIndex && getDocumentIndex();
                 });
             }
 
@@ -328,7 +329,7 @@ angular.module('virtoCommerce.contentModule')
                 return { documentType: documentType, documentId: documentId };
             }
 
-            function searchIndexRefresh(callback) {
+            function getDocumentIndex(callback) {
 
                 var doc = getSearchDocumentInfo();
 
@@ -341,7 +342,7 @@ angular.module('virtoCommerce.contentModule')
             function loadSearchIndex() {
                 if (blade.isNew) return;
 
-                searchIndexRefresh(addIndexToolbarButton);
+                getDocumentIndex(addIndexToolbarButton);
             }
 
 
