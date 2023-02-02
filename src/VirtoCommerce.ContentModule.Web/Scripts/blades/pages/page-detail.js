@@ -278,7 +278,8 @@ angular.module('virtoCommerce.contentModule')
                 return blade.currentEntity && blade.currentEntity.name && ((isDirty() && !blade.isNew) || (blade.currentEntity.content && blade.isNew));
             }
 
-            function addIndexToolbarButton(doc) {
+            function addIndexToolbarButton() {
+                const doc = getSearchDocumentInfo();
                 blade.toolbarCommands.push({
                     name: "content.commands.preview-index",
                     icon: 'fa fa-file-alt',
@@ -309,7 +310,7 @@ angular.module('virtoCommerce.contentModule')
 
             function updateSearchIndex(refreshIndex) {
 
-                var doc = getSearchDocument();
+                var doc = getSearchDocumentInfo();
 
                 doc.documentIds = [doc.documentId];
 
@@ -318,22 +319,22 @@ angular.module('virtoCommerce.contentModule')
                 });
             }
 
-            function getSearchDocument() {
+            function getSearchDocumentInfo() {
                 var isBlog = blade.contentType === 'blogs';
                 var basePath = isBlog ? '/blogs' : '';
 
-                var documentId = `${blade.storeId}::${basePath}${blade.currentEntity.relativeUrl.replace('/', ':')}`;
+                var documentId = btoa(`${blade.storeId}::${basePath}${blade.currentEntity.relativeUrl}`).replaceAll('=', '-');
                 var documentType = 'ContentFile';
                 return { documentType: documentType, documentId: documentId };
             }
 
             function searchIndexRefresh(callback) {
 
-                var doc = getSearchDocument();
+                var doc = getSearchDocumentInfo();
 
                 searchApi.getDocIndex(doc, function (data) {
                     updateIndexStatus(data, doc);
-                    callback && callback();
+                    callback && _.any(data) && callback();
                 });
             }
 
