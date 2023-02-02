@@ -284,6 +284,7 @@ angular.module('virtoCommerce.contentModule')
                     icon: 'fa fa-file-alt',
                     executeMethod: function () {
                         getDocumentIndex(function (data) {
+                            var doc = getSearchDocumentInfo();
                             const searchBlade = {
                                 id: 'sesarchDetails',
                                 currentEntityId: doc.documentId,
