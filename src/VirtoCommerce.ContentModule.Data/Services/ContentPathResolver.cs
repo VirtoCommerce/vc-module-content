@@ -39,7 +39,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
                 _ => x,
             });
 
-            return string.Join('/', parts);
+            return string.Join('/', parts) + "/";
         }
 
         private static string GetDefaultContentPath(string contentType, string storeId)
@@ -52,7 +52,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
                 _ => string.Empty
             };
 
-            return retVal;
+            return retVal + "/";
         }
     }
 }

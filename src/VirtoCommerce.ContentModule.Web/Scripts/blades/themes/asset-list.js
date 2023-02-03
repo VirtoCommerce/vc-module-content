@@ -187,7 +187,7 @@ angular.module('platformWebApp')
                             id: "assetUpload",
                             contentType: blade.contentType,
                             storeId: blade.storeId,
-                            currentEntityId: blade.currentEntity.url,
+                            currentEntityId: blade.currentEntity.relativeUrl,
                             title: 'platform.blades.asset-upload.title',
                             controller: 'virtoCommerce.contentModule.assetUploadController',
                             template: 'Modules/$(VirtoCommerce.Assets)/Scripts/blades/asset-upload.tpl.html'

@@ -26,7 +26,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
         public async Task<IList<ContentItem>> FilterItemsAsync(FilterItemsCriteria criteria)
         {
             var storageProvider = GetStorageProvider(criteria.ContentType, criteria.StoreId);
-            var searchResult = await storageProvider.SearchAsync(criteria.FolderUrl, criteria.Keyword);
+            var searchResult = await storageProvider.SearchAsync(criteria.FolderUrl ?? "", criteria.Keyword);
 
             // display folders before files
             var folders = searchResult.Results.OfType<BlobFolder>().Select(x => x.ToContentModel()).OfType<ContentItem>();

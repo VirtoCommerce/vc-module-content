@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.AssetsModule.Core.Assets;
@@ -22,54 +20,43 @@ namespace VirtoCommerce.ContentModule.Azure
             _options = options.Value;
         }
 
-        public override Stream OpenRead(string url)
-        {
-            return base.OpenRead(NormalizeUrl(url));
-        }
+        //public override Stream OpenRead(string url)
+        //{
+        //    return base.OpenRead(NormalizeUrl(url));
+        //}
 
-        public override Task<BlobInfo> GetBlobInfoAsync(string url)
-        {
-            return base.GetBlobInfoAsync(NormalizeUrl(url));
-        }
+        //public override Task<BlobInfo> GetBlobInfoAsync(string url)
+        //{
+        //    return base.GetBlobInfoAsync(NormalizeUrl(url));
+        //}
 
-        public override Task CreateFolderAsync(BlobFolder folder)
-        {
-            if (folder == null)
-                throw new ArgumentNullException(nameof(folder));
+        //public override Task CreateFolderAsync(BlobFolder folder)
+        //{
+        //    if (folder == null)
+        //        throw new ArgumentNullException(nameof(folder));
 
-            if (folder.ParentUrl.IsNullOrEmpty())
-            {
-                folder.Name = NormalizeUrl(folder.Name);
-            }
-            return base.CreateFolderAsync(folder);
-        }
+        //    if (folder.ParentUrl.IsNullOrEmpty())
+        //    {
+        //        folder.Name = NormalizeUrl(folder.Name);
+        //    }
+        //    return base.CreateFolderAsync(folder);
+        //}
 
-        public override Stream OpenWrite(string url)
-        {
-            return base.OpenWrite(NormalizeUrl(url));
-        }
+        //public override Stream OpenWrite(string url)
+        //{
+        //    return base.OpenWrite(NormalizeUrl(url));
+        //}
 
-        public override Task RemoveAsync(string[] urls)
-        {
-            urls = urls.Select(NormalizeUrl).ToArray();
+        //public override Task RemoveAsync(string[] urls)
+        //{
+        //    urls = urls.Select(NormalizeUrl).ToArray();
 
-            return base.RemoveAsync(urls);
-        }
+        //    return base.RemoveAsync(urls);
+        //}
 
         public override async Task<BlobEntrySearchResult> SearchAsync(string folderUrl, string keyword)
         {
-            folderUrl = NormalizeUrl(folderUrl);
-
             var result = await base.SearchAsync(folderUrl, keyword);
-            var rootAzurePath = _options.RootPath.Replace('\\', '/');
-
-            foreach (var blobEntry in result.Results)
-            {
-                blobEntry.RelativeUrl = blobEntry.RelativeUrl
-                    .Replace($"/{rootAzurePath}", string.Empty)
-                    .Replace($"{rootAzurePath}", string.Empty); // can be case when start '/' doesn't exist
-            }
-
             return result;
         }
 

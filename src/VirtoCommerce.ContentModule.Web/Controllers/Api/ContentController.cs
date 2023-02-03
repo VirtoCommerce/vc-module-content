@@ -164,14 +164,10 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <param name="criteria">Search criteria</param>
         /// <returns>content items</returns>
         [HttpPost]
-        [Route("fulltext-search")]
+        [Route("~/api/content/search")]
         [Authorize(Permissions.Read)]
-        public async Task<ActionResult<ContentItem[]>> FulltextSearchContent(string storeId, [FromBody] ContentSearchCriteria criteria)
+        public async Task<ActionResult<ContentItem[]>> FulltextSearchContent([FromBody] ContentSearchCriteria criteria)
         {
-            if (criteria.StoreId.IsNullOrEmpty())
-            {
-                criteria.StoreId = storeId;
-            }
             var result = await _fullTextContentSearchService.SearchContentAsync(criteria);
             return Ok(result);
         }
