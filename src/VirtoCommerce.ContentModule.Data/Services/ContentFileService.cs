@@ -67,7 +67,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
             foreach (var item in folders)
             {
-                await EnumerateFilesRecursively(storageProvider, item.Url, result);
+                await EnumerateFilesRecursively(storageProvider, item.RelativeUrl, result);
             }
         }
     }
