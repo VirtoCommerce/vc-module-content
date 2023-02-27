@@ -156,11 +156,11 @@ angular.module('virtoCommerce.contentModule')
                         blade.isLoading = false;
                         blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
                         angular.copy(blade.currentEntity, blade.origEntity);
+                        updateSearchIndex();
                         if (blade.isNew) {
                             $scope.bladeClose();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
                         }
-                        updateSearchIndex();
                         blade.parentBlade.refresh();
                     },
                     function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
