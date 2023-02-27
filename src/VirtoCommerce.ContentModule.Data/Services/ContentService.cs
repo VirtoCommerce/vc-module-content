@@ -60,8 +60,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
         {
             var storageProvider = GetStorageProvider(contentType, storeId);
             var blobInfo = await storageProvider.GetBlobInfoAsync(relativeUrl);
-
             var result = blobInfo.ToContentModel();
+
             return result;
         }
 
@@ -147,7 +147,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             await using var targetStream = await storageProvider.OpenWriteAsync(targetFilePath);
             await content.CopyToAsync(targetStream);
 
-            var result = CreateContentFile(storageProvider, fileName, targetFilePath);
+            var result = CreateContentFile(storageProvider, fileName, targetFilePath, folderPath);
             return result;
         }
 
@@ -158,10 +158,12 @@ namespace VirtoCommerce.ContentModule.Data.Services
             return storageProvider;
         }
 
-        private static ContentFile CreateContentFile(IBlobUrlResolver urlResolver, string fileName, string targetFilePath)
+        private static ContentFile CreateContentFile(IBlobUrlResolver urlResolver, string fileName, string targetFilePath, string folderPath)
         {
             var contentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
             contentFile.Name = fileName;
+            contentFile.RelativeUrl = targetFilePath;
+            contentFile.ParentUrl = folderPath;
             contentFile.Url = urlResolver.GetAbsoluteUrl(targetFilePath);
             return contentFile;
         }

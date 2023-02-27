@@ -152,14 +152,15 @@ angular.module('virtoCommerce.contentModule')
                     folderUrl: blade.folderUrl || ''
                 },
                     blade.currentEntity,
-                    function () {
+                    function (result) {
                         blade.isLoading = false;
-                        blade.origEntity = angular.copy(blade.currentEntity);
+                        blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
+                        angular.copy(blade.currentEntity, blade.origEntity);
                         if (blade.isNew) {
                             $scope.bladeClose();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
                         }
-                        updateSearchIndex(!blade.isNew);
+                        updateSearchIndex();
                         blade.parentBlade.refresh();
                     },
                     function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
@@ -271,7 +272,7 @@ angular.module('virtoCommerce.contentModule')
             );
 
             function isDirty() {
-                return !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
+                return !!blade.origEntity && !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
             }
 
             function canSave() {
@@ -310,14 +311,14 @@ angular.module('virtoCommerce.contentModule')
                 }
             }
 
-            function updateSearchIndex(refreshIndex) {
+            function updateSearchIndex() {
 
                 var doc = getSearchDocumentInfo();
 
                 doc.documentIds = [doc.documentId];
 
                 searchApi.index([doc], function (data) {
-                    refreshIndex && getDocumentIndex();
+                    getDocumentIndex();
                 });
             }
 
