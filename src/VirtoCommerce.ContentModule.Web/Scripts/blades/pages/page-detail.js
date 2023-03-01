@@ -121,7 +121,7 @@ angular.module('virtoCommerce.contentModule')
                             if (!!metadataRecord) {
                                 values = _.pluck(metadataRecord.values, 'value');
                             } else {
-                                values = _.map(x.displayNames, item => { return { locale: item.locale, value: null }; });
+                                values = _.map(x.displayNames, item => ({ locale: item.locale, value: null }));
                             }
                         }
 
