@@ -118,7 +118,7 @@ angular.module('virtoCommerce.contentModule')
                         var values = [];
 
                         if (x.isMultilingual && !x.isDictionary) {
-                            if (!!metadataRecord) {
+                            if (metadataRecord) {
                                 values = _.pluck(metadataRecord.values, 'value');
                             } else {
                                 values = _.map(x.displayNames, item => ({ locale: item.locale, value: null }));
