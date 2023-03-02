@@ -4,25 +4,31 @@ angular.module('virtoCommerce.contentModule')
         'platformWebApp.validators',
         'platformWebApp.dialogService',
         'virtoCommerce.contentModule.contentApi',
-        '$timeout',
         'platformWebApp.bladeNavigationService',
         'platformWebApp.dynamicProperties.api',
         'platformWebApp.settings',
         'FileUploader',
         'platformWebApp.dynamicProperties.dictionaryItemsApi',
         'platformWebApp.i18n',
+        'virtoCommerce.searchModule.searchIndexation',
+        'moment',
         function ($rootScope,
             $scope,
             validators,
             dialogService,
             contentApi,
-            $timeout,
             bladeNavigationService,
             dynamicPropertiesApi,
             settings,
             FileUploader,
             dictionaryItemsApi,
-            i18n) {
+            i18n,
+            searchApi,
+            moment) {
+
+
+            var momentFormat = "YYYYMMDDHHmmss";
+
             var blade = $scope.blade;
             blade.currentLanguage = i18n.getLanguage();
             blade.frontMatterHeaders = 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders'
@@ -72,6 +78,8 @@ angular.module('virtoCommerce.contentModule')
                     },
                         fillMetadata,
                         function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+
+                    loadSearchIndex();
                 }
             };
 
@@ -148,14 +156,15 @@ angular.module('virtoCommerce.contentModule')
                     folderUrl: blade.folderUrl || ''
                 },
                     blade.currentEntity,
-                    function () {
+                    function (result) {
                         blade.isLoading = false;
-                        blade.origEntity = angular.copy(blade.currentEntity);
+                        blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
+                        angular.copy(blade.currentEntity, blade.origEntity);
+                        updateSearchIndex();
                         if (blade.isNew) {
                             $scope.bladeClose();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
                         }
-
                         blade.parentBlade.refresh();
                     },
                     function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
@@ -267,12 +276,77 @@ angular.module('virtoCommerce.contentModule')
             );
 
             function isDirty() {
-                return !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
+                return !!blade.origEntity && !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
             }
 
             function canSave() {
                 return blade.currentEntity && blade.currentEntity.name && ((isDirty() && !blade.isNew) || (blade.currentEntity.content && blade.isNew));
             }
+
+            function addIndexToolbarButton() {
+                blade.toolbarCommands.push({
+                    name: "content.commands.preview-index",
+                    icon: 'fa fa-file-alt',
+                    executeMethod: function () {
+                        getDocumentIndex(function (data) {
+                            var doc = getSearchDocumentInfo();
+                            const searchBlade = {
+                                id: 'sesarchDetails',
+                                currentEntityId: doc.documentId,
+                                currentEntity: blade.currentEntity,
+                                data: $scope.index,
+                                indexDate: $scope.indexDate,
+                                documentType: doc.documentType,
+                                controller: 'virtoCommerce.searchModule.indexDetailController',
+                                template: 'Modules/$(VirtoCommerce.Search)/Scripts/blades/index-detail.tpl.html'
+                            };
+
+                            bladeNavigationService.showBlade(searchBlade, blade);
+                        });
+                    },
+                    canExecuteMethod: function () { return true; }
+                });
+            }
+
+            function updateIndexStatus(data, doc) {
+                if (_.any(data)) {
+                    $scope.index = data[0];
+                    $scope.indexDate = moment.utc($scope.index.indexationdate, momentFormat);
+                }
+            }
+
+            function updateSearchIndex() {
+                var doc = getSearchDocumentInfo();
+                doc.documentIds = [doc.documentId];
+
+                searchApi.index([doc], function (data) {
+                    getDocumentIndex();
+                });
+            }
+
+            function getSearchDocumentInfo() {
+                var isBlog = blade.contentType === 'blogs';
+                var basePath = isBlog ? '/blogs' : '';
+                var documentId = btoa(`${blade.storeId}::${basePath}${blade.currentEntity.relativeUrl}`).replaceAll('=', '-');
+                var documentType = 'ContentFile';
+                return { documentType: documentType, documentId: documentId };
+            }
+
+            function getDocumentIndex(callback) {
+                var doc = getSearchDocumentInfo();
+                searchApi.getDocIndex(doc, function (data) {
+                    updateIndexStatus(data, doc);
+                    callback && _.any(data) && callback();
+                });
+            }
+
+            function loadSearchIndex() {
+                if (blade.isNew) {
+                    return;
+                }
+                getDocumentIndex(addIndexToolbarButton);
+            }
+
 
             blade.onClose = function (closeCallback) {
                 bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, $scope.saveChanges, closeCallback, "content.dialogs.page-save.title", "content.dialogs.page-save.message");

@@ -1,0 +1,11 @@
+Antlr4.Runtime.Standard.dll
+Azure.Core.dll
+Azure.Storage.Blobs.dll
+Azure.Storage.Common.dll
+FluentAssertions.dll
+Microsoft.Data.SqlClient.SNI.dll
+sni.dll
+System.IO.Hashing.dll
+System.Memory.Data.dll
+TimeZoneConverter.dll
+VirtoCommerce.Assets.Abstractions.dll
