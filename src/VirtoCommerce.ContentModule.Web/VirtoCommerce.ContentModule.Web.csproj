@@ -14,13 +14,6 @@
     <None Remove="node_modules\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="10.3.4" />
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.200.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.200.0" />
-    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.200.0" />
-    <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="3.200.0" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Azure\VirtoCommerce.ContentModule.Azure.csproj" />
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Core\VirtoCommerce.ContentModule.Core.csproj" />
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Data.MySql\VirtoCommerce.ContentModule.Data.MySql.csproj" />
