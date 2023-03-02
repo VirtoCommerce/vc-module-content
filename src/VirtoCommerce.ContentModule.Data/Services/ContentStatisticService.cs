@@ -24,14 +24,14 @@ namespace VirtoCommerce.ContentModule.Data.Services
         public async Task<int> GetStorePagesCountAsync(string storeId)
         {
             var (contentStorageProvider, path) = Prepare(storeId, ContentConstants.ContentTypes.Pages);
-            var result = await CountContentItemsRecursive(null, contentStorageProvider, null, null, ContentConstants.ContentTypes.Blogs);
+            var result = await CountContentItemsRecursive(folderUrl: null, contentStorageProvider, startDate: null, endDate: null, ContentConstants.ContentTypes.Blogs);
             return result;
         }
 
         public async Task<int> GetStoreChangedPagesCountAsync(string storeId, DateTime? startDate, DateTime? endDate)
         {
             var (contentStorageProvider, path) = Prepare(storeId, ContentConstants.ContentTypes.Pages);
-            var result = await CountContentItemsRecursive(null, contentStorageProvider, startDate, endDate);
+            var result = await CountContentItemsRecursive(folderUrl: null, contentStorageProvider, startDate, endDate);
             return result;
         }
 
@@ -50,7 +50,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
         private async Task<int> GetFoldersCount(string storeId, string contentType)
         {
             var (contentStorageProvider, targetPath) = Prepare(storeId, contentType);
-            var folders = await contentStorageProvider.SearchAsync(null, null);
+            var folders = await contentStorageProvider.SearchAsync(folderUrl: null, keyword: null);
             var result = folders.Results.OfType<BlobFolder>().Count();
             return result;
         }
@@ -64,7 +64,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         private async Task<int> CountContentItemsRecursive(string folderUrl, IBlobStorageProvider blobContentStorageProvider, DateTime? startDate, DateTime? endDate, string excludedFolderName = null)
         {
-            var searchResult = await blobContentStorageProvider.SearchAsync(folderUrl, null);
+            var searchResult = await blobContentStorageProvider.SearchAsync(folderUrl, keyword: null);
             var folders = searchResult.Results.OfType<BlobFolder>();
             var blobs = searchResult.Results.OfType<BlobInfo>();
 

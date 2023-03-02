@@ -4,7 +4,6 @@ angular.module('virtoCommerce.contentModule')
         'platformWebApp.validators',
         'platformWebApp.dialogService',
         'virtoCommerce.contentModule.contentApi',
-        '$timeout',
         'platformWebApp.bladeNavigationService',
         'platformWebApp.dynamicProperties.api',
         'platformWebApp.settings',
@@ -18,7 +17,6 @@ angular.module('virtoCommerce.contentModule')
             validators,
             dialogService,
             contentApi,
-            $timeout,
             bladeNavigationService,
             dynamicPropertiesApi,
             settings,
@@ -307,14 +305,12 @@ angular.module('virtoCommerce.contentModule')
             function updateIndexStatus(data, doc) {
                 if (_.any(data)) {
                     $scope.index = data[0];
-                    $scope.indexDate = moment.utc($scope.index.indexationdate, momentFormat);                    
+                    $scope.indexDate = moment.utc($scope.index.indexationdate, momentFormat);
                 }
             }
 
             function updateSearchIndex() {
-
                 var doc = getSearchDocumentInfo();
-
                 doc.documentIds = [doc.documentId];
 
                 searchApi.index([doc], function (data) {
@@ -325,16 +321,13 @@ angular.module('virtoCommerce.contentModule')
             function getSearchDocumentInfo() {
                 var isBlog = blade.contentType === 'blogs';
                 var basePath = isBlog ? '/blogs' : '';
-
                 var documentId = btoa(`${blade.storeId}::${basePath}${blade.currentEntity.relativeUrl}`).replaceAll('=', '-');
                 var documentType = 'ContentFile';
                 return { documentType: documentType, documentId: documentId };
             }
 
             function getDocumentIndex(callback) {
-
                 var doc = getSearchDocumentInfo();
-
                 searchApi.getDocIndex(doc, function (data) {
                     updateIndexStatus(data, doc);
                     callback && _.any(data) && callback();
@@ -342,8 +335,9 @@ angular.module('virtoCommerce.contentModule')
             }
 
             function loadSearchIndex() {
-                if (blade.isNew) return;
-
+                if (blade.isNew) {
+                    return;
+                }
                 getDocumentIndex(addIndexToolbarButton);
             }
 
