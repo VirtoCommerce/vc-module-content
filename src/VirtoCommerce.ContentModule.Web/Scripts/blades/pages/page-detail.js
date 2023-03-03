@@ -115,17 +115,11 @@ angular.module('virtoCommerce.contentModule')
                 _.each(props,
                     function (x) {
                         var metadataRecord = _.findWhere(metadata, { name: x.name });
-                        var values = [];
-
-                        if (x.isMultilingual && !x.isDictionary) {
-                            if (metadataRecord) {
-                                values = _.pluck(metadataRecord.values, 'value');
-                            } else {
-                                values = _.map(x.displayNames, item => ({ locale: item.locale, value: null }));
-                            }
+                        if (metadataRecord && x.isMultilingual && !x.isDictionary) {
+                            metadataRecord.values = _.pluck(metadataRecord.values, 'value');
                         }
 
-                        x.values = values;
+                        x.values = metadataRecord ? metadataRecord.values : [];
                     });
                 if (props) {
                     blade.currentEntity.dynamicProperties = blade.currentEntity.dynamicProperties.concat(props);
