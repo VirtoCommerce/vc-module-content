@@ -68,7 +68,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
         public async Task<IndexableContentFile> GetFileContentAsync(string contentType, string storeId, string relativeUrl)
         {
             var storageProvider = GetStorageProvider(contentType, storeId);
-            var blobInfo = await storageProvider.GetBlobInfoAsync(relativeUrl);
+            var blobInfo = await storageProvider.GetBlobInfoAsync(HttpUtility.UrlDecode(relativeUrl));
 
             var result = blobInfo.ToIndexableContentModel();
             var fileStream = await storageProvider.OpenReadAsync(relativeUrl);

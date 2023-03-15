@@ -44,9 +44,19 @@ namespace VirtoCommerce.ContentModule.Azure
             return base.CreateFolderAsync(folder);
         }
 
-        public override Stream OpenWrite(string url)
+        public override Stream OpenWrite(string blobUrl)
         {
-            return base.OpenWrite(NormalizeUrl(url));
+            return base.OpenWrite(NormalizeUrl(blobUrl));
+        }
+
+        public override Task<Stream> OpenWriteAsync(string blobUrl)
+        {
+            return base.OpenWriteAsync(NormalizeUrl(blobUrl));
+        }
+
+        public override Task<Stream> OpenReadAsync(string blobUrl)
+        {
+            return base.OpenReadAsync(NormalizeUrl(blobUrl));
         }
 
         public override Task RemoveAsync(string[] urls)
@@ -62,7 +72,7 @@ namespace VirtoCommerce.ContentModule.Azure
 
             var result = await base.SearchAsync(folderUrl, keyword);
 
-            var rootAzurePath = _options.RootPath.Replace('\\', '/');
+            var rootAzurePath = _options.RootPath.Replace('\\', '/').Trim('/');
 
             foreach (var blobEntry in result.Results)
             {
