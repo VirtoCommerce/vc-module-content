@@ -72,11 +72,11 @@ namespace VirtoCommerce.ContentModule.Azure
 
             var result = await base.SearchAsync(folderUrl, keyword);
 
-            var rootAzurePath = _options.RootPath.Replace('\\', '/').Trim('/');
+            var rootAzurePath = _options.RootPath.Replace('\\', '/').Trim('/').Length + 1;
 
             foreach (var blobEntry in result.Results)
             {
-                blobEntry.RelativeUrl = blobEntry.RelativeUrl.Replace($"/{rootAzurePath}", string.Empty);
+                blobEntry.RelativeUrl = blobEntry.RelativeUrl[rootAzurePath..];
             }
 
             return result;
@@ -96,7 +96,8 @@ namespace VirtoCommerce.ContentModule.Azure
                 {
                     url = Uri.UnescapeDataString(new Uri(url).AbsolutePath);
                 }
-                result = UrlHelperExtensions.Combine(_options.RootPath, url.Replace(_options.RootPath, string.Empty));
+                //var cleanUrl = url.StartsWith(_options.RootPath) ? url[_options.RootPath.Length..] : url;
+                result = UrlHelperExtensions.Combine(_options.RootPath, url);
             }
             return result;
         }

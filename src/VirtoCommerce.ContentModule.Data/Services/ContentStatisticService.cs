@@ -75,7 +75,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
             foreach (var child in children)
             {
-                var childrenFilesCount = await CountContentItemsRecursive(child.Url, blobContentStorageProvider, startDate, endDate, excludedFolderName);
+                var childrenFilesCount = await CountContentItemsRecursive(child.RelativeUrl, blobContentStorageProvider, startDate, endDate, excludedFolderName);
                 result += childrenFilesCount;
             }
 
