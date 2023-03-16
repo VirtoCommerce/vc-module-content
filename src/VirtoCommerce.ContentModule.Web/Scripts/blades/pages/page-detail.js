@@ -48,6 +48,7 @@ angular.module('virtoCommerce.contentModule')
                     blade.isLoading = true;
                 },
                 onSuccessItem: function (fileItem, response, status, headers) {
+                    updateSearchIndex();
                     $scope.$broadcast('filesUploaded', { items: response });
                 },
                 onErrorItem: function (fileItem, response, status, headers) {

@@ -1,7 +1,25 @@
 angular.module('virtoCommerce.contentModule')
     .controller('virtoCommerce.contentModule.editBlogController',
         [
-            '$rootScope', '$scope', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.dynamicProperties.api', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings', function($rootScope, $scope, contentApi, dynamicPropertiesApi, bladeNavigationService, dialogService, dictionaryItemsApi, settings) {
+            '$rootScope',
+            '$scope',
+            'virtoCommerce.contentModule.contentApi',
+            'platformWebApp.dynamicProperties.api',
+            'platformWebApp.bladeNavigationService',
+            'platformWebApp.dialogService',
+            'platformWebApp.dynamicProperties.dictionaryItemsApi',
+            'platformWebApp.settings',
+            'virtoCommerce.searchModule.searchIndexation',
+            function ($rootScope,
+                $scope,
+                contentApi,
+                dynamicPropertiesApi,
+                bladeNavigationService,
+                dialogService,
+                dictionaryItemsApi,
+                settings,
+                searchApi
+            ) {
                 var blade = $scope.blade;
                 blade.updatePermission = 'content:update';
                 const mdFileExtension = '.md';
@@ -77,6 +95,7 @@ angular.module('virtoCommerce.contentModule')
                             blade.isLoading = false;
                             blade.origEntity = angular.copy(blade.currentEntity);
                             if (blade.isNew) {
+                                updateSearchIndex();
                                 $scope.bladeClose();
                                 $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
                             }
@@ -185,6 +204,13 @@ angular.module('virtoCommerce.contentModule')
                 blade.onClose = function(closeCallback) {
                     bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, $scope.saveChanges, closeCallback, "content.dialogs.blog-save.title", "content.dialogs.blog-save.message");
                 };
+
+                function updateSearchIndex() {
+                    var doc = { documentType: 'ContentFile' }
+                    doc.documentId = btoa(`${blade.storeId}::/blogs/${getBlogBlobName()}`).replaceAll('=', '-');
+                    doc.documentIds = [doc.documentId];
+                    searchApi.index([doc], function (data) { });
+                }
 
                 var formScope;
                 $scope.setForm = function(form) { $scope.formScope = formScope = form; };
