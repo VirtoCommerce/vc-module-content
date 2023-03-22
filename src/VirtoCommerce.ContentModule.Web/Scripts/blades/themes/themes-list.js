@@ -11,7 +11,7 @@ angular.module('virtoCommerce.contentModule')
             blade.isLoading = true;
             $scope.selectedNodeId = undefined;
             contentApi.query({ contentType: blade.contentType, storeId: blade.storeId }, function (data) {
-                blade.currentEntities = data;
+                blade.currentEntities = data.filter(x => x.type === 'folder');
 
                 stores.get({ id: blade.storeId }, function (data) {
                     blade.store = data;
