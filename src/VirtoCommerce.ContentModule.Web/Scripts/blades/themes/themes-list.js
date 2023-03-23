@@ -119,7 +119,7 @@ angular.module('virtoCommerce.contentModule')
                             contentApi.delete({
                                 contentType: blade.contentType,
                                 storeId: blade.storeId,
-                                urls: [data.url]
+                                urls: [data.relativeUrl]
                             },
                             function () {
                                 if (data.name === blade.defaultThemeName) {
