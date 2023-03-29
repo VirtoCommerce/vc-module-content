@@ -22,11 +22,6 @@ namespace VirtoCommerce.ContentModule.Azure
             _options = options.Value;
         }
 
-        public override Stream OpenRead(string url)
-        {
-            return base.OpenRead(NormalizeUrl(url));
-        }
-
         public override async Task<BlobInfo> GetBlobInfoAsync(string url)
         {
             var result = await base.GetBlobInfoAsync(NormalizeUrl(url));
@@ -48,11 +43,6 @@ namespace VirtoCommerce.ContentModule.Azure
                 folder.Name = NormalizeUrl(folder.Name);
             }
             return base.CreateFolderAsync(folder);
-        }
-
-        public override Stream OpenWrite(string blobUrl)
-        {
-            return base.OpenWrite(NormalizeUrl(blobUrl));
         }
 
         public override Task<Stream> OpenWriteAsync(string blobUrl)

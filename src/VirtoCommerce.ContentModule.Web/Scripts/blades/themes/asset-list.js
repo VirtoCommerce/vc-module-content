@@ -10,7 +10,7 @@ angular.module('platformWebApp')
                         contentType: blade.contentType,
                         storeId: blade.storeId,
                         keyword: blade.searchKeyword,
-                        folderUrl: blade.currentEntity.url
+                        folderUrl: blade.currentEntity.relativeUrl
                     },
                     function (data) {
                         $scope.pageSettings.totalItems = data.length;
@@ -120,7 +120,7 @@ angular.module('platformWebApp')
                     };
                     bladeNavigationService.showBlade(newBlade, blade.parentBlade);
                 } else {
-                    blade.selectedNodeId = listItem.url;
+                    blade.selectedNodeId = listItem.relativeUrl;
                     openDetailsBlade(listItem, false);
                 }
             };
@@ -141,13 +141,13 @@ angular.module('platformWebApp')
 
                     if (isNew) {
                         angular.extend(newBlade, {
-                            folderUrl: blade.currentEntity.url,
+                            folderUrl: blade.currentEntity.relativeUrl,
                             title: 'content.blades.edit-asset.title-new',
                             subtitle: 'content.blades.edit-asset.subtitle-new'
                         });
                     } else {
                         angular.extend(newBlade, {
-                            folderUrl: listItem.url.substring(0, listItem.url.length - listItem.name.length - 1),
+                            folderUrl: listItem.relativeUrl.substring(0, listItem.relativeUrl.length - listItem.name.length - 1),
                             title: listItem.name,
                             subtitle: 'content.blades.edit-asset.subtitle'
                         });
@@ -231,13 +231,13 @@ angular.module('platformWebApp')
                     var breadcrumbs = blade.breadcrumbs.slice(0);
 
                     //prevent duplicate items
-                    if (blade.currentEntity.url && _.all(breadcrumbs, function (x) { return x.id !== blade.currentEntity.url; })) {
-                        var breadCrumb = generateBreadcrumb(blade.currentEntity.url, blade.currentEntity.name);
+                    if (blade.currentEntity.relativeUrl && _.all(breadcrumbs, function (x) { return x.id !== blade.currentEntity.relativeUrl; })) {
+                        var breadCrumb = generateBreadcrumb(blade.currentEntity.relativeUrl, blade.currentEntity.name);
                         breadcrumbs.push(breadCrumb);
                     }
                     blade.breadcrumbs = breadcrumbs;
                 } else {
-                    blade.breadcrumbs = [generateBreadcrumb(blade.currentEntity.url, 'all')];
+                    blade.breadcrumbs = [generateBreadcrumb(blade.currentEntity.relativeUrl, 'all')];
                 }
             }
 
