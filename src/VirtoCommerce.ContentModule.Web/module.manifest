@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.Content</id>
-  <version>3.217.0</version>
+  <version>3.218.0</version>
   <version-tag />
   <platformVersion>3.200.0</platformVersion>
   <dependencies>
@@ -11,8 +11,8 @@
     <dependency id="VirtoCommerce.FileSystemAssets" version="3.200.0" />
     <dependency id="VirtoCommerce.Store" version="3.200.0" />
   </dependencies>
-  <title>CMS Content module</title>
-  <description>Front-end CMS functionality based on liquid technology</description>
+  <title>Content</title>
+  <description>Easily create, edit, and publish content such as pages, blog posts, and news articles.</description>
   <authors>
     <author>Virto Commerce</author>
   </authors>
