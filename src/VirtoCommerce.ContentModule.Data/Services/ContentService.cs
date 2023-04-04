@@ -158,7 +158,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             return storageProvider;
         }
 
-        private async Task<ContentFile> CreateContentFile(IBlobContentStorageProvider provider, string targetFilePath, string folderPath)
+        private static async Task<ContentFile> CreateContentFile(IBlobContentStorageProvider provider, string targetFilePath, string folderPath)
         {
             var blob = await provider.GetBlobInfoAsync(targetFilePath);
             var contentFile = AbstractTypeFactory<ContentFile>.TryCreateInstance();
