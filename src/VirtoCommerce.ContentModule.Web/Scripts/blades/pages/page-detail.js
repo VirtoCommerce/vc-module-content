@@ -35,6 +35,7 @@ angular.module('virtoCommerce.contentModule')
 
             blade.dynamicPropertiesTotalCount = 0;
             blade.currentEntity.dynamicProperties = [];
+            $scope.searchEnabled = false;
 
             $scope.validators = validators;
             var contentType = blade.contentType.substr(0, 1).toUpperCase() +
@@ -334,18 +335,23 @@ angular.module('virtoCommerce.contentModule')
             }
 
             function getDocumentIndex(callback) {
-                var doc = getSearchDocumentInfo();
-                searchApi.getDocIndex(doc, function (data) {
-                    updateIndexStatus(data, doc);
-                    callback && _.any(data) && callback();
-                });
+                if ($scope.searchEnabled) {
+                    var doc = getSearchDocumentInfo();
+                    searchApi.getDocIndex(doc, function (data) {
+                        updateIndexStatus(data, doc);
+                        callback && _.any(data) && callback();
+                    });
+                }
             }
 
             function loadSearchIndex() {
                 if (blade.isNew) {
                     return;
                 }
-                getDocumentIndex(addIndexToolbarButton);
+                contentApi.indexedSearchEnabled({}, function (data) {
+                    $scope.searchEnabled = data.result;
+                    getDocumentIndex(addIndexToolbarButton);
+                });
             }
 
 
