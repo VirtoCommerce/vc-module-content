@@ -90,10 +90,12 @@ namespace VirtoCommerce.ContentModule.Azure
             {
                 if (url.IsAbsoluteUrl())
                 {
-                    url = Uri.UnescapeDataString(new Uri(url).AbsolutePath);
+                    result = Uri.UnescapeDataString(new Uri(url).AbsolutePath);
                 }
-                //var cleanUrl = url.StartsWith(_options.RootPath) ? url[_options.RootPath.Length..] : url;
-                result = UrlHelperExtensions.Combine(_options.RootPath, url);
+                else
+                {
+                    result = UrlHelperExtensions.Combine(_options.RootPath, url);
+                }
             }
             return result;
         }
