@@ -6,22 +6,22 @@ namespace VirtoCommerce.ContentModule.Data.Search
 {
     internal static class DocumentIdentifierHelper
     {
-        public static string GenerateId(string storeId, ContentFile file)
+        public static string GenerateId(string storeId, string contentType, ContentItem file)
         {
-            return Convert.ToBase64String(Encoding.ASCII.GetBytes($"{storeId}::{file.RelativeUrl}")).Replace('=', '-');
+            return Convert.ToBase64String(Encoding.ASCII.GetBytes($"{storeId}::{contentType}::{file.Url}")).Replace('=', '-');
         }
 
-        public static (string storeId, string relativeUrl) ParseId(string id)
+        public static (string storeId, string contentType, string relativeUrl) ParseId(string id)
         {
             var decoded = Encoding.ASCII.GetString(Convert.FromBase64String(id.Replace('-', '=')));
             var result = decoded.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
 
-            if (result.Length == 2)
+            if (result.Length == 3)
             {
-                return (result[0], result[1]);
+                return (result[0], result[1], result[2]);
             }
 
-            return (null, null);
+            return (null, null, null);
         }
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
@@ -81,11 +80,10 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             foreach (var documentId in documentIds)
             {
-                var (storeId, relativeUrl) = DocumentIdentifierHelper.ParseId(documentId);
-                var contentItem = await _contentService.GetFileContentAsync(ContentConstants.ContentTypes.Pages, storeId, relativeUrl);
+                var (storeId, contentType, relativeUrl) = DocumentIdentifierHelper.ParseId(documentId);
+                var contentItem = await _contentService.GetFileContentAsync(contentType, storeId, relativeUrl);
                 if (contentItem != null)
                 {
-                    contentItem.StoreId = criteria.StoreId;
                     result.Add(contentItem);
                 }
             }

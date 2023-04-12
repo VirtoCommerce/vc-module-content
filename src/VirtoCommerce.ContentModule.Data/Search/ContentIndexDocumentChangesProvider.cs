@@ -37,21 +37,14 @@ namespace VirtoCommerce.ContentModule.Data.Search
             var now = DateTime.UtcNow;
             await ApplyToStores(async store =>
             {
-                var filter = AbstractTypeFactory<FilterItemsCriteria>.TryCreateInstance();
-                filter.ContentType = ContentConstants.ContentTypes.Pages;
-                filter.StoreId = store.Id;
-                var pages = await _contentFileService.EnumerateFiles(filter);
-                var pagesToIndex = pages
-                    .Where(file => file.ModifiedDate == null || (startDate == null || file.ModifiedDate >= startDate) && (endDate == null || file.ModifiedDate <= endDate))
-                    .OrderByDescending(file => file.ModifiedDate ?? now)
+                var pages = await GetFiles(store, ContentConstants.ContentTypes.Pages, now);
+                var posts = await GetFiles(store, ContentConstants.ContentTypes.Blogs, now);
+                var pagesToIndex = pages.Union(posts)
+                    .Where(x => x.File.ModifiedDate == null || (startDate == null || x.File.ModifiedDate >= startDate) && (endDate == null || x.File.ModifiedDate <= endDate))
+                    .OrderByDescending(x => x.File.ModifiedDate ?? now)
                     .Skip((int)skip)
                     .Take((int)take)
-                    .Select(file => new IndexDocumentChange
-                    {
-                        DocumentId = DocumentIdentifierHelper.GenerateId(store.Id, file),
-                        ChangeType = IndexDocumentChangeType.Modified,
-                        ChangeDate = file.ModifiedDate ?? now
-                    }).ToArray();
+                    .Select(x => x.Document).ToArray(); ;
                 result.AddRange(pagesToIndex);
             });
             return result;
@@ -96,6 +89,20 @@ namespace VirtoCommerce.ContentModule.Data.Search
             criteria.Take = take;
             var stores = await _storeService.SearchAsync(criteria);
             return stores;
+        }
+
+        private async Task<IList<(ContentFile File, IndexDocumentChange Document)>> GetFiles(Store store, string contentType, DateTime now)
+        {
+            var filter = AbstractTypeFactory<FilterItemsCriteria>.TryCreateInstance();
+            filter.ContentType = contentType;
+            filter.StoreId = store.Id;
+            var files = await _contentFileService.EnumerateFiles(filter);
+            return files.Select(x => (x, new IndexDocumentChange
+            {
+                DocumentId = DocumentIdentifierHelper.GenerateId(store.Id, contentType, x),
+                ChangeType = IndexDocumentChangeType.Modified,
+                ChangeDate = x.ModifiedDate ?? now,
+            })).ToList();
         }
     }
 }

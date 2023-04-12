@@ -68,7 +68,7 @@ namespace VirtoCommerce.ContentModule.Azure
 
             var result = await base.SearchAsync(folderUrl, keyword);
 
-            var rootAzurePath = _options.RootPath.Replace('\\', '/').Trim('/').Length + 1;
+            var rootAzurePath = _options.RootPath.Trim('/').Length + 1;
 
             foreach (var blobEntry in result.Results)
             {
@@ -88,6 +88,8 @@ namespace VirtoCommerce.ContentModule.Azure
             var result = _options.RootPath;
             if (!string.IsNullOrEmpty(url))
             {
+                // url must not be absolute here (but sometime it is so, f.i. in sitemap module)
+                // we need another function to get blobs by full url
                 if (url.IsAbsoluteUrl())
                 {
                     result = Uri.UnescapeDataString(new Uri(url).AbsolutePath);

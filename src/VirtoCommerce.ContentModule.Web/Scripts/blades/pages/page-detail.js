@@ -328,7 +328,7 @@ angular.module('virtoCommerce.contentModule')
             function getSearchDocumentInfo() {
                 var isBlog = blade.contentType === 'blogs';
                 var basePath = isBlog ? '/blogs' : '';
-                var documentId = btoa(`${blade.storeId}::${basePath}${blade.currentEntity.relativeUrl}`).replaceAll('=', '-');
+                var documentId = btoa(`${blade.storeId}::${blade.contentType}::${blade.currentEntity.url}`).replaceAll('=', '-');
                 var documentType = 'ContentFile';
                 return { documentType: documentType, documentId: documentId };
             }

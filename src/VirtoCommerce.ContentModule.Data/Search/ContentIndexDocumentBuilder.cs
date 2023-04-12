@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
@@ -36,10 +35,10 @@ namespace VirtoCommerce.ContentModule.Data.Search
             {
                 try
                 {
-                    var (storeId, file) = await GetFile(documentId);
+                    var (storeId, contentType, file) = await GetFile(documentId);
                     if (file != null)
                     {
-                        var document = await CreateDocument(storeId, file);
+                        var document = await CreateDocument(storeId, contentType, file);
                         if (document != null)
                         {
                             result.Add(document);
@@ -55,28 +54,28 @@ namespace VirtoCommerce.ContentModule.Data.Search
             return result;
         }
 
-        private async Task<(string, ContentFile)> GetFile(string documentId)
+        private async Task<(string, string, ContentFile)> GetFile(string documentId)
         {
-            var (storeId, relativeUrl) = DocumentIdentifierHelper.ParseId(documentId);
+            var (storeId, contentType, relativeUrl) = DocumentIdentifierHelper.ParseId(documentId);
             if (storeId != null)
             {
-                var file = await _contentService.GetFileAsync(ContentConstants.ContentTypes.Pages, storeId, relativeUrl);
+                var file = await _contentService.GetFileAsync(contentType, storeId, relativeUrl);
                 if (file != null)
                 {
-                    return (storeId, file);
+                    return (storeId, contentType, file);
                 }
             }
-            return (null, null);
+            return (null, null, null);
         }
 
-        private async Task<IndexDocument> CreateDocument(string storeId, ContentFile file)
+        private async Task<IndexDocument> CreateDocument(string storeId, string contentType, ContentFile file)
         {
             IndexDocument result = null;
             var fileType = Path.GetExtension(file.RelativeUrl);
             var builder = _contentItemTypeRegistrar.GetContentItemBuilderByType(fileType);
             if (builder != null)
             {
-                var indexableFile = await _contentService.GetFileContentAsync(ContentConstants.ContentTypes.Pages, storeId, file.RelativeUrl);
+                var indexableFile = await _contentService.GetFileContentAsync(contentType, storeId, file.RelativeUrl);
                 result = builder.BuildIndexDocument(storeId, indexableFile);
             }
             return result;
