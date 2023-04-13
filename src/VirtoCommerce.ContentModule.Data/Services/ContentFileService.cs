@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         public async Task<IList<ContentItem>> FilterItemsAsync(FilterItemsCriteria criteria)
         {
-            var storageProvider = GetStorageProvider(criteria.ContentType, criteria.StoreId);
+            var storageProvider = GetStorageProvider(criteria.ContentType, criteria.StoreId, criteria.FolderUrl);
             var searchResult = await storageProvider.SearchAsync(criteria.FolderUrl ?? "", criteria.Keyword);
 
             // display folders before files
@@ -43,15 +44,17 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         public async Task<IList<ContentFile>> EnumerateFiles(FilterItemsCriteria criteria)
         {
-            var storageProvider = GetStorageProvider(criteria.ContentType, criteria.StoreId);
+            var storageProvider = GetStorageProvider(criteria.ContentType, criteria.StoreId, criteria.FolderUrl);
             var result = new List<ContentFile>();
             await EnumerateFilesRecursively(storageProvider, criteria.FolderUrl, result);
             return result;
         }
 
-        private IBlobContentStorageProvider GetStorageProvider(string contentType, string storeId)
+        private IBlobContentStorageProvider GetStorageProvider(string contentType, string storeId, string folderUrl)
         {
-            var path = _contentPathResolver.GetContentBasePath(contentType, storeId);
+            var path = folderUrl != null && new Uri(folderUrl).IsAbsoluteUri
+                ? ""
+                : _contentPathResolver.GetContentBasePath(contentType, storeId);
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(path);
             return storageProvider;
         }
