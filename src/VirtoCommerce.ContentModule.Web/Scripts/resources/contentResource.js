@@ -29,6 +29,7 @@ angular.module('virtoCommerce.contentModule')
                 return $resource('api/content/:contentType/:storeId',
                     null,
                     {
+                        indexedSearchEnabled: { method: 'GET', url: '/api/content/search/enabled' },
                         getStatistics: { url: 'api/content/:storeId/stats' },
                         query: { url: 'api/content/:contentType/:storeId/search', isArray: true },
                         get: {
