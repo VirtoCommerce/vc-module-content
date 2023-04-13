@@ -16,7 +16,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
         public IndexDocument BuildIndexDocument(string storeId, IndexableContentFile file)
         {
-            var documentId = DocumentIdentifierHelper.GenerateId(storeId, file);
+            var documentId = DocumentIdentifierHelper.GenerateId(storeId, file.ContentType, file);
             var result = new IndexDocument(documentId);
             result.AddFilterableAndSearchableValue("StoreId", storeId);
 
