@@ -92,11 +92,10 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             foreach (var documentId in documentIds)
             {
-                var (storeId, relativeUrl) = DocumentIdentifierHelper.ParseId(documentId);
-                var contentItem = await _contentService.GetFileContentAsync(ContentConstants.ContentTypes.Pages, storeId, relativeUrl);
+                var (storeId, contentType, relativeUrl) = DocumentIdentifierHelper.ParseId(documentId);
+                var contentItem = await _contentService.GetFileContentAsync(contentType, storeId, relativeUrl);
                 if (contentItem != null)
                 {
-                    contentItem.StoreId = criteria.StoreId;
                     result.Add(contentItem);
                 }
             }
