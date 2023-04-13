@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using VirtoCommerce.ContentModule.Core;
+using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.SearchModule.Core.Exceptions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 
@@ -18,19 +21,27 @@ namespace VirtoCommerce.ContentModule.Data.Search
         private readonly ISearchRequestBuilderRegistrar _searchRequestBuilderRegistrar;
         private readonly ISearchProvider _searchProvider;
         private readonly IContentService _contentService;
+        private readonly IConfiguration _configuration;
 
         public FullTextContentSearchService(
             ISearchRequestBuilderRegistrar searchRequestBuilderRegistrar,
             ISearchProvider searchProvider,
-            IContentService contentService)
+            IContentService contentService,
+            IConfiguration configuration)
         {
             _searchRequestBuilderRegistrar = searchRequestBuilderRegistrar;
             _searchProvider = searchProvider;
             _contentService = contentService;
+            _configuration = configuration;
         }
 
         public async Task<ContentSearchResult> SearchContentAsync(ContentSearchCriteria criteria)
         {
+            if (!_configuration.IsContentFullTextSearchEnabled())
+            {
+                throw new SearchException("Indexed content search is disabled. To enable it add 'Search:ContentFullTextSearchEnabled' configuraion key to app settings and set it to true.");
+            }
+
             var requestBuilder = GetRequestBuilder(criteria);
 
             if (requestBuilder == null)

@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using VirtoCommerce.ContentModule.Core;
+using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
@@ -39,6 +41,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IFullTextContentSearchService _fullTextContentSearchService;
         private readonly ICrudService<Store> _storeService;
         private readonly ILogger<ContentController> _logger;
+        private readonly IConfiguration _configuration;
         private static readonly FormOptions _defaultFormOptions = new();
 
         public ContentController(
@@ -48,7 +51,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             IContentFileService contentFileService,
             IFullTextContentSearchService fullTextContentSearchService,
             IStoreService storeService,
-            ILogger<ContentController> logger)
+            ILogger<ContentController> logger,
+            IConfiguration configuration)
         {
             _platformMemoryCache = platformMemoryCache;
             _contentStats = contentStats;
@@ -57,6 +61,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             _fullTextContentSearchService = fullTextContentSearchService;
             _storeService = (ICrudService<Store>)storeService;
             _logger = logger;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -170,6 +175,14 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         {
             var result = await _fullTextContentSearchService.SearchContentAsync(criteria);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("~/api/content/search/enabled")]
+        public ActionResult GetContentFullTextSearchEnabled()
+        {
+            var result = _configuration.IsContentFullTextSearchEnabled();
+            return Ok(new { Result = result });
         }
 
         /// <summary>
