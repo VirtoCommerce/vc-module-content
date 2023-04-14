@@ -74,6 +74,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
             var fileStream = await storageProvider.OpenReadAsync(relativeUrl);
             using var reader = new StreamReader(fileStream);
             result.Content = await reader.ReadToEndAsync();
+            result.StoreId = storeId;
+            result.ContentType = contentType;
             return result;
         }
 
