@@ -3,20 +3,18 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using VirtoCommerce.ContentModule.Core.Model;
-using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.SearchModule.Core.Extenstions;
 using VirtoCommerce.SearchModule.Core.Model;
 using YamlDotNet.RepresentationModel;
 
 namespace VirtoCommerce.ContentModule.Data.Search
 {
-    public class MarkdownContentItemBuilder : IContentItemBuilder
+    public class MarkdownContentItemBuilder : BaseContentItemBuilder
     {
         private static readonly Regex _headerRegExp = new(@"(?s:^---(.*?)---)");
 
-        public IndexDocument BuildIndexDocument(string storeId, IndexableContentFile file)
+        protected override IndexDocument BuildIndexDocumentInternal(string documentId, string storeId, IndexableContentFile file)
         {
-            var documentId = DocumentIdentifierHelper.GenerateId(storeId, file.ContentType, file);
             var result = new IndexDocument(documentId);
             result.AddFilterableAndSearchableValue("StoreId", storeId);
 

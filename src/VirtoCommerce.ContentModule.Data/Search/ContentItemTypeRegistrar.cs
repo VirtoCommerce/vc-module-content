@@ -28,7 +28,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             if (!_contentItemBuilders.TryAdd(contentItemType, factory))
             {
-                throw new InvalidOperationException($"There is already registered Index Document Builder for the \"{contentItemType}\" file type.");
+                throw new InvalidOperationException($"Index Document builder is already registered for the \"{contentItemType}\" file type.");
             }
         }
 
