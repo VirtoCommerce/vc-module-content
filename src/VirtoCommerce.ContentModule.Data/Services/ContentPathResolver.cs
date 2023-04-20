@@ -67,7 +67,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
                 return themeName;
             }
             var store = _storeService.GetByIdAsync(storeId).Result;
-            return store?.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value?.ToString() ?? ContentConstants.DefaultTheme;
+            var storeTheme = store?.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value?.ToString();
+            return string.IsNullOrEmpty(storeTheme) ? ContentConstants.DefaultTheme : storeTheme;
         }
     }
 }

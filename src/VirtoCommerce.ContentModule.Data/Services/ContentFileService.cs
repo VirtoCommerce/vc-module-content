@@ -52,7 +52,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         private IBlobContentStorageProvider GetStorageProvider(string contentType, string storeId, string folderUrl)
         {
-            var path = folderUrl != null && new Uri(folderUrl).IsAbsoluteUri
+            var path = folderUrl != null && new Uri(folderUrl, UriKind.RelativeOrAbsolute).IsAbsoluteUri
                 ? ""
                 : _contentPathResolver.GetContentBasePath(contentType, storeId);
             var storageProvider = _blobContentStorageProviderFactory.CreateProvider(path);
