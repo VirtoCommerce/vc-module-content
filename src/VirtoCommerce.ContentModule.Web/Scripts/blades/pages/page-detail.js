@@ -125,7 +125,7 @@ angular.module('virtoCommerce.contentModule')
                 _.each(props,
                     function (x) {
                         var metadataRecord = _.findWhere(metadata, { name: x.name });
-                        var values = [];
+                        var values = metadataRecord ? metadataRecord.values : [];
 
                         if (x.isMultilingual && !x.isDictionary) {
                             if (metadataRecord) {
