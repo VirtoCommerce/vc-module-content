@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,12 +19,35 @@ namespace VirtoCommerce.ContentModule.Data.Search
             var result = new IndexDocument(documentId);
             result.AddFilterableAndSearchableValue("StoreId", storeId);
 
+            AddLanguage(result, file);
             AddMetadata(result, file);
 
             var content = RemoveYamlHeader(file.Content);
             result.AddSearchableValue(content);
 
             return result;
+        }
+
+        private static void AddLanguage(IndexDocument result, IndexableContentFile file)
+        {
+            var parts = System.IO.Path.GetFileName(file.Name)?.Split('.');
+            var name = parts?.FirstOrDefault();
+            if (!string.IsNullOrEmpty(name))
+            {
+                result.AddFilterableAndSearchableValue("Name", name);
+            }
+
+            if (parts?.Length == 3)
+            {
+                try
+                {
+                    result.AddFilterableAndSearchableValue("CultureName", parts[1]);
+                }
+                catch (Exception)
+                {
+                }
+            }
+
         }
 
         private static void AddMetadata(IndexDocument result, IndexableContentFile file)

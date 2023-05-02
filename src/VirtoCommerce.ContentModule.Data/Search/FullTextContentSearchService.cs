@@ -77,29 +77,36 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             if (documents?.Any() == true)
             {
-                var documentIds = documents.Select(doc => doc.Id).ToArray();
-                var items = await GetItemsByPathsAsync(documentIds, criteria);
+                var items = await GetItemsByPathsAsync(documents, criteria);
                 return items;
             }
 
             return new List<IndexableContentFile>();
         }
 
-        protected virtual async Task<IList<IndexableContentFile>> GetItemsByPathsAsync(IList<string> documentIds, ContentSearchCriteria criteria)
+        protected virtual async Task<IList<IndexableContentFile>> GetItemsByPathsAsync(IList<SearchDocument> documents, ContentSearchCriteria criteria)
         {
             var result = new List<IndexableContentFile>();
 
-            foreach (var documentId in documentIds)
+            foreach (var document in documents)
             {
-                var (storeId, contentType, relativeUrl) = DocumentIdentifierHelper.ParseId(documentId);
+                var (storeId, contentType, relativeUrl) = DocumentIdentifierHelper.ParseId(document.Id);
                 var contentItem = await _contentService.GetFileContentAsync(contentType, storeId, relativeUrl);
                 if (contentItem != null)
                 {
+                    contentItem.Name = GetStringValueOrDefault(document, "name", contentItem.Name);
+                    contentItem.RelativeUrl = GetStringValueOrDefault(document, "permalink", contentItem.Name);
                     result.Add(contentItem);
                 }
             }
 
             return result;
+        }
+
+        private static string GetStringValueOrDefault(SearchDocument document, string fieldName, string defaultValue)
+        {
+            var result = document.ContainsKey(fieldName) ? document[fieldName].ToString() : null;
+            return string.IsNullOrEmpty(result) ? defaultValue : result;
         }
     }
 }

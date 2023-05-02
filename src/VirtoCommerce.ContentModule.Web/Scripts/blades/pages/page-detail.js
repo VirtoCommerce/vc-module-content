@@ -266,6 +266,7 @@ angular.module('virtoCommerce.contentModule')
                     executeMethod: function () {
                         var newBlade = {
                             id: 'dynamicPropertyList',
+                            title: '',
                             objectType: 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders',
                             parentRefresh: function (props) { fillDynamicProperties(blade.currentEntity.dynamicProperties, props); },
                             controller: 'platformWebApp.dynamicPropertyListController',
