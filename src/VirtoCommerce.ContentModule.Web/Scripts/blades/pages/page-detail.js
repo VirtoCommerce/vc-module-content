@@ -285,6 +285,8 @@ angular.module('virtoCommerce.contentModule')
                 return blade.currentEntity && blade.currentEntity.name && ((isDirty() && !blade.isNew) || (blade.currentEntity.content && blade.isNew));
             }
 
+            // #region Search index
+
             function addIndexToolbarButton() {
                 blade.toolbarCommands.push({
                     name: "content.commands.preview-index",
@@ -327,9 +329,7 @@ angular.module('virtoCommerce.contentModule')
             }
 
             function getSearchDocumentInfo() {
-                var isBlog = blade.contentType === 'blogs';
-                var basePath = isBlog ? '/blogs' : '';
-                var documentId = btoa(`${blade.storeId}::${blade.contentType}::${blade.currentEntity.url}`).replaceAll('=', '-');
+                var documentId = btoa(`${blade.storeId}::${blade.contentType}::${blade.currentEntity.relativeUrl}`).replaceAll('=', '-');
                 var documentType = 'ContentFile';
                 return { documentType: documentType, documentId: documentId };
             }
@@ -354,6 +354,7 @@ angular.module('virtoCommerce.contentModule')
                 });
             }
 
+            // #endregion
 
             blade.onClose = function (closeCallback) {
                 bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, $scope.saveChanges, closeCallback, "content.dialogs.page-save.title", "content.dialogs.page-save.message");

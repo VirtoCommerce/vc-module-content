@@ -8,7 +8,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
     {
         public static string GenerateId(string storeId, string contentType, ContentItem file)
         {
-            return Convert.ToBase64String(Encoding.ASCII.GetBytes($"{storeId}::{contentType}::{file.Url}")).Replace('=', '-');
+            return Convert.ToBase64String(Encoding.ASCII.GetBytes($"{storeId}::{contentType}::{file.RelativeUrl}")).Replace('=', '-');
         }
 
         public static (string storeId, string contentType, string relativeUrl) ParseId(string id)
