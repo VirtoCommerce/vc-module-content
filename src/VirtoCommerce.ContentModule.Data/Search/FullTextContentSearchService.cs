@@ -38,7 +38,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             if (!_configuration.IsContentFullTextSearchEnabled())
             {
-                throw new SearchException("Indexed content search is disabled. To enable it add 'Search:ContentFullTextSearchEnabled' configuraion key to app settings and set it to true.");
+                throw new SearchException("Indexed content search is disabled. To enable it add 'Search:ContentFullTextSearchEnabled' configuration key to app settings and set it to true.");
             }
 
             var requestBuilder = GetRequestBuilder(criteria);
