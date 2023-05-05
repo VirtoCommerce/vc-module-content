@@ -40,7 +40,6 @@ namespace VirtoCommerce.ContentModule.Data.Search
             {
                 result.AddFilterableAndSearchableValue("CultureName", parts[1]);
             }
-
         }
 
         private static void AddMetadata(IndexDocument result, IndexableContentFile file)
