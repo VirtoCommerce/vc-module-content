@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,7 +29,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
         private static void AddLanguage(IndexDocument result, IndexableContentFile file)
         {
-            var parts = System.IO.Path.GetFileName(file.Name)?.Split('.');
+            var parts = Path.GetFileName(file.Name)?.Split('.');
             var name = parts?.FirstOrDefault();
             if (!string.IsNullOrEmpty(name))
             {
@@ -39,13 +38,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             if (parts?.Length == 3)
             {
-                try
-                {
-                    result.AddFilterableAndSearchableValue("CultureName", parts[1]);
-                }
-                catch (Exception)
-                {
-                }
+                result.AddFilterableAndSearchableValue("CultureName", parts[1]);
             }
 
         }
