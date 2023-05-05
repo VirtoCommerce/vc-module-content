@@ -3,29 +3,43 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using VirtoCommerce.ContentModule.Core.Model;
-using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.SearchModule.Core.Extenstions;
 using VirtoCommerce.SearchModule.Core.Model;
 using YamlDotNet.RepresentationModel;
 
 namespace VirtoCommerce.ContentModule.Data.Search
 {
-    public class MarkdownContentItemBuilder : IContentItemBuilder
+    public class MarkdownContentItemBuilder : BaseContentItemBuilder
     {
         private static readonly Regex _headerRegExp = new(@"(?s:^---(.*?)---)");
 
-        public IndexDocument BuildIndexDocument(string storeId, IndexableContentFile file)
+        protected override IndexDocument BuildIndexDocumentInternal(string documentId, string storeId, IndexableContentFile file)
         {
-            var documentId = DocumentIdentifierHelper.GenerateId(storeId, file.ContentType, file);
             var result = new IndexDocument(documentId);
             result.AddFilterableAndSearchableValue("StoreId", storeId);
 
+            AddLanguage(result, file);
             AddMetadata(result, file);
 
             var content = RemoveYamlHeader(file.Content);
             result.AddSearchableValue(content);
 
             return result;
+        }
+
+        private static void AddLanguage(IndexDocument result, IndexableContentFile file)
+        {
+            var parts = Path.GetFileName(file.Name)?.Split('.');
+            var name = parts?.FirstOrDefault();
+            if (!string.IsNullOrEmpty(name))
+            {
+                result.AddFilterableAndSearchableValue("Name", name);
+            }
+
+            if (parts?.Length == 3)
+            {
+                result.AddFilterableAndSearchableValue("CultureName", parts[1]);
+            }
         }
 
         private static void AddMetadata(IndexDocument result, IndexableContentFile file)

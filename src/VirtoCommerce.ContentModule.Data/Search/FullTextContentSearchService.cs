@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
@@ -39,7 +38,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             if (!_configuration.IsContentFullTextSearchEnabled())
             {
-                throw new SearchException("Indexed content search is disabled. To enable it add 'Search:ContentFullTextSearchEnabled' configuraion key to app settings and set it to true.");
+                throw new SearchException("Indexed content search is disabled. To enable it add 'Search:ContentFullTextSearchEnabled' configuration key to app settings and set it to true.");
             }
 
             var requestBuilder = GetRequestBuilder(criteria);
@@ -78,29 +77,36 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             if (documents?.Any() == true)
             {
-                var documentIds = documents.Select(doc => doc.Id).ToArray();
-                var items = await GetItemsByPathsAsync(documentIds, criteria);
+                var items = await GetItemsByPathsAsync(documents, criteria);
                 return items;
             }
 
             return new List<IndexableContentFile>();
         }
 
-        protected virtual async Task<IList<IndexableContentFile>> GetItemsByPathsAsync(IList<string> documentIds, ContentSearchCriteria criteria)
+        protected virtual async Task<IList<IndexableContentFile>> GetItemsByPathsAsync(IList<SearchDocument> documents, ContentSearchCriteria criteria)
         {
             var result = new List<IndexableContentFile>();
 
-            foreach (var documentId in documentIds)
+            foreach (var document in documents)
             {
-                var (storeId, contentType, relativeUrl) = DocumentIdentifierHelper.ParseId(documentId);
+                var (storeId, contentType, relativeUrl) = DocumentIdentifierHelper.ParseId(document.Id);
                 var contentItem = await _contentService.GetFileContentAsync(contentType, storeId, relativeUrl);
                 if (contentItem != null)
                 {
+                    contentItem.Name = GetStringValueOrDefault(document, "name", contentItem.Name);
+                    contentItem.RelativeUrl = GetStringValueOrDefault(document, "permalink", contentItem.RelativeUrl);
                     result.Add(contentItem);
                 }
             }
 
             return result;
+        }
+
+        private static string GetStringValueOrDefault(SearchDocument document, string fieldName, string defaultValue)
+        {
+            var result = document.TryGetValue(fieldName, out var value) ? value.ToString() : null;
+            return string.IsNullOrEmpty(result) ? defaultValue : result;
         }
     }
 }
