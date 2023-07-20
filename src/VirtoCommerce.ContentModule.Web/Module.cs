@@ -43,6 +43,7 @@ namespace VirtoCommerce.ContentModule.Web
     public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
     {
         private IApplicationBuilder _appBuilder;
+
         public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
 
@@ -51,7 +52,7 @@ namespace VirtoCommerce.ContentModule.Web
 
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
 
-            serviceCollection.AddDbContext<MenuDbContext>((provider, options) =>
+            serviceCollection.AddDbContext<MenuDbContext>(options =>
             {
                 var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
                 var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
@@ -134,18 +135,12 @@ namespace VirtoCommerce.ContentModule.Web
             dynamicPropertyRegistrar.RegisterType<FrontMatterHeaders>();
 
             //Register module permissions
-            var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
-            permissionsProvider.RegisterPermissions(ContentConstants.Security.Permissions.AllPermissions.Select(x =>
-                new Permission
-                {
-                    GroupName = "Content",
-                    ModuleId = ModuleInfo.Id,
-                    Name = x
-                }).ToArray());
+            var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
+            permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "Content", ContentConstants.Security.Permissions.AllPermissions);
 
             //Events handlers registration
-            var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
-            inProcessBus.RegisterHandler<MenuLinkListChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
+            var handlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
+            handlerRegistrar.RegisterHandler<MenuLinkListChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
 
             //Force migrations
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
@@ -182,6 +177,7 @@ namespace VirtoCommerce.ContentModule.Web
 
         public void Uninstall()
         {
+            // Nothing to do here
         }
 
         public Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)

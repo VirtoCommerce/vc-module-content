@@ -6,7 +6,6 @@ using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 using VirtoCommerce.StoreModule.Core.Model;
@@ -18,16 +17,16 @@ namespace VirtoCommerce.ContentModule.Data.Search
     public class ContentIndexDocumentChangesProvider : IIndexDocumentChangesProvider
     {
         private readonly IContentFileService _contentFileService;
-        private readonly ISearchService<StoreSearchCriteria, StoreSearchResult, Store> _storeService;
+        private readonly IStoreSearchService _storeSearchService;
         private readonly IContentStatisticService _contentStatisticService;
 
         public ContentIndexDocumentChangesProvider(
             IContentFileService contentFileService,
-            IStoreSearchService storeService,
+            IStoreSearchService storeSearchService,
             IContentStatisticService contentStatisticService)
         {
             _contentFileService = contentFileService;
-            _storeService = (ISearchService<StoreSearchCriteria, StoreSearchResult, Store>)storeService;
+            _storeSearchService = storeSearchService;
             _contentStatisticService = contentStatisticService;
         }
 
@@ -44,7 +43,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                     .OrderByDescending(x => x.File.ModifiedDate ?? now)
                     .Skip((int)skip)
                     .Take((int)take)
-                    .Select(x => x.Document).ToArray(); ;
+                    .Select(x => x.Document);
                 result.AddRange(pagesToIndex);
             });
             return result;
@@ -87,7 +86,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
             var criteria = AbstractTypeFactory<StoreSearchCriteria>.TryCreateInstance();
             criteria.Skip = skip;
             criteria.Take = take;
-            var stores = await _storeService.SearchAsync(criteria);
+            var stores = await _storeSearchService.SearchNoCloneAsync(criteria);
             return stores;
         }
 

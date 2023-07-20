@@ -4,7 +4,6 @@ using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
 
@@ -13,15 +12,15 @@ namespace VirtoCommerce.ContentModule.Data.Services
     public class ContentPathResolver : IContentPathResolver
     {
         private readonly ContentOptions _options;
-        private readonly ICrudService<Store> _storeService;
+        private readonly IStoreService _storeService;
 
         public ContentPathResolver(IOptions<ContentOptions> options, IStoreService storeService)
         {
             _options = options.Value;
-            _storeService = (ICrudService<Store>)storeService;
+            _storeService = storeService;
         }
 
-        public string GetContentBasePath(string contentType, string storeId, string themeName)
+        public string GetContentBasePath(string contentType, string storeId, string themeName = null)
         {
             return GetContentPathFromMappings(contentType, storeId, themeName)
                 ?? GetDefaultContentPath(contentType, storeId);
@@ -66,7 +65,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             {
                 return themeName;
             }
-            var store = _storeService.GetByIdAsync(storeId).Result;
+            var store = _storeService.GetNoCloneAsync(storeId, StoreResponseGroup.DynamicProperties.ToString()).Result;
             var storeTheme = store?.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName")?.Values?.FirstOrDefault()?.Value?.ToString();
             return string.IsNullOrEmpty(storeTheme) ? ContentConstants.DefaultTheme : storeTheme;
         }
