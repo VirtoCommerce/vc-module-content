@@ -23,7 +23,6 @@ using VirtoCommerce.ContentModule.Web.Validators;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Exceptions;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
@@ -39,7 +38,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IContentService _contentService;
         private readonly IContentFileService _contentFileService;
         private readonly IFullTextContentSearchService _fullTextContentSearchService;
-        private readonly ICrudService<Store> _storeService;
+        private readonly IStoreService _storeService;
         private readonly ILogger<ContentController> _logger;
         private readonly IConfiguration _configuration;
         private static readonly FormOptions _defaultFormOptions = new();
@@ -59,7 +58,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             _contentService = contentService;
             _contentFileService = contentFileService;
             _fullTextContentSearchService = fullTextContentSearchService;
-            _storeService = (ICrudService<Store>)storeService;
+            _storeService = storeService;
             _logger = logger;
             _configuration = configuration;
         }
@@ -83,7 +82,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 var blogsTask = _contentStats.GetStoreBlogsCountAsync(storeId);
                 var themesTask = _contentStats.GetStoreThemesCountAsync(storeId);
 
-                var storeTask = _storeService.GetByIdAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
+                var storeTask = _storeService.GetNoCloneAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
 
                 await Task.WhenAll(themesTask, blogsTask, pagesTask, storeTask);
 
@@ -165,7 +164,6 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <summary>
         ///     Fulltext content search
         /// </summary>
-        /// <param name="storeId">Store id</param>
         /// <param name="criteria">Search criteria</param>
         /// <returns>content items</returns>
         [HttpPost]

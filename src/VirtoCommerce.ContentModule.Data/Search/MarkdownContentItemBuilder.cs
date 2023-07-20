@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using VirtoCommerce.ContentModule.Core.Model;
-using VirtoCommerce.SearchModule.Core.Extenstions;
+using VirtoCommerce.SearchModule.Core.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using YamlDotNet.RepresentationModel;
 
@@ -16,13 +16,13 @@ namespace VirtoCommerce.ContentModule.Data.Search
         protected override IndexDocument BuildIndexDocumentInternal(string documentId, string storeId, IndexableContentFile file)
         {
             var result = new IndexDocument(documentId);
-            result.AddFilterableAndSearchableValue("StoreId", storeId);
+            result.AddFilterableStringAndContentString("StoreId", storeId);
 
             AddLanguage(result, file);
             AddMetadata(result, file);
 
             var content = RemoveYamlHeader(file.Content);
-            result.AddSearchableValue(content);
+            result.AddContentString(content);
 
             return result;
         }
@@ -33,12 +33,12 @@ namespace VirtoCommerce.ContentModule.Data.Search
             var name = parts?.FirstOrDefault();
             if (!string.IsNullOrEmpty(name))
             {
-                result.AddFilterableAndSearchableValue("Name", name);
+                result.AddFilterableStringAndContentString("Name", name);
             }
 
             if (parts?.Length == 3)
             {
-                result.AddFilterableAndSearchableValue("CultureName", parts[1]);
+                result.AddFilterableStringAndContentString("CultureName", parts[1]);
             }
         }
 
@@ -51,14 +51,14 @@ namespace VirtoCommerce.ContentModule.Data.Search
             {
                 if (meta.Value.Count() == 1)
                 {
-                    result.AddFilterableAndSearchableValue(meta.Key, meta.Value.First());
+                    result.AddFilterableStringAndContentString(meta.Key, meta.Value.First());
                 }
                 else
                 {
                     var index = 0;
                     foreach (var value in meta.Value)
                     {
-                        result.AddFilterableAndSearchableValue($"{meta.Key}__{index}", value);
+                        result.AddFilterableStringAndContentString($"{meta.Key}__{index}", value);
                         index++;
                     }
                 }
