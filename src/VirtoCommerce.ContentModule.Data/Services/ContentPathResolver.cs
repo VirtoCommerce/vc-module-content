@@ -20,7 +20,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             _storeService = storeService;
         }
 
-        public string GetContentBasePath(string contentType, string storeId, string themeName)
+        public string GetContentBasePath(string contentType, string storeId, string themeName = null)
         {
             return GetContentPathFromMappings(contentType, storeId, themeName)
                 ?? GetDefaultContentPath(contentType, storeId);

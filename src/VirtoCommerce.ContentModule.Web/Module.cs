@@ -177,6 +177,7 @@ namespace VirtoCommerce.ContentModule.Web
 
         public void Uninstall()
         {
+            // Nothing to do here
         }
 
         public Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)

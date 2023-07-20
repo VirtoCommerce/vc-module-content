@@ -122,27 +122,24 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
                             }, cancellationToken);
 
                         }
-                        else if (reader.Value.ToString() == "CmsContent")
+                        else if (reader.Value.ToString() == "CmsContent" && options != null && options.HandleBinaryData)
                         {
-                            if (options != null && options.HandleBinaryData)
-                            {
-                                progressInfo.Description = "importing binary data:  themes and pages importing...";
-                                progressCallback(progressInfo);
+                            progressInfo.Description = "importing binary data:  themes and pages importing...";
+                            progressCallback(progressInfo);
 
-                                await reader.DeserializeArrayWithPagingAsync<ContentFolder>(_jsonSerializer, _batchSize,
-                                    items =>
+                            await reader.DeserializeArrayWithPagingAsync<ContentFolder>(_jsonSerializer, _batchSize,
+                                items =>
+                                {
+                                    foreach (var item in items)
                                     {
-                                        foreach (var item in items)
-                                        {
-                                            SaveContentFolderRecursive(item, progressCallback);
-                                        }
-                                        return Task.CompletedTask;
-                                    }, processedCount =>
-                                    {
-                                        progressInfo.Description = $"{processedCount} menu links have been imported";
-                                        progressCallback(progressInfo);
-                                    }, cancellationToken);
-                            }
+                                        SaveContentFolderRecursive(item, progressCallback);
+                                    }
+                                    return Task.CompletedTask;
+                                }, processedCount =>
+                                {
+                                    progressInfo.Description = $"{processedCount} menu links have been imported";
+                                    progressCallback(progressInfo);
+                                }, cancellationToken);
                         }
                     }
                 }
