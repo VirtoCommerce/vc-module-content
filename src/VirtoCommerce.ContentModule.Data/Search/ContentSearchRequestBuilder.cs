@@ -26,6 +26,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             if (criteria is ContentSearchCriteria searchCriteria)
             {
+                // GetFilters() modifies Keyword
                 searchCriteria = searchCriteria.CloneTyped();
                 var filters = GetFilters(searchCriteria);
 
