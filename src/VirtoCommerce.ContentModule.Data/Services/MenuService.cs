@@ -2,130 +2,83 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.ContentModule.Core.Events;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.ContentModule.Data.Model;
-using VirtoCommerce.ContentModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Events;
-using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.ContentModule.Data.Services
 {
     public class MenuService : IMenuService
     {
-        private readonly Func<IMenuRepository> _menuRepositoryFactory;
-        private readonly IEventPublisher _eventPublisher;
+        private const int _batchSize = 50;
 
-        public MenuService(Func<IMenuRepository> menuRepositoryFactory, IEventPublisher eventPublisher)
+        private readonly IMenuLinkListService _menuLinkListService;
+        private readonly IMenuLinkListSearchService _menuLinkListSearchService;
+
+        public MenuService(IMenuLinkListService menuLinkListService, IMenuLinkListSearchService menuLinkListSearchService)
         {
-            _menuRepositoryFactory = menuRepositoryFactory;
-            _eventPublisher = eventPublisher;
+            _menuLinkListService = menuLinkListService;
+            _menuLinkListSearchService = menuLinkListSearchService;
         }
 
+        [Obsolete("Use IMenuLinkListSearchService.SearchAsync()")]
         public async Task<IEnumerable<MenuLinkList>> GetAllLinkListsAsync()
         {
-            using (var repository = _menuRepositoryFactory())
-            {
-                var entities = await repository.GetAllLinkListsAsync();
-                return entities.Select(x => x.ToModel(AbstractTypeFactory<MenuLinkList>.TryCreateInstance()));
-            }
+            return await GetAllListsAsync(storeId: null, clone: true);
         }
 
         public async Task<IEnumerable<MenuLinkList>> GetListsByStoreIdAsync(string storeId)
         {
-            using (var repository = _menuRepositoryFactory())
-            {
-                var entities = await repository.GetListsByStoreIdAsync(storeId);
-                return entities.Select(x => x.ToModel(AbstractTypeFactory<MenuLinkList>.TryCreateInstance()));
-            }
+            return await GetAllListsAsync(storeId, clone: true);
         }
 
-        public async Task<MenuLinkList> GetListByIdAsync(string listId)
+        public Task<IList<MenuLinkList>> GetListsByStoreIdAsync(string storeId, bool clone)
         {
-            using (var repository = _menuRepositoryFactory())
-            {
-                var entities = await repository.GetListByIdAsync(listId);
-                return entities.ToModel(AbstractTypeFactory<MenuLinkList>.TryCreateInstance());
-            }
+            return GetAllListsAsync(storeId, clone);
         }
 
-        public async Task AddOrUpdateAsync(MenuLinkList list)
+        [Obsolete("Use IMenuLinkListService.GetByIdAsync()")]
+        public Task<MenuLinkList> GetListByIdAsync(string listId)
         {
-            using (var repository = _menuRepositoryFactory())
-            {
-                var changedEntries = new List<GenericChangedEntry<MenuLinkList>>();
-                var pkMap = new PrimaryKeyResolvingMap();
-
-                var targetEntity = await repository.GetListByIdAsync(list.Id);
-                var sourceEntity = AbstractTypeFactory<MenuLinkListEntity>.TryCreateInstance().FromModel(list, pkMap);
-
-                if (targetEntity != null)
-                {
-                    /// This extension is allow to get around breaking changes is introduced in EF Core 3.0 that leads to throw
-                    /// Database operation expected to affect 1 row(s) but actually affected 0 row(s) exception when trying to add the new children entities with manually set keys
-                    /// https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.0/breaking-changes#detectchanges-honors-store-generated-key-values
-                    repository.TrackModifiedAsAddedForNewChildEntities(targetEntity);
-
-                    changedEntries.Add(new GenericChangedEntry<MenuLinkList>(list, targetEntity.ToModel(AbstractTypeFactory<MenuLinkList>.TryCreateInstance()), EntryState.Modified));
-                    sourceEntity.Patch(targetEntity);
-                }
-                else
-                {
-                    repository.Add(sourceEntity);
-                    changedEntries.Add(new GenericChangedEntry<MenuLinkList>(list, EntryState.Added));
-                }
-
-                await repository.UnitOfWork.CommitAsync();
-                pkMap.ResolvePrimaryKeys();
-                await _eventPublisher.Publish(new MenuLinkListChangedEvent(changedEntries));
-            }
+            return _menuLinkListService.GetByIdAsync(listId);
         }
 
-        public async Task DeleteListAsync(string listId)
+        [Obsolete("Use IMenuLinkListService.SaveChangesAsync()")]
+        public Task AddOrUpdateAsync(MenuLinkList list)
         {
-            await DeleteListsAsync(new[] { listId });
+            return _menuLinkListService.SaveChangesAsync(new[] { list });
         }
 
-        public async Task DeleteListsAsync(string[] listIds)
+        [Obsolete("Use IMenuLinkListService.DeleteAsync()")]
+        public Task DeleteListAsync(string listId)
         {
-            if (listIds == null)
-            {
-                throw new ArgumentNullException(nameof(listIds));
-            }
+            return _menuLinkListService.DeleteAsync(new[] { listId });
+        }
 
-            var changedEntries = new List<GenericChangedEntry<MenuLinkList>>();
-            using (var repository = _menuRepositoryFactory())
-            {
-                foreach (var listId in listIds)
-                {
-                    var existList = await repository.GetListByIdAsync(listId);
-                    if (existList != null)
-                    {
-                        changedEntries.Add(new GenericChangedEntry<MenuLinkList>(existList.ToModel(AbstractTypeFactory<MenuLinkList>.TryCreateInstance()), EntryState.Deleted));
-                        repository.Remove(existList);
-                    }
-                }
-                await repository.UnitOfWork.CommitAsync();
-
-                await _eventPublisher.Publish(new MenuLinkListChangedEvent(changedEntries));
-
-            }
+        [Obsolete("Use IMenuLinkListService.DeleteAsync()")]
+        public Task DeleteListsAsync(string[] listIds)
+        {
+            return _menuLinkListService.DeleteAsync(listIds);
         }
 
         public async Task<bool> CheckListAsync(string storeId, string name, string language, string id)
         {
-            using (var repository = _menuRepositoryFactory())
-            {
-                var lists = await repository.GetListsByStoreIdAsync(storeId);
+            var lists = await GetAllListsAsync(storeId, clone: false);
 
-                var retVal = !lists.Any(l => string.Equals(l.Name, name, StringComparison.OrdinalIgnoreCase)
-                                    && (l.Language == language || (string.IsNullOrEmpty(l.Language) && string.IsNullOrEmpty(language)))
-                                    && l.Id != id);
+            return !lists.Any(x =>
+                x.Name.EqualsInvariant(name) &&
+                (x.Language == language || (string.IsNullOrEmpty(x.Language) && string.IsNullOrEmpty(language))) &&
+                x.Id != id);
+        }
 
-                return retVal;
-            }
+
+        protected Task<IList<MenuLinkList>> GetAllListsAsync(string storeId, bool clone)
+        {
+            var criteria = AbstractTypeFactory<MenuLinkListSearchCriteria>.TryCreateInstance();
+            criteria.StoreId = storeId;
+            criteria.Take = _batchSize;
+
+            return _menuLinkListSearchService.SearchAll(criteria, clone);
         }
     }
 }

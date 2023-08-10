@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,16 +19,34 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
 
         public IQueryable<MenuLinkEntity> MenuLinks => DbContext.Set<MenuLinkEntity>();
 
+        public async Task<IList<MenuLinkListEntity>> GetListsByIdsAsync(IList<string> listIds)
+        {
+            var lists = await MenuLinkLists
+                .Where(x => listIds.Contains(x.Id))
+                .ToListAsync();
+
+            if (lists.Any())
+            {
+                var existingIds = lists.Select(x => x.Id).ToList();
+                await MenuLinks.Where(x => existingIds.Contains(x.MenuLinkListId)).LoadAsync();
+            }
+
+            return lists;
+        }
+
+        [Obsolete("Use GetListsByIdsAsync()")]
         public async Task<IEnumerable<MenuLinkListEntity>> GetAllLinkListsAsync()
         {
             return await MenuLinkLists.Include(m => m.MenuLinks).ToArrayAsync();
         }
 
+        [Obsolete("Use GetListsByIdsAsync()")]
         public async Task<MenuLinkListEntity> GetListByIdAsync(string listId)
         {
             return await MenuLinkLists.Include(m => m.MenuLinks).Where(m => m.Id == listId).FirstOrDefaultAsync();
         }
 
+        [Obsolete("Use GetListsByIdsAsync()")]
         public async Task<IEnumerable<MenuLinkListEntity>> GetListsByStoreIdAsync(string storeId)
         {
             return await MenuLinkLists.Include(m => m.MenuLinks).Where(m => m.StoreId == storeId).ToArrayAsync();

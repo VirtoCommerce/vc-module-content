@@ -75,6 +75,8 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<Func<IMenuRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetService<IMenuRepository>());
 
             serviceCollection.AddTransient<IMenuService, MenuService>();
+            serviceCollection.AddTransient<IMenuLinkListService, MenuLinkListService>();
+            serviceCollection.AddTransient<IMenuLinkListSearchService, MenuLinkListSearchService>();
             serviceCollection.AddTransient<IFullTextContentSearchService, FullTextContentSearchService>();
             serviceCollection.AddTransient<IContentService, ContentService>();
             serviceCollection.AddTransient<IContentStatisticService, ContentStatisticService>();
