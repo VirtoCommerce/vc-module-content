@@ -33,6 +33,11 @@ public class MenuLinkListSearchService : SearchService<MenuLinkListSearchCriteri
             query = query.Where(x => x.StoreId == criteria.StoreId);
         }
 
+        if (criteria.Name != null)
+        {
+            query = query.Where(x => x.Name == criteria.Name);
+        }
+
         return query;
     }
 

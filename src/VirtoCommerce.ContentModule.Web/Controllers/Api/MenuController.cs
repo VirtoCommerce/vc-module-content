@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
@@ -14,13 +15,13 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
     [Route("api/cms/{storeId}/menu")]
     public class MenuController : Controller
     {
-        private readonly IMenuService _menuService;
-        private readonly IMenuLinkListService _menuLinkListService;
+        private readonly IMenuLinkListService _crudService;
+        private readonly IMenuLinkListSearchService _searchService;
 
-        public MenuController(IMenuService menuService, IMenuLinkListService menuLinkListService)
+        public MenuController(IMenuLinkListService crudService, IMenuLinkListSearchService searchService)
         {
-            _menuService = menuService;
-            _menuLinkListService = menuLinkListService;
+            _crudService = crudService;
+            _searchService = searchService;
         }
 
         /// <summary>
@@ -32,7 +33,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<MenuLinkList[]>> GetLists([FromRoute] string storeId)
         {
-            var lists = await _menuService.GetListsByStoreIdAsync(storeId, clone: false);
+            var lists = await _searchService.SearchAllNoClone(storeId);
 
             if (lists.Any())
             {
@@ -51,7 +52,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<MenuLinkList>> GetList([FromRoute] string listId)
         {
-            var item = await _menuLinkListService.GetNoCloneAsync(listId);
+            var item = await _crudService.GetNoCloneAsync(listId);
             return Ok(item);
         }
 
@@ -68,7 +69,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<bool>> CheckName([FromRoute] string storeId, [FromQuery] string name, [FromQuery] string language = "", [FromQuery] string id = "")
         {
-            var retVal = await _menuService.CheckListAsync(storeId, name, language, id);
+            var retVal = await _searchService.IsNameUnique(storeId, name, language, id);
             return Ok(new { Result = retVal });
         }
 
@@ -87,7 +88,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 throw new ArgumentNullException(nameof(list));
             }
 
-            await _menuLinkListService.SaveChangesAsync(new[] { list });
+            await _crudService.SaveChangesAsync(new[] { list });
             return NoContent();
         }
 
@@ -106,7 +107,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 throw new ArgumentNullException(nameof(listIds));
             }
 
-            await _menuLinkListService.DeleteAsync(listIds);
+            await _crudService.DeleteAsync(listIds);
 
             return NoContent();
         }

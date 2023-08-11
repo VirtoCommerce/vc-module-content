@@ -19,10 +19,10 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
 
         public IQueryable<MenuLinkEntity> MenuLinks => DbContext.Set<MenuLinkEntity>();
 
-        public async Task<IList<MenuLinkListEntity>> GetListsByIdsAsync(IList<string> listIds)
+        public async Task<IList<MenuLinkListEntity>> GetListsByIdsAsync(IList<string> ids)
         {
             var lists = await MenuLinkLists
-                .Where(x => listIds.Contains(x.Id))
+                .Where(x => ids.Contains(x.Id))
                 .ToListAsync();
 
             if (lists.Any())
@@ -34,19 +34,19 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
             return lists;
         }
 
-        [Obsolete("Use GetListsByIdsAsync()")]
+        [Obsolete("Use GetListsByIdsAsync()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public async Task<IEnumerable<MenuLinkListEntity>> GetAllLinkListsAsync()
         {
             return await MenuLinkLists.Include(m => m.MenuLinks).ToArrayAsync();
         }
 
-        [Obsolete("Use GetListsByIdsAsync()")]
+        [Obsolete("Use GetListsByIdsAsync()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public async Task<MenuLinkListEntity> GetListByIdAsync(string listId)
         {
             return await MenuLinkLists.Include(m => m.MenuLinks).Where(m => m.Id == listId).FirstOrDefaultAsync();
         }
 
-        [Obsolete("Use GetListsByIdsAsync()")]
+        [Obsolete("Use GetListsByIdsAsync()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public async Task<IEnumerable<MenuLinkListEntity>> GetListsByStoreIdAsync(string storeId)
         {
             return await MenuLinkLists.Include(m => m.MenuLinks).Where(m => m.StoreId == storeId).ToArrayAsync();
