@@ -5,6 +5,7 @@ using VirtoCommerce.ContentModule.Core.Model;
 
 namespace VirtoCommerce.ContentModule.Core.Services
 {
+    [Obsolete("Use IMenuLinkListService or IMenuLinkListSearchService", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
     public interface IMenuService
     {
         [Obsolete("Use IMenuLinkListSearchService.SearchAll()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
