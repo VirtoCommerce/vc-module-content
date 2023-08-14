@@ -70,6 +70,11 @@ namespace VirtoCommerce.ContentModule.Data.Services
             var storageProvider = GetStorageProvider(contentType, storeId);
             var blobInfo = await storageProvider.GetBlobInfoAsync(HttpUtility.UrlDecode(relativeUrl));
 
+            if (blobInfo is null)
+            {
+                return null;
+            }
+
             var result = blobInfo.ToIndexableContentModel();
             var fileStream = await storageProvider.OpenReadAsync(relativeUrl);
             using var reader = new StreamReader(fileStream);
