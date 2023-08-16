@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,16 +15,23 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
     public sealed class ContentExportImport
     {
         private static readonly string[] _exportedFolders = { "Pages", "Themes" };
-        private readonly IMenuService _menuService;
-        private readonly IBlobContentStorageProvider _blobContentStorageProvider;
-        private readonly JsonSerializer _jsonSerializer;
         private readonly int _batchSize = 50;
 
-        public ContentExportImport(IMenuService menuService, IBlobContentStorageProvider blobContentStorageProvider, JsonSerializer jsonSerializer)
+        private readonly IMenuLinkListService _menuLinkListService;
+        private readonly IMenuLinkListSearchService _menuLinkListSearchService;
+        private readonly IBlobContentStorageProvider _blobContentStorageProvider;
+        private readonly JsonSerializer _jsonSerializer;
+
+        public ContentExportImport(
+            IMenuLinkListService menuLinkListService,
+            IMenuLinkListSearchService menuLinkListSearchService,
+            IBlobContentStorageProvider blobContentStorageProvider,
+            JsonSerializer jsonSerializer)
         {
-            _menuService = menuService;
-            _jsonSerializer = jsonSerializer;
+            _menuLinkListService = menuLinkListService;
+            _menuLinkListSearchService = menuLinkListSearchService;
             _blobContentStorageProvider = blobContentStorageProvider;
+            _jsonSerializer = jsonSerializer;
         }
 
         public async Task DoExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
@@ -39,29 +45,19 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
             {
                 await writer.WriteStartObjectAsync();
 
-                //Export menu link list
-                var menuLinkLists = await _menuService.GetAllLinkListsAsync();
-                var linkLists = menuLinkLists as IList<MenuLinkList> ?? menuLinkLists.ToList();
-
                 await writer.WritePropertyNameAsync("MenuLinkLists");
-                await writer.WriteStartArrayAsync();
-
-                for (var skip = 0; skip < linkLists.Count; skip += _batchSize)
-                {
-                    progressInfo.Description = $"{skip} of {linkLists.Count} menu link lists have been loaded";
-                    progressCallback(progressInfo);
-
-                    foreach (var list in linkLists.Skip(skip).Take(_batchSize).ToList())
+                await writer.SerializeArrayWithPagingAsync(_jsonSerializer, _batchSize,
+                    async (skip, take) =>
+                        (GenericSearchResult<MenuLinkList>)await _menuLinkListSearchService.SearchNoCloneAsync(new MenuLinkListSearchCriteria
+                        {
+                            Skip = skip,
+                            Take = take
+                        })
+                    , (processedCount, totalCount) =>
                     {
-                        _jsonSerializer.Serialize(writer, list);
-                    }
-
-                    await writer.FlushAsync();
-                    progressInfo.Description = $"{Math.Min(linkLists.Count, skip + _batchSize)} of {linkLists.Count} menu link lists exported";
-                    progressCallback(progressInfo);
-                }
-
-                await writer.WriteEndArrayAsync();
+                        progressInfo.Description = $"{processedCount} of {totalCount} menu link lists have been exported";
+                        progressCallback(progressInfo);
+                    }, cancellationToken);
 
                 if (options.HandleBinaryData)
                 {
@@ -106,23 +102,22 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
                 {
                     if (reader.TokenType == JsonToken.PropertyName)
                     {
-                        if (reader.Value.ToString() == "MenuLinkLists")
+                        var readerValueString = reader.Value?.ToString();
+
+                        if (readerValueString == "MenuLinkLists")
                         {
                             await reader.DeserializeArrayWithPagingAsync<MenuLinkList>(_jsonSerializer, _batchSize,
                             async items =>
                             {
-                                foreach (var item in items)
-                                {
-                                    await _menuService.AddOrUpdateAsync(item);
-                                }
+                                await _menuLinkListService.SaveChangesAsync(items);
                             }, processedCount =>
                             {
-                                progressInfo.Description = $"{processedCount} menu links have been imported";
+                                progressInfo.Description = $"{processedCount} menu link lists have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
 
                         }
-                        else if (reader.Value.ToString() == "CmsContent" && options != null && options.HandleBinaryData)
+                        else if (readerValueString == "CmsContent" && options != null && options.HandleBinaryData)
                         {
                             progressInfo.Description = "importing binary data:  themes and pages importing...";
                             progressCallback(progressInfo);

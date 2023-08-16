@@ -9,7 +9,6 @@ angular.module('virtoCommerce.contentModule')
             menus.get({ storeId: blade.storeId }, function (data) {
                 blade.currentEntities = data;
                 blade.isLoading = false;
-                blade.parentBlade.refresh(blade.storeId, 'menus');
             },
             function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
         };

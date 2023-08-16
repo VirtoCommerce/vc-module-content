@@ -13,6 +13,7 @@ using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.ContentModule.Data.Services
 {
+    [Obsolete("Use IMenuLinkListService or IMenuLinkListSearchService", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
     public class MenuService : IMenuService
     {
         private readonly Func<IMenuRepository> _menuRepositoryFactory;
@@ -24,6 +25,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             _eventPublisher = eventPublisher;
         }
 
+        [Obsolete("Use IMenuLinkListSearchService.SearchAll()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public async Task<IEnumerable<MenuLinkList>> GetAllLinkListsAsync()
         {
             using (var repository = _menuRepositoryFactory())
@@ -33,6 +35,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             }
         }
 
+        [Obsolete("Use IMenuLinkListSearchService.SearchAll()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public async Task<IEnumerable<MenuLinkList>> GetListsByStoreIdAsync(string storeId)
         {
             using (var repository = _menuRepositoryFactory())
@@ -42,6 +45,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             }
         }
 
+        [Obsolete("Use IMenuLinkListService.GetByIdAsync()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public async Task<MenuLinkList> GetListByIdAsync(string listId)
         {
             using (var repository = _menuRepositoryFactory())
@@ -51,6 +55,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             }
         }
 
+        [Obsolete("Use IMenuLinkListService.SaveChangesAsync()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public async Task AddOrUpdateAsync(MenuLinkList list)
         {
             using (var repository = _menuRepositoryFactory())
@@ -83,11 +88,13 @@ namespace VirtoCommerce.ContentModule.Data.Services
             }
         }
 
+        [Obsolete("Use IMenuLinkListService.DeleteAsync()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public async Task DeleteListAsync(string listId)
         {
             await DeleteListsAsync(new[] { listId });
         }
 
+        [Obsolete("Use IMenuLinkListService.DeleteAsync()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public async Task DeleteListsAsync(string[] listIds)
         {
             if (listIds == null)
@@ -114,6 +121,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             }
         }
 
+        [Obsolete("Use IMenuLinkListSearchService.IsNameUnique()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public async Task<bool> CheckListAsync(string storeId, string name, string language, string id)
         {
             using (var repository = _menuRepositoryFactory())
