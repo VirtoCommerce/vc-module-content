@@ -36,6 +36,6 @@ public static class MenuLinkListSearchServiceExtensions
         criteria.Name = name;
         criteria.Take = batchSize;
 
-        return searchService.SearchAll(criteria, clone);
+        return searchService.SearchAllAsync(criteria, clone);
     }
 }
