@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Domain;
 
 namespace VirtoCommerce.ContentModule.Data.Model
 {
-    public class MenuLinkListEntity : AuditableEntity, IHasOuterId
+    public class MenuLinkListEntity : AuditableEntity, IHasOuterId, IDataEntity<MenuLinkListEntity, MenuLinkList>
     {
         [Required]
         public string Name { get; set; }
@@ -18,11 +19,7 @@ namespace VirtoCommerce.ContentModule.Data.Model
         [StringLength(128)]
         public string OuterId { get; set; }
 
-        #region Navigation Properties
-
-        public virtual ObservableCollection<MenuLinkEntity> MenuLinks { get; set; } = new ObservableCollection<MenuLinkEntity>();
-
-        #endregion
+        public virtual ObservableCollection<MenuLinkEntity> MenuLinks { get; set; } = new();
 
         public void Patch(MenuLinkListEntity target)
         {
@@ -58,7 +55,9 @@ namespace VirtoCommerce.ContentModule.Data.Model
         public MenuLinkListEntity FromModel(MenuLinkList menuLinkList, PrimaryKeyResolvingMap pkMap)
         {
             if (menuLinkList == null)
+            {
                 throw new ArgumentNullException(nameof(menuLinkList));
+            }
 
             pkMap.AddPair(menuLinkList, this);
 
