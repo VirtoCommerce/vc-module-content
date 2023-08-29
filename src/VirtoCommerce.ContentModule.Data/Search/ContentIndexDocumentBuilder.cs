@@ -6,12 +6,13 @@ using Microsoft.Extensions.Logging;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.SearchModule.Core.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 
 namespace VirtoCommerce.ContentModule.Data.Search
 {
-    public class ContentIndexDocumentBuilder : IIndexDocumentBuilder
+    public class ContentIndexDocumentBuilder : IIndexSchemaBuilder, IIndexDocumentBuilder
     {
         private readonly IContentService _contentService;
         private readonly IContentItemTypeRegistrar _contentItemTypeRegistrar;
@@ -25,6 +26,14 @@ namespace VirtoCommerce.ContentModule.Data.Search
             _contentService = contentService;
             _log = log;
             _contentItemTypeRegistrar = contentItemTypeRegistrar;
+        }
+
+        public Task BuildSchemaAsync(IndexDocument schema)
+        {
+            schema.AddFilterableStringAndContentString("StoreId");
+            schema.AddFilterableStringAndContentString("Name");
+            schema.AddFilterableStringAndContentString("CultureName");
+            return Task.CompletedTask;
         }
 
         public virtual async Task<IList<IndexDocument>> GetDocumentsAsync(IList<string> documentIds)
