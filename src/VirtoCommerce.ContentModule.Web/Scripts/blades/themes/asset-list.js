@@ -134,7 +134,6 @@ angular.module('platformWebApp')
                         themeId: blade.themeId,
                         currentEntity: listItem,
                         isNew: isNew,
-                        isExpandable: true,
                         controller: 'virtoCommerce.contentModule.assetDetailController',
                         template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/themes/asset-detail.tpl.html'
                     };
