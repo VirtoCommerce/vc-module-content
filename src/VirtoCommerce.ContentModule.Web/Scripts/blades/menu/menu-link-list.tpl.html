@@ -18,9 +18,8 @@
                     <div class="form-input">
                         <ui-select ng-model="blade.currentEntity.language">
                             <ui-select-match allow-clear placeholder="{{ 'content.blades.menu-link-list.placeholders.language' | translate }}">{{$select.selected}}</ui-select-match>
-                            <ui-select-choices repeat="x in blade.languages">
-                                <span class="flag flag-{{x.substr(3).toLowerCase()}}"></span>
-                                <span ng-bind-html="x"></span>
+                            <ui-select-choices repeat="x in blade.languages | filter: $select.search">
+                              <span ng-bind-html="x | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
                     </div>
