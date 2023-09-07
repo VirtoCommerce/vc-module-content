@@ -1,4 +1,4 @@
-<form name="formScope" ng-init="setForm(formScope)">
+<form name="formScope" ng-init="setForm(formScope)" style="height: 100%">
     <div class="blade-static __expanded" ng-if="blade.isNew">
         <div class="form-group">
             <label class="form-label">{{ 'content.blades.edit-asset.labels.asset-name' | translate }}</label>
@@ -11,23 +11,9 @@
         </div>
     </div>
 
-    <div class="blade-static __collapsed" ng-if="!blade.isNew">
-        <div class="form-group">
-            <label>{{blade.currentEntity.name}}</label> | <a href="http://docs.virtocommerce.com/display/vc2devguide/Liquid+Reference" target="_blank">{{ 'content.blades.edit-asset.labels.liquid-documentation' | translate }}</a>
-        </div>
-    </div>
-
     <div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>
 
     <div class="blade-content __xxlarge-wide">
-        <div class="blade-inner">
-            <div class="inner-block">
-                <div class="form-group">
-                    <div class="form-input __expanded">
-                        <ui-codemirror required ng-model="blade.currentEntity.content" ui-codemirror-opts="editorOptions"></ui-codemirror>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <ui-codemirror required ng-model="blade.currentEntity.content" ui-codemirror-opts="editorOptions"></ui-codemirror>
     </div>
 </form>
