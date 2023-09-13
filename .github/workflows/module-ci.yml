@@ -55,6 +55,11 @@ jobs:
       run-e2e: ${{ steps.run-e2e.outputs.result }}
 
     steps:
+    
+      - name: Set up Node 14
+        uses: actions/setup-node@v3
+        with:
+            node-version: '14'
 
       - name: Set RELEASE_STATUS
         if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
