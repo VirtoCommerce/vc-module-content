@@ -12,11 +12,14 @@ using VirtoCommerce.ContentModule.Azure;
 using VirtoCommerce.ContentModule.Azure.Extensions;
 using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Events;
+using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
+using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.ExportImport;
 using VirtoCommerce.ContentModule.Data.Handlers;
 using VirtoCommerce.ContentModule.Data.Repositories;
+using VirtoCommerce.ContentModule.Data.Search;
 using VirtoCommerce.ContentModule.Data.Services;
 using VirtoCommerce.ContentModule.FileSystem;
 using VirtoCommerce.ContentModule.FileSystem.Extensions;
@@ -27,13 +30,17 @@ using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
+using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
+using VirtoCommerce.SearchModule.Core.Model;
+using VirtoCommerce.SearchModule.Core.Services;
 
 namespace VirtoCommerce.ContentModule.Web
 {
     public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
     {
         private IApplicationBuilder _appBuilder;
+
         public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
 
@@ -52,6 +59,34 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<Func<IMenuRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetService<IMenuRepository>());
 
             serviceCollection.AddTransient<IMenuService, MenuService>();
+            serviceCollection.AddTransient<IFullTextContentSearchService, FullTextContentSearchService>();
+            serviceCollection.AddTransient<IContentService, ContentService>();
+            serviceCollection.AddTransient<IContentStatisticService, ContentStatisticService>();
+            serviceCollection.AddTransient<IContentFileService, ContentFileService>();
+            serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
+
+            serviceCollection.AddSingleton<IContentItemTypeRegistrar, ContentItemTypeRegistrar>();
+
+            var isFullTextSearchEnabled = Configuration.IsContentFullTextSearchEnabled();
+
+            if (isFullTextSearchEnabled)
+            {
+                serviceCollection.AddTransient<ContentSearchRequestBuilder>();
+                serviceCollection.AddTransient<MarkdownContentItemBuilder>();
+
+                serviceCollection.AddTransient<ContentIndexDocumentChangesProvider>();
+                serviceCollection.AddTransient<ContentIndexDocumentBuilder>();
+
+                serviceCollection.AddSingleton(provider => new IndexDocumentConfiguration
+                {
+                    DocumentType = FullTextContentSearchService.ContentDocumentType,
+                    DocumentSource = new IndexDocumentSource
+                    {
+                        ChangesProvider = provider.GetService<ContentIndexDocumentChangesProvider>(),
+                        DocumentBuilder = provider.GetService<ContentIndexDocumentBuilder>(),
+                    },
+                });
+            }
 
             serviceCollection.AddTransient<ContentExportImport>();
 
@@ -84,8 +119,8 @@ namespace VirtoCommerce.ContentModule.Web
             dynamicPropertyRegistrar.RegisterType<FrontMatterHeaders>();
 
             //Register module permissions
-            var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
-            permissionsProvider.RegisterPermissions(ContentConstants.Security.Permissions.AllPermissions.Select(x =>
+            var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
+            permissionsRegistrar.RegisterPermissions(ContentConstants.Security.Permissions.AllPermissions.Select(x =>
                 new Permission
                 {
                     GroupName = "Content",
@@ -94,8 +129,8 @@ namespace VirtoCommerce.ContentModule.Web
                 }).ToArray());
 
             //Events handlers registration
-            var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
-            inProcessBus.RegisterHandler<MenuLinkListChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
+            var handlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
+            handlerRegistrar.RegisterHandler<MenuLinkListChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
 
             //Force migrations
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
@@ -104,16 +139,33 @@ namespace VirtoCommerce.ContentModule.Web
                 {
                     menuDbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
                     menuDbContext.Database.EnsureCreated();
+
                     menuDbContext.Database.Migrate();
                 }
             }
 
             var dynamicPropertyService = appBuilder.ApplicationServices.GetRequiredService<IDynamicPropertyService>();
             dynamicPropertyService.SaveDynamicPropertiesAsync(FrontMatterHeaders.AllDynamicProperties.ToArray()).GetAwaiter().GetResult();
+
+            var isFullTextSearchEnabled = Configuration.IsContentFullTextSearchEnabled();
+
+            if (isFullTextSearchEnabled)
+            {
+                var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
+                settingsRegistrar.RegisterSettings(ContentConstants.Settings.AllSettings, ModuleInfo.Id);
+
+                var searchRequestBuilderRegistrar = appBuilder.ApplicationServices.GetService<ISearchRequestBuilderRegistrar>();
+                searchRequestBuilderRegistrar.Register(FullTextContentSearchService.ContentDocumentType, appBuilder.ApplicationServices.GetService<ContentSearchRequestBuilder>);
+
+                var contentItemTypeRegistrar = appBuilder.ApplicationServices.GetService<IContentItemTypeRegistrar>();
+                contentItemTypeRegistrar.RegisterContentItemType(".md", appBuilder.ApplicationServices.GetService<MarkdownContentItemBuilder>);
+                contentItemTypeRegistrar.RegisterContentItemType(".md-draft", appBuilder.ApplicationServices.GetService<MarkdownContentItemBuilder>);
+            }
         }
 
         public void Uninstall()
         {
+            // Nothing to do here
         }
 
         public Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)

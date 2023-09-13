@@ -4,38 +4,31 @@ angular.module('virtoCommerce.contentModule')
         'platformWebApp.validators',
         'platformWebApp.dialogService',
         'virtoCommerce.contentModule.contentApi',
+        '$timeout',
         'platformWebApp.bladeNavigationService',
         'platformWebApp.dynamicProperties.api',
         'platformWebApp.settings',
         'FileUploader',
         'platformWebApp.dynamicProperties.dictionaryItemsApi',
         'platformWebApp.i18n',
-        'virtoCommerce.searchModule.searchIndexation',
-        'moment',
         function ($rootScope,
             $scope,
             validators,
             dialogService,
             contentApi,
+            $timeout,
             bladeNavigationService,
             dynamicPropertiesApi,
             settings,
             FileUploader,
             dictionaryItemsApi,
-            i18n,
-            searchApi,
-            moment) {
-
-
-            var momentFormat = "YYYYMMDDHHmmss";
-
+            i18n) {
             var blade = $scope.blade;
             blade.currentLanguage = i18n.getLanguage();
             blade.frontMatterHeaders = 'VirtoCommerce.ContentModule.Core.Model.FrontMatterHeaders'
 
             blade.dynamicPropertiesTotalCount = 0;
             blade.currentEntity.dynamicProperties = [];
-            $scope.searchEnabled = false;
 
             $scope.validators = validators;
             var contentType = blade.contentType.substr(0, 1).toUpperCase() +
@@ -49,7 +42,6 @@ angular.module('virtoCommerce.contentModule')
                     blade.isLoading = true;
                 },
                 onSuccessItem: function (fileItem, response, status, headers) {
-                    updateSearchIndex();
                     $scope.$broadcast('filesUploaded', { items: response });
                 },
                 onErrorItem: function (fileItem, response, status, headers) {
@@ -80,8 +72,6 @@ angular.module('virtoCommerce.contentModule')
                     },
                         fillMetadata,
                         function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-
-                    loadSearchIndex();
                 }
             };
 
@@ -125,7 +115,7 @@ angular.module('virtoCommerce.contentModule')
                 _.each(props,
                     function (x) {
                         var metadataRecord = _.findWhere(metadata, { name: x.name });
-                        var values = metadataRecord ? metadataRecord.values : [];
+                        var values = [];
 
                         if (x.isMultilingual && !x.isDictionary) {
                             if (metadataRecord) {
@@ -158,15 +148,14 @@ angular.module('virtoCommerce.contentModule')
                     folderUrl: blade.folderUrl || ''
                 },
                     blade.currentEntity,
-                    function (result) {
+                    function () {
                         blade.isLoading = false;
-                        blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
-                        angular.copy(blade.currentEntity, blade.origEntity);
-                        updateSearchIndex();
+                        blade.origEntity = angular.copy(blade.currentEntity);
                         if (blade.isNew) {
                             $scope.bladeClose();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
                         }
+
                         blade.parentBlade.refresh();
                     },
                     function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
@@ -278,83 +267,12 @@ angular.module('virtoCommerce.contentModule')
             );
 
             function isDirty() {
-                return !!blade.origEntity && !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
+                return !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
             }
 
             function canSave() {
                 return blade.currentEntity && blade.currentEntity.name && ((isDirty() && !blade.isNew) || (blade.currentEntity.content && blade.isNew));
             }
-
-            // #region Search index
-
-            function addIndexToolbarButton() {
-                blade.toolbarCommands.push({
-                    name: "content.commands.preview-index",
-                    icon: 'fa fa-file-alt',
-                    executeMethod: function () {
-                        getDocumentIndex(function (data) {
-                            var doc = getSearchDocumentInfo();
-                            const searchBlade = {
-                                id: 'sesarchDetails',
-                                currentEntityId: doc.documentId,
-                                currentEntity: blade.currentEntity,
-                                data: $scope.index,
-                                indexDate: $scope.indexDate,
-                                documentType: doc.documentType,
-                                controller: 'virtoCommerce.searchModule.indexDetailController',
-                                template: 'Modules/$(VirtoCommerce.Search)/Scripts/blades/index-detail.tpl.html'
-                            };
-
-                            bladeNavigationService.showBlade(searchBlade, blade);
-                        });
-                    },
-                    canExecuteMethod: function () { return true; }
-                });
-            }
-
-            function updateIndexStatus(data, doc) {
-                if (_.any(data)) {
-                    $scope.index = data[0];
-                    $scope.indexDate = moment.utc($scope.index.indexationdate, momentFormat);
-                }
-            }
-
-            function updateSearchIndex() {
-                var doc = getSearchDocumentInfo();
-                doc.documentIds = [doc.documentId];
-
-                searchApi.index([doc], function (data) {
-                    getDocumentIndex();
-                });
-            }
-
-            function getSearchDocumentInfo() {
-                var documentId = btoa(`${blade.storeId}::${blade.contentType}::${blade.currentEntity.relativeUrl}`).replaceAll('=', '-');
-                var documentType = 'ContentFile';
-                return { documentType: documentType, documentId: documentId };
-            }
-
-            function getDocumentIndex(callback) {
-                if ($scope.searchEnabled) {
-                    var doc = getSearchDocumentInfo();
-                    searchApi.getDocIndex(doc, function (data) {
-                        updateIndexStatus(data, doc);
-                        callback && _.any(data) && callback();
-                    });
-                }
-            }
-
-            function loadSearchIndex() {
-                if (blade.isNew) {
-                    return;
-                }
-                contentApi.indexedSearchEnabled({}, function (data) {
-                    $scope.searchEnabled = data.result;
-                    getDocumentIndex(addIndexToolbarButton);
-                });
-            }
-
-            // #endregion
 
             blade.onClose = function (closeCallback) {
                 bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, $scope.saveChanges, closeCallback, "content.dialogs.page-save.title", "content.dialogs.page-save.message");

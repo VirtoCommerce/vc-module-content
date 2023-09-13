@@ -9,7 +9,7 @@ namespace VirtoCommerce.ContentModule.Web.Validators
         public ContentFolderValidator()
         {
             RuleFor(context => context.Name)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotNull()
                 .WithMessage("Folder name must not be null.")
                 .NotEmpty()
@@ -23,7 +23,7 @@ namespace VirtoCommerce.ContentModule.Web.Validators
                 .Must(x => !x.EndsWith("-"))
                 .WithMessage("Folder name must not ends with dash symbol.")
                 .Must(x => !x.Contains("--"))
-                .WithMessage("Folder name must not conatin consecutive dash symbols.")
+                .WithMessage("Folder name must not contain consecutive dash symbols.")
                 .Must(x => !new Regex("[^0-9a-z -]").IsMatch(x))
                 .WithMessage(@"Folder name must contain alphanumeric lower case, ""-"" and "" "" characters only.");
         }

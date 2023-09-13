@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Data.ExportImport;
@@ -58,7 +58,7 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
                     }
 
                     await writer.FlushAsync();
-                    progressInfo.Description = $"{ Math.Min(linkLists.Count, skip + _batchSize) } of { linkLists.Count } menu link lists exported";
+                    progressInfo.Description = $"{Math.Min(linkLists.Count, skip + _batchSize)} of {linkLists.Count} menu link lists exported";
                     progressCallback(progressInfo);
                 }
 
@@ -83,7 +83,7 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
 
                     await writer.FlushAsync();
 
-                    progressInfo.Description = $"{ result.TotalCount } cms content exported";
+                    progressInfo.Description = $"{result.TotalCount} cms content exported";
                     progressCallback(progressInfo);
 
                     await writer.WriteEndArrayAsync();
@@ -118,7 +118,7 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
                                 }
                             }, processedCount =>
                             {
-                                progressInfo.Description = $"{ processedCount } menu links have been imported";
+                                progressInfo.Description = $"{processedCount} menu links have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
 
@@ -140,7 +140,7 @@ namespace VirtoCommerce.ContentModule.Data.ExportImport
                                         return Task.CompletedTask;
                                     }, processedCount =>
                                     {
-                                        progressInfo.Description = $"{ processedCount } menu links have been imported";
+                                        progressInfo.Description = $"{processedCount} menu links have been imported";
                                         progressCallback(progressInfo);
                                     }, cancellationToken);
                             }
