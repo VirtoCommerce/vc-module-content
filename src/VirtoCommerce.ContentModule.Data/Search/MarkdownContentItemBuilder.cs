@@ -31,11 +31,11 @@ namespace VirtoCommerce.ContentModule.Data.Search
         private static void AddLanguage(IndexDocument result, IndexableContentFile file)
         {
             var parts = Path.GetFileName(file.Name)?.Split('.');
-            var name = parts?.FirstOrDefault();
-            if (!string.IsNullOrEmpty(name))
-            {
-                result.AddFilterableStringAndContentString("Name", name);
-            }
+            //var name = parts?.FirstOrDefault();
+            //if (!string.IsNullOrEmpty(name))
+            //{
+            //    result.AddFilterableStringAndContentString("Name", name);
+            //}
 
             if (parts?.Length == 3)
             {

@@ -36,7 +36,7 @@ angular.module('virtoCommerce.contentModule')
                             url: 'api/content/search',
                             method: 'POST',
                             transformRequest: function (request) {
-                                return JSON.stringify(angular.extend({}, request, { searchPhrase: request.keyword, keyword: null }));
+                                return JSON.stringify(angular.extend({}, request, { searchPhrase: request.keyword + " contentType:" + request.contentType + " storeId:" + request.storeId }));
                             },
                             isArray: true,
                             transformResponse: function (rawData) { return JSON.parse(rawData).results; }

@@ -7,11 +7,12 @@ namespace VirtoCommerce.ContentModule.Data.Search
 {
     public abstract class BaseContentItemBuilder : IContentItemBuilder
     {
-        public virtual IndexDocument BuildIndexDocument(string storeId, IndexableContentFile file)
+        public virtual IndexDocument BuildIndexDocument(string storeId, string contentType, IndexableContentFile file)
         {
             var documentId = DocumentIdentifierHelper.GenerateId(storeId, file.ContentType, file);
             var result = BuildIndexDocumentInternal(documentId, storeId, file);
 
+            result.AddFilterableStringAndContentString("ContentType", contentType);
             result.AddFilterableStringAndContentString("Name", file.Name);
             result.AddFilterableStringAndContentString("RelativeUrl", file.RelativeUrl);
 
