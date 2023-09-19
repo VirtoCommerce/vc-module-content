@@ -3,6 +3,16 @@ angular.module('virtoCommerce.contentModule')
         function ($scope, $state, $stateParams, menus, contentApi, stores, bladeNavigationService, dialogService, widgetService, bladeUtils) {
 	    var blade = $scope.blade;
 
+        var filter = $scope.filter = {};
+
+        filter.criteriaChanged = function () {
+            if ($scope.pageSettings.currentPage > 1) {
+                $scope.pageSettings.currentPage = 1;
+            } else {
+                blade.refresh();
+            }
+        };
+
         blade.refresh = function () {
 	        blade.isLoading = true;
             blade.currentEntities = [];
@@ -17,7 +27,7 @@ angular.module('virtoCommerce.contentModule')
                 take: $scope.pageSettings.itemsPerPageCount
             }, function (data) {
 
-                var loadCounter = data.results.length * 2; //storesResult.data
+                var loadCounter = data.results.length * 2;
                 $scope.pageSettings.totalItems = data.totalCount;
 	            var finnalyFunction = function () {
 	                blade.isLoading = --loadCounter;
@@ -37,8 +47,8 @@ angular.module('virtoCommerce.contentModule')
 	                    listLinksCount: '...'
                     });
 
-                    blade.refreshWidgets(x.id, 'stats').finally(finnalyFunction);
-                    blade.refreshWidgets(x.id, 'menus').finally(finnalyFunction);
+                    blade.refreshWidgets(x.id, 'stats')?.finally(finnalyFunction);
+                    blade.refreshWidgets(x.id, 'menus')?.finally(finnalyFunction);
 	            });
 	        });
 
@@ -58,10 +68,11 @@ angular.module('virtoCommerce.contentModule')
 	                return contentApi.getStatistics({ storeId: storeId }, function (data) {
 	                    angular.extend(entity, data);
 	                }, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); }).$promise;
-	            case 'defaultTheme':
-	                entity.activeThemeName = data;
+                case 'defaultTheme':
+                    entity.activeThemeName = data;
+                    return null;
 	            default:
-	                break;
+                    return null;
 	        }
 	    };
 
@@ -224,13 +235,5 @@ angular.module('virtoCommerce.contentModule')
         bladeUtils.initializePagination($scope);
         $scope.pageSettings.itemsPerPageCount = 3;
 
-        var filter = $scope.filter = {};
 
-        filter.criteriaChanged = function () {
-            if ($scope.pageSettings.currentPage > 1) {
-                $scope.pageSettings.currentPage = 1;
-            } else {
-                blade.refresh();
-            }
-        };
 	}]);
