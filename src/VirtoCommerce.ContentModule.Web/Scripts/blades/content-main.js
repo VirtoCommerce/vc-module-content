@@ -47,8 +47,15 @@ angular.module('virtoCommerce.contentModule')
 	                    listLinksCount: '...'
                     });
 
-                    blade.refreshWidgets(x.id, 'stats')?.finally(finnalyFunction);
-                    blade.refreshWidgets(x.id, 'menus')?.finally(finnalyFunction);
+                    var statsPromise = blade.refreshWidgets(x.id, 'stats')
+                    if (statsPromise) {
+                        statsPromise.finally(finnalyFunction);
+                    }
+
+                    var menusPromise = blade.refreshWidgets(x.id, 'menus');
+                    if (menusPromise) {
+                        menusPromise.finally(finnalyFunction);
+                    }
 	            });
 	        });
 
