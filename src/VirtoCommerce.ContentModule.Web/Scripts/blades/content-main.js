@@ -1,26 +1,43 @@
 angular.module('virtoCommerce.contentModule')
-.controller('virtoCommerce.contentModule.contentMainController', ['$scope', '$state', '$stateParams', 'virtoCommerce.contentModule.menus', 'virtoCommerce.contentModule.contentApi', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.widgetService',
-	function ($scope, $state, $stateParams, menus, contentApi, stores, bladeNavigationService, dialogService, widgetService) {
+    .controller('virtoCommerce.contentModule.contentMainController', ['$scope', '$state', '$stateParams', 'virtoCommerce.contentModule.menus', 'virtoCommerce.contentModule.contentApi', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.widgetService', 'platformWebApp.bladeUtils',
+        function ($scope, $state, $stateParams, menus, contentApi, stores, bladeNavigationService, dialogService, widgetService, bladeUtils) {
 	    var blade = $scope.blade;
 
-	    blade.initialize = function () {
+        var filter = $scope.filter = {};
+
+        filter.criteriaChanged = function () {
+            if ($scope.pageSettings.currentPage > 1) {
+                $scope.pageSettings.currentPage = 1;
+            } else {
+                blade.refresh();
+            }
+        };
+
+        blade.refresh = function () {
 	        blade.isLoading = true;
-	        blade.currentEntities = [];
+            blade.currentEntities = [];
 
 	        if ($stateParams.storeId) {
 	            stores.get({ id: $stateParams.storeId }, blade.openThemes);
 	        };
 
-	        stores.query(null, function (storesResult) {
-	            var loadCounter = storesResult.length * 2;
+            stores.search({
+                keyword: filter.keyword ? filter.keyword : undefined,
+                skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
+                take: $scope.pageSettings.itemsPerPageCount
+            }, function (data) {
 
+                var loadCounter = data.results.length * 2;
+                $scope.pageSettings.totalItems = data.totalCount;
 	            var finnalyFunction = function () {
 	                blade.isLoading = --loadCounter;
 	            };
 
-	            blade.isLoading = _.any(storesResult);
+                blade.isLoading = _.any(data.results);
 
-	            _.each(storesResult, function (x) {
+                $scope.pageSettings.totalItems = data.totalCount;
+
+                _.each(data.results, function (x) {
 	                blade.currentEntities.push({
 	                    storeId: x.id,
 	                    store: x,
@@ -28,10 +45,17 @@ angular.module('virtoCommerce.contentModule')
 	                    pagesCount: '...',
 	                    blogsCount: '...',
 	                    listLinksCount: '...'
-	                });
+                    });
 
-	                blade.refresh(x.id, 'stats').finally(finnalyFunction);
-	                blade.refresh(x.id, 'menus').finally(finnalyFunction);
+                    var statsPromise = blade.refreshWidgets(x.id, 'stats')
+                    if (statsPromise) {
+                        statsPromise.finally(finnalyFunction);
+                    }
+
+                    var menusPromise = blade.refreshWidgets(x.id, 'menus');
+                    if (menusPromise) {
+                        menusPromise.finally(finnalyFunction);
+                    }
 	            });
 	        });
 
@@ -39,7 +63,7 @@ angular.module('virtoCommerce.contentModule')
 	    };
 
 
-	    blade.refresh = function (storeId, requestType, data) {
+	    blade.refreshWidgets = function (storeId, requestType, data) {
 	        var entity = _.findWhere(blade.currentEntities, { storeId: storeId });
 
 	        switch (requestType) {
@@ -51,10 +75,11 @@ angular.module('virtoCommerce.contentModule')
 	                return contentApi.getStatistics({ storeId: storeId }, function (data) {
 	                    angular.extend(entity, data);
 	                }, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); }).$promise;
-	            case 'defaultTheme':
-	                entity.activeThemeName = data;
+                case 'defaultTheme':
+                    entity.activeThemeName = data;
+                    return null;
 	            default:
-	                break;
+                    return null;
 	        }
 	    };
 
@@ -214,5 +239,8 @@ angular.module('virtoCommerce.contentModule')
 
 	    blade.headIcon = 'fa fa-code';
 
-	    blade.initialize();
+        bladeUtils.initializePagination($scope);
+        $scope.pageSettings.itemsPerPageCount = 3;
+
+
 	}]);
