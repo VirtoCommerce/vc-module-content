@@ -7,7 +7,7 @@ angular.module('virtoCommerce.contentModule')
 
      blade.initialize = function () {
          if (blade.isNew) {
-             blade.currentEntity = blade.currentEntity ?? { storeId: blade.storeId, menuLinks: [{ priority: 0 }] };
+             blade.currentEntity = { storeId: blade.storeId, menuLinks: [{ priority: 0 }] };
              blade.isLoading = false;
          }
          else {
@@ -41,31 +41,7 @@ angular.module('virtoCommerce.contentModule')
                     return !angular.equals(blade.origEntity, blade.currentEntity) && blade.hasUpdatePermission();
                 },
                 permission: blade.updatePermission
-             },
-             {
-                 name: "platform.commands.clone", icon: 'fas fa-clone',
-                 executeMethod: function ()
-                 {
-                     var clonedEntity = angular.copy(blade.currentEntity);
-                     clonedEntity.id = null;
-                     _.each(clonedEntity.menuLinks, function (x) {
-                         x.id = null;
-                     });
-
-                      var newBlade = {
-                          id: 'addMenuLinkListBlade',
-                          isNew: true,
-                          parentRefresh: blade.parentBlade.refresh,
-                          storeId: blade.storeId,
-                          currentEntity: clonedEntity,
-                          controller: 'virtoCommerce.contentModule.menuLinkListController',
-                          template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/menu/menu-link-list.tpl.html'
-                      };
-                      bladeNavigationService.showBlade(newBlade, blade.parentBlade);
-                 },
-                 canExecuteMethod: function () { return !isDirty(); },
-                 permission: blade.updatePermission
-             }
+            }
          ];
 
          blade.toolbarCommands.splice(blade.toolbarCommands.length, 0,
