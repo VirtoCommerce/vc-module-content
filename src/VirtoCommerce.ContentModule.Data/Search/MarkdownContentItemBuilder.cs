@@ -31,10 +31,6 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             var parts = Path.GetFileName(file.Name)?.Split('.');
             var name = parts?.FirstOrDefault();
-            if (!string.IsNullOrEmpty(name))
-            {
-                result.AddFilterableStringAndContentString("Name", name);
-            }
 
             if (parts?.Length == 3)
             {

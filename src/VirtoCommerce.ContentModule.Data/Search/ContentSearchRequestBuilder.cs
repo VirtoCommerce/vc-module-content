@@ -59,15 +59,15 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 result.Add(new IdsFilter { Values = criteria.ObjectIds });
             }
 
-            if (!string.IsNullOrEmpty(criteria.StoreId))
-            {
-                result.Add(CreateTermFilter("StoreId", criteria.StoreId));
-            }
+            //if (!string.IsNullOrEmpty(criteria.StoreId))
+            //{
+            //    result.Add(CreateTermFilter("StoreId", criteria.StoreId));
+            //}
 
-            if (!string.IsNullOrEmpty(criteria.CultureName))
-            {
-                result.Add(CreateTermFilter("CultureName", criteria.CultureName));
-            }
+            //if (!string.IsNullOrEmpty(criteria.CultureName))
+            //{
+            //    result.Add(CreateTermFilter("CultureName", criteria.CultureName));
+            //}
 
             return result;
         }
