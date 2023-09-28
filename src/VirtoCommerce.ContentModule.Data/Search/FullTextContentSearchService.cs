@@ -94,7 +94,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 var contentItem = await _contentService.GetFileContentAsync(contentType, storeId, relativeUrl);
                 if (contentItem != null)
                 {
-                    contentItem.Name = GetStringValueOrDefault(document, "name", contentItem.Name);
+                    //contentItem.Name = GetStringValueOrDefault(document, "name", contentItem.Name);
                     result.Add(contentItem);
                 }
             }
