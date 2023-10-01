@@ -24,6 +24,16 @@ namespace VirtoCommerce.ContentModule.Data.Search
             var searchResults = await _searchService.SearchContentAsync(criteria);
             var result = searchResults.Results.Select(x => new SeoInfo
             {
+                Name = x.Name,
+                //SemanticUrl = x.,
+                //PageTitle =,
+                //MetaDescription =,
+                //ImageAltDescription =,
+                //MetaKeywords =,
+                StoreId = x.StoreId,
+                //ObjectId = x.,
+                ObjectType = FullTextContentSearchService.ContentDocumentType,
+                //IsActive =,
 
             });
             return result.ToArray();
