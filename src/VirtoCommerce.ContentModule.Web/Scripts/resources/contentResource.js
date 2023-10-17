@@ -32,6 +32,19 @@ angular.module('virtoCommerce.contentModule')
                         indexedSearchEnabled: { method: 'GET', url: '/api/content/search/enabled' },
                         getStatistics: { url: 'api/content/:storeId/stats' },
                         query: { url: 'api/content/:contentType/:storeId/search', isArray: true },
+                        search: {
+                            url: 'api/content/search',
+                            method: 'POST',
+                            transformRequest: function (request) {
+                                var query = request.keyword;
+                                if (request.contentType) {
+                                    query += " contentType:" + request.contentType;
+                                }
+                                return JSON.stringify(angular.extend({}, request, { searchPhrase: query }));
+                            },
+                            isArray: true,
+                            transformResponse: function (rawData) { return JSON.parse(rawData).results; }
+                        },
                         get: {
                             // using transformResponse to:
                             // 1. avoid automatic response result string converting to array;
