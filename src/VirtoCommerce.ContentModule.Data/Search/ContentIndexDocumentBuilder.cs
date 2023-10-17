@@ -87,7 +87,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 var indexableFile = await _contentService.GetFileContentAsync(contentType, storeId, file.RelativeUrl);
                 if (indexableFile != null)
                 {
-                    result = builder.BuildIndexDocument(storeId, indexableFile);
+                    result = builder.BuildIndexDocument(storeId, contentType, indexableFile);
                 }
             }
             return result;

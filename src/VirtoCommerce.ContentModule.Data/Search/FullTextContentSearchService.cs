@@ -94,19 +94,11 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 var contentItem = await _contentService.GetFileContentAsync(contentType, storeId, relativeUrl);
                 if (contentItem != null)
                 {
-                    contentItem.Name = GetStringValueOrDefault(document, "name", contentItem.Name);
-                    contentItem.RelativeUrl = GetStringValueOrDefault(document, "permalink", contentItem.RelativeUrl);
                     result.Add(contentItem);
                 }
             }
 
             return result;
-        }
-
-        private static string GetStringValueOrDefault(SearchDocument document, string fieldName, string defaultValue)
-        {
-            var result = document.TryGetValue(fieldName, out var value) ? value.ToString() : null;
-            return string.IsNullOrEmpty(result) ? defaultValue : result;
         }
     }
 }

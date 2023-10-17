@@ -6,9 +6,12 @@ angular.module('virtoCommerce.contentModule')
 
             $scope.selectedNodeId = null;
 
+            $scope.searchEnabled = false;
+
             blade.refresh = function () {
                 blade.isLoading = true;
-                contentApi.query(
+                var query = $scope.searchEnabled && blade.searchKeyword ? contentApi.search : contentApi.query;
+                query(
                     {
                         contentType: blade.contentType,
                         storeId: blade.storeId,
@@ -329,5 +332,8 @@ angular.module('virtoCommerce.contentModule')
             }
 
             blade.headIcon = isBlogs() ? 'fa fa-inbox' : 'fa fa-folder-o';
-            blade.refresh();
+            contentApi.indexedSearchEnabled({}, function (data) {
+                $scope.searchEnabled = data.result;
+                blade.refresh();
+            });
         }]);
