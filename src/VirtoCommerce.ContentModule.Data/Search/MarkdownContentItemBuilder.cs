@@ -30,7 +30,6 @@ namespace VirtoCommerce.ContentModule.Data.Search
         private static void AddLanguage(IndexDocument result, IndexableContentFile file)
         {
             var parts = Path.GetFileName(file.Name)?.Split('.');
-            var name = parts?.FirstOrDefault();
 
             if (parts?.Length == 3)
             {
