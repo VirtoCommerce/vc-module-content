@@ -19,19 +19,19 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             var criteria = new ContentSearchCriteria
             {
-                Keyword = ""
+                Keyword = "permalink:" + slug
             };
             var searchResults = await _searchService.SearchContentAsync(criteria);
             var result = searchResults.Results.Select(x => new SeoInfo
             {
                 Name = x.Name,
-                //SemanticUrl = x.,
+                SemanticUrl = x.Permalink,
                 //PageTitle =,
                 //MetaDescription =,
                 //ImageAltDescription =,
                 //MetaKeywords =,
                 StoreId = x.StoreId,
-                //ObjectId = x.,
+                ObjectId = x.Id,
                 ObjectType = FullTextContentSearchService.ContentDocumentType,
                 //IsActive =,
 
