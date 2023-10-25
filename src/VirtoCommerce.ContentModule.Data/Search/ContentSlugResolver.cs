@@ -48,22 +48,35 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             var criteria = new ContentSearchCriteria
             {
-                Keyword = "permalink:" + slug
+                Keyword = "permalink:" + slug,
+                Skip = 0,
+                Take = 100
             };
-            var searchResults = await _searchService.SearchContentAsync(criteria);
-            var result = searchResults.Results.Select(x => new SeoInfo
+
+            var result = new List<SeoInfo>();
+
+            while (true)
             {
-                Name = x.Name,
-                SemanticUrl = x.Permalink,
-                //PageTitle =,
-                //MetaDescription =,
-                //ImageAltDescription =,
-                //MetaKeywords =,
-                StoreId = x.StoreId,
-                ObjectId = x.Id,
-                ObjectType = FullTextContentSearchService.ContentDocumentType,
-                //IsActive =,
-            });
+                var searchResults = await _searchService.SearchContentAsync(criteria);
+
+                if (searchResults.Results.Count == 0)
+                {
+                    break;
+                }
+
+                var items = searchResults.Results.Select(x => new SeoInfo
+                {
+                    Name = x.Name,
+                    SemanticUrl = x.Permalink,
+                    StoreId = x.StoreId,
+                    ObjectId = x.Id,
+                    ObjectType = FullTextContentSearchService.ContentDocumentType
+                });
+
+                result.AddRange(items);
+                criteria.Skip += criteria.Take;
+            }
+
             return result;
         }
     }
