@@ -54,15 +54,12 @@ namespace VirtoCommerce.ContentModule.Data.Search
             };
 
             var result = new List<SeoInfo>();
-
-            while (true)
+            int totalCount;
+            do
             {
                 var searchResults = await _searchService.SearchContentAsync(criteria);
 
-                if (searchResults.Results.Count == 0)
-                {
-                    break;
-                }
+                totalCount = searchResults.TotalCount;
 
                 var items = searchResults.Results.Select(x => new SeoInfo
                 {
@@ -75,7 +72,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
                 result.AddRange(items);
                 criteria.Skip += criteria.Take;
-            }
+            } while (criteria.Skip < totalCount);
 
             return result;
         }
