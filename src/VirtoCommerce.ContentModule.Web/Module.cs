@@ -27,6 +27,7 @@ using VirtoCommerce.ContentModule.Data.SqlServer;
 using VirtoCommerce.ContentModule.FileSystem;
 using VirtoCommerce.ContentModule.FileSystem.Extensions;
 using VirtoCommerce.ContentModule.Web.Extensions;
+using VirtoCommerce.CoreModule.Core.Seo;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
@@ -84,6 +85,7 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<IContentStatisticService, ContentStatisticService>();
             serviceCollection.AddTransient<IContentFileService, ContentFileService>();
             serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
+            serviceCollection.AddTransient<ISeoBySlugResolver, ContentSlugResolver>();
 
             serviceCollection.AddSingleton<IContentItemTypeRegistrar, ContentItemTypeRegistrar>();
 
