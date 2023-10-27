@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.CoreModule.Core.Seo;
@@ -10,14 +11,21 @@ namespace VirtoCommerce.ContentModule.Data.Search
     public class ContentSlugResolver : ISeoBySlugResolver
     {
         private readonly IFullTextContentSearchService _searchService;
+        private readonly IConfiguration _configuration;
 
-        public ContentSlugResolver(IFullTextContentSearchService searchService)
+        public ContentSlugResolver(IFullTextContentSearchService searchService, IConfiguration configuration)
         {
             _searchService = searchService;
+            _configuration = configuration;
         }
 
         public async Task<SeoInfo[]> FindSeoBySlugAsync(string slug)
         {
+            if (!_configuration.IsContentFullTextSearchEnabled())
+            {
+                return Array.Empty<SeoInfo>();
+            }
+
             var list = await FindWithSlash(slug);
             var other = await FindWithoutSlash(slug);
             var result = list.Union(other).DistinctBy(x => x.ObjectId);
