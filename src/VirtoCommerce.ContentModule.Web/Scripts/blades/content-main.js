@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.contentModule')
-    .controller('virtoCommerce.contentModule.contentMainController', ['$scope', '$state', '$stateParams', 'virtoCommerce.contentModule.menus', 'virtoCommerce.contentModule.contentApi', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.widgetService', 'platformWebApp.bladeUtils',
-        function ($scope, $state, $stateParams, menus, contentApi, stores, bladeNavigationService, dialogService, widgetService, bladeUtils) {
+    .controller('virtoCommerce.contentModule.contentMainController', ['$scope', '$state', '$stateParams', 'virtoCommerce.contentModule.menus', 'virtoCommerce.contentModule.contentApi', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.widgetService', 'platformWebApp.bladeUtils', 'virtoCommerce.contentModule.fileProcessors',
+    function ($scope, $state, $stateParams, menus, contentApi, stores, bladeNavigationService, dialogService, widgetService, bladeUtils, fileProcessors) {
 	    var blade = $scope.blade;
 
         var filter = $scope.filter = {};

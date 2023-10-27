@@ -6,9 +6,15 @@ if (AppDependencies != undefined) {
 }
 
 angular.module(moduleName, [])
-    .run(['platformWebApp.authService', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state', 'platformWebApp.bladeNavigationService', 'platformWebApp.permissionScopeResolver', 'virtoCommerce.storeModule.stores', 'virtoCommerce.contentModule.menuLinkList-associationTypesService',
+    .run(['platformWebApp.authService',
+        'platformWebApp.mainMenuService',
+        'platformWebApp.widgetService',
+        '$state',
+        'platformWebApp.bladeNavigationService',
+        'platformWebApp.permissionScopeResolver',
+        'virtoCommerce.storeModule.stores',
+        'virtoCommerce.contentModule.menuLinkList-associationTypesService',
         function (authService, mainMenuService, widgetService, $state, bladeNavigationService, scopeResolver, stores, associationTypesService) {
-
             var menuItem = {
                 path: 'browse/content',
                 icon: 'fa fa-code',
