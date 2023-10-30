@@ -6,8 +6,8 @@ angular.module(moduleName)
             edit: {
                 descriptor: {
                     icon: 'list-ico fa fa-file-code-o',
-                    name: 'content.blades.add-page.menu.html-page.title',
-                    description: 'content.blades.add-page.menu.html-page.description'
+                    name: 'content.blades.markdownEditor.edit.title',
+                    description: 'content.blades.markdownEditor.edit.description'
                 },
                 isMatch: isMatchForEdit,
                 execute: editFile
@@ -15,8 +15,8 @@ angular.module(moduleName)
             create: {
                 descriptor: {
                     icon: 'list-ico fa fa-file-code-o',
-                    name: 'content.blades.add-page.menu.html-page.title',
-                    description: 'content.blades.add-page.menu.html-page.description'
+                    name: 'content.blades.markdownEditor.create.title',
+                    description: 'content.blades.markdownEditor.create.description'
                 },
                 isMatch: function () { return true; },
                 execute: createFile
@@ -24,33 +24,52 @@ angular.module(moduleName)
         };
 
         function isMatchForEdit(file, operation) {
-            return file && file.name && file.name.endsWith('.md');
+            // old value
+            // x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
+            return file && file.name && (file.name.endsWith('.md') || file.name.endsWith('.md-draft'));
         }
 
         function createFile(blade, parentBlade) {
-            angular.extend(blade, {
+            var newBlade = {
                 isNew: true,
+                contentType: blade.contentType,
+                storeId: blade.storeId,
+                storeUrl: blade.storeUrl,
+                languages: blade.languages,
+                folderUrl: blade.folderUrl,
+                currentEntity: {}
+            };
+            angular.extend(newBlade, {
                 controller: 'virtoCommerce.contentModule.pageDetailController',
                 template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/page-detail.tpl.html',
             });
 
             if (blade.contentType === 'blogs') {
-                angular.extend(blade, {
+                angular.extend(newBlade, {
                     title: 'content.blades.edit-page.title-new-post',
                     subtitle: 'content.blades.edit-page.subtitle-new-post'
                 });
             } else {
-                angular.extend(blade, {
+                angular.extend(newBlade, {
                     title: 'content.blades.edit-page.title-new',
                     subtitle: 'content.blades.edit-page.subtitle-new',
                 });
             }
 
-            bladeNavigationService.showBlade(blade, parentBlade);
+            bladeNavigationService.showBlade(newBlade, parentBlade);
         }
 
         function editFile(blade, parentBlade) {
-            angular.extend(blade, {
+            var newBlade = {
+                isNew: false,
+                contentType: blade.contentType,
+                storeId: blade.storeId,
+                storeUrl: blade.storeUrl,
+                languages: blade.languages,
+                folderUrl: blade.folderUrl,
+                currentEntity: blade.currentEntity
+            };
+            angular.extend(newBlade, {
                 isNew: false,
                 title: blade.currentEntity.name,
                 controller: 'virtoCommerce.contentModule.pageDetailController',
@@ -58,16 +77,16 @@ angular.module(moduleName)
             });
 
             if (blade.contentType === 'blogs') {
-                angular.extend(blade, {
+                angular.extend(newBlade, {
                     subtitle: 'content.blades.edit-page.subtitle-post'
                 });
             } else {
-                angular.extend(blade, {
+                angular.extend(newBlade, {
                     subtitle: 'content.blades.edit-page.subtitle',
                 });
             }
 
-            bladeNavigationService.showBlade(blade, parentBlade);
+            bladeNavigationService.showBlade(newBlade, parentBlade);
         }
 
         return handler;

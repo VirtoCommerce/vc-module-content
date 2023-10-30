@@ -22,7 +22,8 @@ angular.module('virtoCommerce.contentModule')
                         $scope.pageSettings.totalItems = data.length;
                         _.each(data, function (x) {
                             x.isImage = x.mimeType && x.mimeType.startsWith('image/');
-                            x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
+                            var handler = fileHandlerFactory.getHandlers('edit', { file: x });
+                            x.isOpenable = handler && handler.length;
                         });
                         $scope.listEntries = data;
                         blade.isLoading = false;
