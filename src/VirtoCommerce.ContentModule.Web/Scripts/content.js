@@ -175,6 +175,13 @@ angular.module(moduleName, [])
                 ]
             });
     }])
+    .config(
+        ['virtoCommerce.contentModule.fileHandlerFactoryProvider',
+            function (fileHandlerProvider) {
+                fileHandlerProvider.addHandler('virtoCommerce.contentModule.markdownFileHandler');
+            }
+        ]
+    )
     // service for managing association Types for menuLinkList items (links)
     .factory('virtoCommerce.contentModule.menuLinkList-associationTypesService', [function () {
         return {

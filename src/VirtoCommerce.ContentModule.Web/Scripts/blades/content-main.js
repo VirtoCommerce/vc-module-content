@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.contentModule')
-    .controller('virtoCommerce.contentModule.contentMainController', ['$scope', '$state', '$stateParams', 'virtoCommerce.contentModule.menus', 'virtoCommerce.contentModule.contentApi', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.widgetService', 'platformWebApp.bladeUtils', 'virtoCommerce.contentModule.fileProcessors',
-    function ($scope, $state, $stateParams, menus, contentApi, stores, bladeNavigationService, dialogService, widgetService, bladeUtils, fileProcessors) {
+    .controller('virtoCommerce.contentModule.contentMainController', ['$scope', '$state', '$stateParams', 'virtoCommerce.contentModule.menus', 'virtoCommerce.contentModule.contentApi', 'virtoCommerce.storeModule.stores', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.widgetService', 'platformWebApp.bladeUtils', 'virtoCommerce.contentModule.fileHandlerFactory',
+        function ($scope, $state, $stateParams, menus, contentApi, stores, bladeNavigationService, dialogService, widgetService, bladeUtils, fileHandlerFactory) {
 	    var blade = $scope.blade;
 
         var filter = $scope.filter = {};
@@ -162,20 +162,21 @@ angular.module('virtoCommerce.contentModule')
 	        bladeNavigationService.showBlade(newBlade, blade);
 	    };
 
-	    blade.addNewPage = function (data) {
-	        var newBlade = {
-	            id: 'addPage',
-	            contentType: 'pages',
-	            storeId: data.storeId,
-	            languages: data.store.languages,
-	            currentEntity: {},
-	            isNew: true,
-	            title: 'content.blades.edit-page.title-new',
-	            subtitle: 'content.blades.edit-page.subtitle-new',
-	            controller: 'virtoCommerce.contentModule.pageDetailController',
-	            template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/page-detail.tpl.html',
-	        };
-	        bladeNavigationService.showBlade(newBlade, blade);
+        blade.addNewPage = function (data) {
+            fileHandlerFactory.handleAction('create', { blade: blade, store: data });
+	        //var newBlade = {
+	        //    id: 'addPage',
+	        //    contentType: 'pages',
+	        //    storeId: data.storeId,
+	        //    languages: data.store.languages,
+	        //    currentEntity: {},
+	        //    isNew: true,
+	        //    title: 'content.blades.edit-page.title-new',
+	        //    subtitle: 'content.blades.edit-page.subtitle-new',
+	        //    controller: 'virtoCommerce.contentModule.pageDetailController',
+	        //    template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/page-detail.tpl.html',
+	        //};
+	        //bladeNavigationService.showBlade(newBlade, blade);
 	    };
 
 	    blade.addNewLinkList = function (data) {

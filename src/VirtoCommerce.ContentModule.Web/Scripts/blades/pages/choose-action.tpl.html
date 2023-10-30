@@ -1,0 +1,21 @@
+<div class="blade-content">
+  <div class="blade-inner">
+    <div class="inner-block">
+      <ul class="list __items">
+        <li class="list-item"
+            ng-mouseup="addDesignPage()"
+            va-permission="content:create"
+            ng-repeat="file in blade.fileTypes">
+          <i class="list-ico fa fa-crop"></i>
+          <span class="list-t">{{'pageBuilder.blades.add-page.menu.design-page.title' | translate}}</span>
+          <span class="list-descr">{{'pageBuilder.blades.add-page.menu.design-page.description' | translate}}</span>
+        </li>
+        <!--<li class="list-item" ng-mouseup="addHtmlPage()" va-permission="content:create">
+          <i class="list-ico fa fa-file-code-o"></i>
+          <span class="list-t">{{'pageBuilder.blades.add-page.menu.html-page.title' | translate}}</span>
+          <span class="list-descr">{{'pageBuilder.blades.add-page.menu.html-page.description' | translate}}</span>
+        </li>-->
+      </ul>
+    </div>
+  </div>
+</div>
