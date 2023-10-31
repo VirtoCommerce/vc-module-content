@@ -1,6 +1,11 @@
 angular.module('virtoCommerce.contentModule')
-    .controller('virtoCommerce.contentModule.pagesListController', ['$rootScope', '$scope', '$translate', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', 'platformWebApp.validators', 'virtoCommerce.contentModule.fileHandlerFactory',
-        function ($rootScope, $scope, $translate, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils, validators, fileHandlerFactory) {
+    .controller('virtoCommerce.contentModule.pagesListController',
+        ['$rootScope', '$scope', '$translate', 'virtoCommerce.contentModule.contentApi',
+            'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService',
+            'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', 'platformWebApp.validators',
+            'virtoCommerce.contentModule.fileHandlerFactory',
+            function ($rootScope, $scope, $translate, contentApi, bladeNavigationService,
+                dialogService, uiGridHelper, bladeUtils, validators, fileHandlerFactory) {
             var blade = $scope.blade;
             blade.updatePermission = 'content:update';
 
@@ -237,16 +242,6 @@ angular.module('virtoCommerce.contentModule')
                 canExecuteMethod: isItemsChecked,
                 permission: 'content:delete'
             });
-
-            //if (isBlogs() && !blade.currentEntity.type) {
-            //    blade.contextMenuItems = [
-            //        {
-            //            name: 'platform.commands.manage', icon: 'fa fa-edit',
-            //            action: function (data) { openBlogDetailsBlade(data); },
-            //            permission: blade.updatePermission
-            //        }
-            //    ];
-            //}
 
             // ui-grid
             $scope.setGridOptions = function (gridOptions) {

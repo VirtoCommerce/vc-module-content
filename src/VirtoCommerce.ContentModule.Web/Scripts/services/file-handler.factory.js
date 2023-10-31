@@ -11,7 +11,7 @@ angular.module('virtoCommerce.contentModule')
                 };
 
                 function getHandlers(operation, context) {
-                    var handlers = _handlers.map(function (handlerName) {
+                    return _handlers.map(function (handlerName) {
                         return $injector.get(handlerName);
                     }).filter(function (handler) {
                         var op = handler[operation];
@@ -19,8 +19,6 @@ angular.module('virtoCommerce.contentModule')
                     }).map(function (handler) {
                         return handler[operation];
                     });
-
-                    return handlers;
                 }
 
                 function handleAction(operation, context) {
@@ -47,8 +45,8 @@ angular.module('virtoCommerce.contentModule')
 
                         if (handlers.length > 1) {
                             angular.extend(newBlade, {
-                                title: 'content.blades.choose-action.' + operation + '.title',
-                                subtitle: 'content.blades.choose-action.' + operation + '.subtitle',
+                                title: `content.blades.choose-action.${operation}.title`,
+                                subtitle: `content.blades.choose-action.${operation}.subtitle`,
                                 handlers: handlers,
                                 controller: 'virtoCommerce.contentModule.chooseActionController',
                                 template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/choose-action.tpl.html'
