@@ -24,7 +24,7 @@ angular.module(moduleName)
         };
 
         function isMatchForEdit(file, operation) {
-            return file && 
+            return file &&
                 (
                 (file.name && (file.name.endsWith('.md') || file.name.endsWith('.md-draft')))
                 ||
