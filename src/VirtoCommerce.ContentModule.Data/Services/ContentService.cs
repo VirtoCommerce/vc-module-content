@@ -81,6 +81,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             result.Content = await reader.ReadToEndAsync();
             result.StoreId = storeId;
             result.ContentType = contentType;
+            result.ParentUrl = result.RelativeUrl.GetParentUrl();
             return result;
         }
 
