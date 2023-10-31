@@ -24,9 +24,12 @@ angular.module(moduleName)
         };
 
         function isMatchForEdit(file, operation) {
-            // old value
-            // x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
-            return file && file.name && (file.name.endsWith('.md') || file.name.endsWith('.md-draft'));
+            return file && 
+                (
+                (file.name && (file.name.endsWith('.md') || file.name.endsWith('.md-draft')))
+                ||
+                (file.mimeType && (file.mimeType.startsWith('application/j') || file.mimeType.startsWith('text/')))
+                );
         }
 
         function createFile(blade, parentBlade) {
