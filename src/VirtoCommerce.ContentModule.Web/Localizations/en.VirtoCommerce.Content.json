@@ -6,6 +6,26 @@
         "title": "Only for selected stores",
         "subtitle": "Select stores"
       },
+      "choose-action": {
+        "create": {
+          "title": "New",
+          "subtitle": "Choose what page you want to create"
+        },
+        "edit": {
+          "title": "Edit",
+          "subtitle": "Choose how you want to edit the page"
+        }
+      },
+      "markdownEditor": {
+        "create": {
+          "title": "Html Page",
+          "description": "Use markdown or html to create a new page."
+        },
+        "edit": {
+          "title": "Html Page",
+          "description": "Use markdown or html to edit the page."
+        }
+      },
       "content-main": {
         "title": "Content",
         "subtitle": "Content service",

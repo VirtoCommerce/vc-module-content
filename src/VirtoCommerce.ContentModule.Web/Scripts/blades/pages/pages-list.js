@@ -1,6 +1,11 @@
 angular.module('virtoCommerce.contentModule')
-    .controller('virtoCommerce.contentModule.pagesListController', ['$rootScope', '$scope', '$translate', 'virtoCommerce.contentModule.contentApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', 'platformWebApp.validators',
-        function ($rootScope, $scope, $translate, contentApi, bladeNavigationService, dialogService, uiGridHelper, bladeUtils, validators) {
+    .controller('virtoCommerce.contentModule.pagesListController',
+        ['$rootScope', '$scope', '$translate', 'virtoCommerce.contentModule.contentApi',
+            'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService',
+            'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', 'platformWebApp.validators',
+            'virtoCommerce.contentModule.fileHandlerFactory',
+            function ($rootScope, $scope, $translate, contentApi, bladeNavigationService,
+                dialogService, uiGridHelper, bladeUtils, validators, fileHandlerFactory) {
             var blade = $scope.blade;
             blade.updatePermission = 'content:update';
 
@@ -22,7 +27,8 @@ angular.module('virtoCommerce.contentModule')
                         $scope.pageSettings.totalItems = data.length;
                         _.each(data, function (x) {
                             x.isImage = x.mimeType && x.mimeType.startsWith('image/');
-                            x.isOpenable = x.mimeType && (x.mimeType.startsWith('application/j') || x.mimeType.startsWith('text/'));
+                            var handler = fileHandlerFactory.getHandlers('edit', { file: x });
+                            x.isOpenable = handler && handler.length;
                         });
                         $scope.listEntries = data;
                         blade.isLoading = false;
@@ -40,34 +46,29 @@ angular.module('virtoCommerce.contentModule')
                 var result = prompt(tooltip + "\n\nEnter folder name:");
 
                 if (result != null) {
-                    contentApi.createFolder({ contentType: blade.contentType, storeId: blade.storeId }, { name: result, parentUrl: blade.currentEntity.url }, blade.refresh);
+                    contentApi.createFolder(
+                        { contentType: blade.contentType, storeId: blade.storeId },
+                        { name: result, parentUrl: blade.currentEntity.url },
+                        blade.refresh,
+                        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); }
+                    );
                 }
             }
-
-            $scope.rename = function (listItem) {
-                var result = prompt("Enter new name", listItem.name);
-                if (result) {
-                    if (validators.webSafeFileNameValidator(result)) {
-                        contentApi.move({
-                            contentType: blade.contentType,
-                            storeId: blade.storeId,
-                            oldUrl: listItem.url,
-                            newUrl: listItem.url.substring(0, listItem.url.length - listItem.name.length) + result
-                        }, blade.refresh,
-                            function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
-                    } else {
-                        var errorMessage = $translate.instant('content.blades.edit-asset.validations.name-invalid');
-                        alert(errorMessage);
-                    }
-                }
-            };
 
             $scope.copyUrl = function (data) {
                 window.prompt("Copy to clipboard: Ctrl+C, Enter", data.url);
             };
 
             $scope.downloadUrl = function (data) {
-                window.open(data.url, '_blank');
+                setTimeout(function () {
+                    const link = document.createElement('a');
+                    link.setAttribute('href', data.url);
+                    link.setAttribute('download', "");
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
             };
 
             $scope.selectNode = function (listItem) {
@@ -95,46 +96,8 @@ angular.module('virtoCommerce.contentModule')
             };
 
             function openDetailsBlade(listItem, isNew) {
-                if (isNew || listItem.isOpenable) {
-                    var newBlade = {
-                        id: 'pageDetail',
-                        contentType: blade.contentType,
-                        storeId: blade.storeId,
-                        storeUrl: blade.storeUrl,
-                        languages: blade.languages,
-                        folderUrl: blade.currentEntity.relativeUrl,
-                        currentEntity: listItem,
-                        isNew: isNew,
-                        title: listItem.name,
-                        controller: 'virtoCommerce.contentModule.pageDetailController',
-                        template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/page-detail.tpl.html'
-                    };
-
-                    if (isBlogs()) {
-                        if (isNew) {
-                            angular.extend(newBlade, {
-                                title: 'content.blades.edit-page.title-new-post',
-                                subtitle: 'content.blades.edit-page.subtitle-new-post'
-                            });
-                        } else {
-                            angular.extend(newBlade, {
-                                subtitle: 'content.blades.edit-page.subtitle-post'
-                            });
-                        }
-                    } else {
-                        if (isNew) {
-                            angular.extend(newBlade, {
-                                title: 'content.blades.edit-page.title-new',
-                                subtitle: 'content.blades.edit-page.subtitle-new'
-                            });
-                        } else {
-                            angular.extend(newBlade, {
-                                subtitle: 'content.blades.edit-page.subtitle'
-                            });
-                        }
-                    }
-                    bladeNavigationService.showBlade(newBlade, blade);
-                }
+                var action = isNew ? 'create' : 'edit';
+                fileHandlerFactory.handleAction(action, { blade: blade, file: listItem });
             }
 
             function openBlogDetailsBlade(listItem, isNew) {
@@ -279,16 +242,6 @@ angular.module('virtoCommerce.contentModule')
                 canExecuteMethod: isItemsChecked,
                 permission: 'content:delete'
             });
-
-            if (isBlogs() && !blade.currentEntity.type) {
-                blade.contextMenuItems = [
-                    {
-                        name: 'platform.commands.manage', icon: 'fa fa-edit',
-                        action: function (data) { openBlogDetailsBlade(data); },
-                        permission: blade.updatePermission
-                    }
-                ];
-            }
 
             // ui-grid
             $scope.setGridOptions = function (gridOptions) {
