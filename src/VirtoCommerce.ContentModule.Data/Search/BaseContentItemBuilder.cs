@@ -21,7 +21,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
             return result;
         }
 
-        private void RemoveFieldAndAddNew(IndexDocument document, string fieldName, string value)
+        private static void RemoveFieldAndAddNew(IndexDocument document, string fieldName, string value)
         {
             var field = document.Fields.FirstOrDefault(x => x.Name.EqualsInvariant(fieldName));
             if (field != null)
