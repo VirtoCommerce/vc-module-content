@@ -1,0 +1,16 @@
+<div class="blade-content">
+  <div class="blade-inner">
+    <div class="inner-block">
+      <ul class="list __items">
+        <li class="list-item"
+            ng-mouseup="runHandler(handler)"
+            va-permission="content:create"
+            ng-repeat="handler in blade.handlers">
+          <i class="{{ handler.descripiptor.icon }}"></i>
+          <span class="list-t">{{ handler.descriptor.name | translate}}</span>
+          <span class="list-descr">{{ handler.descriptor.description | translate }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
