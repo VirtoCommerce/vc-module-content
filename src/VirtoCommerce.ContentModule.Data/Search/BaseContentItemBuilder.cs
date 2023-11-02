@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.Platform.Core.Common;
@@ -25,11 +26,11 @@ namespace VirtoCommerce.ContentModule.Data.Search
             {
                 var parts = folder.Split('/', StringSplitOptions.RemoveEmptyEntries);
                 var paths = new List<string> { "/" };
-                var path = string.Empty;
+                var path = new StringBuilder();
                 foreach (var part in parts)
                 {
-                    path += "/" + part;
-                    paths.Add(path);
+                    path.Append($"/{part}");
+                    paths.Add(path.ToString());
                 }
 
                 result.AddFilterableCollection("FolderUrl", paths);
