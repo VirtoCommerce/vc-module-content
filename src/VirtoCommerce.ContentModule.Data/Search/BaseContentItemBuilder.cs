@@ -17,7 +17,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
             RemoveFieldAndAddNew(result, "ContentType", contentType);
             RemoveFieldAndAddNew(result, "Name", file.Name);
             RemoveFieldAndAddNew(result, "RelativeUrl", file.RelativeUrl);
-            RemoveFieldAndAddNew(result, "FolderUrl", file.ParentUrl);
+            result.AddSuggestableString("FolderUrl", file.ParentUrl);
             return result;
         }
 
