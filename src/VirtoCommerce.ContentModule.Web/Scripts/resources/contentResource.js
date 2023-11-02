@@ -40,7 +40,10 @@ angular.module('virtoCommerce.contentModule')
                                 if (request.contentType) {
                                     query += " contentType:" + request.contentType;
                                 }
-                                return JSON.stringify(angular.extend({}, request, { searchPhrase: query, folderUrl: request.folderUrl || '/' }));
+                                if (request.folderUrl && request.folderUrl !== '/') {
+                                    request.folderUrl = request.folderUrl.replace(/\/$/, '');
+                                }
+                                return JSON.stringify(angular.extend({}, request, { searchPhrase: query }));
                             },
                             isArray: true,
                             transformResponse: function (rawData) { return JSON.parse(rawData).results; }
