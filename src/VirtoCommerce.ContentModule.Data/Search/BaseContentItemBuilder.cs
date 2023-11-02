@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
@@ -17,7 +19,24 @@ namespace VirtoCommerce.ContentModule.Data.Search
             RemoveFieldAndAddNew(result, "ContentType", contentType);
             RemoveFieldAndAddNew(result, "Name", file.Name);
             RemoveFieldAndAddNew(result, "RelativeUrl", file.RelativeUrl);
-            result.AddSuggestableString("FolderUrl", file.ParentUrl);
+
+            var folder = file.ParentUrl;
+            if (!string.IsNullOrEmpty(folder))
+            {
+                var parts = folder.Split('/', StringSplitOptions.RemoveEmptyEntries);
+                var paths = new List<string> { "/" };
+                var path = string.Empty;
+                foreach (var part in parts)
+                {
+                    path += "/" + part;
+                    paths.Add(path);
+                }
+
+                result.AddFilterableCollection("FolderUrl", paths);
+                result.AddContentString(file.ParentUrl);
+
+            }
+
             return result;
         }
 
