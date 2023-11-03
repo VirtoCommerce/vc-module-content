@@ -56,5 +56,21 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
             to.Type = from.Type;
             to.MimeType = from.ContentType;
         }
+
+        public static string GetParentUrl(this string relativeUrl)
+        {
+            if (relativeUrl.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            var result = relativeUrl.Substring(0, relativeUrl.LastIndexOf('/'));
+            if (result.IsNullOrEmpty())
+            {
+                return "/";
+            }
+
+            return result;
+        }
     }
 }
