@@ -96,6 +96,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 {
                     contentItem.Id = document.Id;
                     contentItem.Name = GetStringValueOrDefault(document, "name", contentItem.Name);
+                    contentItem.DisplayName = GetStringValueOrDefault(document, "displayname", contentItem.DisplayName);
                     contentItem.Permalink = GetStringValueOrDefault(document, "permalink", contentItem.Permalink);
                     result.Add(contentItem);
                 }

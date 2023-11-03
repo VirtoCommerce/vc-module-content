@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using VirtoCommerce.ContentModule.Core.Model;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SearchModule.Core.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using YamlDotNet.RepresentationModel;
@@ -57,6 +58,12 @@ namespace VirtoCommerce.ContentModule.Data.Search
                         index++;
                     }
                 }
+            }
+
+            if (result.Fields.All(x => !x.Name.EqualsInvariant("displayname")))
+            {
+                var name = Path.GetFileNameWithoutExtension(file.Name);
+                result.AddFilterableStringAndContentString("displayName", name);
             }
         }
 
