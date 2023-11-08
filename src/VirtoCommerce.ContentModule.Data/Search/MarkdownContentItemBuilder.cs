@@ -19,23 +19,12 @@ namespace VirtoCommerce.ContentModule.Data.Search
             var result = new IndexDocument(documentId);
             result.AddFilterableStringAndContentString("StoreId", storeId);
 
-            AddLanguage(result, file);
             AddMetadata(result, file);
 
             var content = RemoveYamlHeader(file.Content);
             result.AddContentString(content);
 
             return result;
-        }
-
-        private static void AddLanguage(IndexDocument result, IndexableContentFile file)
-        {
-            var parts = Path.GetFileName(file.Name)?.Split('.');
-
-            if (parts?.Length == 3)
-            {
-                result.AddFilterableStringAndContentString("CultureName", parts[1]);
-            }
         }
 
         private static void AddMetadata(IndexDocument result, IndexableContentFile file)

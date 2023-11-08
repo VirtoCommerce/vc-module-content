@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using VirtoCommerce.ContentModule.Core.Model;
@@ -20,6 +21,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
             RemoveFieldAndAddNew(result, "ContentType", contentType);
             RemoveFieldAndAddNew(result, "Name", file.Name);
             RemoveFieldAndAddNew(result, "RelativeUrl", file.RelativeUrl);
+            AddLanguage(result, file);
 
             var folder = file.ParentUrl;
             if (!string.IsNullOrEmpty(folder))
@@ -39,6 +41,16 @@ namespace VirtoCommerce.ContentModule.Data.Search
             }
 
             return result;
+        }
+
+        private static void AddLanguage(IndexDocument result, IndexableContentFile file)
+        {
+            var parts = Path.GetFileName(file.Name)?.Split('.');
+
+            if (parts?.Length == 3)
+            {
+                result.AddFilterableStringAndContentString("CultureName", parts[1]);
+            }
         }
 
         private static void RemoveFieldAndAddNew(IndexDocument document, string fieldName, string value)
