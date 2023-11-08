@@ -73,10 +73,12 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
                 var items = searchResults.Results.Select(x => new SeoInfo
                 {
-                    Name = x.Name,
+                    Name = x.DisplayName,
                     SemanticUrl = x.Permalink,
                     StoreId = x.StoreId,
                     ObjectId = x.Id,
+                    Id = x.Id,
+                    IsActive = true,
                     ObjectType = FullTextContentSearchService.ContentDocumentType
                 });
 
