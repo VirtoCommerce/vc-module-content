@@ -77,6 +77,8 @@ namespace VirtoCommerce.ContentModule.Data.Search
                     SemanticUrl = x.Permalink,
                     StoreId = x.StoreId,
                     ObjectId = x.Id,
+                    Id = x.Id,
+                    IsActive = true,
                     ObjectType = FullTextContentSearchService.ContentDocumentType
                 });
 
