@@ -64,6 +64,10 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 result.Add(CreateTermFilter("StoreId", criteria.StoreId));
             }
 
+            if (!string.IsNullOrEmpty(criteria.LanguageCode))
+            {
+                result.Add(CreateTermFilter("CultureName", criteria.LanguageCode));
+            }
             if (!string.IsNullOrEmpty(criteria.CultureName))
             {
                 result.Add(CreateTermFilter("CultureName", criteria.CultureName));
