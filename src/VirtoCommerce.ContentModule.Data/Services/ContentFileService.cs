@@ -11,12 +11,12 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.ContentModule.Data.Services
 {
-    public class ContentFileService : IContentFileService
+    public class ContentFilesService : IContentFileService
     {
         private readonly IBlobContentStorageProviderFactory _blobContentStorageProviderFactory;
         private readonly IContentPathResolver _contentPathResolver;
 
-        public ContentFileService(
+        public ContentFilesService(
             IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
             IContentPathResolver contentPathResolver)
         {

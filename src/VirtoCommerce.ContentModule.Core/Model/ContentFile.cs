@@ -12,5 +12,8 @@ namespace VirtoCommerce.ContentModule.Core.Model
 
         public string MimeType { get; set; }
         public string Size { get; set; }
+
+        public bool Published { get; set; }
+        public bool HasChanges { get; set; }
     }
 }

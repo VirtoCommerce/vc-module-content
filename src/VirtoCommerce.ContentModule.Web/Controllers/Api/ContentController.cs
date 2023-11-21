@@ -38,6 +38,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         private readonly IContentService _contentService;
         private readonly IContentFileService _contentFileService;
         private readonly IFullTextContentSearchService _fullTextContentSearchService;
+        private readonly IPublishingService _publishingService;
         private readonly IStoreService _storeService;
         private readonly ILogger<ContentController> _logger;
         private readonly IConfiguration _configuration;
@@ -49,6 +50,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             IContentService contentService,
             IContentFileService contentFileService,
             IFullTextContentSearchService fullTextContentSearchService,
+            IPublishingService publishingService,
             IStoreService storeService,
             ILogger<ContentController> logger,
             IConfiguration configuration)
@@ -58,6 +60,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             _contentService = contentService;
             _contentFileService = contentFileService;
             _fullTextContentSearchService = fullTextContentSearchService;
+            _publishingService = publishingService;
             _storeService = storeService;
             _logger = logger;
             _configuration = configuration;
@@ -125,13 +128,20 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <param name="contentType">possible values Themes or Pages</param>
         /// <param name="storeId">Store id</param>
         /// <param name="relativeUrl">content relative url</param>
+        /// <param name="draft">Whether th given file be read from draft if it is exist</param>
         /// <returns>stream</returns>
         [HttpGet]
         [Route("")]
         [Authorize(Permissions.Read)]
-        public async Task<ActionResult<byte[]>> GetContentItemDataStream(string contentType, string storeId, [FromQuery] string relativeUrl)
+        public async Task<ActionResult<byte[]>> GetContentItemDataStream(string contentType, string storeId, [FromQuery] string relativeUrl, [FromQuery] bool draft = false)
         {
-            if (await _contentService.ItemExistsAsync(contentType, storeId, relativeUrl))
+            var sourceUrl = _publishingService.GetRelativeDraftUrl(relativeUrl, draft);
+            if (await _contentService.ItemExistsAsync(contentType, storeId, sourceUrl))
+            {
+                var result = await _contentService.GetItemStreamAsync(contentType, storeId, sourceUrl);
+                return File(result, MimeTypeResolver.ResolveContentType(relativeUrl));
+            }
+            if (sourceUrl != relativeUrl && await _contentService.ItemExistsAsync(contentType, storeId, relativeUrl))
             {
                 var result = await _contentService.GetItemStreamAsync(contentType, storeId, relativeUrl);
                 return File(result, MimeTypeResolver.ResolveContentType(relativeUrl));
@@ -158,7 +168,10 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             criteria.FolderUrl = folderUrl;
             criteria.Keyword = keyword;
             var result = await _contentFileService.FilterItemsAsync(criteria);
-            return Ok(result);
+            var folders = result.Where(x => x is not ContentFile);
+            var files = await _publishingService.SetFilesStatuses(result.OfType<ContentFile>());
+            var response = folders.Union(files);
+            return Ok(response);
         }
 
         /// <summary>
@@ -172,7 +185,8 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         public async Task<ActionResult<ContentItem[]>> FulltextSearchContent([FromBody] ContentSearchCriteria criteria)
         {
             var result = await _fullTextContentSearchService.SearchContentAsync(criteria);
-            return Ok(result);
+            var response = _publishingService.SetFilesStatuses(result.Results);
+            return Ok(response);
         }
 
         [HttpGet]
@@ -271,13 +285,14 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         /// <param name="storeId">Store id</param>
         /// <param name="folderUrl">folder relative url where content will be uploaded</param>
         /// <param name="url">external url which will be used to download content item data</param>
+        /// <param name="draft">Whether file should be saved as draft.</param>
         /// <returns></returns>
         [HttpPost]
         [Route("")]
         [DisableFormValueModelBinding]
         [Authorize(Permissions.Create)]
         [ProducesResponseType(typeof(void), StatusCodes.Status405MethodNotAllowed)]
-        public async Task<ActionResult<ContentItem[]>> UploadContent(string contentType, string storeId, [FromQuery] string folderUrl, [FromQuery] string url = null)
+        public async Task<ActionResult<ContentItem[]>> UploadContent(string contentType, string storeId, [FromQuery] string folderUrl, [FromQuery] string url = null, [FromQuery] bool draft = false)
         {
             if (url is null && !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
@@ -309,6 +324,9 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                     if (hasContentDispositionHeader)
                     {
                         var fileName = Path.GetFileName(contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty));
+
+                        fileName = _publishingService.GetRelativeDraftUrl(fileName, draft);
+
                         var file = await _contentService.SaveContentAsync(contentType, storeId, folderUrl, fileName, section.Body);
                         retVal.Add(file);
                     }
@@ -327,6 +345,24 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             ContentCacheRegion.ExpireContent(($"content-{storeId}"));
 
             return Ok(retVal.ToArray());
+        }
+
+        [HttpPost]
+        [Route("publishing")]
+        [Authorize(Permissions.Create)]
+        public async Task<ActionResult> Publishing(string contentType, string storeId, [FromQuery] string relativeUrl, [FromQuery] bool publish)
+        {
+            await _publishingService.PublishingAsync(contentType, storeId, relativeUrl, publish);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("publish-status")]
+        [Authorize(Permissions.Create)]
+        public async Task<ActionResult<FilePublishStatus>> PublishStatus(string contentType, string storeId, [FromQuery] string relativeUrl)
+        {
+            var result = await _publishingService.PublishStatusAsync(contentType, storeId, relativeUrl);
+            return Ok(result);
         }
     }
 }

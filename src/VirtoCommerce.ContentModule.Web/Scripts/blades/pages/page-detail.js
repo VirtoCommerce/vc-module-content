@@ -278,6 +278,7 @@ angular.module('virtoCommerce.contentModule')
             );
 
             function isDirty() {
+                // entity.content can contains \r\n that is transformed to \n in md-editor
                 return !!blade.origEntity && !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
             }
 

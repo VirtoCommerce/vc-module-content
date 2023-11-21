@@ -46,7 +46,31 @@ angular.module('virtoCommerce.contentModule')
                             isArray: true,
                             transformResponse: function (rawData) { return JSON.parse(rawData).results; }
                         },
+                        publish: {
+                            url: 'api/content/:contentType/:storeId/publishing',
+                            method: 'POST',
+                            params: {
+                                contentType: '@contentType',
+                                storeId: '@storeId',
+                                relativeUrl: '@relativeUrl',
+                                publish: true
+                            }
+                        },
+                        unpublish: {
+                            url: 'api/content/:contentType/:storeId/publishing',
+                            method: 'POST',
+                            params: {
+                                contentType: '@contentType',
+                                storeId: '@storeId',
+                                relativeUrl: '@relativeUrl',
+                                publish: false
+                            }
+                        },
+                        post: {
+                            params: { draft: true },
+                        },
                         get: {
+                            params: { draft: true },
                             // using transformResponse to:
                             // 1. avoid automatic response result string converting to array;
                             transformResponse: function(rawData) { return { data: rawData }; }
@@ -70,6 +94,7 @@ angular.module('virtoCommerce.contentModule')
                             isArray: true
                         },
                         getWithMetadata: {
+                            params: { draft: true },
                             // using transformResponse to:
                             // 1. avoid automatic response result string converting to array;
                             // 2. parse metadata as needed.
@@ -100,7 +125,8 @@ angular.module('virtoCommerce.contentModule')
                         saveWithMetadata: {
                             method: 'POST',
                             headers: { 'Content-Type': undefined },
-                            transformRequest: function(currentEntity) {
+                            params: { draft: true },
+                            transformRequest: function (currentEntity) {
                                 var metadata = {};
                                 var nonEmptyProperties = _.filter(currentEntity.dynamicProperties, function(x) { return _.any(x.values, function(val) { return val.value || x.valueType == 'Boolean'; }); });
                                 _.each(nonEmptyProperties,

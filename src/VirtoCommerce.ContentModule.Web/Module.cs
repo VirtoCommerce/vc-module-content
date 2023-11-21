@@ -62,8 +62,9 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<IFullTextContentSearchService, FullTextContentSearchService>();
             serviceCollection.AddTransient<IContentService, ContentService>();
             serviceCollection.AddTransient<IContentStatisticService, ContentStatisticService>();
-            serviceCollection.AddTransient<IContentFileService, ContentFileService>();
+            serviceCollection.AddTransient<IContentFileService, ContentFilesService>();
             serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
+            serviceCollection.AddTransient<IPublishingService, PublishingServices>();
 
             serviceCollection.AddSingleton<IContentItemTypeRegistrar, ContentItemTypeRegistrar>();
 
