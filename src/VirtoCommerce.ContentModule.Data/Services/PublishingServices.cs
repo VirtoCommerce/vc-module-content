@@ -59,17 +59,29 @@ namespace VirtoCommerce.ContentModule.Data.Services
                     }
                     else
                     {
-                        var isDraft = currentFile.Name.EndsWith("-draft");
-                        currentFile.HasChanges = isDraft;
-                        currentFile.Published = !isDraft;
-                        currentFile.Name = isDraft
-                            ? currentFile.Name.Substring(0, currentFile.Name.Length - "-draft".Length)
-                            : currentFile.Name;
+                        SetFileStatusByName(currentFile);
                     }
                 }
                 currentFile = nextFile;
             }
+
+            if (currentFile != null)
+            {
+                result.Add(currentFile);
+                SetFileStatusByName(currentFile);
+            }
+
             return Task.FromResult(result.AsEnumerable());
+        }
+
+        private void SetFileStatusByName(ContentFile file)
+        {
+            var isDraft = file.Name.EndsWith("-draft");
+            file.HasChanges = isDraft;
+            file.Published = !isDraft;
+            file.Name = isDraft
+                ? file.Name.Substring(0, file.Name.Length - "-draft".Length)
+                : file.Name;
         }
 
         public string GetRelativeDraftUrl(string source, bool draft)

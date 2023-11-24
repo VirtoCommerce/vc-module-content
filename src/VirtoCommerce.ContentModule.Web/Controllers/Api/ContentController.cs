@@ -135,16 +135,30 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<byte[]>> GetContentItemDataStream(string contentType, string storeId, [FromQuery] string relativeUrl, [FromQuery] bool draft = false)
         {
-            var sourceUrl = _publishingService.GetRelativeDraftUrl(relativeUrl, draft);
-            if (await _contentService.ItemExistsAsync(contentType, storeId, sourceUrl))
+            if (draft)
             {
-                var result = await _contentService.GetItemStreamAsync(contentType, storeId, sourceUrl);
-                return File(result, MimeTypeResolver.ResolveContentType(relativeUrl));
+                // use the draft logic, try to load the draft file, and if it isn't found, load to published version
+                var draftUrl = _publishingService.GetRelativeDraftUrl(relativeUrl, true);
+                if (await _contentService.ItemExistsAsync(contentType, storeId, draftUrl))
+                {
+                    var result = await _contentService.GetItemStreamAsync(contentType, storeId, draftUrl);
+                    return File(result, MimeTypeResolver.ResolveContentType(relativeUrl));
+                }
+                var sourceUrl = _publishingService.GetRelativeDraftUrl(relativeUrl, false);
+                if (await _contentService.ItemExistsAsync(contentType, storeId, sourceUrl))
+                {
+                    var result = await _contentService.GetItemStreamAsync(contentType, storeId, sourceUrl);
+                    return File(result, MimeTypeResolver.ResolveContentType(relativeUrl));
+                }
             }
-            if (sourceUrl != relativeUrl && await _contentService.ItemExistsAsync(contentType, storeId, relativeUrl))
+            else
             {
-                var result = await _contentService.GetItemStreamAsync(contentType, storeId, relativeUrl);
-                return File(result, MimeTypeResolver.ResolveContentType(relativeUrl));
+                // use default flow
+                if (await _contentService.ItemExistsAsync(contentType, storeId, relativeUrl))
+                {
+                    var result = await _contentService.GetItemStreamAsync(contentType, storeId, relativeUrl);
+                    return File(result, MimeTypeResolver.ResolveContentType(relativeUrl));
+                }
             }
             return NotFound();
         }
