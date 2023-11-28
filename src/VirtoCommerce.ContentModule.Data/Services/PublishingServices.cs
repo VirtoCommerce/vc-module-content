@@ -47,11 +47,11 @@ namespace VirtoCommerce.ContentModule.Data.Services
                 var nextFile = enumerator.Current;
                 if (currentFile != null && nextFile != null)
                 {
-                    result.Add(currentFile);
                     if (nextFile.Name == currentFile.Name + "-draft")
                     {
-                        currentFile.Published = true;
-                        currentFile.HasChanges = true;
+                        nextFile.Published = true;
+                        nextFile.HasChanges = true;
+                        result.Add(nextFile);
                         if (enumerator.MoveNext())
                         {
                             nextFile = enumerator.Current;
@@ -59,6 +59,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
                     }
                     else
                     {
+                        result.Add(currentFile);
                         SetFileStatusByName(currentFile);
                     }
                 }
