@@ -46,6 +46,14 @@ namespace VirtoCommerce.ContentModule.Data.Services
             await storageProvider.MoveAsyncPublic(oldPath, newPath);
         }
 
+        public async Task CopyFileAsync(string contentType, string storeId, string srcPath, string destPath)
+        {
+            var storageProvider = GetStorageProvider(contentType, storeId);
+            await using var src = await storageProvider.OpenReadAsync(srcPath);
+            await using var dest = await storageProvider.OpenWriteAsync(destPath);
+            await src.CopyToAsync(dest);
+        }
+
         public async Task CopyContentAsync(string contentType, string storeId, string srcPath, string destPath)
         {
             // question: here should be absolute urls only?

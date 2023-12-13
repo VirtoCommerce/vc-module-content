@@ -190,6 +190,16 @@ angular.module('virtoCommerce.contentModule')
                         unpack: { url: 'api/content/:contentType/:storeId/unpack' },
                         createFolder: { url: 'api/content/:contentType/:storeId/folder', method: 'POST' },
                         copy: { url: 'api/content/copy' },
+                        copyFile: {
+                            url: 'api/content/:contentType/:storeId/copy-file',
+                            method: 'POST',
+                            params: {
+                                contentType: '@contentType',
+                                storeId: '@storeId',
+                                srcFile: '@srcFile',
+                                destFile: '@destFile'
+                            }
+                        },
                         move: { url: 'api/content/:contentType/:storeId/move' },
                         delete: { url: 'api/content/:contentType/:storeId', method: 'DELETE' }
                     });

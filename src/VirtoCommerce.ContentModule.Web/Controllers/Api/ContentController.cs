@@ -198,6 +198,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<ContentItem[]>> FulltextSearchContent([FromBody] ContentSearchCriteria criteria)
         {
+            criteria.Take = 5000;
             var result = await _fullTextContentSearchService.SearchContentAsync(criteria);
             var response = _publishingService.SetFilesStatuses(result.Results);
             return Ok(response);
@@ -230,9 +231,9 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         }
 
         /// <summary>
-        ///     Copy contents
+        /// Copy folder contents
         /// </summary>
-        /// <param name="srcPath">source content  relative path</param>
+        /// <param name="srcPath">source content relative path</param>
         /// <param name="destPath">destination content relative path</param>
         /// <returns></returns>
         [HttpGet]
@@ -242,6 +243,39 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         public async Task<ActionResult> CopyContent([FromQuery] string srcPath, [FromQuery] string destPath)
         {
             await _contentService.CopyContentAsync(null, null, srcPath, destPath);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Copy file
+        /// </summary>
+        /// <param name="contentType">type of content (pages/blogs/etc)</param>
+        /// <param name="storeId">store id</param>
+        /// <param name="srcFile">source file</param>
+        /// <param name="destFile">source file</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("copy-file")]
+        [Authorize(Permissions.Update)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> CopyFile(string contentType, string storeId, [FromQuery] string srcFile, [FromQuery] string destFile)
+        {
+            if (srcFile == null)
+                return NotFound();
+            if (destFile == null)
+            {
+                var ext = Path.GetExtension(srcFile);
+                var filename = Path.GetFileNameWithoutExtension(srcFile);
+                var path = Path.GetDirectoryName(srcFile);
+                var index = 0;
+                do
+                {
+                    index++;
+                    destFile = Path.Combine(path, $"{filename}_{index}{ext}");
+                } while (await _contentService.ItemExistsAsync(contentType, storeId, destFile));
+            }
+
+            await _contentService.CopyFileAsync(contentType, storeId, srcFile, destFile);
             return NoContent();
         }
 

@@ -39,6 +39,9 @@
                     <li class="menu-item" ng-click="command.action(contextMenuEntity)" ng-repeat="command in blade.contextMenuItems" ng-if="contextMenuEntity.type === 'folder'" va-permission="{{command.permission}}">
                         <i class="menu-ico fa {{command.icon}}"></i> {{command.name | translate}}
                     </li>
+                    <li class="menu-item" ng-click="duplicate(contextMenuEntity)" ng-if="contextMenuEntity.type !== 'folder'">
+                        <i class="menu-ico fa fa-copy"></i> Duplicate
+                    </li>
                     <li class="menu-item" ng-click="downloadUrl(contextMenuEntity)" ng-if="contextMenuEntity.type !== 'folder'">
                         <i class="menu-ico fa fa-download"></i> Download
                     </li>

@@ -68,6 +68,10 @@ angular.module('virtoCommerce.contentModule')
                 window.open(data.url, '_blank');
             };
 
+            $scope.duplicate = function (data) {
+                contentApi.copyFile({ srcFile: data.relativeUrl, contentType: blade.contentType, storeId: blade.storeId }, blade.refresh);
+            };
+
             $scope.selectNode = function (listItem) {
                 if (listItem.type === 'folder') {
                     var newBlade = {
