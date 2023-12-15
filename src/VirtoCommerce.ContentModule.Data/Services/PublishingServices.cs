@@ -91,6 +91,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         public string GetRelativeDraftUrl(string source, bool draft)
         {
+            // should be for md and page only
             if (source.EndsWith("-draft"))
             {
                 return draft ? source : source.Substring(0, source.Length - "-draft".Length);

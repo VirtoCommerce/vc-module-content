@@ -275,6 +275,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
                 } while (await _contentService.ItemExistsAsync(contentType, storeId, destFile));
             }
 
+            destFile = _publishingService.GetRelativeDraftUrl(destFile, true);
             await _contentService.CopyFileAsync(contentType, storeId, srcFile, destFile);
             return NoContent();
         }
