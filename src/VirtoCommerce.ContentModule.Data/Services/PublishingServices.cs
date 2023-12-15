@@ -56,6 +56,10 @@ namespace VirtoCommerce.ContentModule.Data.Services
                         {
                             nextFile = enumerator.Current;
                         }
+                        else
+                        {
+                            nextFile = null;
+                        }
                     }
                     else
                     {
