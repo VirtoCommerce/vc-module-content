@@ -49,9 +49,9 @@ namespace VirtoCommerce.ContentModule.Data.Services
                 {
                     if (nextFile.Name == currentFile.Name + "-draft")
                     {
-                        nextFile.Published = true;
-                        nextFile.HasChanges = true;
-                        result.Add(nextFile);
+                        currentFile.Published = true;
+                        currentFile.HasChanges = true;
+                        result.Add(currentFile);
                         if (enumerator.MoveNext())
                         {
                             nextFile = enumerator.Current;

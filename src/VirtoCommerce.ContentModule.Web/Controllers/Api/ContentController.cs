@@ -226,7 +226,21 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> MoveContent(string contentType, string storeId, [FromQuery] string oldUrl, [FromQuery] string newUrl)
         {
-            await _contentService.MoveContentAsync(contentType, storeId, oldUrl, newUrl);
+            var publishedSrc = _publishingService.GetRelativeDraftUrl(oldUrl, false);
+            var unpublishedSrc = _publishingService.GetRelativeDraftUrl(oldUrl, true);
+
+            if (await _contentService.ItemExistsAsync(contentType, storeId, publishedSrc))
+            {
+                var publishedDest = _publishingService.GetRelativeDraftUrl(newUrl, false);
+                await _contentService.MoveContentAsync(contentType, storeId, publishedSrc, publishedDest);
+            }
+
+            if (await _contentService.ItemExistsAsync(contentType, storeId, unpublishedSrc))
+            {
+                var unpublishedDest = _publishingService.GetRelativeDraftUrl(newUrl, true);
+                await _contentService.MoveContentAsync(contentType, storeId, unpublishedSrc, unpublishedDest);
+            }
+
             return NoContent();
         }
 
@@ -265,14 +279,19 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
             if (destFile == null)
             {
                 var ext = Path.GetExtension(srcFile);
+                var alternativeExt = ext.EndsWith("-draft") ? ext.Substring(0, ext.Length - "-draft".Length) : ext + "-draft";
                 var filename = Path.GetFileNameWithoutExtension(srcFile);
-                var path = Path.GetDirectoryName(srcFile);
+                var path = srcFile.Substring(0, srcFile.Length - filename.Length - ext.Length);
                 var index = 0;
                 do
                 {
                     index++;
-                    destFile = Path.Combine(path, $"{filename}_{index}{ext}");
-                } while (await _contentService.ItemExistsAsync(contentType, storeId, destFile));
+                } while (
+                    await _contentService.ItemExistsAsync(contentType, storeId, Path.Combine(path, $"{filename}_{index}{ext}"))
+                    || await _contentService.ItemExistsAsync(contentType, storeId, Path.Combine(path, $"{filename}_{index}{alternativeExt}"))
+
+                );
+                destFile = Path.Combine(path, $"{filename}_{index}{ext}");
             }
 
             destFile = _publishingService.GetRelativeDraftUrl(destFile, true);
