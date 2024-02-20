@@ -4,20 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.AssetsModule.Core.Assets;
+using VirtoCommerce.AssetsModule.Core.Services;
 using VirtoCommerce.AzureBlobAssetsModule.Core;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.Platform.Core;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Extensions;
-using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.ContentModule.Azure
 {
     public class AzureContentBlobStorageProvider : AzureBlobProvider, IBlobContentStorageProvider
     {
         private readonly AzureContentBlobOptions _options;
-        public AzureContentBlobStorageProvider(IOptions<AzureContentBlobOptions> options, IOptions<PlatformOptions> platformOptions, ISettingsManager settingsManager)
-            : base(options, platformOptions, settingsManager)
+
+        public AzureContentBlobStorageProvider(IOptions<AzureContentBlobOptions> options, IFileExtensionService fileExtensionService)
+            : base(options, fileExtensionService)
         {
             _options = options.Value;
         }
@@ -35,8 +35,7 @@ namespace VirtoCommerce.ContentModule.Azure
 
         public override Task CreateFolderAsync(BlobFolder folder)
         {
-            if (folder == null)
-                throw new ArgumentNullException(nameof(folder));
+            ArgumentNullException.ThrowIfNull(folder);
 
             if (folder.ParentUrl.IsNullOrEmpty())
             {
