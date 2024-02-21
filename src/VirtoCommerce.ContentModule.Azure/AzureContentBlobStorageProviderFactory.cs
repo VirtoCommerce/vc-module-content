@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using VirtoCommerce.AssetsModule.Core.Services;
 using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Extensions;
 
 namespace VirtoCommerce.ContentModule.Azure
@@ -18,7 +19,7 @@ namespace VirtoCommerce.ContentModule.Azure
 
         public IBlobContentStorageProvider CreateProvider(string basePath)
         {
-            var clonedOptions = (AzureContentBlobOptions)_options.Clone();
+            var clonedOptions = _options.CloneTyped();
             clonedOptions.RootPath = UrlHelperExtensions.Combine(clonedOptions.RootPath, basePath);
             return new AzureContentBlobStorageProvider(Options.Create(clonedOptions), _fileExtensionService);
         }
