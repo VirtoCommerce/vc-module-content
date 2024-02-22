@@ -1,15 +1,15 @@
 using Microsoft.Extensions.Options;
-using VirtoCommerce.AssetsModule.Core.Services;
 using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.Platform.Core;
+using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.FileSystemAssetsModule.Core;
-using VirtoCommerce.Platform.Core.Events;
 
 namespace VirtoCommerce.ContentModule.FileSystem
 {
     public class FileSystemContentBlobStorageProvider : FileSystemBlobProvider, IBlobContentStorageProvider
     {
-        public FileSystemContentBlobStorageProvider(IOptions<FileSystemBlobOptions> options, IFileExtensionService fileExtensionService, IEventPublisher eventPublisher)
-            : base(options, fileExtensionService, eventPublisher)
+        public FileSystemContentBlobStorageProvider(IOptions<FileSystemContentBlobOptions> options, IOptions<PlatformOptions> platformOptions, ISettingsManager settingsManager)
+            : base(options, platformOptions, settingsManager)
         {
         }
     }

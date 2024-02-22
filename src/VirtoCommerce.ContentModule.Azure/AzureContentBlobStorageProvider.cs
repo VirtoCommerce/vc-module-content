@@ -4,27 +4,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.AssetsModule.Core.Assets;
-using VirtoCommerce.AssetsModule.Core.Services;
 using VirtoCommerce.AzureBlobAssetsModule.Core;
 using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.Platform.Core;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Extensions;
+using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.ContentModule.Azure
 {
     public class AzureContentBlobStorageProvider : AzureBlobProvider, IBlobContentStorageProvider
     {
         private readonly AzureContentBlobOptions _options;
-        public AzureContentBlobStorageProvider(IOptions<AzureContentBlobOptions> options, IFileExtensionService fileExtensionService, IEventPublisher eventPublisher)
-            : base(options, fileExtensionService, eventPublisher)
+        public AzureContentBlobStorageProvider(IOptions<AzureContentBlobOptions> options, IOptions<PlatformOptions> platformOptions, ISettingsManager settingsManager)
+            : base(options, platformOptions, settingsManager)
         {
             _options = options.Value;
         }
 
-        public override async Task<BlobInfo> GetBlobInfoAsync(string blobUrl)
+        public override async Task<BlobInfo> GetBlobInfoAsync(string url)
         {
-            var result = await base.GetBlobInfoAsync(NormalizeUrl(blobUrl));
+            var result = await base.GetBlobInfoAsync(NormalizeUrl(url));
             if (result != null)
             {
                 var rootAzurePath = _options.RootPath.Replace('\\', '/').Trim('/').Length + 1;

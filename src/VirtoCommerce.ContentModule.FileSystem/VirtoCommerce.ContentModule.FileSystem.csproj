@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="VirtoCommerce.FileSystemAssetsModule.Core" Version="3.801.0-alpha.92-vcst-489-asset-events"/>
+    <PackageReference Include="VirtoCommerce.FileSystemAssetsModule.Core" Version="3.800.0"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.ContentModule.Core\VirtoCommerce.ContentModule.Core.csproj" />
