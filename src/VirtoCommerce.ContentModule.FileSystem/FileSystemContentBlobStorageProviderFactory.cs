@@ -1,24 +1,24 @@
 using System.IO;
 using Microsoft.Extensions.Options;
+using VirtoCommerce.AssetsModule.Core.Services;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.Platform.Core;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Extensions;
-using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.ContentModule.FileSystem
 {
     public class FileSystemContentBlobStorageProviderFactory : IBlobContentStorageProviderFactory
     {
         private readonly FileSystemContentBlobOptions _options;
-        private readonly IOptions<PlatformOptions> _platformOptions;
-        private readonly ISettingsManager _settingsManager;
+        private readonly IFileExtensionService _fileExtensionService;
+        private readonly IEventPublisher _eventPublisher;
 
 
-        public FileSystemContentBlobStorageProviderFactory(IOptions<FileSystemContentBlobOptions> options, IOptions<PlatformOptions> platformOptions, ISettingsManager settingsManager)
+        public FileSystemContentBlobStorageProviderFactory(IOptions<FileSystemContentBlobOptions> options, IFileExtensionService fileExtensionService, IEventPublisher eventPublisher)
         {
             _options = options.Value;
-            _platformOptions = platformOptions;
-            _settingsManager = settingsManager;
+            _fileExtensionService = fileExtensionService;
+            _eventPublisher = eventPublisher;
         }
 
         public IBlobContentStorageProvider CreateProvider(string basePath)
@@ -35,7 +35,7 @@ namespace VirtoCommerce.ContentModule.FileSystem
             clonedOptions.RootPath = storagePath;
             clonedOptions.PublicUrl = publicPath;
             //Do not export default theme (Themes/default) its will distributed with code
-            return new FileSystemContentBlobStorageProvider(new OptionsWrapper<FileSystemContentBlobOptions>(clonedOptions), _platformOptions, _settingsManager);
+            return new FileSystemContentBlobStorageProvider(new OptionsWrapper<FileSystemContentBlobOptions>(clonedOptions), _fileExtensionService, _eventPublisher);
         }
     }
 }
