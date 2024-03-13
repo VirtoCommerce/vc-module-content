@@ -5,25 +5,18 @@ using System.Threading.Tasks;
 using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
+using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.ContentModule.Data.Services
 {
-    public class ContentFileService : IContentFileService
+    public class ContentFileService(IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
+            IContentPathResolver contentPathResolver,
+            IContentItemTypeRegistrar contentItemTypeRegistrar)
+        : IContentFileService
     {
-        private readonly IBlobContentStorageProviderFactory _blobContentStorageProviderFactory;
-        private readonly IContentPathResolver _contentPathResolver;
-
-        public ContentFileService(
-            IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
-            IContentPathResolver contentPathResolver)
-        {
-            _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
-            _contentPathResolver = contentPathResolver;
-        }
-
         public async Task<IList<ContentItem>> FilterItemsAsync(FilterItemsCriteria criteria)
         {
             var storageProvider = GetStorageProvider(criteria.ContentType, criteria.StoreId, criteria.FolderUrl);
@@ -54,17 +47,19 @@ namespace VirtoCommerce.ContentModule.Data.Services
         {
             var path = folderUrl != null && new Uri(folderUrl, UriKind.RelativeOrAbsolute).IsAbsoluteUri
                 ? ""
-                : _contentPathResolver.GetContentBasePath(contentType, storeId);
-            var storageProvider = _blobContentStorageProviderFactory.CreateProvider(path);
+                : contentPathResolver.GetContentBasePath(contentType, storeId);
+            var storageProvider = blobContentStorageProviderFactory.CreateProvider(path);
             return storageProvider;
         }
 
-        private static async Task EnumerateFilesRecursively(IBlobContentStorageProvider storageProvider, string path, IList<ContentFile> result)
+        private async Task EnumerateFilesRecursively(IBlobContentStorageProvider storageProvider, string path, IList<ContentFile> result)
         {
             var searchResult = await storageProvider.SearchAsync(path, null);
 
             var folders = searchResult.Results.OfType<BlobFolder>().Where(x => x.RelativeUrl != path && (path != null || !x.Name.EqualsInvariant(ContentConstants.ContentTypes.Blogs)));
-            var files = searchResult.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()).ToList();
+            var files = searchResult.Results.OfType<BlobInfo>()
+                .Where(x => contentItemTypeRegistrar.IsRegisteredContentItemType(x.RelativeUrl))
+                .Select(x => x.ToContentModel()).ToList();
 
             result.AddRange(files);
 

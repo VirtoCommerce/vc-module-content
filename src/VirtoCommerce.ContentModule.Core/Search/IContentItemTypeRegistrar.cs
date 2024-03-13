@@ -11,5 +11,6 @@ namespace VirtoCommerce.ContentModule.Core.Search
             where TContentItemBuilder : class, IContentItemBuilder;
 
         IContentItemBuilder GetContentItemBuilderByType(string contentItemType);
+        bool IsRegisteredContentItemType(string filepath);
     }
 }

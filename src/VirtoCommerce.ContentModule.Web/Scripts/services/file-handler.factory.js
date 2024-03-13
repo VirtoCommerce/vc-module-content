@@ -30,7 +30,7 @@ angular.module('virtoCommerce.contentModule')
 
                     var handlers = getHandlers(operation, context);
 
-                    if (handlers) {
+                    if (handlers && handlers.length) {
 
                         var blade = context.blade;
                         var store = context.store;
