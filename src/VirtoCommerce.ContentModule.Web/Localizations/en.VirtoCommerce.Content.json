@@ -73,6 +73,9 @@
         "subtitle": "Edit {{name}}"
       },
       "pages-list": {
+        "published": "Published",
+        "unpublished": "Unpublished",
+        "has-changes": "Has changes",
         "title-pages": "{{name}} pages list",
         "subtitle-pages": "Pages List",
         "title-blogs": "{{name}} pages list",

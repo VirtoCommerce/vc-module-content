@@ -159,6 +159,14 @@ namespace VirtoCommerce.ContentModule.Data.Services
             return result;
         }
 
+        public async Task CopyFileAsync(string contentType, string storeId, string srcPath, string destPath)
+        {
+            var storageProvider = GetStorageProvider(contentType, storeId);
+            await using var src = await storageProvider.OpenReadAsync(srcPath);
+            await using var dest = await storageProvider.OpenWriteAsync(destPath);
+            await src.CopyToAsync(dest);
+        }
+
         private IBlobContentStorageProvider GetStorageProvider(string contentType, string storeId)
         {
             var path = _contentPathResolver.GetContentBasePath(contentType, storeId);
