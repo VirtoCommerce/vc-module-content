@@ -65,7 +65,7 @@ public class PublishingServices(IContentService contentService) : IPublishingSer
         return Task.FromResult(result.AsEnumerable());
     }
 
-    private void SetFileStatusByName(ContentFile file)
+    private static void SetFileStatusByName(ContentFile file)
     {
         var isDraft = file.Name.EndsWith("-draft");
         file.HasChanges = isDraft;

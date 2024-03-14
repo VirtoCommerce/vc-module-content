@@ -253,7 +253,9 @@ public class ContentController(IPlatformMemoryCache platformMemoryCache,
     public async Task<ActionResult> CopyFile(string contentType, string storeId, [FromQuery] string srcFile, [FromQuery] string destFile)
     {
         if (srcFile == null)
+        {
             return NotFound();
+        }
         if (destFile == null)
         {
             var ext = Path.GetExtension(srcFile);
