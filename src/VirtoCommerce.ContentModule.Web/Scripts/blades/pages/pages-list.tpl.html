@@ -84,7 +84,7 @@
 <script type="text/ng-template" id="template-list-language.cell.html">
   <div class="ui-grid-cell-contents">
     <div class="inner-contents" style="width:100%;">
-      <div class="table-t">{{COL_FIELD}}</div>
+      <div class="table-t" title="{{ row.entity.relativeUrl }}">{{COL_FIELD}}</div>
       <div class="list-descr" ng-if="row.entity.type !== 'folder'" style="width:100%">
         <span ng-if="row.entity.published" style="color:green">{{ 'content.blades.pages-list.published' | translate }}</span>
         <span ng-if="!row.entity.published" style="color:red">{{ 'content.blades.pages-list.unpublished' | translate }}</span>
