@@ -159,11 +159,11 @@ namespace VirtoCommerce.ContentModule.Data.Services
             return result;
         }
 
-        public async Task CopyFileAsync(string contentType, string storeId, string srcPath, string destPath)
+        public async Task CopyFileAsync(string contentType, string storeId, string srcFile, string destFile)
         {
             var storageProvider = GetStorageProvider(contentType, storeId);
-            await using var src = await storageProvider.OpenReadAsync(srcPath);
-            await using var dest = await storageProvider.OpenWriteAsync(destPath);
+            await using var src = await storageProvider.OpenReadAsync(srcFile);
+            await using var dest = await storageProvider.OpenWriteAsync(destFile);
             await src.CopyToAsync(dest);
         }
 
