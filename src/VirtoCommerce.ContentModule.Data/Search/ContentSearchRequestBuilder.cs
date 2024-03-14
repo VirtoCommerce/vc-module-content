@@ -76,6 +76,11 @@ namespace VirtoCommerce.ContentModule.Data.Search
             {
                 result.Add(CreateTermFilter("FolderUrl", criteria.FolderUrl));
             }
+            if (!string.IsNullOrEmpty(criteria.ContentType))
+            {
+                result.Add(CreateTermFilter("ContentType", criteria.ContentType));
+            }
+
 
             return result;
         }
