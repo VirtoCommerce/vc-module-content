@@ -33,6 +33,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
             schema.AddFilterableStringAndContentString("StoreId");
             schema.AddFilterableStringAndContentString("Name");
             schema.AddFilterableStringAndContentString("CultureName");
+            schema.AddFilterableStringAndContentString("ContentType");
             return Task.CompletedTask;
         }
 
