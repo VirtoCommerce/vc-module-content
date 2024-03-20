@@ -20,6 +20,18 @@ angular.module('virtoCommerce.contentModule')
                     });
                 }
 
+                function resolveStoreUrl(blade, store) {
+                    if (blade && blade.storeUrl && blade.storeUrl != '') {
+                        return blade.storeUrl;
+                    }
+
+                    if (store && store.url && store.url != '') {
+                        return store.url;
+                    }
+
+                    return '';
+                }
+
                 function handleAction(operation, context) {
                     // context = {
                     //    blade - current blade
@@ -34,7 +46,7 @@ angular.module('virtoCommerce.contentModule')
                         var blade = context.blade;
                         var store = context.store;
 
-                        let publicStoreUrl = store && store.url ? store.url : (blade && blade.storeUrl ? blade.storeUrl : '');
+                        const publicStoreUrl = resolveStoreUrl(blade, store);
 
                         if (publicStoreUrl === null || publicStoreUrl === '') {
                             var dialog = {
