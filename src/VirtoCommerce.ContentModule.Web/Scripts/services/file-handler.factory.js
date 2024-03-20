@@ -3,8 +3,7 @@ angular.module('virtoCommerce.contentModule')
         function () {
             var _handlers = [];
 
-            function getService($injector) {
-
+            function getService($injector, dialogService) {
                 var service = {
                     getHandlers: getHandlers,
                     handleAction: handleAction
@@ -34,10 +33,23 @@ angular.module('virtoCommerce.contentModule')
 
                         var blade = context.blade;
                         var store = context.store;
+
+                        let publicStoreUrl = store && store.url ? store.url : (blade && blade.storeUrl ? blade.storeUrl : '');
+
+                        if (publicStoreUrl === null || publicStoreUrl === '') {
+                            var dialog = {
+                                id: "noUrlDialog",
+                                title: 'content.dialogs.store-no-url.title',
+                                message: 'content.dialogs.store-no-url.message'
+                            };
+                            dialogService.showErrorDialog(dialog);
+                            return;
+                        };
+
                         var newBlade = {
                             contentType: blade.contentType || 'pages',
                             storeId: blade.storeId,
-                            storeUrl: blade.storeUrl || store.url,
+                            storeUrl: publicStoreUrl,
                             languages: blade.languages || store.languages,
                             folderUrl: (blade.currentEntity && blade.currentEntity.relativeUrl) || '/',
                             currentEntity: context.file
@@ -66,8 +78,8 @@ angular.module('virtoCommerce.contentModule')
                 _handlers.push(handler);
             }
 
-            this.$get = ['$injector', function ($injector) {
-                return getService($injector);
+            this.$get = ['$injector', 'platformWebApp.dialogService', function ($injector, dialogService) {
+                return getService($injector, dialogService);
             }];
         }
     );
