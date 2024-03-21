@@ -260,6 +260,10 @@
       "name-must-unique": {
         "title": "Name nicht eindeutig",
         "message": "Name muss eindeutig für diese Sprache!"
+      },
+      "store-no-url": {
+        "title": "Warnung zu Speichereinstellungen",
+        "message": "Die Store-URL wurde in den Store-Einstellungen nicht konfiguriert. Bitte wenden Sie sich an den Administrator."
       }
     },
     "commands": {
