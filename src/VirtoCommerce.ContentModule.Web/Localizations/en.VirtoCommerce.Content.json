@@ -281,6 +281,10 @@
       "name-must-unique": {
         "title": "Name not unique",
         "message": "Name must be unique for this language!"
+      },
+      "store-no-url": {
+        "title": "Store settings warning",
+        "message": "Store URL was not configured in the store setting. Please contact administrator."
       }
     },
     "commands": {
