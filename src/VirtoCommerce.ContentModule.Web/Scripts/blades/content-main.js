@@ -120,9 +120,9 @@ angular.module('virtoCommerce.contentModule')
 	            currentEntity: data,
 	            title: data.store.name,
 	            subtitle: 'content.blades.pages-list.subtitle-pages',
-	            controller: 'virtoCommerce.contentModule.pagesListController',
-	            template: 'Modules/$(VirtoCommerce.Assets)/Scripts/blades/asset-list.tpl.html'
-	        };
+                controller: 'virtoCommerce.contentModule.pagesListController',
+                template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/pages-list.tpl.html'
+            };
 	        bladeNavigationService.showBlade(newBlade, blade);
 	    };
 
@@ -150,7 +150,7 @@ angular.module('virtoCommerce.contentModule')
 	            title: data.store.name,
 	            subtitle: 'content.blades.pages-list.subtitle-blogs',
 	            controller: 'virtoCommerce.contentModule.pagesListController',
-	            template: 'Modules/$(VirtoCommerce.Assets)/Scripts/blades/asset-list.tpl.html'
+                template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/pages-list.tpl.html'
 	        };
 	        bladeNavigationService.showBlade(newBlade, blade);
 	    };

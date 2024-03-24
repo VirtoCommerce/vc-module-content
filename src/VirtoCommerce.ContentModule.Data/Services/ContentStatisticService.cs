@@ -3,24 +3,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core;
+using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.ContentModule.Data.Services
 {
-    public class ContentStatisticService : IContentStatisticService
-    {
-        private readonly IBlobContentStorageProviderFactory _blobContentStorageProviderFactory;
-        private readonly IContentPathResolver _contentPathResolver;
-
-        public ContentStatisticService(
+    public class ContentStatisticService(
             IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
-            IContentPathResolver contentPathResolver)
-        {
-            _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
-            _contentPathResolver = contentPathResolver;
-        }
-
+            IContentPathResolver contentPathResolver,
+            IContentItemTypeRegistrar contentItemTypeRegistrar)
+        : IContentStatisticService
+    {
         public async Task<int> GetStorePagesCountAsync(string storeId)
         {
             var (contentStorageProvider, path) = Prepare(storeId, ContentConstants.ContentTypes.Pages);
@@ -57,8 +51,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         private (IBlobContentStorageProvider provider, string targetPath) Prepare(string storeId, string contentType)
         {
-            var targetPath = _contentPathResolver.GetContentBasePath(contentType, storeId);
-            var contentStorageProvider = _blobContentStorageProviderFactory.CreateProvider(targetPath);
+            var targetPath = contentPathResolver.GetContentBasePath(contentType, storeId);
+            var contentStorageProvider = blobContentStorageProviderFactory.CreateProvider(targetPath);
             return (contentStorageProvider, targetPath);
         }
 
@@ -66,7 +60,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
         {
             var searchResult = await blobContentStorageProvider.SearchAsync(folderUrl, keyword: null);
             var folders = searchResult.Results.OfType<BlobFolder>();
-            var blobs = searchResult.Results.OfType<BlobInfo>();
+            var blobs = searchResult.Results.OfType<BlobInfo>()
+                .Where(x => contentItemTypeRegistrar.IsRegisteredContentItemType(x.RelativeUrl));
 
             var result = blobs.Count(x => (startDate == null || x.ModifiedDate >= startDate) && (endDate == null || x.ModifiedDate <= endDate));
             var children = folders.Where(x =>

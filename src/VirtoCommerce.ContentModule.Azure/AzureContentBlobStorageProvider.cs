@@ -27,8 +27,8 @@ namespace VirtoCommerce.ContentModule.Azure
             var result = await base.GetBlobInfoAsync(NormalizeUrl(blobUrl));
             if (result != null)
             {
-                var rootAzurePath = _options.RootPath.Replace('\\', '/').Trim('/').Length + 1;
-                result.RelativeUrl = result.RelativeUrl[rootAzurePath..];
+                var rootAzurePath = _options.RootPath.Replace('\\', '/').Trim('/').Length;
+                result.RelativeUrl = result.RelativeUrl.TrimStart('/')[rootAzurePath..];
             }
             return result;
         }
