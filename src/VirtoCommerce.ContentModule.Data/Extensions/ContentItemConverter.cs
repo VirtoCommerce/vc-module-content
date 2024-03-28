@@ -7,6 +7,22 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
 {
     public static class ContentItemConverter
     {
+        public static string RemoveGetParameters(this string url)
+        {
+            if (url.IsNullOrEmpty())
+            {
+                return url;
+            }
+
+            var index = url.IndexOf('?');
+            if (index > 0)
+            {
+                return url.Substring(0, index);
+            }
+
+            return url;
+        }
+
         public static ContentFolder ToContentModel(this BlobFolder blobFolder)
         {
             if (blobFolder == null)
@@ -15,8 +31,8 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
             var contentFolder = AbstractTypeFactory<ContentFolder>.TryCreateInstance();
 
             contentFolder.Name = blobFolder.Name;
-            contentFolder.Url = blobFolder.Url;
-            contentFolder.ParentUrl = blobFolder.ParentUrl;
+            contentFolder.Url = blobFolder.Url.RemoveGetParameters();
+            contentFolder.ParentUrl = blobFolder.ParentUrl.RemoveGetParameters();
             contentFolder.RelativeUrl = blobFolder.RelativeUrl;
             contentFolder.CreatedDate = blobFolder.CreatedDate;
             contentFolder.ModifiedDate = blobFolder.ModifiedDate;
@@ -48,7 +64,7 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
         private static void PopulateProperties(BlobInfo from, ContentFile to)
         {
             to.Name = from.Name;
-            to.Url = from.Url;
+            to.Url = from.Url.RemoveGetParameters();
             to.Size = from.Size.ToString();
             to.RelativeUrl = from.RelativeUrl;
             to.CreatedDate = from.CreatedDate;
