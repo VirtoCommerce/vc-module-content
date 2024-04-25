@@ -35,6 +35,7 @@ angular.module('virtoCommerce.contentModule')
                         search: {
                             url: 'api/content/search',
                             method: 'POST',
+                            cancellable: true,
                             transformRequest: function (request) {
                                 var query = request.keyword;
                                 if (request.contentType) {
