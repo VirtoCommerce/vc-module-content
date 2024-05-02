@@ -331,9 +331,17 @@ angular.module('virtoCommerce.contentModule')
             }
 
             function getSearchDocumentInfo() {
-                var documentId = btoa(`${blade.storeId}::${blade.contentType}::${blade.currentEntity.relativeUrl}`).replaceAll('=', '-');
+                var relativeUrl = undraftUrl(blade.currentEntity.relativeUrl);
+                var documentId = btoa(`${blade.storeId}::${blade.contentType}::${relativeUrl}`).replaceAll('=', '-');
                 var documentType = 'ContentFile';
                 return { documentType: documentType, documentId: documentId };
+            }
+
+            function undraftUrl(url) {
+                if (!!url && url.endsWith('-draft')) {
+                    return url.substring(0, url.length - 6);
+                }
+                return url;
             }
 
             function getDocumentIndex(callback) {
