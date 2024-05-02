@@ -167,7 +167,7 @@ angular.module('virtoCommerce.contentModule')
                             $scope.bladeClose();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
                         }
-                        blade.parentBlade.refresh();
+                        setTimeout(blade.parentBlade.refresh, 1000);
                     },
                     function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             };
