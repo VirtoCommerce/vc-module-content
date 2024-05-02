@@ -189,7 +189,7 @@ angular.module('virtoCommerce.contentModule')
                                 function () {
                                     blade.currentEntity = blade.origEntity;
                                     $scope.bladeClose();
-                                    blade.parentBlade.refresh();
+                                    setTimeout(blade.parentBlade.refresh, 1000);
                                 });
                         }
                     }
