@@ -355,7 +355,7 @@ angular.module('virtoCommerce.contentModule')
             }
 
             function loadSearchIndex() {
-                if (blade.isNew) {
+                if (blade.isNew || !blade.currentEntity.published) {
                     return;
                 }
                 contentApi.indexedSearchEnabled({}, function (data) {
