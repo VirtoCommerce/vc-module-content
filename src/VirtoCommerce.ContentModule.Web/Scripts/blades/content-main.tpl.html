@@ -24,31 +24,33 @@
             <p>{{ 'content.blades.content-main.labels.no-active-theme' | translate }}</p>
           </div>
           <div class="tile quadro wide mini" ng-if="data.activeThemeName">
-            <div class="tile-t">{{ 'content.blades.content-main.labels.active-theme' | translate }} {{data.activeThemeName}}</div>
-            <ul class="menu __inline __theme-links">
-              <li class="menu-item" ng-click="blade.openTheme(data); $event.stopPropagation();">
-                <a class="menu-link">
-                  <i class="menu-ico fa fa-edit"></i>
-                  {{ 'content.blades.content-main.labels.edit-css-html' | translate }}
-                </a>
-              </li>
-              <li class="menu-item" ng-click="blade.previewTheme(data); $event.stopPropagation();">
-                <a class="menu-link">
-                  <i class="menu-ico fa fa-eye"></i>
-                  {{ 'content.blades.content-main.labels.preview-theme' | translate }}
-                </a>
-              </li>
-              <!--
-              <li class="menu-item" ng-click="blade.customizeTheme(data); $event.stopPropagation();">
-                  <a class="menu-link">
-                      <i class="menu-ico fa fa-wrench"></i>
-                      {{ 'content.blades.content-main.labels.customize-theme' | translate }}
-                  </a>
-              </li>
-              // TODO: Uncomment when and if this feature would be impleented in page builder
-              // TODO: After uncommenting add check for page builder installed or controller overloaded.
-              -->
-            </ul>
+              <div  title="{{data.activeThemeName}}" class="tile-t" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 10px;">
+                  {{ 'content.blades.content-main.labels.active-theme' | translate }} {{data.activeThemeName}}
+              </div>
+              <ul class="menu __inline __theme-links">
+                  <li class="menu-item" ng-click="blade.openTheme(data); $event.stopPropagation();">
+                      <a class="menu-link">
+                          <i class="menu-ico fa fa-edit"></i>
+                          {{ 'content.blades.content-main.labels.edit-css-html' | translate }}
+                      </a>
+                  </li>
+                  <li class="menu-item" ng-click="blade.previewTheme(data); $event.stopPropagation();">
+                      <a class="menu-link">
+                          <i class="menu-ico fa fa-eye"></i>
+                          {{ 'content.blades.content-main.labels.preview-theme' | translate }}
+                      </a>
+                  </li>
+                  <!--
+        <li class="menu-item" ng-click="blade.customizeTheme(data); $event.stopPropagation();">
+            <a class="menu-link">
+                <i class="menu-ico fa fa-wrench"></i>
+                {{ 'content.blades.content-main.labels.customize-theme' | translate }}
+            </a>
+        </li>
+        // TODO: Uncomment when and if this feature would be impleented in page builder
+        // TODO: After uncommenting add check for page builder installed or controller overloaded.
+        -->
+              </ul>
           </div>
           <div class="tile" ng-click="blade.openThemes(data.store)">
             <div class="tile-descr">{{ 'content.blades.content-main.labels.themes' | translate }}</div>
