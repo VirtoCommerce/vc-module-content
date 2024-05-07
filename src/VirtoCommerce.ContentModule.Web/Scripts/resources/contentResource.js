@@ -35,6 +35,7 @@ angular.module('virtoCommerce.contentModule')
                         search: {
                             url: 'api/content/search',
                             method: 'POST',
+                            cancellable: true,
                             transformRequest: function (request) {
                                 var query = request.keyword;
                                 if (request.contentType) {
@@ -46,9 +47,33 @@ angular.module('virtoCommerce.contentModule')
                                 return JSON.stringify(angular.extend({}, request, { searchPhrase: query }));
                             },
                             isArray: true,
-                            transformResponse: function (rawData) { return JSON.parse(rawData).results; }
+                            transformResponse: function (rawData) { return JSON.parse(rawData).result; }
+                        },
+                        publish: {
+                            url: 'api/content/:contentType/:storeId/publishing',
+                            method: 'POST',
+                            params: {
+                                contentType: '@contentType',
+                                storeId: '@storeId',
+                                relativeUrl: '@relativeUrl',
+                                publish: true
+                            }
+                        },
+                        unpublish: {
+                            url: 'api/content/:contentType/:storeId/publishing',
+                            method: 'POST',
+                            params: {
+                                contentType: '@contentType',
+                                storeId: '@storeId',
+                                relativeUrl: '@relativeUrl',
+                                publish: false
+                            }
+                        },
+                        post: {
+                            params: { draft: true },
                         },
                         get: {
+                            params: { draft: true },
                             // using transformResponse to:
                             // 1. avoid automatic response result string converting to array;
                             transformResponse: function(rawData) { return { data: rawData }; }
@@ -72,6 +97,7 @@ angular.module('virtoCommerce.contentModule')
                             isArray: true
                         },
                         getWithMetadata: {
+                            params: { draft: true },
                             // using transformResponse to:
                             // 1. avoid automatic response result string converting to array;
                             // 2. parse metadata as needed.
@@ -101,6 +127,7 @@ angular.module('virtoCommerce.contentModule')
                         // post data as multipart form
                         saveWithMetadata: {
                             method: 'POST',
+                            params: { draft: true },
                             headers: { 'Content-Type': undefined },
                             transformRequest: function(currentEntity) {
                                 var metadata = {};
@@ -166,6 +193,16 @@ angular.module('virtoCommerce.contentModule')
                         unpack: { url: 'api/content/:contentType/:storeId/unpack' },
                         createFolder: { url: 'api/content/:contentType/:storeId/folder', method: 'POST' },
                         copy: { url: 'api/content/copy' },
+                        copyFile: {
+                            url: 'api/content/:contentType/:storeId/copy-file',
+                            method: 'POST',
+                            params: {
+                                contentType: '@contentType',
+                                storeId: '@storeId',
+                                srcFile: '@srcFile',
+                                destFile: '@destFile'
+                            }
+                        },
                         move: { url: 'api/content/:contentType/:storeId/move' },
                         delete: { url: 'api/content/:contentType/:storeId', method: 'DELETE' }
                     });
