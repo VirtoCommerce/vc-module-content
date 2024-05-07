@@ -20,5 +20,6 @@ namespace VirtoCommerce.ContentModule.Core.Services
 
         Task<ContentFile> DownloadContentAsync(string contentType, string storeId, string srcUrl, string folderPath);
         Task<ContentFile> SaveContentAsync(string contentType, string storeId, string folderPath, string fileName, Stream content);
+        Task CopyFileAsync(string contentType, string storeId, string srcFile, string destFile);
     }
 }

@@ -167,7 +167,7 @@ angular.module('virtoCommerce.contentModule')
                             $scope.bladeClose();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
                         }
-                        blade.parentBlade.refresh();
+                        setTimeout(blade.parentBlade.refresh, 1000);
                     },
                     function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             };
@@ -189,7 +189,7 @@ angular.module('virtoCommerce.contentModule')
                                 function () {
                                     blade.currentEntity = blade.origEntity;
                                     $scope.bladeClose();
-                                    blade.parentBlade.refresh();
+                                    setTimeout(blade.parentBlade.refresh, 1000);
                                 });
                         }
                     }
@@ -320,18 +320,28 @@ angular.module('virtoCommerce.contentModule')
             }
 
             function updateSearchIndex() {
-                var doc = getSearchDocumentInfo();
-                doc.documentIds = [doc.documentId];
+                setTimeout(function () {
+                    var doc = getSearchDocumentInfo();
+                    doc.documentIds = [doc.documentId];
 
-                searchApi.index([doc], function (data) {
-                    getDocumentIndex();
-                });
+                    searchApi.index([doc], function (data) {
+                        getDocumentIndex();
+                    });
+                }, 1000);
             }
 
             function getSearchDocumentInfo() {
-                var documentId = btoa(`${blade.storeId}::${blade.contentType}::${blade.currentEntity.relativeUrl}`).replaceAll('=', '-');
+                var relativeUrl = undraftUrl(blade.currentEntity.relativeUrl);
+                var documentId = btoa(`${blade.storeId}::${blade.contentType}::${relativeUrl}`).replaceAll('=', '-');
                 var documentType = 'ContentFile';
                 return { documentType: documentType, documentId: documentId };
+            }
+
+            function undraftUrl(url) {
+                if (!!url && url.endsWith('-draft')) {
+                    return url.substring(0, url.length - 6);
+                }
+                return url;
             }
 
             function getDocumentIndex(callback) {
@@ -345,7 +355,7 @@ angular.module('virtoCommerce.contentModule')
             }
 
             function loadSearchIndex() {
-                if (blade.isNew) {
+                if (blade.isNew || !blade.currentEntity.published) {
                     return;
                 }
                 contentApi.indexedSearchEnabled({}, function (data) {

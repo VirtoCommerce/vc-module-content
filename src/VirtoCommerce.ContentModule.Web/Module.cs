@@ -84,6 +84,7 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<IContentService, ContentService>();
             serviceCollection.AddTransient<IContentStatisticService, ContentStatisticService>();
             serviceCollection.AddTransient<IContentFileService, ContentFileService>();
+            serviceCollection.AddTransient<IPublishingService, PublishingServices>();
             serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
             serviceCollection.AddTransient<ISeoBySlugResolver, ContentSlugResolver>();
 

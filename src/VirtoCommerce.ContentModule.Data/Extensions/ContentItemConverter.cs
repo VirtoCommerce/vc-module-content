@@ -80,7 +80,12 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
                 return null;
             }
 
-            var result = relativeUrl.Substring(0, relativeUrl.LastIndexOf('/'));
+            var index = relativeUrl.LastIndexOf('/');
+            if (index == -1)
+            {
+                return "/";
+            }
+            var result = relativeUrl.Substring(0, index);
             if (result.IsNullOrEmpty())
             {
                 return "/";
