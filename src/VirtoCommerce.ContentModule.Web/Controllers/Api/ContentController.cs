@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
@@ -20,7 +19,6 @@ using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.ContentModule.Web.Filters;
 using VirtoCommerce.ContentModule.Web.Validators;
-using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Exceptions;
 using VirtoCommerce.Platform.Data.Helpers;
@@ -31,7 +29,7 @@ using Permissions = VirtoCommerce.ContentModule.Core.ContentConstants.Security.P
 namespace VirtoCommerce.ContentModule.Web.Controllers.Api;
 
 [Route("api/content/{contentType}/{storeId}")]
-public class ContentController(IPlatformMemoryCache platformMemoryCache,
+public class ContentController(
             IContentStatisticService contentStats,
             IContentService contentService,
             IContentFileService contentFileService,
@@ -55,32 +53,25 @@ public class ContentController(IPlatformMemoryCache platformMemoryCache,
     [Authorize(Permissions.Read)]
     public async Task<ActionResult<ContentStatistic>> GetStoreContentStats(string storeId)
     {
-        var cacheKey = CacheKey.With(GetType(), "contentStats", $"content-{storeId}");
-        var result = await platformMemoryCache.GetOrCreateExclusive(cacheKey, async cacheEntry =>
+        var pagesTask = contentStats.GetStorePagesCountAsync(storeId);
+        var blogsTask = contentStats.GetStoreBlogsCountAsync(storeId);
+        var themesTask = contentStats.GetStoreThemesCountAsync(storeId);
+
+        var storeTask = storeService.GetNoCloneAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
+
+        await Task.WhenAll(themesTask, blogsTask, pagesTask, storeTask);
+
+        var activeThemeProperty = storeTask.Result.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName");
+        var activeTheme = activeThemeProperty?.Values?.FirstOrDefault()?.Value?.ToString();
+
+        var result = new ContentStatistic
         {
-            cacheEntry.AddExpirationToken(ContentCacheRegion.CreateChangeToken($"content-{storeId}"));
+            PagesCount = pagesTask.Result,
+            BlogsCount = blogsTask.Result,
+            ThemesCount = themesTask.Result,
 
-            var pagesTask = contentStats.GetStorePagesCountAsync(storeId);
-            var blogsTask = contentStats.GetStoreBlogsCountAsync(storeId);
-            var themesTask = contentStats.GetStoreThemesCountAsync(storeId);
-
-            var storeTask = storeService.GetNoCloneAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
-
-            await Task.WhenAll(themesTask, blogsTask, pagesTask, storeTask);
-
-            var activeThemeProperty = storeTask.Result.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName");
-            var activeTheme = activeThemeProperty?.Values?.FirstOrDefault()?.Value?.ToString();
-
-            var result = new ContentStatistic
-            {
-                PagesCount = pagesTask.Result,
-                BlogsCount = blogsTask.Result,
-                ThemesCount = themesTask.Result,
-
-                ActiveThemeName = activeTheme ?? ContentConstants.DefaultTheme
-            };
-            return result;
-        });
+            ActiveThemeName = activeTheme ?? ContentConstants.DefaultTheme
+        };
         return Ok(result);
     }
 
