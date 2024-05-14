@@ -199,16 +199,26 @@ public class ContentController(
         var publishedSrc = _publishingService.GetRelativeDraftUrl(oldUrl, false);
         var unpublishedSrc = _publishingService.GetRelativeDraftUrl(oldUrl, true);
 
+        var isFile = false;
+
         if (await contentService.ItemExistsAsync(contentType, storeId, publishedSrc))
         {
+            isFile = true;
             var publishedDest = _publishingService.GetRelativeDraftUrl(newUrl, false);
             await contentService.MoveContentAsync(contentType, storeId, publishedSrc, publishedDest);
         }
 
         if (await contentService.ItemExistsAsync(contentType, storeId, unpublishedSrc))
         {
+            isFile = true;
             var unpublishedDest = _publishingService.GetRelativeDraftUrl(newUrl, true);
             await contentService.MoveContentAsync(contentType, storeId, unpublishedSrc, unpublishedDest);
+        }
+
+        if (!isFile)
+        {
+            // it's a folder
+            await contentService.MoveContentAsync(contentType, storeId, oldUrl, newUrl);
         }
         return NoContent();
     }

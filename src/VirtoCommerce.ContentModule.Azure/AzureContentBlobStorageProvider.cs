@@ -33,6 +33,20 @@ namespace VirtoCommerce.ContentModule.Azure
             return result;
         }
 
+        public override Task MoveAsyncPublic(string srcUrl, string destUrl)
+        {
+            var from = NormalizeUrl(srcUrl);
+            var to = NormalizeUrl(destUrl);
+            return base.MoveAsyncPublic(from, to);
+        }
+
+        public override Task CopyAsync(string srcUrl, string destUrl)
+        {
+            var from = NormalizeUrl(srcUrl);
+            var to = NormalizeUrl(destUrl);
+            return base.CopyAsync(from, to);
+        }
+
         public override Task CreateFolderAsync(BlobFolder folder)
         {
             if (folder == null)
