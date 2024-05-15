@@ -52,12 +52,12 @@ angular.module('virtoCommerce.contentModule')
                         function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
                 }
             } else {
-                var newUrl = blade.origEntity.parentUrl.replace('%20', ' ') + '/' + blade.currentEntity.name + '/' ;
+                var newUrl = '/' + blade.currentEntity.name;
 
                 contentApi.move({
                     contentType: 'themes',
                     storeId: blade.storeId,
-                    oldUrl: blade.origEntity.url,
+                    oldUrl: blade.origEntity.relativeUrl,
                     newUrl: newUrl
                 }, function (data) {
                     blade.currentEntity.url = newUrl;
