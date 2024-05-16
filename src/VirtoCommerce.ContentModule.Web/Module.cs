@@ -28,9 +28,9 @@ using VirtoCommerce.ContentModule.FileSystem;
 using VirtoCommerce.ContentModule.FileSystem.Extensions;
 using VirtoCommerce.ContentModule.Web.Extensions;
 using VirtoCommerce.CoreModule.Core.Seo;
-using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
@@ -141,13 +141,12 @@ namespace VirtoCommerce.ContentModule.Web
             var dynamicPropertyRegistrar = appBuilder.ApplicationServices.GetRequiredService<IDynamicPropertyRegistrar>();
             dynamicPropertyRegistrar.RegisterType<FrontMatterHeaders>();
 
-            //Register module permissions
+            // Register module permissions
             var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "Content", ContentConstants.Security.Permissions.AllPermissions);
 
-            //Events handlers registration
-            var handlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
-            handlerRegistrar.RegisterHandler<MenuLinkListChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
+            // Register event handlers
+            appBuilder.RegisterEventHandler<MenuLinkListChangedEvent, LogChangesChangedEventHandler>();
 
             //Force migrations
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
