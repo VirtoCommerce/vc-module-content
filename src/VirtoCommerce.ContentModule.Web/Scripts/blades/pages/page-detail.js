@@ -363,7 +363,7 @@ angular.module('virtoCommerce.contentModule')
             }
 
             function updateToolbarCommands() {
-                $scope.blade.toolbarCommands = blade.toolbarCommands.filter(x => x != publishCommand && x != unpublishCommand);
+                $scope.blade.toolbarCommands = blade.toolbarCommands.filter(x => x !== publishCommand && x !== unpublishCommand);
                 if ($scope.blade.published && !$scope.blade.hasChanges) {
                     $scope.blade.toolbarCommands.splice(4, 0, unpublishCommand);
                 } else {
