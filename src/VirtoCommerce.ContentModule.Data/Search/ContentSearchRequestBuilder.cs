@@ -64,18 +64,18 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 result.Add(CreateTermFilter("StoreId", criteria.StoreId));
             }
 
-            if (!string.IsNullOrEmpty(criteria.LanguageCode))
+            var cultureName = criteria.CultureName.IsNullOrEmpty()
+                ? criteria.LanguageCode
+                : criteria.CultureName;
+
+            if (!string.IsNullOrEmpty(cultureName))
             {
                 result.Add(
-                    CreateTermFilter("CultureName", criteria.LanguageCode)
+                    CreateTermFilter("CultureName", cultureName)
                         .Or(CreateTermFilter("CultureName", "any")
                 ));
             }
 
-            if (!string.IsNullOrEmpty(criteria.CultureName))
-            {
-                result.Add(CreateTermFilter("CultureName", criteria.CultureName));
-            }
             if (!string.IsNullOrEmpty(criteria.FolderUrl))
             {
                 result.Add(CreateTermFilter("FolderUrl", criteria.FolderUrl));
