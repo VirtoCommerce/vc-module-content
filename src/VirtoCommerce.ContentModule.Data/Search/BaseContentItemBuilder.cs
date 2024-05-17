@@ -47,10 +47,12 @@ namespace VirtoCommerce.ContentModule.Data.Search
         {
             var language = file.Name.GetLanguage();
 
-            if (language != null)
+            if (language.IsNullOrEmpty())
             {
-                result.AddFilterableStringAndContentString("CultureName", language);
+                language = "any";
             }
+
+            result.AddFilterableStringAndContentString("CultureName", language);
         }
 
         private static void RemoveFieldAndAddNew(IndexDocument document, string fieldName, string value)
