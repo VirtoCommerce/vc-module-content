@@ -69,7 +69,6 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             var cultureFilter = CreateTermFilter("CultureName", "any");
             var useFilter = false;
-            var storeLanguage = _storeService.GetByIdAsync(criteria.StoreId).Result.DefaultLanguage;
 
             if (!criteria.CultureName.IsNullOrEmpty())
             {
@@ -84,6 +83,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             if (useFilter)
             {
+                var storeLanguage = _storeService.GetByIdAsync(criteria.StoreId).Result.DefaultLanguage;
                 if (!storeLanguage.IsNullOrEmpty())
                 {
                     cultureFilter = cultureFilter.Or(CreateTermFilter("CultureName", storeLanguage));
