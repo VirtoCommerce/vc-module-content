@@ -87,7 +87,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 criteria.Skip += criteria.Take;
             } while (criteria.Skip < totalCount);
 
-            return result;
+            return result.OrderBy(x => x.LanguageCode);
         }
     }
 }
