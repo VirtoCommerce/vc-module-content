@@ -6,18 +6,21 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SearchModule.Core.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
+using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.ContentModule.Data.Search
 {
     public class ContentSearchRequestBuilder : ISearchRequestBuilder
     {
         private readonly ISearchPhraseParser _searchPhraseParser;
+        private readonly IStoreService _storeService;
 
         public virtual string DocumentType => FullTextContentSearchService.ContentDocumentType;
 
-        public ContentSearchRequestBuilder(ISearchPhraseParser searchPhraseParser)
+        public ContentSearchRequestBuilder(ISearchPhraseParser searchPhraseParser, IStoreService storeService)
         {
             _searchPhraseParser = searchPhraseParser;
+            _storeService = storeService;
         }
 
         public virtual Task<SearchRequest> BuildRequestAsync(SearchCriteriaBase criteria)
@@ -64,16 +67,28 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 result.Add(CreateTermFilter("StoreId", criteria.StoreId));
             }
 
-            var cultureName = criteria.CultureName.IsNullOrEmpty()
-                ? criteria.LanguageCode
-                : criteria.CultureName;
+            var cultureFilter = CreateTermFilter("CultureName", "any");
+            var useFilter = false;
+            var storeLanguage = _storeService.GetByIdAsync(criteria.StoreId).Result.DefaultLanguage;
 
-            if (!string.IsNullOrEmpty(cultureName))
+            if (!criteria.CultureName.IsNullOrEmpty())
             {
-                result.Add(
-                    CreateTermFilter("CultureName", cultureName)
-                        .Or(CreateTermFilter("CultureName", "any")
-                ));
+                useFilter = true;
+                cultureFilter = cultureFilter.Or(CreateTermFilter("CultureName", criteria.CultureName));
+            }
+            if (!criteria.LanguageCode.IsNullOrEmpty())
+            {
+                useFilter = true;
+                cultureFilter = cultureFilter.Or(CreateTermFilter("CultureName", criteria.LanguageCode));
+            }
+
+            if (useFilter)
+            {
+                if (!storeLanguage.IsNullOrEmpty())
+                {
+                    cultureFilter = cultureFilter.Or(CreateTermFilter("CultureName", storeLanguage));
+                }
+                result.Add(cultureFilter);
             }
 
             if (!string.IsNullOrEmpty(criteria.FolderUrl))
