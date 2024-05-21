@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
+using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SearchModule.Core.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
@@ -45,12 +45,14 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
         private static void AddLanguage(IndexDocument result, IndexableContentFile file)
         {
-            var parts = Path.GetFileName(file.Name)?.Split('.');
+            var language = file.Name.GetLanguage();
 
-            if (parts?.Length == 3)
+            if (language.IsNullOrEmpty())
             {
-                result.AddFilterableStringAndContentString("CultureName", parts[1]);
+                language = "any";
             }
+
+            result.AddFilterableStringAndContentString("CultureName", language);
         }
 
         private static void RemoveFieldAndAddNew(IndexDocument document, string fieldName, string value)

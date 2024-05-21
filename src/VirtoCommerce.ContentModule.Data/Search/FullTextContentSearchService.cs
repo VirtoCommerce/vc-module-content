@@ -97,6 +97,11 @@ namespace VirtoCommerce.ContentModule.Data.Search
                     contentItem.Id = document.Id;
                     contentItem.Name = GetStringValueOrDefault(document, "name", contentItem.Name);
                     contentItem.DisplayName = GetStringValueOrDefault(document, "displayname", contentItem.DisplayName);
+                    contentItem.Language = GetStringValueOrDefault(document, "culturename", contentItem.Language);
+                    if (contentItem.Language == "any")
+                    {
+                        contentItem.Language = null;
+                    }
                     contentItem.Permalink = GetStringValueOrDefault(document, "permalink", contentItem.Permalink);
                     result.Add(contentItem);
                 }
