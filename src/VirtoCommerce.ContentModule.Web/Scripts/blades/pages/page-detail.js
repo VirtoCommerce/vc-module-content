@@ -203,7 +203,7 @@ angular.module('virtoCommerce.contentModule')
             var toolbarCommands = [];
 
             var publishCommand = {
-                name: "pageBuilder.commands.publish", icon: 'fa fa-file',
+                name: "content.commands.publish", icon: 'fa fa-file',
                 executeMethod: function () {
                     contentApi.publish({
                         contentType: blade.contentType,
@@ -215,13 +215,12 @@ angular.module('virtoCommerce.contentModule')
                         setTimeout(blade.parentBlade.refresh, 1000);
                         updateSearchIndex();
                         updateToolbarCommands();
-                        postMessageToPageBuilder({ source: 'platform', published: true, hasChanges: false });
                     });
                 },
                 canExecuteMethod: function () { return true; }
             };
             var unpublishCommand = {
-                name: "pageBuilder.commands.unpublish", icon: 'fa fa-file-alt',
+                name: "content.commands.unpublish", icon: 'fa fa-file-alt',
                 executeMethod: function () {
                     contentApi.unpublish({
                         contentType: blade.contentType,
@@ -232,7 +231,6 @@ angular.module('virtoCommerce.contentModule')
                         blade.published = false;
                         setTimeout(blade.parentBlade.refresh, 1000);
                         updateToolbarCommands();
-                        postMessageToPageBuilder({ source: 'platform', published: false, hasChanges: true });
                     });
                 },
                 canExecuteMethod: function () { return true; }
