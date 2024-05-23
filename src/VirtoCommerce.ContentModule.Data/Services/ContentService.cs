@@ -80,6 +80,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             using var reader = new StreamReader(fileStream);
             result.Content = await reader.ReadToEndAsync();
             result.StoreId = storeId;
+            result.Language = relativeUrl.GetLanguage();
             result.ContentType = contentType;
             result.ParentUrl = result.RelativeUrl.GetParentUrl();
             return result;

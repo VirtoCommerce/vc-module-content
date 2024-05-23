@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
@@ -92,6 +93,18 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
             }
 
             return result;
+        }
+
+        public static string GetLanguage(this string relativeUrl)
+        {
+            var parts = Path.GetFileName(relativeUrl)?.Split('.');
+
+            if (parts?.Length == 3)
+            {
+                return parts[1];
+            }
+
+            return null;
         }
     }
 }

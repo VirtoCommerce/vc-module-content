@@ -76,6 +76,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                     Name = x.DisplayName,
                     SemanticUrl = x.Permalink,
                     StoreId = x.StoreId,
+                    LanguageCode = x.Language,
                     ObjectId = x.Id,
                     Id = x.Id,
                     IsActive = true,
@@ -86,7 +87,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 criteria.Skip += criteria.Take;
             } while (criteria.Skip < totalCount);
 
-            return result;
+            return result.OrderBy(x => x.LanguageCode);
         }
     }
 }
