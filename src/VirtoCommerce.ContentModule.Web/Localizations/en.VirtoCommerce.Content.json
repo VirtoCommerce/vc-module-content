@@ -296,6 +296,8 @@
       "add-blog": "Add blog",
       "add-post": "Add post",
       "add-page": "Add",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
       "delete-links": "Delete links",
       "delete-theme": "Delete",
       "manage-metadata": "Manage Metadata properties",

@@ -78,7 +78,10 @@ angular.module('virtoCommerce.contentModule')
                         storeId: blade.storeId,
                         relativeUrl: blade.currentEntity.relativeUrl
                     },
-                        fillMetadata,
+                        function (data) {
+                            fillMetadata(data);
+                            updateToolbarCommands();
+                        },
                         function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
 
                     loadSearchIndex();
@@ -162,12 +165,12 @@ angular.module('virtoCommerce.contentModule')
                         blade.isLoading = false;
                         blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
                         angular.copy(blade.currentEntity, blade.origEntity);
-                        updateSearchIndex();
                         if (blade.isNew) {
                             $scope.bladeClose();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
                         }
                         setTimeout(blade.parentBlade.refresh, 1000);
+                        updateToolbarCommands();
                     },
                     function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
             };
@@ -197,8 +200,45 @@ angular.module('virtoCommerce.contentModule')
                 dialogService.showConfirmationDialog(dialog);
             };
 
+            var toolbarCommands = [];
+
+            var publishCommand = {
+                name: "content.commands.publish", icon: 'fa fa-file',
+                executeMethod: function () {
+                    contentApi.publish({
+                        contentType: blade.contentType,
+                        storeId: blade.storeId,
+                        relativeUrl: blade.currentEntity.relativeUrl
+                    }, function () {
+                        blade.hasChanges = false;
+                        blade.published = true;
+                        setTimeout(blade.parentBlade.refresh, 1000);
+                        updateSearchIndex();
+                        updateToolbarCommands();
+                    });
+                },
+                canExecuteMethod: function () { return true; }
+            };
+            var unpublishCommand = {
+                name: "content.commands.unpublish", icon: 'fa fa-file-alt',
+                executeMethod: function () {
+                    contentApi.unpublish({
+                        contentType: blade.contentType,
+                        storeId: blade.storeId,
+                        relativeUrl: blade.currentEntity.relativeUrl
+                    }, function () {
+                        blade.hasChanges = true;
+                        blade.published = false;
+                        setTimeout(blade.parentBlade.refresh, 1000);
+                        updateToolbarCommands();
+                    });
+                },
+                canExecuteMethod: function () { return true; }
+            };
+
+
             if (!blade.isNew) {
-                blade.toolbarCommands = [
+                toolbarCommands = [
                     {
                         name: "platform.commands.save",
                         icon: 'fa fa-save',
@@ -259,8 +299,7 @@ angular.module('virtoCommerce.contentModule')
                 ];
             }
 
-            blade.toolbarCommands = blade.toolbarCommands || [];
-            blade.toolbarCommands.push(
+            toolbarCommands.push(
                 {
                     name: "content.commands.manage-metadata", icon: 'fa fa-edit',
                     executeMethod: function () {
@@ -276,6 +315,8 @@ angular.module('virtoCommerce.contentModule')
                     canExecuteMethod: function () { return true; }
                 }
             );
+
+            blade.toolbarCommands = toolbarCommands;
 
             function isDirty() {
                 return !!blade.origEntity && !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
@@ -316,6 +357,15 @@ angular.module('virtoCommerce.contentModule')
                 if (_.any(data)) {
                     $scope.index = data[0];
                     $scope.indexDate = moment.utc($scope.index.indexationdate, momentFormat);
+                }
+            }
+
+            function updateToolbarCommands() {
+                $scope.blade.toolbarCommands = blade.toolbarCommands.filter(x => x !== publishCommand && x !== unpublishCommand);
+                if ($scope.blade.published && !$scope.blade.hasChanges) {
+                    $scope.blade.toolbarCommands.splice(4, 0, unpublishCommand);
+                } else {
+                    $scope.blade.toolbarCommands.splice(4, 0, publishCommand);
                 }
             }
 
