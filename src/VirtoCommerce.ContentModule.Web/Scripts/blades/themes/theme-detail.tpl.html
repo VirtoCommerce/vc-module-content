@@ -1,4 +1,4 @@
-﻿<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>
+<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>
 <div class="blade-content">
     <div class="blade-inner">
         <div class="inner-block">
@@ -6,7 +6,7 @@
                 <div class="form-group" ng-init="setForm(formScope)">
                     <label class="form-label">{{ 'content.blades.theme-detail.labels.theme-name' | translate }}</label>
                     <div class="form-input">
-                        <input focus-on required class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.theme-detail.placeholders.theme-name' | translate }}" />
+                        <input focus-on required maxlength="63" class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.theme-detail.placeholders.theme-name' | translate }}" />
                     </div>
                 </div>
             </form>
