@@ -10,4 +10,5 @@ public interface IPublishingService
     Task<IEnumerable<ContentFile>> SetFilesStatuses(IEnumerable<ContentFile> files);
     string GetRelativeDraftUrl(string source, bool draft);
     Task<FilePublishStatus> PublishStatusAsync(string contentType, string storeId, string relativeUrl);
+    bool IsDraft(string relativeUrl);
 }
