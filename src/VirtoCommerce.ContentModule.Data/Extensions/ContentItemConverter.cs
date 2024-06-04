@@ -108,7 +108,7 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
             return null;
         }
 
-        public static GenericChangedEntry<ContentFile> GenerateChanges(string source, string target)
+        public static GenericChangedEntry<ContentFile> GenerateChanges(string source, string target, EntryState state = EntryState.Modified)
         {
             ContentFile oldEntry = null;
             ContentFile newEntry = null;
@@ -125,7 +125,7 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
                 newEntry.RelativeUrl = target;
             }
 
-            var changes = new GenericChangedEntry<ContentFile>(newEntry, oldEntry, EntryState.Modified);
+            var changes = new GenericChangedEntry<ContentFile>(newEntry, oldEntry, state);
 
             return changes;
         }

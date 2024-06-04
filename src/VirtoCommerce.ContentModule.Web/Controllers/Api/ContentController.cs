@@ -94,7 +94,7 @@ public class ContentController(
     {
         await contentService.DeleteContentAsync(contentType, storeId, urls);
 
-        var changes = urls.Select(x => ContentItemConverter.GenerateChanges(x, null));
+        var changes = urls.Select(x => ContentItemConverter.GenerateChanges(x, null, EntryState.Deleted));
         var changedEvent = new ContentFileChangedEvent(contentType, storeId, changes);
         await eventPublisher.Publish(changedEvent);
 

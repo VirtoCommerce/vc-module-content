@@ -57,7 +57,7 @@ public class IndexContentChangesEventHandler : IEventHandler<ContentFileChangedE
             };
         }
 
-        if (oldDraft && !newDraft)
+        if (oldDraft && changes.NewEntry != null && !newDraft)
         {
             return new IndexEntry
             {
