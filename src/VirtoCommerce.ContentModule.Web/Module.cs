@@ -88,6 +88,8 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
             serviceCollection.AddTransient<ISeoBySlugResolver, ContentSlugResolver>();
 
+            serviceCollection.AddTransient<IndexContentChangesEventHandler>();
+
             serviceCollection.AddSingleton<IContentItemTypeRegistrar, ContentItemTypeRegistrar>();
 
             var isFullTextSearchEnabled = Configuration.IsContentFullTextSearchEnabled();
@@ -179,6 +181,9 @@ namespace VirtoCommerce.ContentModule.Web
                 var contentItemTypeRegistrar = appBuilder.ApplicationServices.GetService<IContentItemTypeRegistrar>();
                 contentItemTypeRegistrar.RegisterContentItemType(".md", appBuilder.ApplicationServices.GetService<MarkdownContentItemBuilder>);
             }
+
+            appBuilder.RegisterEventHandler<ContentFileChangedEvent>((message) => appBuilder.ApplicationServices.GetService<IndexContentChangesEventHandler>().Handle(message));
+
         }
 
         public void Uninstall()
