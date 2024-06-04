@@ -49,7 +49,7 @@ angular.module('virtoCommerce.contentModule')
                     blade.isLoading = true;
                 },
                 onSuccessItem: function (fileItem, response, status, headers) {
-                    getDocumentIndex();
+                    updateSearchIndex();
                     $scope.$broadcast('filesUploaded', { items: response });
                 },
                 onErrorItem: function (fileItem, response, status, headers) {
@@ -213,7 +213,7 @@ angular.module('virtoCommerce.contentModule')
                         blade.hasChanges = false;
                         blade.published = true;
                         setTimeout(blade.parentBlade.refresh, 1000);
-                        getDocumentIndex();
+                        updateSearchIndex();
                         updateToolbarCommands();
                     });
                 },
@@ -367,6 +367,17 @@ angular.module('virtoCommerce.contentModule')
                 } else {
                     $scope.blade.toolbarCommands.splice(4, 0, publishCommand);
                 }
+            }
+
+            function updateSearchIndex() {
+                setTimeout(function () {
+                    var doc = getSearchDocumentInfo();
+                    doc.documentIds = [doc.documentId];
+
+                    searchApi.index([doc], function (data) {
+                        getDocumentIndex();
+                    });
+                }, 1000);
             }
 
             function getSearchDocumentInfo() {
