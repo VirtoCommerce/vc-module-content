@@ -110,11 +110,20 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
 
         public static GenericChangedEntry<ContentFile> GenerateChanges(string source, string target)
         {
-            var newEntry = AbstractTypeFactory<ContentFile>.TryCreateInstance();
-            var oldEntry = AbstractTypeFactory<ContentFile>.TryCreateInstance();
+            ContentFile oldEntry = null;
+            ContentFile newEntry = null;
 
-            oldEntry.RelativeUrl = source;
-            newEntry.RelativeUrl = target;
+            if (source != null)
+            {
+                oldEntry = AbstractTypeFactory<ContentFile>.TryCreateInstance();
+                oldEntry.RelativeUrl = source;
+            }
+
+            if (target != null)
+            {
+                newEntry = AbstractTypeFactory<ContentFile>.TryCreateInstance();
+                newEntry.RelativeUrl = target;
+            }
 
             var changes = new GenericChangedEntry<ContentFile>(newEntry, oldEntry, EntryState.Modified);
 

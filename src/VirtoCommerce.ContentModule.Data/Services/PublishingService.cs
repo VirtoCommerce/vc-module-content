@@ -114,6 +114,6 @@ public class PublishingServices(IContentService contentService, IEventPublisher 
 
     public bool IsDraft(string relativeUrl)
     {
-        return relativeUrl.EndsWith("-draft");
+        return relativeUrl?.EndsWith("-draft") ?? false;
     }
 }
