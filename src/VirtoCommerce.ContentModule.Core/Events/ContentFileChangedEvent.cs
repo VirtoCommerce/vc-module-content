@@ -8,7 +8,8 @@ namespace VirtoCommerce.ContentModule.Core.Events;
 public class ContentFileChangedEvent : GenericChangedEntryEvent<ContentFile>
 {
     [JsonConstructor]
-    public ContentFileChangedEvent(string contentType, string storeId, IEnumerable<GenericChangedEntry<ContentFile>> changedEntries) : base(changedEntries)
+    public ContentFileChangedEvent(string contentType, string storeId, IEnumerable<GenericChangedEntry<ContentFile>> changedEntries)
+        : base(changedEntries)
     {
         ContentType = contentType;
         StoreId = storeId;

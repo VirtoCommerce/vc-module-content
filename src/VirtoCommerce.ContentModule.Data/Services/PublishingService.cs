@@ -5,7 +5,6 @@ using VirtoCommerce.ContentModule.Core.Events;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Extensions;
-using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 
 namespace VirtoCommerce.ContentModule.Data.Services;
@@ -27,17 +26,13 @@ public class PublishingServices(IContentService contentService, IEventPublisher 
                     // so, just ignore the request
                     return;
                 }
-                await contentService.DeleteContentAsync(contentType, storeId, new[] { target });
+                await contentService.DeleteContentAsync(contentType, storeId, [target]);
             }
 
             await contentService.MoveContentAsync(contentType, storeId, source, target);
 
             var changes = ContentItemConverter.GenerateChanges(source, target);
-
-            await eventPublisher.Publish(new ContentFileChangedEvent(contentType, storeId, new[]
-            {
-                changes
-            }));
+            await eventPublisher.Publish(new ContentFileChangedEvent(contentType, storeId, [changes]));
         }
     }
 

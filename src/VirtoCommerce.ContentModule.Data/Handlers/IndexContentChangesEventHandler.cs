@@ -36,7 +36,7 @@ public class IndexContentChangesEventHandler : IEventHandler<ContentFileChangedE
         return Task.CompletedTask;
     }
 
-    private IndexEntry GetIndexEntry(string storeId, string contentType, GenericChangedEntry<ContentFile> changes)
+    private IndexEntry GetIndexEntry(string storeId, string contentType, GenericChangedEntry<ContentFile> entry)
     {
         // There are 4 situations possible:
         // 1. User deletes a file, old entry is published file, new entry is null - we need to remove it from the index
@@ -44,28 +44,29 @@ public class IndexContentChangesEventHandler : IEventHandler<ContentFileChangedE
         // 3. User creates or saves a draft file, old entry is null, new entry is draft - nothing to index
         // 4. User publishes a draft file, old entry is a draft, new entry is published file - we need to index it
 
-        var oldDraft = changes.OldEntry != null && _publishingService.IsDraft(changes.OldEntry.RelativeUrl);
-        var newDraft = changes.NewEntry != null && _publishingService.IsDraft(changes.NewEntry.RelativeUrl);
+        var oldPublished = entry.OldEntry != null && !_publishingService.IsDraft(entry.OldEntry.RelativeUrl);
+        var newPublished = entry.NewEntry != null && !_publishingService.IsDraft(entry.NewEntry.RelativeUrl);
 
-        if (changes.OldEntry != null && !oldDraft && (changes.NewEntry == null || newDraft))
+        if (oldPublished && !newPublished)
         {
             return new IndexEntry
             {
-                Id = DocumentIdentifierHelper.GenerateId(storeId, contentType, changes.OldEntry),
+                Id = DocumentIdentifierHelper.GenerateId(storeId, contentType, entry.OldEntry),
                 EntryState = EntryState.Deleted,
                 Type = FullTextContentSearchService.ContentDocumentType,
             };
         }
 
-        if (oldDraft && changes.NewEntry != null && !newDraft)
+        if (!oldPublished && newPublished)
         {
             return new IndexEntry
             {
-                Id = DocumentIdentifierHelper.GenerateId(storeId, contentType, changes.NewEntry),
+                Id = DocumentIdentifierHelper.GenerateId(storeId, contentType, entry.NewEntry),
                 EntryState = EntryState.Modified,
                 Type = FullTextContentSearchService.ContentDocumentType,
             };
         }
+
         return null;
     }
 }

@@ -182,7 +182,7 @@ namespace VirtoCommerce.ContentModule.Web
                 contentItemTypeRegistrar.RegisterContentItemType(".md", appBuilder.ApplicationServices.GetService<MarkdownContentItemBuilder>);
             }
 
-            appBuilder.RegisterEventHandler<ContentFileChangedEvent>((message) => appBuilder.ApplicationServices.GetService<IndexContentChangesEventHandler>().Handle(message));
+            appBuilder.RegisterEventHandler<ContentFileChangedEvent, IndexContentChangesEventHandler>();
 
         }
 
