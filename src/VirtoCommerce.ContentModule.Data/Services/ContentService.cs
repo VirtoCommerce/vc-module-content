@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -5,18 +6,20 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using VirtoCommerce.AssetsModule.Core.Assets;
+using VirtoCommerce.ContentModule.Core.Events;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
-
+using VirtoCommerce.Platform.Core.Events;
 using UrlHelperExtensions = VirtoCommerce.Platform.Core.Extensions.UrlHelperExtensions;
 
 namespace VirtoCommerce.ContentModule.Data.Services
 {
     public class ContentService : IContentService
     {
+        private readonly IEventPublisher _eventPublisher;
         private readonly IBlobContentStorageProviderFactory _blobContentStorageProviderFactory;
         private readonly IContentPathResolver _contentPathResolver;
         private readonly IHttpClientFactory _httpClientFactory;
@@ -24,8 +27,10 @@ namespace VirtoCommerce.ContentModule.Data.Services
         public ContentService(
             IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
             IContentPathResolver contentPathResolver,
+            IEventPublisher eventPublisher,
             IHttpClientFactory httpClientFactory)
         {
+            _eventPublisher = eventPublisher;
             _blobContentStorageProviderFactory = blobContentStorageProviderFactory;
             _contentPathResolver = contentPathResolver;
             _httpClientFactory = httpClientFactory;
@@ -36,14 +41,20 @@ namespace VirtoCommerce.ContentModule.Data.Services
             var storageProvider = GetStorageProvider(contentType, storeId);
             await storageProvider.RemoveAsync(urls);
 
-            //_cacheManager.ClearRegion($"content-{storeId}");
             ContentCacheRegion.ExpireRegion();
+            var changes = urls.Select(x => ContentItemConverter.GenerateChanges(x, null, EntryState.Deleted));
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, changes);
+            await _eventPublisher.Publish(changedEvent);
         }
 
         public async Task MoveContentAsync(string contentType, string storeId, string oldPath, string newPath)
         {
             var storageProvider = GetStorageProvider(contentType, storeId);
             await storageProvider.MoveAsyncPublic(oldPath, newPath);
+            var changes = ContentItemConverter.GenerateChanges(oldPath, newPath);
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changes]);
+            await _eventPublisher.Publish(changedEvent);
+
         }
 
         public async Task CopyContentAsync(string contentType, string storeId, string srcPath, string destPath)
@@ -54,6 +65,10 @@ namespace VirtoCommerce.ContentModule.Data.Services
             // note: This method used only for default themes copying that we use string.
             // Empty instead storeId because default themes placed only in root content folder
             await storageProvider.CopyAsync(srcPath, destPath);
+
+            var changes = ContentItemConverter.GenerateChanges(null, destPath);
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changes]);
+            await _eventPublisher.Publish(changedEvent);
         }
 
         public async Task<ContentFile> GetFileAsync(string contentType, string storeId, string relativeUrl)
@@ -111,6 +126,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
         {
             var storageProvider = GetStorageProvider(contentType, storeId);
 
+            var changes = new List<GenericChangedEntry<ContentFile>>();
+
             await using (var stream = await storageProvider.OpenReadAsync(archivePath))
             using (var archive = new ZipArchive(stream))
             {
@@ -126,12 +143,18 @@ namespace VirtoCommerce.ContentModule.Data.Services
                     {
                         var fileName = foldersCount == 1 ? string.Join("/", entry.FullName.Split('/').Skip(1)) : entry.FullName;
 
+                        var fullPath = Path.Combine(destPath, fileName);
+
                         await using var entryStream = entry.Open();
-                        await using var targetStream = await storageProvider.OpenWriteAsync(destPath + "/" + fileName);
+                        await using var targetStream = await storageProvider.OpenWriteAsync(fullPath);
                         await entryStream.CopyToAsync(targetStream);
+                        changes.Add(ContentItemConverter.GenerateChanges(null, fullPath));
                     }
                 }
             }
+
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, changes);
+            await _eventPublisher.Publish(changedEvent);
 
             //remove archive after unpack
             await storageProvider.RemoveAsync(new[] { archivePath });
@@ -157,6 +180,11 @@ namespace VirtoCommerce.ContentModule.Data.Services
             await content.CopyToAsync(targetStream);
 
             var result = await CreateContentFile(storageProvider, targetFilePath, folderPath);
+
+            var changes = ContentItemConverter.GenerateChanges(null, targetFilePath);
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changes]);
+            await _eventPublisher.Publish(changedEvent);
+
             return result;
         }
 
@@ -166,6 +194,9 @@ namespace VirtoCommerce.ContentModule.Data.Services
             await using var src = await storageProvider.OpenReadAsync(srcFile);
             await using var dest = await storageProvider.OpenWriteAsync(destFile);
             await src.CopyToAsync(dest);
+            var changes = ContentItemConverter.GenerateChanges(null, destFile);
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changes]);
+            await _eventPublisher.Publish(changedEvent);
         }
 
         private IBlobContentStorageProvider GetStorageProvider(string contentType, string storeId)

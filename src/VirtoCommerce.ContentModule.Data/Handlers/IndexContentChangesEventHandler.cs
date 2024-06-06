@@ -47,7 +47,7 @@ public class IndexContentChangesEventHandler : IEventHandler<ContentFileChangedE
         var oldPublished = entry.OldEntry != null && !_publishingService.IsDraft(entry.OldEntry.RelativeUrl);
         var newPublished = entry.NewEntry != null && !_publishingService.IsDraft(entry.NewEntry.RelativeUrl);
 
-        if (oldPublished && !newPublished)
+        if (oldPublished)
         {
             return new IndexEntry
             {
@@ -57,7 +57,7 @@ public class IndexContentChangesEventHandler : IEventHandler<ContentFileChangedE
             };
         }
 
-        if (!oldPublished && newPublished)
+        if (newPublished)
         {
             return new IndexEntry
             {

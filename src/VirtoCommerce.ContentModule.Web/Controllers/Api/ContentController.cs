@@ -12,17 +12,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using VirtoCommerce.ContentModule.Core;
-using VirtoCommerce.ContentModule.Core.Events;
 using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.ContentModule.Web.Filters;
 using VirtoCommerce.ContentModule.Web.Validators;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Exceptions;
 using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
@@ -39,7 +36,6 @@ public class ContentController(
             IFullTextContentSearchService fullTextContentSearchService,
             IPublishingService publishingService,
             IStoreService storeService,
-            IEventPublisher eventPublisher,
             ILogger<ContentController> logger,
             IConfiguration configuration)
         : Controller
@@ -93,11 +89,6 @@ public class ContentController(
     public async Task<ActionResult> DeleteContent(string contentType, string storeId, [FromQuery] string[] urls)
     {
         await contentService.DeleteContentAsync(contentType, storeId, urls);
-
-        var changes = urls.Select(x => ContentItemConverter.GenerateChanges(x, null, EntryState.Deleted));
-        var changedEvent = new ContentFileChangedEvent(contentType, storeId, changes);
-        await eventPublisher.Publish(changedEvent);
-
         return NoContent();
     }
 
@@ -209,14 +200,12 @@ public class ContentController(
         var unpublishedSrc = _publishingService.GetRelativeDraftUrl(oldUrl, true);
 
         var isFile = false;
-        var changes = new List<GenericChangedEntry<ContentFile>>();
 
         if (await contentService.ItemExistsAsync(contentType, storeId, publishedSrc))
         {
             isFile = true;
             var publishedDest = _publishingService.GetRelativeDraftUrl(newUrl, false);
             await contentService.MoveContentAsync(contentType, storeId, publishedSrc, publishedDest);
-            changes.Add(ContentItemConverter.GenerateChanges(publishedSrc, publishedDest));
         }
 
         if (await contentService.ItemExistsAsync(contentType, storeId, unpublishedSrc))
@@ -224,18 +213,12 @@ public class ContentController(
             isFile = true;
             var unpublishedDest = _publishingService.GetRelativeDraftUrl(newUrl, true);
             await contentService.MoveContentAsync(contentType, storeId, unpublishedSrc, unpublishedDest);
-            changes.Add(ContentItemConverter.GenerateChanges(unpublishedSrc, unpublishedDest));
         }
 
         if (!isFile)
         {
             // it's a folder
             await contentService.MoveContentAsync(contentType, storeId, oldUrl, newUrl);
-        }
-        else
-        {
-            var changedEvent = new ContentFileChangedEvent(contentType, storeId, changes);
-            await eventPublisher.Publish(changedEvent);
         }
         return NoContent();
     }
@@ -408,11 +391,6 @@ public class ContentController(
             return BadRequest();
         }
         ContentCacheRegion.ExpireContent(($"content-{storeId}"));
-
-        var changes = retVal.Select(x => ContentItemConverter.GenerateChanges(null, x.RelativeUrl));
-        var changedEvent = new ContentFileChangedEvent(contentType, storeId, changes);
-        await eventPublisher.Publish(changedEvent);
-
         return Ok(retVal.ToArray());
     }
 

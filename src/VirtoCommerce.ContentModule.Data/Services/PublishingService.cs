@@ -1,15 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.ContentModule.Core.Events;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
-using VirtoCommerce.ContentModule.Data.Extensions;
-using VirtoCommerce.Platform.Core.Events;
 
 namespace VirtoCommerce.ContentModule.Data.Services;
 
-public class PublishingServices(IContentService contentService, IEventPublisher eventPublisher) : IPublishingService
+public class PublishingServices(IContentService contentService) : IPublishingService
 {
     public async Task PublishingAsync(string contentType, string storeId, string relativeUrl, bool publish)
     {
@@ -30,9 +27,6 @@ public class PublishingServices(IContentService contentService, IEventPublisher 
             }
 
             await contentService.MoveContentAsync(contentType, storeId, source, target);
-
-            var changes = ContentItemConverter.GenerateChanges(source, target);
-            await eventPublisher.Publish(new ContentFileChangedEvent(contentType, storeId, [changes]));
         }
     }
 
