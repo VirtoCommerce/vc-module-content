@@ -51,6 +51,7 @@ angular.module('virtoCommerce.contentModule')
                 store: blade.store,
                 data: node,
                 storeId: blade.storeId,
+                defaultThemeName: blade.defaultThemeName,
                 controller: 'virtoCommerce.contentModule.themeDetailController',
                 template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/themes/theme-detail.tpl.html'
             };
