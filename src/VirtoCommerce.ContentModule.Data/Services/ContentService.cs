@@ -42,8 +42,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
             await storageProvider.RemoveAsync(urls);
 
             ContentCacheRegion.ExpireRegion();
-            var changes = urls.Select(x => ContentItemConverter.GenerateChanges(x, null, EntryState.Deleted));
-            var changedEvent = new ContentFileChangedEvent(contentType, storeId, changes);
+            var changedEntries = urls.Select(x => ContentItemConverter.CreateChangedEntry(x, null, EntryState.Deleted));
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, changedEntries);
             await _eventPublisher.Publish(changedEvent);
         }
 
@@ -51,10 +51,10 @@ namespace VirtoCommerce.ContentModule.Data.Services
         {
             var storageProvider = GetStorageProvider(contentType, storeId);
             await storageProvider.MoveAsyncPublic(oldPath, newPath);
-            var changes = ContentItemConverter.GenerateChanges(oldPath, newPath);
-            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changes]);
-            await _eventPublisher.Publish(changedEvent);
 
+            var changedEntry = ContentItemConverter.CreateChangedEntry(oldPath, newPath);
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changedEntry]);
+            await _eventPublisher.Publish(changedEvent);
         }
 
         public async Task CopyContentAsync(string contentType, string storeId, string srcPath, string destPath)
@@ -66,8 +66,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
             // Empty instead storeId because default themes placed only in root content folder
             await storageProvider.CopyAsync(srcPath, destPath);
 
-            var changes = ContentItemConverter.GenerateChanges(null, destPath);
-            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changes]);
+            var changedEntry = ContentItemConverter.CreateChangedEntry(null, destPath);
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changedEntry]);
             await _eventPublisher.Publish(changedEvent);
         }
 
@@ -126,7 +126,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
         {
             var storageProvider = GetStorageProvider(contentType, storeId);
 
-            var changes = new List<GenericChangedEntry<ContentFile>>();
+            var changedEntries = new List<GenericChangedEntry<ContentFile>>();
 
             await using (var stream = await storageProvider.OpenReadAsync(archivePath))
             using (var archive = new ZipArchive(stream))
@@ -148,16 +148,16 @@ namespace VirtoCommerce.ContentModule.Data.Services
                         await using var entryStream = entry.Open();
                         await using var targetStream = await storageProvider.OpenWriteAsync(fullPath);
                         await entryStream.CopyToAsync(targetStream);
-                        changes.Add(ContentItemConverter.GenerateChanges(null, fullPath));
+                        changedEntries.Add(ContentItemConverter.CreateChangedEntry(null, fullPath));
                     }
                 }
             }
 
-            var changedEvent = new ContentFileChangedEvent(contentType, storeId, changes);
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, changedEntries);
             await _eventPublisher.Publish(changedEvent);
 
             //remove archive after unpack
-            await storageProvider.RemoveAsync(new[] { archivePath });
+            await storageProvider.RemoveAsync([archivePath]);
         }
 
         public async Task<ContentFile> DownloadContentAsync(string contentType, string storeId, string srcUrl, string folderPath)
@@ -181,8 +181,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
             var result = await CreateContentFile(storageProvider, targetFilePath, folderPath);
 
-            var changes = ContentItemConverter.GenerateChanges(null, targetFilePath);
-            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changes]);
+            var changedEntry = ContentItemConverter.CreateChangedEntry(null, targetFilePath);
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changedEntry]);
             await _eventPublisher.Publish(changedEvent);
 
             return result;
@@ -194,8 +194,9 @@ namespace VirtoCommerce.ContentModule.Data.Services
             await using var src = await storageProvider.OpenReadAsync(srcFile);
             await using var dest = await storageProvider.OpenWriteAsync(destFile);
             await src.CopyToAsync(dest);
-            var changes = ContentItemConverter.GenerateChanges(null, destFile);
-            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changes]);
+
+            var changedEntry = ContentItemConverter.CreateChangedEntry(null, destFile);
+            var changedEvent = new ContentFileChangedEvent(contentType, storeId, [changedEntry]);
             await _eventPublisher.Publish(changedEvent);
         }
 

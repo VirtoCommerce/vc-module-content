@@ -108,21 +108,21 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
             return null;
         }
 
-        public static GenericChangedEntry<ContentFile> GenerateChanges(string source, string target, EntryState state = EntryState.Modified)
+        public static GenericChangedEntry<ContentFile> CreateChangedEntry(string oldUrl, string newUrl, EntryState state = EntryState.Modified)
         {
             ContentFile oldEntry = null;
             ContentFile newEntry = null;
 
-            if (source != null)
+            if (oldUrl != null)
             {
                 oldEntry = AbstractTypeFactory<ContentFile>.TryCreateInstance();
-                oldEntry.RelativeUrl = source;
+                oldEntry.RelativeUrl = oldUrl;
             }
 
-            if (target != null)
+            if (newUrl != null)
             {
                 newEntry = AbstractTypeFactory<ContentFile>.TryCreateInstance();
-                newEntry.RelativeUrl = target;
+                newEntry.RelativeUrl = newUrl;
             }
 
             var changes = new GenericChangedEntry<ContentFile>(newEntry, oldEntry, state);

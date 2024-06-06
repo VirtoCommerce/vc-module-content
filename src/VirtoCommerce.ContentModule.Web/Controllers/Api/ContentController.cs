@@ -390,7 +390,9 @@ public class ContentController(
             logger.LogError("An error occurred while uploading the file. Error message: {error}", ex.Message);
             return BadRequest();
         }
+
         ContentCacheRegion.ExpireContent(($"content-{storeId}"));
+
         return Ok(retVal.ToArray());
     }
 

@@ -183,7 +183,6 @@ namespace VirtoCommerce.ContentModule.Web
             }
 
             appBuilder.RegisterEventHandler<ContentFileChangedEvent, IndexContentChangesEventHandler>();
-
         }
 
         public void Uninstall()
