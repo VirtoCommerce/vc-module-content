@@ -54,6 +54,8 @@ angular.module('virtoCommerce.contentModule')
             } else {
                 var newUrl = '/' + blade.currentEntity.name;
 
+                var isDefault = blade.origEntity.name === blade.defaultThemeName;
+
                 contentApi.move({
                     contentType: 'themes',
                     storeId: blade.storeId,
@@ -62,7 +64,12 @@ angular.module('virtoCommerce.contentModule')
                 }, function (data) {
                     blade.currentEntity.url = newUrl;
                     blade.data = blade.currentEntity;
-                    blade.refresh(true);
+
+                    if (isDefault) {
+                        setDefaultTheme(blade.currentEntity.name);
+                    }
+
+                    refreshParentAndClose();
                 }, function (error) {
                     bladeNavigationService.setError('Error ' + error.status, blade);
                 });
@@ -71,15 +78,19 @@ angular.module('virtoCommerce.contentModule')
 
         function onAfterThemeCreated() {
             if (blade.isActivateAfterSave) {
-                var prop = _.findWhere(blade.store.dynamicProperties, { name: 'DefaultThemeName' });
-                if (prop) {
-                    prop.values = [{ value: blade.currentEntity.name }];
-                }
-
-                blade.store.$update(refreshParentAndClose, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                setDefaultTheme(blade.currentEntity.name);
             } else {
                 refreshParentAndClose();
             }
+        }
+
+        function setDefaultTheme(themeName) {
+            var prop = _.findWhere(blade.store.dynamicProperties, { name: 'DefaultThemeName' });
+            if (prop) {
+                prop.values = [{ value: themeName }];
+            }
+
+            blade.store.$update(refreshParentAndClose, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
         }
 
         function refreshParentAndClose() {
