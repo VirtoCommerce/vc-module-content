@@ -125,9 +125,7 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
                 newEntry.RelativeUrl = newUrl;
             }
 
-            var changes = new GenericChangedEntry<ContentFile>(newEntry, oldEntry, state);
-
-            return changes;
+            return new GenericChangedEntry<ContentFile>(newEntry, oldEntry, state);
         }
     }
 }
