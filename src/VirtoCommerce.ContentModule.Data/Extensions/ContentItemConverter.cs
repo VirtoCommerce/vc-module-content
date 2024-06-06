@@ -3,6 +3,7 @@ using System.IO;
 using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
 
 namespace VirtoCommerce.ContentModule.Data.Extensions
 {
@@ -105,6 +106,26 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
             }
 
             return null;
+        }
+
+        public static GenericChangedEntry<ContentFile> CreateChangedEntry(string oldUrl, string newUrl, EntryState state = EntryState.Modified)
+        {
+            ContentFile oldEntry = null;
+            ContentFile newEntry = null;
+
+            if (oldUrl != null)
+            {
+                oldEntry = AbstractTypeFactory<ContentFile>.TryCreateInstance();
+                oldEntry.RelativeUrl = oldUrl;
+            }
+
+            if (newUrl != null)
+            {
+                newEntry = AbstractTypeFactory<ContentFile>.TryCreateInstance();
+                newEntry.RelativeUrl = newUrl;
+            }
+
+            return new GenericChangedEntry<ContentFile>(newEntry, oldEntry, state);
         }
     }
 }

@@ -23,7 +23,7 @@ public class PublishingServices(IContentService contentService) : IPublishingSer
                     // so, just ignore the request
                     return;
                 }
-                await contentService.DeleteContentAsync(contentType, storeId, new[] { target });
+                await contentService.DeleteContentAsync(contentType, storeId, [target]);
             }
 
             await contentService.MoveContentAsync(contentType, storeId, source, target);
@@ -99,5 +99,10 @@ public class PublishingServices(IContentService contentService) : IPublishingSer
         };
 
         return result;
+    }
+
+    public bool IsDraft(string relativeUrl)
+    {
+        return relativeUrl?.EndsWith("-draft") ?? false;
     }
 }
