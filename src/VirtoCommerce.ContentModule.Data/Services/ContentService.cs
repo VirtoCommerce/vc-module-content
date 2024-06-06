@@ -42,6 +42,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             await storageProvider.RemoveAsync(urls);
 
             ContentCacheRegion.ExpireRegion();
+
             var changedEntries = urls.Select(x => ContentItemConverter.CreateChangedEntry(x, null, EntryState.Deleted));
             var changedEvent = new ContentFileChangedEvent(contentType, storeId, changedEntries);
             await _eventPublisher.Publish(changedEvent);
@@ -142,7 +143,6 @@ namespace VirtoCommerce.ContentModule.Data.Services
                     if (!entry.FullName.EndsWith("/"))
                     {
                         var fileName = foldersCount == 1 ? string.Join("/", entry.FullName.Split('/').Skip(1)) : entry.FullName;
-
                         var fullPath = Path.Combine(destPath, fileName);
 
                         await using var entryStream = entry.Open();
