@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,11 +20,14 @@ public class PublishingServices(IContentService contentService) : IPublishingSer
             {
                 if (!publish)
                 {
-                    // the draft cannot be removed if the published version exists
-                    // so, just ignore the request
-                    return;
+                    throw new InvalidOperationException("Page cannot be unpublished when has draft. Please do publishing before.");
                 }
                 await contentService.DeleteContentAsync(contentType, storeId, [target]);
+            }
+
+            while (await contentService.ItemExistsAsync(contentType, storeId, target))
+            {
+                await Task.Delay(100);
             }
 
             await contentService.MoveContentAsync(contentType, storeId, source, target);
