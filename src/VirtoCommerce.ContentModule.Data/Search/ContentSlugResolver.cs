@@ -28,9 +28,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 return Array.Empty<SeoInfo>();
             }
 
-            var list = await FindWithSlash(slug);
-            var other = await FindWithoutSlash(slug);
-            var result = list.Union(other).DistinctBy(x => x.ObjectId);
+            var result = (await FindWithSlash(slug)).DistinctBy(x => x.ObjectId);
             return result.ToArray();
         }
 
@@ -39,16 +37,6 @@ namespace VirtoCommerce.ContentModule.Data.Search
             if (!sourceSlug.StartsWith("/"))
             {
                 sourceSlug = "/" + sourceSlug;
-            }
-
-            return await FindInternal(sourceSlug);
-        }
-
-        private async Task<IEnumerable<SeoInfo>> FindWithoutSlash(string sourceSlug)
-        {
-            if (sourceSlug.StartsWith("/"))
-            {
-                sourceSlug = sourceSlug.Substring(1);
             }
 
             return await FindInternal(sourceSlug);
