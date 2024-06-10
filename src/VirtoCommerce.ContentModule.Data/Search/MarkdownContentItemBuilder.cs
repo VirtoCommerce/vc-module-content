@@ -37,7 +37,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 if (meta.Value.Count() == 1)
                 {
                     var value = meta.Value.First();
-                    if (meta.Key == "permalink" && !value.StartsWith("/"))
+                    if (meta.Key == "permalink" && !value.StartsWith('/'))
                     {
                         value = "/" + value;
                     }

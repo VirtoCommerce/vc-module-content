@@ -34,7 +34,7 @@ public class ContentSeoResolver : ISeoResolver
 
     private async Task<IEnumerable<SeoInfo>> FindWithSlash(string permalink)
     {
-        if (!permalink.StartsWith("/"))
+        if (!permalink.StartsWith('/'))
         {
             permalink = "/" + permalink;
         }
