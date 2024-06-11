@@ -41,6 +41,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                     {
                         value = "/" + value;
                     }
+
                     result.AddFilterableStringAndContentString(meta.Key, value);
                 }
                 else
