@@ -168,7 +168,8 @@ public class ContentController(
     [Authorize(Permissions.Read)]
     public async Task<ActionResult<ContentItem[]>> FulltextSearchContent([FromBody] ContentSearchCriteria criteria)
     {
-        criteria.Take = 5000;
+        criteria.Skip = 0;
+        criteria.Take = 100;
         var result = await fullTextContentSearchService.SearchAllNoCloneAsync(criteria);
         var response = _publishingService.SetFilesStatuses(result);
         return Ok(response);
