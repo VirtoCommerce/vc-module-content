@@ -170,7 +170,7 @@ public class ContentController(
     {
         criteria.Skip = 0;
         criteria.Take = 100;
-        var result = await fullTextContentSearchService.SearchAllNoCloneAsync(criteria);
+        var result = await fullTextContentSearchService.SearchAllAsync(criteria);
         var response = _publishingService.SetFilesStatuses(result);
         return Ok(response);
     }
