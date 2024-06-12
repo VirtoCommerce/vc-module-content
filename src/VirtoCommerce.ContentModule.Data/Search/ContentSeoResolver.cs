@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,37 +25,39 @@ public class ContentSeoResolver : ISeoResolver
     {
         if (!_configuration.IsContentFullTextSearchEnabled())
         {
-            return Array.Empty<SeoInfo>();
+            return [];
         }
 
-        var result = (await FindInternal(criteria.Permalink)).DistinctBy(x => x.ObjectId);
-        return result.ToArray();
+        return (await FindFiles(criteria.Permalink))
+            .DistinctBy(x => x.Id)
+            .Select(x => new SeoInfo
+            {
+                Name = x.DisplayName,
+                SemanticUrl = x.Permalink,
+                StoreId = x.StoreId,
+                LanguageCode = x.Language,
+                ObjectId = x.Id,
+                Id = x.Id,
+                IsActive = true,
+                ObjectType = FullTextContentSearchService.ContentDocumentType
+            })
+            .OrderBy(x => x.LanguageCode)
+            .ToList();
     }
 
-    private async Task<IList<SeoInfo>> FindInternal(string permalink)
+    private Task<IList<IndexableContentFile>> FindFiles(string permalink)
     {
         if (!permalink.StartsWith('/'))
         {
             permalink = "/" + permalink;
         }
+
         var criteria = new ContentSearchCriteria
         {
             Keyword = "permalink:" + permalink,
-            Skip = 0,
             Take = 100,
         };
 
-        var searchResults = await _searchService.SearchAllNoCloneAsync(criteria);
-        return searchResults.Select(x => new SeoInfo
-        {
-            Name = x.DisplayName,
-            SemanticUrl = x.Permalink,
-            StoreId = x.StoreId,
-            LanguageCode = x.Language,
-            ObjectId = x.Id,
-            Id = x.Id,
-            IsActive = true,
-            ObjectType = FullTextContentSearchService.ContentDocumentType,
-        }).ToList();
+        return _searchService.SearchAllNoCloneAsync(criteria);
     }
 }
