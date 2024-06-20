@@ -1,10 +1,9 @@
-using System.Threading.Tasks;
 using VirtoCommerce.ContentModule.Core.Model;
+using VirtoCommerce.Platform.Core.GenericCrud;
 
 namespace VirtoCommerce.ContentModule.Core.Search
 {
-    public interface IFullTextContentSearchService
+    public interface IFullTextContentSearchService : ISearchService<ContentSearchCriteria, ContentSearchResult, IndexableContentFile>
     {
-        Task<ContentSearchResult> SearchContentAsync(ContentSearchCriteria criteria);
     }
 }

@@ -1,6 +1,8 @@
+using VirtoCommerce.Platform.Core.Common;
+
 namespace VirtoCommerce.ContentModule.Core.Model
 {
-    public class IndexableContentFile : ContentFile
+    public class IndexableContentFile : ContentFile, IEntity
     {
         public string Id { get; set; }
         public string StoreId { get; set; }

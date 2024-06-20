@@ -34,7 +34,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
             _configuration = configuration;
         }
 
-        public async Task<ContentSearchResult> SearchContentAsync(ContentSearchCriteria criteria)
+        public async Task<ContentSearchResult> SearchAsync(ContentSearchCriteria criteria, bool clone = true)
         {
             if (!_configuration.IsContentFullTextSearchEnabled())
             {

@@ -163,9 +163,11 @@ angular.module('virtoCommerce.contentModule')
                                                     });
                                             }
                                         }
-
                                         metadata[x.name] = isArray ? values : values[0];
                                     });
+                                if (metadata.permalink && metadata.permalink.length > 0 && metadata.permalink[0] !== '/') {
+                                    metadata.permalink = '/' + metadata.permalink;
+                                }
                                 var dataToSave = '---\n' + YAML.stringify(metadata) + '\n---\n' + (currentEntity.content || '').trim();
 
                                 var blobName = currentEntity.name;
