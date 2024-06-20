@@ -36,7 +36,13 @@ namespace VirtoCommerce.ContentModule.Data.Search
             {
                 if (meta.Value.Count() == 1)
                 {
-                    result.AddFilterableStringAndContentString(meta.Key, meta.Value.First());
+                    var value = meta.Value.First();
+                    if (meta.Key == "permalink" && !value.StartsWith('/'))
+                    {
+                        value = "/" + value;
+                    }
+
+                    result.AddFilterableStringAndContentString(meta.Key, value);
                 }
                 else
                 {

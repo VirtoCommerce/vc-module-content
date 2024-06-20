@@ -87,6 +87,8 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<IPublishingService, PublishingServices>();
             serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
             serviceCollection.AddTransient<ISeoBySlugResolver, ContentSlugResolver>();
+            serviceCollection.AddTransient<ISeoResolver, ContentSeoResolver>();
+            serviceCollection.AddTransient<ContentSeoResolver>();
 
             serviceCollection.AddTransient<IndexContentChangesEventHandler>();
 
