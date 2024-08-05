@@ -446,8 +446,7 @@ angular.module('virtoCommerce.contentModule')
             blade.initializeBlade();
 
             channel.onmessage = function (event) {
-                var contentType = event.data.contentType;
-                if (contentType === blade.contentType &&
+                if (event.data.contentType === blade.contentType &&
                     filesDraftService.undraftUrl(blade.currentEntity.relativeUrl) === filesDraftService.undraftUrl(event.data.relativeUrl)) {
                     blade.currentEntity.hasChanges = event.data.hasChanges;
                     blade.currentEntity.published = event.data.published;

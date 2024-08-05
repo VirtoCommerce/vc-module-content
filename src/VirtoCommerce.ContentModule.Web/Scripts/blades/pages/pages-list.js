@@ -301,8 +301,8 @@ angular.module('virtoCommerce.contentModule')
                     var contentType = event.data.contentType;
                     if (contentType === blade.contentType) {
                         var relativeUrl = filesDraftService.undraftUrl(event.data.relativeUrl);
-                        var entry = $scope.listEntries.find(function (entry) {
-                            return filesDraftService.undraftUrl(entry.relativeUrl) === relativeUrl;
+                        var entry = $scope.listEntries.find(function (x) {
+                            return filesDraftService.undraftUrl(x.relativeUrl) === relativeUrl;
                         });
                         if (!!entry) {
                             entry.hasChanges = event.data.hasChanges;
