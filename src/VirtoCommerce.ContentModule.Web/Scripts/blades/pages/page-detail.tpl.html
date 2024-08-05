@@ -1,32 +1,45 @@
 <div class="blade-static __expanded">
-    <form class="form" name="formScope">
-        <div class="columns clearfix">
-            <div class="column">
-                <div class="form-group" ng-init="setForm(formScope)">
-                    <label class="form-label">{{ 'content.blades.edit-page.labels.name' | translate }}</label>
-                    <div class="form-input">
-                        <input focus-on="" required class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.edit-page.placeholders.name' | translate }}" name="pageName" ui-validate=" 'validators.webSafeFileNameValidator($value)' " />
-                    </div>
-                    <div class="form-error" ng-show="formScope.pageName.$dirty">
-                        <span ng-show="formScope.pageName.$error.validator">{{ 'content.blades.edit-page.validations.pageName-invalid' | translate }}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="form-group">
-                    <label class="form-label">{{ 'content.blades.edit-page.labels.language' | translate }}</label>
-                    <div class="form-input">
-                      <ui-select ng-model="blade.currentEntity.language">
-                        <ui-select-match allow-clear placeholder="{{ 'content.blades.edit-page.placeholders.language' | translate }}">{{$select.selected}}</ui-select-match>
-                        <ui-select-choices repeat="x in blade.languages | filter: $select.search">
-                          <span ng-bind-html="x | highlight: $select.search"></span>
-                        </ui-select-choices>
-                      </ui-select>
-                    </div>
-                </div>
-            </div>
+  <form class="form" name="formScope">
+    <div class="columns clearfix">
+      <div class="column">
+        <div class="form-group">
+          <label class="form-label">{{ 'content.blades.edit-page.labels.relativePath' | translate }}</label>
+          <div class="form-input">
+            <input class="form-control" value="{{ blade.origEntity.relativeUrl }}" id="relativeUrlInput" readonly="readonly" />
+            <button class="btn __ico" type="button" ng-click="copyToClipboard('relativeUrlInput')" title="{{ 'platform.commands.copy' | translate }}">
+              <i class="btn-ico fas fa-paste"></i>
+            </button>
+          </div>
         </div>
-    </form>
+      </div>
+    </div>
+    <div class="columns clearfix">
+      <div class="column">
+        <div class="form-group" ng-init="setForm(formScope)">
+          <label class="form-label">{{ 'content.blades.edit-page.labels.name' | translate }}</label>
+          <div class="form-input">
+            <input focus-on="" required class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.edit-page.placeholders.name' | translate }}" name="pageName" ui-validate=" 'validators.webSafeFileNameValidator($value)' "/>
+          </div>
+          <div class="form-error" ng-show="formScope.pageName.$dirty">
+            <span ng-show="formScope.pageName.$error.validator">{{ 'content.blades.edit-page.validations.pageName-invalid' | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="form-group">
+          <label class="form-label">{{ 'content.blades.edit-page.labels.language' | translate }}</label>
+          <div class="form-input">
+            <ui-select ng-model="blade.currentEntity.language">
+              <ui-select-match allow-clear placeholder="{{ 'content.blades.edit-page.placeholders.language' | translate }}">{{$select.selected}}</ui-select-match>
+              <ui-select-choices repeat="x in blade.languages | filter: $select.search">
+                <span ng-bind-html="x | highlight: $select.search"></span>
+              </ui-select-choices>
+            </ui-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 
 <div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/create.tpl.html'" ng-if="blade.isNew"></div>

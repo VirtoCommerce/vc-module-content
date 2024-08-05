@@ -132,7 +132,8 @@
           "drag-note": "Drag and drop file here",
           "progress": "Progress",
           "markdown": "Markdown",
-          "metadata": "Metadata"
+          "metadata": "Metadata",
+          "relativePath": "Relative path"
         },
         "placeholders": {
           "name": "Enter name",
