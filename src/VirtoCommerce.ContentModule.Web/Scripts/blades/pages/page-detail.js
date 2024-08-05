@@ -332,8 +332,7 @@ angular.module('virtoCommerce.contentModule')
             blade.toolbarCommands = toolbarCommands;
 
             function isDirty() {
-                var result = !!blade.origEntity && !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
-                return result;
+                return !!blade.origEntity && !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
             }
 
             function canSave() {

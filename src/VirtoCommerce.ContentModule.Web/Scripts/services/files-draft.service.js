@@ -23,6 +23,6 @@ angular.module('virtoCommerce.contentModule')
 
 
         this.getTemplateKey = function (blade) {
-            return blade.contentType + '::' + $this.getDraftFileName(blade);
+            return `${blade.contentType}::${$this.getDraftFileName(blade)}`;
         };
     }])

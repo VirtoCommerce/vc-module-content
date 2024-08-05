@@ -194,7 +194,7 @@ angular.module(moduleName, [])
                 this.objects.push(entry);
             }
         };
-    }])    
+    }])
     // translation with fallback value if key not found
     //Duplicates the next version after platform 2.13.14 and should be removed when this module gets platformVersion dependency higher!
     .filter('fallbackTranslate', ['$translate', function ($translate) {
