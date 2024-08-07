@@ -180,6 +180,7 @@ angular.module('virtoCommerce.contentModule')
                         angular.copy(blade.currentEntity, blade.origEntity);
                         if (blade.isNew) {
                             $scope.bladeClose();
+                            blade.parentBlade.refresh();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
                         }
                         updateToolbarCommands();
