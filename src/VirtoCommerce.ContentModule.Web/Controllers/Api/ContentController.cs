@@ -88,7 +88,21 @@ public class ContentController(
     [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteContent(string contentType, string storeId, [FromQuery] string[] urls)
     {
-        await contentService.DeleteContentAsync(contentType, storeId, urls);
+        var urlsToRemove = new List<string>();
+        foreach (var url in urls)
+        {
+            var draftUrl = _publishingService.GetRelativeDraftUrl(url, true);
+            var publishedUrl = _publishingService.GetRelativeDraftUrl(url, false);
+            if (await contentService.ItemExistsAsync(contentType, storeId, draftUrl))
+            {
+                urlsToRemove.Add(draftUrl);
+            }
+            if (await contentService.ItemExistsAsync(contentType, storeId, publishedUrl))
+            {
+                urlsToRemove.Add(publishedUrl);
+            }
+        }
+        await contentService.DeleteContentAsync(contentType, storeId, urlsToRemove.ToArray());
         return NoContent();
     }
 
