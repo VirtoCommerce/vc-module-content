@@ -91,15 +91,23 @@ public class ContentController(
         var urlsToRemove = new List<string>();
         foreach (var url in urls)
         {
+            var isFolder = true;
             var draftUrl = _publishingService.GetRelativeDraftUrl(url, true);
             var publishedUrl = _publishingService.GetRelativeDraftUrl(url, false);
             if (await contentService.ItemExistsAsync(contentType, storeId, draftUrl))
             {
                 urlsToRemove.Add(draftUrl);
+                isFolder = false;
             }
             if (await contentService.ItemExistsAsync(contentType, storeId, publishedUrl))
             {
                 urlsToRemove.Add(publishedUrl);
+                isFolder = false;
+            }
+
+            if (isFolder)
+            {
+                urlsToRemove.Add(url);
             }
         }
         await contentService.DeleteContentAsync(contentType, storeId, urlsToRemove.ToArray());
