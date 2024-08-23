@@ -67,9 +67,14 @@ angular.module('virtoCommerce.contentModule')
             blade.editAsMarkdown = true;
             blade.editAsHtml = false;
 
+            var formScope;
             $scope.setForm = function (form) {
-                $scope.formScope = form;
+                $scope.formScope = formScope = form;
             };
+
+            $scope.isInvalid = function () {
+                return formScope != undefined && formScope.$invalid;
+            }
 
             $scope.copyToClipboard = function (elementId) {
                 var text = document.getElementById(elementId);
@@ -165,14 +170,14 @@ angular.module('virtoCommerce.contentModule')
                 }
             };
 
-            $scope.saveChanges = function () {
+            $scope.saveChanges = function () {                
                 blade.isLoading = true;
 
                 contentApi.saveWithMetadata({
-                    contentType: blade.contentType,
-                    storeId: blade.storeId,
-                    folderUrl: blade.folderUrl || ''
-                },
+                        contentType: blade.contentType,
+                        storeId: blade.storeId,
+                        folderUrl: blade.folderUrl || ''
+                    },
                     blade.currentEntity,
                     function (result) {
                         blade.isLoading = false;
@@ -186,7 +191,8 @@ angular.module('virtoCommerce.contentModule')
                         updateToolbarCommands();
                         broadcastChanges({ published: blade.published, hasChanges: true });
                     },
-                    function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                    function (error) { bladeNavigationService.setError('Error ' + error.status, blade); }
+                );
             };
 
             blade.deleteEntry = function () {
@@ -257,7 +263,7 @@ angular.module('virtoCommerce.contentModule')
                         name: "platform.commands.save",
                         icon: 'fa fa-save',
                         executeMethod: $scope.saveChanges,
-                        canExecuteMethod: function () { return isDirty() && $scope.formScope && $scope.formScope.$valid; },
+                        canExecuteMethod: function () { return isDirty() && formScope && formScope.$valid; },
                         permission: blade.updatePermission
                     },
                     {
