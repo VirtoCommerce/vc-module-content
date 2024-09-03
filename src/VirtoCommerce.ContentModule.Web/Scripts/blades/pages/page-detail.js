@@ -73,7 +73,7 @@ angular.module('virtoCommerce.contentModule')
             };
 
             $scope.isInvalid = function () {
-                return formScope != undefined && formScope.$invalid;
+                return formScope !== undefined && formScope.$invalid;
             }
 
             $scope.copyToClipboard = function (elementId) {
