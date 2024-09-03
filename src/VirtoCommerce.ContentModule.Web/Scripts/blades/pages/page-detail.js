@@ -170,7 +170,7 @@ angular.module('virtoCommerce.contentModule')
                 }
             };
 
-            $scope.saveChanges = function () {                
+            $scope.saveChanges = function () {
                 blade.isLoading = true;
 
                 contentApi.saveWithMetadata({
