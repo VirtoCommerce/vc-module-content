@@ -190,7 +190,7 @@ angular.module('virtoCommerce.contentModule')
                             $scope.bladeClose();
                             blade.parentBlade.refresh();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
-                        } else if (oldRelativeUrl && oldRelativeUrl != blade.currentEntity.relativeUrl) {
+                        } else if (oldRelativeUrl && oldRelativeUrl !== blade.currentEntity.relativeUrl) {
                             needRefresh = false;
                             contentApi.delete({
                                 contentType: blade.contentType,
