@@ -6,6 +6,9 @@
         "title": "Only for selected stores",
         "subtitle": "Select stores"
       },
+      "move":  {
+        "title": "Select folder"
+      },
       "choose-action": {
         "create": {
           "title": "New",
@@ -83,6 +86,11 @@
         "labels": {
           "name": "Name",
           "modified": "Modified"
+        },
+        "context-menu": {
+          "duplicate": "Duplicate",
+          "download": "Download",
+          "copy-link": "Copy link"
         }
       },
       "link-lists": {
@@ -309,7 +317,9 @@
       "edit-css-html": "Edit CSS/HTML",
       "add-theme": "Add new theme",
       "set-active": "Set Active",
-      "preview-page": "Preview page"
+      "preview-page": "Preview page",
+      "move": "Move",
+      "move-files": "Move here"
     },
     "front-matter-description": {
       "Title_FrontMatterHeader": "The page title",
