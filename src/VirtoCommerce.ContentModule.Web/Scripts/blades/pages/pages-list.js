@@ -31,6 +31,7 @@ angular.module('virtoCommerce.contentModule')
                                 var handler = fileHandlerFactory.getHandlers('edit', { file: x });
                                 x.isOpenable = !blade.pasteMode && handler && handler.length;
                                 x.isSelectable = !blade.pasteMode;
+                                x.menuId = !blade.pasteMode ? 'ast_menu' + blade.id : null;
                             });
                             $scope.listEntries = data;
                             blade.isLoading = false;
@@ -105,6 +106,11 @@ angular.module('virtoCommerce.contentModule')
                 $scope.delete = function (data) {
                     deleteList([data]);
                 };
+
+                $scope.moveItem = function (data) {
+                    $scope.gridApi.selection.selectRow(data);
+                    moveList();
+                }
 
                 function openDetailsBlade(listItem, isNew) {
                     var action = isNew ? 'create' : 'edit';

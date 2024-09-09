@@ -90,7 +90,8 @@
         "context-menu": {
           "duplicate": "Duplicate",
           "download": "Download",
-          "copy-link": "Copy link"
+          "copy-link": "Copy link",
+          "move": "Move"
         }
       },
       "link-lists": {
