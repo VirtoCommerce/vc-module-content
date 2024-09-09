@@ -67,9 +67,14 @@ angular.module('virtoCommerce.contentModule')
             blade.editAsMarkdown = true;
             blade.editAsHtml = false;
 
+            var formScope;
             $scope.setForm = function (form) {
-                $scope.formScope = form;
+                $scope.formScope = formScope = form;
             };
+
+            $scope.isInvalid = function () {
+                return formScope !== undefined && formScope.$invalid;
+            }
 
             $scope.copyToClipboard = function (elementId) {
                 var text = document.getElementById(elementId);
@@ -168,25 +173,41 @@ angular.module('virtoCommerce.contentModule')
             $scope.saveChanges = function () {
                 blade.isLoading = true;
 
+                var oldRelativeUrl = blade.origEntity && blade.origEntity.relativeUrl;
+
                 contentApi.saveWithMetadata({
-                    contentType: blade.contentType,
-                    storeId: blade.storeId,
-                    folderUrl: blade.folderUrl || ''
-                },
+                        contentType: blade.contentType,
+                        storeId: blade.storeId,
+                        folderUrl: blade.folderUrl || ''
+                    },
                     blade.currentEntity,
                     function (result) {
                         blade.isLoading = false;
+                        var needRefresh = true;
                         blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
                         angular.copy(blade.currentEntity, blade.origEntity);
                         if (blade.isNew) {
                             $scope.bladeClose();
                             blade.parentBlade.refresh();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
+                        } else if (oldRelativeUrl && oldRelativeUrl !== blade.currentEntity.relativeUrl) {
+                            needRefresh = false;
+                            contentApi.delete({
+                                contentType: blade.contentType,
+                                storeId: blade.storeId,
+                                urls: [oldRelativeUrl]
+                            }, function () {
+                                blade.parentBlade.refresh();
+                            });
                         }
                         updateToolbarCommands();
                         broadcastChanges({ published: blade.published, hasChanges: true });
+                        if (needRefresh) {
+                            blade.parentBlade.refresh();
+                        }
                     },
-                    function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+                    function (error) { bladeNavigationService.setError('Error ' + error.status, blade); }
+                );
             };
 
             blade.deleteEntry = function () {
@@ -257,7 +278,7 @@ angular.module('virtoCommerce.contentModule')
                         name: "platform.commands.save",
                         icon: 'fa fa-save',
                         executeMethod: $scope.saveChanges,
-                        canExecuteMethod: function () { return isDirty() && $scope.formScope && $scope.formScope.$valid; },
+                        canExecuteMethod: function () { return isDirty() && formScope && formScope.$valid; },
                         permission: blade.updatePermission
                     },
                     {
