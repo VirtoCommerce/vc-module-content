@@ -7,13 +7,15 @@ angular.module('virtoCommerce.contentModule')
                 var service = {
                     close: channel.close,
                     postMessage: function (message) {
-                        var templateKey = filesDraftService.getTemplateKey(currentBlade);
-                        message.templateKey = templateKey;
-                        message.relativeUrl = currentBlade.currentEntity.relativeUrl;
-                        message.contentType = currentBlade.contentType;
-                        message.source = 'platform';
+                        if (channel) {
+                            var templateKey = filesDraftService.getTemplateKey(currentBlade);
+                            message.templateKey = templateKey;
+                            message.relativeUrl = currentBlade.currentEntity.relativeUrl;
+                            message.contentType = currentBlade.contentType;
+                            message.source = 'platform';
 
-                        channel.postMessage(message)
+                            channel.postMessage(message)
+                        }
                     },
                     onmessage: function (message) {
                         console.log(message);
@@ -25,7 +27,10 @@ angular.module('virtoCommerce.contentModule')
                 currentBlade.onClose = function (callback) {
 
                     var closeHandler = function () {
-                        channel.close();
+                        if (channel) {
+                            channel.close();
+                            channel = null;
+                        }
                         callback();
                     };
 

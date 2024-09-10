@@ -70,7 +70,7 @@ angular.module(moduleName)
                 storeUrl: blade.storeUrl,
                 languages: blade.languages,
                 folderUrl: blade.folderUrl,
-                currentEntity: blade.currentEntity
+                currentEntity: angular.copy(blade.currentEntity)
             };
             angular.extend(newBlade, {
                 isNew: false,
