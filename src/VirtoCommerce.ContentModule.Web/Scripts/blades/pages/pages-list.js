@@ -319,7 +319,7 @@ angular.module('virtoCommerce.contentModule')
                     });
 
                     blade.toolbarCommands.push({
-                        name: "content.commands.move", icon: 'fa fa-arrow-down',
+                        name: "content.commands.move", icon: 'fas fa-exchange-alt',
                         executeMethod: function () { moveList(); },
                         canExecuteMethod: isItemsChecked,
                         permission: 'content:create'
