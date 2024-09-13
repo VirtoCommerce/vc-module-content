@@ -94,6 +94,7 @@ angular.module('virtoCommerce.contentModule')
                             template: blade.template,
                             disableOpenAnimation: true,
                             isClosingDisabled: blade.isClosingDisabled,
+                            isSearchDisabled: blade.isSearchDisabled,
                             pasteMode: blade.pasteMode,
                         };
                         bladeNavigationService.showBlade(newBlade, blade.parentBlade);
@@ -110,6 +111,29 @@ angular.module('virtoCommerce.contentModule')
                 $scope.moveItem = function (data) {
                     $scope.gridApi.selection.selectRow(data);
                     moveList();
+                }
+
+                $scope.openFolder = function (data) {
+                    var newBlade = {
+                        id: 'fileFolder',
+                        contentType: blade.contentType,
+                        storeId: blade.storeId,
+                        storeUrl: blade.storeUrl,
+                        languages: blade.languages,
+                        currentEntity: {
+                            relativeUrl: data.parentUrl
+                        },
+                        breadcrumbs: generateBreadcrumbs(data.parentUrl),
+                        title: blade.title,
+                        subtitle: blade.subtitle,
+                        controller: blade.controller,
+                        template: blade.template,
+                        disableOpenAnimation: true,
+                        isClosingDisabled: false,
+                        isSearchDisabled: true,
+                        pasteMode: false,
+                    };
+                    bladeNavigationService.showBlade(newBlade, blade);
                 }
 
                 function openDetailsBlade(listItem, isNew) {
@@ -156,6 +180,7 @@ angular.module('virtoCommerce.contentModule')
                         template: blade.template,
                         disableOpenAnimation: false,
                         isClosingDisabled: false,
+                        isSearchDisabled: true,
                         pasteMode: true,
                     };
                     bladeNavigationService.showBlade(newBlade, blade);
@@ -373,11 +398,27 @@ angular.module('virtoCommerce.contentModule')
                     }
                 }
 
+                function generateBreadcrumbs(url) {
+                    // split url by '/'
+                    var parts = url.split('/');
+                    var breadcrumbs = parts.filter(x => !!x).map(x => ({
+                        id: '',
+                        name: x,
+                        blade: null,
+                        navigate: function () {}
+                    }));
+                    return breadcrumbs;
+                }
+
                 blade.headIcon = isBlogs() ? 'fa fa-inbox' : 'fa fa-folder-o';
-                contentApi.indexedSearchEnabled({}, function (data) {
-                    $scope.searchEnabled = data.result;
+                if (!blade.isSearchDisabled && !blade.pasteMode) {
+                    contentApi.indexedSearchEnabled({}, function (data) {
+                        $scope.searchEnabled = data.result;
+                        blade.refresh();
+                    });
+                } else {
                     blade.refresh();
-                });
+                }
 
                 channel = broadcastChannelFactory(blade);
                 channel.onmessage = function (event) {
