@@ -259,7 +259,7 @@ angular.module('virtoCommerce.contentModule')
 
                             _.each(items, function (item) {
                                 var oldUrl = item.url;
-                                var newUrl = `${blade.currentEntity.url || ''}/${item.name}`;
+                                var newUrl = `${trimSlashEnd(blade.currentEntity.url) || ''}/${trimSlashStart(item.name)}`;
 
                                 var promise = contentApi.move({
                                     contentType: blade.contentType,
@@ -435,4 +435,12 @@ angular.module('virtoCommerce.contentModule')
                         }
                     }
                 };
+
+                function trimSlashEnd(value) {
+                    return value?.replace(/\/+$/, '') || '';
+                }
+
+                function trimSlashStart(value) {
+                    return value?.replace(/^\/+/, '') || '';
+                }
             }]);
