@@ -396,10 +396,10 @@ angular.module('virtoCommerce.contentModule')
                 };
 
                 function trimSlashEnd(value) {
-                    return value.replace(/\/+$/, '');
+                    return value?.replace(/\/+$/, '') || '';
                 }
 
                 function trimSlashStart(value) {
-                    return value.replace(/^\/+/, '');
+                    return value?.replace(/^\/+/, '') || '';
                 }
             }]);
