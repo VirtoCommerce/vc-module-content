@@ -395,11 +395,11 @@ angular.module('virtoCommerce.contentModule')
                     }
                 };
 
-                trimSlashEnd(value) {
+                function trimSlashEnd(value) {
                     return value.replace(/\/+$/, '');
                 }
 
-                trimSlashStart(value) {
+                function trimSlashStart(value) {
                     return value.replace(/^\/+/, '');
                 }
             }]);
