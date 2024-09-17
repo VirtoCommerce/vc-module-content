@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using VirtoCommerce.ContentModule.Data.Repositories;
@@ -21,7 +16,7 @@ namespace VirtoCommerce.ContentModule.Data.MySql
                 connectionString,
                 ResolveServerVersion(serverVersion, connectionString),
                 db => db
-                    .MigrationsAssembly(typeof(MySqlDbContextFactory).Assembly.GetName().Name));
+                    .MigrationsAssembly(typeof(MySqlDataAssemblyMarker).Assembly.GetName().Name));
 
             return new MenuDbContext(builder.Options);
         }
