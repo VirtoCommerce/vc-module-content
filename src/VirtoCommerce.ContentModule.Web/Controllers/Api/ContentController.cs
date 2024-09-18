@@ -16,6 +16,7 @@ using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.ContentModule.Web.Filters;
 using VirtoCommerce.ContentModule.Web.Validators;
@@ -284,18 +285,21 @@ public class ContentController(
         {
             var ext = Path.GetExtension(srcFile);
             var alternativeExt = ext.EndsWith("-draft") ? ext.Substring(0, ext.Length - "-draft".Length) : ext + "-draft";
-            var filename = Path.GetFileNameWithoutExtension(srcFile);
-            var path = srcFile.Substring(0, srcFile.Length - filename.Length - ext.Length);
+            var fullFilename = Path.GetFileNameWithoutExtension(srcFile);
+            var filename = fullFilename.GetFileNameFirstPart();
+            var lang = srcFile.GetLanguage();
+            var langSuffix = lang.IsNullOrEmpty() ? string.Empty : $".{lang}";
+            var path = srcFile.Substring(0, srcFile.Length - fullFilename.Length - ext.Length);
             var index = 0;
             do
             {
                 index++;
             } while (
-                await contentService.ItemExistsAsync(contentType, storeId, Path.Combine(path, $"{filename}_{index}{ext}"))
-                || await contentService.ItemExistsAsync(contentType, storeId, Path.Combine(path, $"{filename}_{index}{alternativeExt}"))
+                await contentService.ItemExistsAsync(contentType, storeId, Path.Combine(path, $"{filename}_{index}{langSuffix}{ext}"))
+                || await contentService.ItemExistsAsync(contentType, storeId, Path.Combine(path, $"{filename}_{index}{langSuffix}{alternativeExt}"))
 
             );
-            destFile = Path.Combine(path, $"{filename}_{index}{ext}");
+            destFile = Path.Combine(path, $"{filename}_{index}{langSuffix}{ext}");
         }
 
         destFile = _publishingService.GetRelativeDraftUrl(destFile, true);

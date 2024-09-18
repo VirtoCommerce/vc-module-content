@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VirtoCommerce.ContentModule.Core.Comparers;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 
@@ -32,7 +33,7 @@ public class PublishingServices(IContentService contentService) : IPublishingSer
 
     public Task<IEnumerable<ContentFile>> SetFilesStatuses(IEnumerable<ContentFile> files)
     {
-        using var enumerator = files.OrderBy(x => x.Name).GetEnumerator();
+        using var enumerator = files.OrderBy(x => x.Name, new OrdinalStringComparer()).GetEnumerator();
         var currentFile = enumerator.Current;
         var result = new List<ContentFile>();
         while (enumerator.MoveNext())
