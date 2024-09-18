@@ -1,13 +1,14 @@
 angular.module('virtoCommerce.contentModule')
     .controller('virtoCommerce.contentModule.pagesListController',
-        ['$rootScope', '$scope', '$translate', 'virtoCommerce.contentModule.contentApi',
+        ['$q', '$rootScope', '$scope', '$translate', 'virtoCommerce.contentModule.contentApi',
             'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService',
             'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils', 'platformWebApp.validators',
             'virtoCommerce.contentModule.fileHandlerFactory',
             'virtoCommerce.contentModule.broadcastChannelFactory', 'virtoCommerce.contentModule.files-draft',
-            function ($rootScope, $scope, $translate, contentApi, bladeNavigationService,
+            function ($q, $rootScope, $scope, $translate, contentApi, bladeNavigationService,
                 dialogService, uiGridHelper, bladeUtils, validators, fileHandlerFactory, broadcastChannelFactory, filesDraftService) {
                 var blade = $scope.blade;
+
                 var channel;
                 blade.updatePermission = 'content:update';
                 $scope.selectedNodeId = null;
@@ -28,7 +29,9 @@ angular.module('virtoCommerce.contentModule')
                             _.each(data, function (x) {
                                 x.isImage = x.mimeType && x.mimeType.startsWith('image/');
                                 var handler = fileHandlerFactory.getHandlers('edit', { file: x });
-                                x.isOpenable = handler && handler.length;
+                                x.isOpenable = !blade.pasteMode && handler && handler.length;
+                                x.isSelectable = !blade.pasteMode;
+                                x.menuId = !blade.pasteMode ? 'ast_menu' + blade.id : null;
                             });
                             $scope.listEntries = data;
                             blade.isLoading = false;
@@ -90,14 +93,24 @@ angular.module('virtoCommerce.contentModule')
                             controller: blade.controller,
                             template: blade.template,
                             disableOpenAnimation: true,
-                            isClosingDisabled: blade.isClosingDisabled
+                            isClosingDisabled: blade.isClosingDisabled,
+                            pasteMode: blade.pasteMode,
                         };
                         bladeNavigationService.showBlade(newBlade, blade.parentBlade);
-                    } else {
+                    } else if (!blade.pasteMode) {
                         blade.selectedNodeId = listItem.url;
                         openDetailsBlade(listItem, false);
                     }
                 };
+
+                $scope.delete = function (data) {
+                    deleteList([data]);
+                };
+
+                $scope.moveItem = function (data) {
+                    $scope.gridApi.selection.selectRow(data);
+                    moveList();
+                }
 
                 function openDetailsBlade(listItem, isNew) {
                     var action = isNew ? 'create' : 'edit';
@@ -128,9 +141,29 @@ angular.module('virtoCommerce.contentModule')
                     bladeNavigationService.showBlade(newBlade, blade);
                 }
 
-                $scope.delete = function (data) {
-                    deleteList([data]);
-                };
+                function moveList() {
+                    var newBlade = {
+                        id: 'pasteFiles',
+                        contentType: blade.contentType,
+                        storeId: blade.storeId,
+                        storeUrl: blade.storeUrl,
+                        languages: blade.languages,
+                        currentEntity: {},
+                        breadcrumbs: null,
+                        title: 'content.blades.move.title',
+                        subtitle: blade.subtitle,
+                        controller: blade.controller,
+                        template: blade.template,
+                        disableOpenAnimation: false,
+                        isClosingDisabled: false,
+                        pasteMode: true,
+                    };
+                    bladeNavigationService.showBlade(newBlade, blade);
+                }
+
+                blade.getSelectedRows = function () {
+                    return $scope.gridApi.selection.getSelectedRows();
+                }
 
                 function deleteList(selection) {
                     bladeNavigationService.closeChildrenBlades(blade, function () {
@@ -169,7 +202,7 @@ angular.module('virtoCommerce.contentModule')
                 }
 
                 function isItemsChecked() {
-                    return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
+                    return !blade.pasteMode && $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
                 }
 
                 function isPages() {
@@ -187,8 +220,45 @@ angular.module('virtoCommerce.contentModule')
                         canExecuteMethod: function () {
                             return true;
                         }
-                    },
-                    {
+                    }
+                ];
+
+                if (blade.pasteMode) {
+                    blade.toolbarCommands.push({
+                        name: "content.commands.move-files",
+                        icon: 'fa fa-arrow-down',
+                        executeMethod: function () {
+                            var items = blade.parentBlade.getSelectedRows();
+
+                            var promises = [];
+
+                            _.each(items, function (item) {
+                                var oldUrl = item.url;
+                                var newUrl = `${trimSlashEnd(blade.currentEntity.url) || ''}/${trimSlashStart(item.name)}`;
+
+                                var promise = contentApi.move({
+                                    contentType: blade.contentType,
+                                    storeId: blade.storeId,
+                                    oldUrl: oldUrl,
+                                    newUrl: newUrl
+                                }).$promise;
+
+                                promises.push(promise);
+                            });
+                            $q.all(promises).then(function () {
+                                blade.refresh();
+                                blade.parentBlade.refresh();
+                            });
+                        },
+                        canExecuteMethod: function () {
+                            var items = blade.parentBlade.getSelectedRows();
+                            return items && items.length && blade.currentEntity.url !== blade.parentBlade.currentEntity.url;
+                        },
+                        permission: 'content:create'
+                    });
+                } else {
+
+                    blade.toolbarCommands.push({
                         name: "platform.commands.upload", icon: 'fa fa-upload',
                         executeMethod: function () {
                             var newBlade = {
@@ -206,51 +276,64 @@ angular.module('virtoCommerce.contentModule')
                             return true;
                         },
                         permission: 'content:create'
-                    }
-                ];
+                    });
 
-                if (isPages()) {
-                    blade.toolbarCommands.splice(1, 0,
-                        {
-                            name: 'platform.commands.new-folder', icon: 'fa fa-folder-o',
-                            executeMethod: function () { newFolder(); },
-                            canExecuteMethod: function () { return true; },
-                            permission: 'content:create'
-                        },
-                        {
-                            name: "platform.commands.add", icon: 'fa fa-plus',
-                            executeMethod: function () { openDetailsBlade({}, true); },
-                            canExecuteMethod: function () { return true; },
-                            permission: 'content:create'
+                    if (isPages()) {
+                        blade.toolbarCommands.splice(1, 0,
+                            {
+                                name: 'platform.commands.new-folder', icon: 'fa fa-folder-o',
+                                executeMethod: function () { newFolder(); },
+                                canExecuteMethod: function () { return true; },
+                                permission: 'content:create'
+                            },
+                            {
+                                name: "platform.commands.add", icon: 'fa fa-plus',
+                                executeMethod: function () { openDetailsBlade({}, true); },
+                                canExecuteMethod: function () { return true; },
+                                permission: 'content:create'
+                            }
+                        );
+                    } else if (isBlogs()) {
+                        if (blade.currentEntity.type && blade.currentEntity.type === 'folder') {
+                            blade.toolbarCommands.splice(1, 0, {
+                                name: "content.commands.add-post", icon: 'fa fa-plus',
+                                executeMethod: function () { openDetailsBlade({}, true); },
+                                canExecuteMethod: function () { return true; },
+                                permission: 'content:create'
+                            });
+                        } else {
+                            blade.toolbarCommands.splice(1, 0, {
+                                name: 'content.commands.add-blog', icon: 'fa fa-plus',
+                                executeMethod: function () { openBlogDetailsBlade({}, true); },
+                                canExecuteMethod: function () { return true; },
+                                permission: 'content:create'
+                            });
                         }
-                    );
-                } else if (isBlogs()) {
-                    if (blade.currentEntity.type && blade.currentEntity.type === 'folder') {
-                        blade.toolbarCommands.splice(1, 0, {
-                            name: "content.commands.add-post", icon: 'fa fa-plus',
-                            executeMethod: function () { openDetailsBlade({}, true); },
-                            canExecuteMethod: function () { return true; },
-                            permission: 'content:create'
-                        });
-                    } else {
-                        blade.toolbarCommands.splice(1, 0, {
-                            name: 'content.commands.add-blog', icon: 'fa fa-plus',
-                            executeMethod: function () { openBlogDetailsBlade({}, true); },
-                            canExecuteMethod: function () { return true; },
-                            permission: 'content:create'
-                        });
                     }
+
+                    blade.toolbarCommands.push({
+                        name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                        executeMethod: function () { deleteList($scope.gridApi.selection.getSelectedRows()); },
+                        canExecuteMethod: isItemsChecked,
+                        permission: 'content:delete'
+                    });
+
+                    blade.toolbarCommands.push({
+                        name: "content.commands.move", icon: 'fas fa-exchange-alt',
+                        executeMethod: function () { moveList(); },
+                        canExecuteMethod: isItemsChecked,
+                        permission: 'content:create'
+                    });
+
                 }
-
-                blade.toolbarCommands.push({
-                    name: "platform.commands.delete", icon: 'fa fa-trash-o',
-                    executeMethod: function () { deleteList($scope.gridApi.selection.getSelectedRows()); },
-                    canExecuteMethod: isItemsChecked,
-                    permission: 'content:delete'
-                });
-
                 // ui-grid
                 $scope.setGridOptions = function (gridOptions) {
+                    if (blade.pasteMode) {
+                        // remove context menu
+                        gridOptions.columnDefs.splice(0, 1);
+                    }
+
+
                     uiGridHelper.initialize($scope, gridOptions,
                         function (gridApi) {
                             $scope.$watch('pageSettings.currentPage', gridApi.pagination.seek);
@@ -311,4 +394,12 @@ angular.module('virtoCommerce.contentModule')
                         }
                     }
                 };
+
+                function trimSlashEnd(value) {
+                    return value?.replace(/\/+$/, '') || '';
+                }
+
+                function trimSlashStart(value) {
+                    return value?.replace(/^\/+/, '') || '';
+                }
             }]);
