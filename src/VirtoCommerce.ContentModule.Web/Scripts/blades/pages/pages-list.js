@@ -400,10 +400,10 @@ angular.module('virtoCommerce.contentModule')
 
                 function generateBreadcrumbs(url) {
                     // split url by '/'
-                    var parts = url.split('/');
-                    var breadcrumbs = parts.filter(x => !!x).map(x => ({
+                    var parts = (!url || url === '/') ? ['all'] : url.split('/');
+                    var breadcrumbs = parts.map(x => ({
                         id: '',
-                        name: x,
+                        name: x || 'all',
                         blade: null,
                         navigate: function () {}
                     }));
