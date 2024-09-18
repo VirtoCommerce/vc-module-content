@@ -164,7 +164,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
         {
             var fileName = HttpUtility.UrlDecode(Path.GetFileName(srcUrl));
 
-            using var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient();
             await using var content = await client.GetStreamAsync(srcUrl);
 
             var result = await SaveContentAsync(contentType, storeId, folderPath, fileName, content);
