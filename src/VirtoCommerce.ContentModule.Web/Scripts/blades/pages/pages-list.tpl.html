@@ -2,8 +2,8 @@
   <va-breadcrumb ng-model="blade.breadcrumbs" blade-id="blade.id" blade-maximized="blade.isMaximized"></va-breadcrumb>
   <div class="form-group">
     <div class="form-input __other">
-      <input ng-disabled="blade.pasteMode" placeholder="{{ 'platform.placeholders.search-keyword' | translate }}" ng-model="blade.searchKeyword" ng-keyup="$event.which === 13 && blade.refresh()">
-      <button ng-disabled="blade.pasteMode" class="btn __other" type="button">
+      <input ng-disabled="blade.pasteMode || blade.isSearchDisabled" placeholder="{{ 'platform.placeholders.search-keyword' | translate }}" ng-model="blade.searchKeyword" ng-keyup="$event.which === 13 && blade.refresh()">
+      <button ng-disabled="blade.pasteMode || blade.isSearchDisabled" class="btn __other" type="button">
         <i class="btn-ico fa fa-times-circle" title="Clear" ng-click="blade.searchKeyword=null;blade.refresh()"></i>
       </button>
     </div>
@@ -45,6 +45,9 @@
           </li>
           <li class="menu-item" ng-click="downloadUrl(gridApi.grid.appScope.contextMenuEntity)" ng-if="gridApi.grid.appScope.contextMenuEntity.type !== 'folder'">
             <i class="menu-ico fa fa-download"></i> {{'content.blades.pages-list.context-menu.download' | translate}}
+          </li>
+          <li class="menu-item" ng-click="openFolder(gridApi.grid.appScope.contextMenuEntity)" ng-if="blade.searchKeyword">
+            <i class="menu-ico fa fa-folder-open"></i> {{'content.blades.pages-list.context-menu.open-folder' | translate}}
           </li>
           <li class="menu-item" ng-click="copyUrl(gridApi.grid.appScope.contextMenuEntity)">
             <i class="menu-ico fas fa-link"></i> {{'content.blades.pages-list.context-menu.copy-link' | translate}}
