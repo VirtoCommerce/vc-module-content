@@ -295,11 +295,11 @@ public class ContentController(
             {
                 index++;
             } while (
-                await contentService.ItemExistsAsync(contentType, storeId, Path.Combine(path, $"{filename}{index}{langSuffix}{ext}"))
-                || await contentService.ItemExistsAsync(contentType, storeId, Path.Combine(path, $"{filename}{index}{langSuffix}{alternativeExt}"))
+                await contentService.ItemExistsAsync(contentType, storeId, Path.Combine(path, $"{filename}_{index}{langSuffix}{ext}"))
+                || await contentService.ItemExistsAsync(contentType, storeId, Path.Combine(path, $"{filename}_{index}{langSuffix}{alternativeExt}"))
 
             );
-            destFile = Path.Combine(path, $"{filename}{index}{langSuffix}{ext}");
+            destFile = Path.Combine(path, $"{filename}_{index}{langSuffix}{ext}");
         }
 
         destFile = _publishingService.GetRelativeDraftUrl(destFile, true);
