@@ -40,11 +40,11 @@
           <li class="menu-item" ng-click="command.action(gridApi.grid.appScope.contextMenuEntity)" ng-repeat="command in blade.contextMenuItems" ng-if="contextMenuEntity.type === 'folder'" va-permission="{{command.permission}}">
             <i class="menu-ico fa {{command.icon}}"></i> {{command.name | translate}}
           </li>
-          <li class="menu-item" ng-click="duplicate(gridApi.grid.appScope.contextMenuEntity)" ng-if="gridApi.grid.appScope.contextMenuEntity.type !== 'folder'">
-            <i class="menu-ico fa fa-copy"></i> {{'content.blades.pages-list.context-menu.duplicate' | translate}}
-          </li>
           <li class="menu-item" ng-click="downloadUrl(gridApi.grid.appScope.contextMenuEntity)" ng-if="gridApi.grid.appScope.contextMenuEntity.type !== 'folder'">
             <i class="menu-ico fa fa-download"></i> {{'content.blades.pages-list.context-menu.download' | translate}}
+          </li>
+          <li class="menu-item" ng-click="duplicate(gridApi.grid.appScope.contextMenuEntity)" ng-if="gridApi.grid.appScope.contextMenuEntity.type !== 'folder'">
+            <i class="menu-ico fa fa-copy"></i> {{'content.blades.pages-list.context-menu.duplicate' | translate}}
           </li>
           <li class="menu-item" ng-click="openFolder(gridApi.grid.appScope.contextMenuEntity)" ng-if="blade.searchKeyword">
             <i class="menu-ico fa fa-folder-open"></i> {{'content.blades.pages-list.context-menu.open-folder' | translate}}
