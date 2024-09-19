@@ -401,13 +401,12 @@ angular.module('virtoCommerce.contentModule')
                 function generateBreadcrumbs(url) {
                     // split url by '/'
                     var parts = (!url || url === '/') ? ['all'] : url.split('/');
-                    var breadcrumbs = parts.map(x => ({
+                    return parts.map(x => ({
                         id: '',
                         name: x || 'all',
                         blade: null,
                         navigate: function () {}
                     }));
-                    return breadcrumbs;
                 }
 
                 blade.headIcon = isBlogs() ? 'fa fa-inbox' : 'fa fa-folder-o';
