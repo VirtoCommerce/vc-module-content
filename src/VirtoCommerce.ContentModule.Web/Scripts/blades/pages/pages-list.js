@@ -75,7 +75,11 @@ angular.module('virtoCommerce.contentModule')
                 };
 
                 $scope.duplicate = function (data) {
-                    contentApi.copyFile({ srcFile: data.relativeUrl, contentType: blade.contentType, storeId: blade.storeId }, blade.refresh);
+                    contentApi.copyFile({
+                        srcFile: data.relativeUrl,
+                        contentType: blade.contentType,
+                        storeId: blade.storeId
+                    }, blade.refresh);
                 };
 
                 $scope.selectNode = function (listItem) {
