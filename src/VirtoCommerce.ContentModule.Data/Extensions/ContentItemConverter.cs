@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
@@ -100,9 +101,9 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
         {
             var parts = Path.GetFileName(relativeUrl)?.Split('.');
 
-            if (parts?.Length == 3)
+            if (parts?.Length >= 3)
             {
-                return parts[1];
+                return parts[^2];
             }
 
             return null;
@@ -111,7 +112,15 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
         public static string GetFileNameFirstPart(this string relativeUrl)
         {
             var parts = Path.GetFileName(relativeUrl)?.Split('.');
-            return parts == null ? string.Empty : parts[0];
+            if (parts == null || parts.Length == 0)
+            {
+                return string.Empty;
+            }
+            if (parts.Length <= 3)
+            {
+                return parts[0];
+            }
+            return string.Join('.', parts.Take(parts.Length - 2));
         }
 
         public static GenericChangedEntry<ContentFile> CreateChangedEntry(string oldUrl, string newUrl, EntryState state = EntryState.Modified)

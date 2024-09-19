@@ -286,7 +286,7 @@ public class ContentController(
             var ext = Path.GetExtension(srcFile);
             var alternativeExt = ext.EndsWith("-draft") ? ext.Substring(0, ext.Length - "-draft".Length) : ext + "-draft";
             var fullFilename = Path.GetFileNameWithoutExtension(srcFile);
-            var filename = fullFilename.GetFileNameFirstPart();
+            var filename = srcFile.GetFileNameFirstPart();
             var lang = srcFile.GetLanguage();
             var langSuffix = lang.IsNullOrEmpty() ? string.Empty : $".{lang}";
             var path = srcFile.Substring(0, srcFile.Length - fullFilename.Length - ext.Length);
