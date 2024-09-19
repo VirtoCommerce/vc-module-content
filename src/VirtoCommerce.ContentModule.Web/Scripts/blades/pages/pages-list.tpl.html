@@ -2,8 +2,8 @@
   <va-breadcrumb ng-model="blade.breadcrumbs" blade-id="blade.id" blade-maximized="blade.isMaximized"></va-breadcrumb>
   <div class="form-group">
     <div class="form-input __other">
-      <input placeholder="{{ 'platform.placeholders.search-keyword' | translate }}" ng-model="blade.searchKeyword" ng-keyup="$event.which === 13 && blade.refresh()">
-      <button class="btn __other" type="button">
+      <input ng-disabled="blade.pasteMode" placeholder="{{ 'platform.placeholders.search-keyword' | translate }}" ng-model="blade.searchKeyword" ng-keyup="$event.which === 13 && blade.refresh()">
+      <button ng-disabled="blade.pasteMode" class="btn __other" type="button">
         <i class="btn-ico fa fa-times-circle" title="Clear" ng-click="blade.searchKeyword=null;blade.refresh()"></i>
       </button>
     </div>
@@ -34,21 +34,25 @@
                 enablePaginationControls: false,
                 paginationPageSize: pageSettings.itemsPerPageCount
                  })">
-        <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-pagination ui-grid-height></div>
-        <ul class="menu __context" role="menu" id="ast_menu">
-          <li class="menu-item" ng-click="command.action(contextMenuEntity)" ng-repeat="command in blade.contextMenuItems" ng-if="contextMenuEntity.type === 'folder'" va-permission="{{command.permission}}">
+        <div ng-if="!blade.pasteMode" ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-pagination ui-grid-height></div>
+        <div ng-if="blade.pasteMode" ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-pagination ui-grid-height></div>
+        <ul class="menu __context" role="menu" id="{{ 'ast_menu' + blade.id }}">
+          <li class="menu-item" ng-click="command.action(gridApi.grid.appScope.contextMenuEntity)" ng-repeat="command in blade.contextMenuItems" ng-if="contextMenuEntity.type === 'folder'" va-permission="{{command.permission}}">
             <i class="menu-ico fa {{command.icon}}"></i> {{command.name | translate}}
           </li>
-          <li class="menu-item" ng-click="duplicate(contextMenuEntity)" ng-if="contextMenuEntity.type !== 'folder'">
-            <i class="menu-ico fa fa-copy"></i> Duplicate
+          <li class="menu-item" ng-click="duplicate(gridApi.grid.appScope.contextMenuEntity)" ng-if="gridApi.grid.appScope.contextMenuEntity.type !== 'folder'">
+            <i class="menu-ico fa fa-copy"></i> {{'content.blades.pages-list.context-menu.duplicate' | translate}}
           </li>
-          <li class="menu-item" ng-click="downloadUrl(contextMenuEntity)" ng-if="contextMenuEntity.type !== 'folder'">
-            <i class="menu-ico fa fa-download"></i> Download
+          <li class="menu-item" ng-click="downloadUrl(gridApi.grid.appScope.contextMenuEntity)" ng-if="gridApi.grid.appScope.contextMenuEntity.type !== 'folder'">
+            <i class="menu-ico fa fa-download"></i> {{'content.blades.pages-list.context-menu.download' | translate}}
           </li>
-          <li class="menu-item" ng-click="copyUrl(contextMenuEntity)">
-            <i class="menu-ico fas fa-link"></i> Copy link
+          <li class="menu-item" ng-click="copyUrl(gridApi.grid.appScope.contextMenuEntity)">
+            <i class="menu-ico fas fa-link"></i> {{'content.blades.pages-list.context-menu.copy-link' | translate}}
           </li>
-          <li class="menu-item" ng-click='delete(contextMenuEntity)' va-permission="platform:asset:delete">
+          <li class="menu-item" ng-click="moveItem(gridApi.grid.appScope.contextMenuEntity)">
+            <i class="menu-ico fas fa-exchange-alt"></i> {{'content.blades.pages-list.context-menu.move' | translate}}
+          </li>
+          <li class="menu-item" ng-click='delete(gridApi.grid.appScope.contextMenuEntity)' va-permission="platform:asset:delete">
             <i class="menu-ico fas fa-trash-alt"></i> {{'platform.commands.delete' | translate}}
           </li>
         </ul>
@@ -58,11 +62,23 @@
 </div>
 
 <script type="text/ng-template" id="pages-list.row.html">
-  <div ng-click='grid.appScope.selectNode(row.entity)' ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid" ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'" class="ui-grid-cell" ng-class="{'ui-grid-row-header-cell': col.isRowHeader, '__hovered': grid.appScope.contextMenuEntity === row.entity, '__selected': grid.appScope.blade.selectedNodeId === row.entity.url}" role="{{col.isRowHeader ? 'rowheader' : 'gridcell' }}" ui-grid-cell style="{{'cursor: ' + ((col.name==='actions' || row.entity.type==='folder' || row.entity.isOpenable) ? 'pointer' : 'default')}}" context-menu="grid.appScope.contextMenuEntity = row.entity" data-target="ast_menu"></div>
+  <div ng-click='grid.appScope.selectNode(row.entity)'
+       ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid"
+       ng-class="{'ui-grid-row-header-cell': col.isRowHeader, '__hovered': grid.appScope.contextMenuEntity === row.entity, '__selected': grid.appScope.blade.selectedNodeId === row.entity.url}"
+       ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'"
+       ui-grid-cell
+       class="ui-grid-cell"
+       role="{{col.isRowHeader ? 'rowheader' : 'gridcell' }}"
+       style="{{ 'cursor: ' + ((col.name === 'actions' || row.entity.type === 'folder' || row.entity.isOpenable) ? 'pointer' : 'default') + '; opacity: ' + ((!row.entity.isSelectable && row.entity.type !== 'folder') ? '0.5' : '1')}}"
+
+       context-menu="grid.appScope.contextMenuEntity = row.entity"
+       data-target="{{ row.entity.menuId }}"></div>
 </script>
 
 <script type="text/ng-template" id="list-actions.cell.html">
-  <div class="ui-grid-actions" left-click-menu="grid.appScope.contextMenuEntity = row.entity" data-target="ast_menu">
+  <div class="ui-grid-actions"
+       left-click-menu="grid.appScope.contextMenuEntity = row.entity"
+       data-target="{{ row.entity.menuId }}">
     <i class="fa fa-ellipsis-v"></i>
   </div>
 </script>
@@ -86,7 +102,7 @@
     <div class="inner-contents" style="width:100%;">
       <div class="table-t" title="{{ row.entity.relativeUrl }}">{{COL_FIELD}}</div>
       <div class="list-descr" ng-if="row.entity.type !== 'folder'" style="width:100%">
-        <span ng-if="row.entity.published" style="color:green">{{ 'content.blades.pages-list.published' | translate }}</span>
+        <span ng-if="row.entity.published" style="color:green;">{{ 'content.blades.pages-list.published' | translate }}</span>
         <span ng-if="!row.entity.published" style="color:red">{{ 'content.blades.pages-list.unpublished' | translate }}</span>
         <span ng-if="row.entity.hasChanges" style="color:#f1ad43;float:right;">{{ 'content.blades.pages-list.has-changes' | translate }}</span>
       </div>
