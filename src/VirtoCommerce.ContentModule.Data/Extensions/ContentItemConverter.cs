@@ -109,7 +109,7 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
             return null;
         }
 
-        public static string GetFileNameFirstPart(this string relativeUrl)
+        public static string GetFileNameWithoutLanguage(this string relativeUrl)
         {
             var parts = Path.GetFileName(relativeUrl)?.Split('.');
             if (parts == null || parts.Length == 0)
