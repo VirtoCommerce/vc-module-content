@@ -24,8 +24,7 @@ public class ContentFileService(IBlobContentStorageProviderFactory blobContentSt
 
         // display folders before files
         var folders = searchResult.Results.OfType<BlobFolder>().Select(x => x.ToContentModel()).OfType<ContentItem>();
-        var files = searchResult.Results.OfType<BlobInfo>()
-            .Select(x => x.ToContentModel()).OfType<ContentItem>();
+        var files = searchResult.Results.OfType<BlobInfo>().Select(x => x.ToContentModel()).OfType<ContentItem>();
 
         var result = folders
             // Exclude Blogs folder at root level
