@@ -111,7 +111,7 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
         public static string GetFileNameFirstPart(this string relativeUrl)
         {
             var parts = Path.GetFileName(relativeUrl)?.Split('.');
-            return parts[0];
+            return parts == null ? string.Empty : parts[0];
         }
 
         public static GenericChangedEntry<ContentFile> CreateChangedEntry(string oldUrl, string newUrl, EntryState state = EntryState.Modified)
