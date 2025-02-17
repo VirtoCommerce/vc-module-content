@@ -1,0 +1,364 @@
+{
+  "content": {
+    "main-menu-title": "内容",
+    "blades": {
+      "scope-value-pick-from-simple-list": {
+        "title": "仅适用于选定的商店",
+        "subtitle": "选择商店"
+      },
+      "move": {
+        "title": "选择文件夹"
+      },
+      "choose-action": {
+        "create": {
+          "title": "新建",
+          "subtitle": "选择要创建的页面"
+        },
+        "edit": {
+          "title": "编辑",
+          "subtitle": "选择要如何编辑页面"
+        }
+      },
+      "markdownEditor": {
+        "create": {
+          "title": "HTML页面",
+          "description": "使用Markdown或HTML创建新页面"
+        },
+        "edit": {
+          "title": "HTML页面",
+          "description": "使用Markdown或HTML编辑页面"
+        }
+      },
+      "content-main": {
+        "title": "内容",
+        "subtitle": "内容服务",
+        "labels": {
+          "no-active-theme": "没有活动主题，请点击选择",
+          "active-theme": "活动主题：",
+          "edit-css-html": "编辑CSS/HTML",
+          "preview-theme": "预览主题",
+          "customize-theme": "自定义主题",
+          "themes": "主题",
+          "pages": "页面",
+          "link-lists": "链接列表",
+          "blogs": "博客",
+          "stores": "商店",
+          "no-stores": "您可以在此配置商店内容，但未找到商店。打开商店菜单以创建一个"
+        }
+      },
+      "themes-list": {
+        "title": "{{name}}",
+        "subtitle": "主题列表",
+        "labels": {
+          "name": "名称",
+          "activated": "在商店中激活",
+          "no-data": "尚无主题"
+        }
+      },
+      "edit-asset": {
+        "subtitle": "编辑文档内容",
+        "title-new": "新文档",
+        "subtitle-new": "创建新文档",
+        "labels": {
+          "liquid-documentation": "Liquid文档",
+          "asset-name": "资产名称",
+          "upload-new-file": "上传新文件",
+          "progress": "进度"
+        },
+        "placeholders": {
+          "asset-name": "输入资产名称"
+        },
+        "validations": {
+          "name-invalid": "名称只能包含字母数字字符、\"_\"、\"-\"和\".\"。"
+        }
+      },
+      "edit-image-asset": {
+        "subtitle": "编辑{{name}}"
+      },
+      "pages-list": {
+        "published": "已发布",
+        "unpublished": "未发布",
+        "has-changes": "有更改",
+        "title-pages": "{{name}}页面列表",
+        "subtitle-pages": "页面列表",
+        "title-blogs": "{{name}}博客列表",
+        "subtitle-blogs": "博客列表",
+        "labels": {
+          "name": "名称",
+          "modified": "已修改"
+        },
+        "context-menu": {
+          "duplicate": "复制",
+          "download": "下载",
+          "copy-link": "复制链接",
+          "open-folder": "打开文件夹",
+          "move": "移动"
+        }
+      },
+      "link-lists": {
+        "title": "链接列表",
+        "subtitle": "商店'{{name}}'中的链接列表",
+        "labels": {
+          "name": "名称",
+          "language": "语言",
+          "no-data": "尚无链接列表"
+        }
+      },
+      "theme-detail": {
+        "subtitle": "管理主题",
+        "title-new": "新主题",
+        "subtitle-new": "创建新主题",
+        "labels": {
+          "theme-name": "主题名称"
+        },
+        "placeholders": {
+          "theme-name": "输入主题名称"
+        }
+      },
+      "theme-upload": {
+        "title": "主题上传",
+        "labels": {
+          "select-files": "选择主题文件",
+          "drag-note": "将主题（.zip）文件拖放到此处",
+          "progress": "进度",
+          "file-selected": "主题文件：",
+          "asset-uploaded": "主题文件已上传"
+        },
+        "placeholders": {
+          "image-url": "在此粘贴主题文件URL"
+        }
+      },
+      "edit-page": {
+        "title": "编辑'{{name}}'",
+        "subtitle": "页面编辑",
+        "title-new": "新页面",
+        "subtitle-new": "创建新页面",
+        "subtitle-post": "博客文章编辑",
+        "title-new-post": "新帖子",
+        "subtitle-new-post": "创建新博客文章",
+        "labels": {
+          "name": "名称",
+          "language": "语言",
+          "drag-note": "将文件拖放到此处",
+          "progress": "进度",
+          "markdown": "Markdown",
+          "metadata": "元数据",
+          "relativePath": "相对路径"
+        },
+        "placeholders": {
+          "name": "输入名称",
+          "language": "选择...",
+          "metadata": "输入元数据"
+        },
+        "validations": {
+          "pageName-invalid": "页面名称只能包含字母数字字符、\"_\"、\"-\"和\".\"。"
+        }
+      },
+      "menu-link-list": {
+        "title": "'{{name}}'列表",
+        "subtitle": "编辑链接列表",
+        "title-new": "新列表",
+        "subtitle-new": "创建新链接列表",
+        "labels": {
+          "name": "名称",
+          "language": "语言",
+          "list-note": "安排链接在网上商店中显示的顺序。使用拖放重新排序",
+          "link-title": "链接标题",
+          "link-url": "URL",
+          "links-to": "链接到",
+          "linked-object": "链接对象"
+        },
+        "placeholders": {
+          "name": "输入列表名称",
+          "language": "选择...",
+          "associated-object-type": "选择类型",
+          "select-linked-object": "选择"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "选择产品链接",
+        "title-category": "选择类别链接"
+      },
+      "edit-blog": {
+        "subtitle": "编辑博客",
+        "title-new": "新博客",
+        "subtitle-new": "创建新博客",
+        "labels": {
+          "blog-name": "博客名称",
+          "metadata": "元数据"
+        },
+        "placeholders": {
+          "blog-name": "输入博客名称"
+        },
+        "validations": {
+          "name-invalid": "名称只能包含小写字母数字、空格和\"-\"字符。",
+          "name-used": "此名称已被使用"
+        }
+      },
+      "asset-list": {
+        "subtitle": "管理主题资产",
+        "labels": {
+          "add-new": "添加新",
+          "nodata": "尚无资产"
+        }
+      },
+      "theme-asset-list": {
+        "title": "编辑{{path}}",
+        "subtitle": "主题资产列表",
+        "labels": {
+          "add-new": "添加新",
+          "nodata": "尚无资产"
+        }
+      },
+      "store-url-list": {
+        "labels": {
+          "pick-url-to-preview": "选择一个商店URL进行预览",
+          "no-store-urls": "尚无商店URL"
+        }
+      }
+    },
+    "widgets": {
+      "menu": {
+        "title": "链接列表",
+        "blade-subtitle": "链接列表"
+      },
+      "pages": {
+        "title": "页面",
+        "blade-subtitle": "页面列表"
+      },
+      "store-cms": {
+        "themes": "主题",
+        "pages": "页面",
+        "blogs": "博客",
+        "links": "链接列表",
+        "active-theme": "活动主题"
+      }
+    },
+    "dialogs": {
+      "theme-upload-confirmation": {
+        "title": "主题上传确认",
+        "message": "同名主题已存在。文件将覆盖此主题的现有文件。您确定吗？"
+      },
+      "theme-clone": {
+        "title": "克隆确认",
+        "message": "您确定要克隆选定的主题吗？"
+      },
+      "link-list-delete": {
+        "title": "删除确认",
+        "message": "您确定要删除选定的链接列表吗？"
+      },
+      "links-delete": {
+        "title": "删除确认",
+        "message": "您确定要删除选定的链接吗？"
+      },
+      "blog-delete": {
+        "title": "删除确认",
+        "message": "您确定要删除选定的博客吗？"
+      },
+      "page-delete": {
+        "title": "删除确认",
+        "message": "您确定要删除此页面吗？"
+      },
+      "blog-save": {
+        "title": "保存更改",
+        "message": "博客已被修改。您要保存更改吗？"
+      },
+      "page-save": {
+        "title": "保存更改",
+        "message": "页面已被修改。您要保存更改吗？"
+      },
+      "theme-save": {
+        "title": "保存更改",
+        "message": "主题已被修改。您要保存更改吗？"
+      },
+      "theme-delete": {
+        "title": "删除确认",
+        "message": "您确定要删除'{{name}}'吗？",
+        "message-last-one": "此主题是最后一个。如果您删除它，可能会破坏您的前端应用程序。您确定要删除'{{name}}'吗？"
+      },
+      "asset-delete": {
+        "title": "删除确认",
+        "message": "您确定要删除此资产吗？"
+      },
+      "asset-save": {
+        "title": "保存更改",
+        "message": "资产已被修改。您要保存更改吗？"
+      },
+      "link-list-save": {
+        "title": "保存更改",
+        "message": "菜单链接列表已被修改。您要保存更改吗？"
+      },
+      "set-store-url": {
+        "title": "商店的URL未设置",
+        "message": "在预览之前设置商店URL！"
+      },
+      "name-must-unique": {
+        "title": "名称不唯一",
+        "message": "名称在此语言中必须唯一！"
+      },
+      "store-no-url": {
+        "title": "商店设置警告",
+        "message": "商店URL未在商店设置中配置。请联系管理员"
+      }
+    },
+    "commands": {
+      "add-link": "添加链接",
+      "add-list": "添加列表",
+      "add-blog": "添加博客",
+      "add-post": "添加帖子",
+      "add-page": "添加",
+      "publish": "发布",
+      "unpublish": "未发布",
+      "delete-links": "删除链接",
+      "delete-theme": "删除",
+      "manage-metadata": "管理元数据属性",
+      "edit-as-markdown": "作为Markdown编辑",
+      "edit-as-html": "作为HTML编辑",
+      "preview-theme": "预览",
+      "preview-index": "搜索索引",
+      "edit-css-html": "编辑CSS/HTML",
+      "add-theme": "添加新主题",
+      "set-active": "设置为活动",
+      "preview-page": "预览页面",
+      "move": "移动",
+      "move-files": "移动到这里"
+    },
+    "front-matter-description": {
+      "Title_FrontMatterHeader": "页面标题",
+      "Layout_FrontMatterHeader": "如果设置，指定要使用的主题布局文件。使用不带扩展名的布局文件名。例如：'主题'",
+      "Template_FrontMatterHeader": "在主题中用于显示此页面的Liquid模板的名称，通过包含{{ page.content }}表达式",
+      "Permalink_FrontMatterHeader": "引用您的页面、帖子的网址（不包括域名或目录文件夹）。可能的值：folder/:categories/:year/:month/:day/:title, my-page, :folder/my-page",
+      "Published_FrontMatterHeader": "如果您不希望在生成网站时显示特定帖子，请设置为false",
+      "Category_FrontMatterHeader": "您可以指定一个或多个类别，而不是将帖子放在文件夹中。当网站生成时，帖子将表现得好像它已被正常放置在这些类别中。类别（复数键）可以作为YAML列表或以逗号分隔的字符串指定",
+      "Tags_FrontMatterHeader": "与类别类似，可以向帖子添加一个或多个标签。与类别一样，标签可以作为YAML列表或以逗号分隔的字符串指定",
+      "Alias_FrontMatterHeader": "通过在YAML前置内容中指定，为单个页面定义别名。这些别名可以用于重定向",
+      "Authorize_FrontMatterHeader": "如果您想阻止对页面的匿名访问，请设置为true"
+    },
+    "permissions": {
+      "content:access": "打开商店内容菜单",
+      "content:create": "创建商店内容数据",
+      "content:read": "查看商店内容数据",
+      "content:update": "更新商店内容数据",
+      "content:delete": "删除商店内容数据"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Content": {
+      "description": "导出/导入页面、主题、链接、菜单项"
+    }
+  },
+  "settings": {
+    "VirtoCommerce": {
+      "Search": {
+        "IndexingJobs": {
+          "IndexationDate": {
+            "ContentFile": {
+              "title": "内容索引日期和时间",
+              "description": "内容索引任务开始的日期和时间"
+            }
+          }
+        }
+      }
+    }
+  }
+}
