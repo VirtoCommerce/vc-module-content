@@ -1,0 +1,364 @@
+{
+  "content": {
+    "main-menu-title": "Contenuto",
+    "blades": {
+      "scope-value-pick-from-simple-list": {
+        "title": "Solo per negozi selezionati",
+        "subtitle": "Seleziona negozi"
+      },
+      "move": {
+        "title": "Seleziona cartella"
+      },
+      "choose-action": {
+        "create": {
+          "title": "Nuovo",
+          "subtitle": "Scegli quale pagina vuoi creare"
+        },
+        "edit": {
+          "title": "Modifica",
+          "subtitle": "Scegli come vuoi modificare la pagina"
+        }
+      },
+      "markdownEditor": {
+        "create": {
+          "title": "Pagina HTML",
+          "description": "Usa markdown o html per creare una nuova pagina"
+        },
+        "edit": {
+          "title": "Pagina HTML",
+          "description": "Usa markdown o html per modificare la pagina"
+        }
+      },
+      "content-main": {
+        "title": "Contenuto",
+        "subtitle": "Servizio di contenuto",
+        "labels": {
+          "no-active-theme": "Nessun tema attivo, clicca per scegliere",
+          "active-theme": "Tema attivo:",
+          "edit-css-html": "Modifica CSS/HTML",
+          "preview-theme": "Anteprima tema",
+          "customize-theme": "Personalizza tema",
+          "themes": "Temi",
+          "pages": "Pagine",
+          "link-lists": "Elenco link",
+          "blogs": "Blog",
+          "stores": "Negozi",
+          "no-stores": "Puoi configurare il contenuto dei negozi qui, ma non sono stati trovati negozi. Apri il menu NEGOZI per crearne uno"
+        }
+      },
+      "themes-list": {
+        "title": "{{name}}",
+        "subtitle": "Elenco temi",
+        "labels": {
+          "name": "Nome",
+          "activated": "Attivato nel negozio",
+          "no-data": "Nessun tema ancora"
+        }
+      },
+      "edit-asset": {
+        "subtitle": "Modifica contenuto documento",
+        "title-new": "Nuovo documento",
+        "subtitle-new": "Crea nuovo documento",
+        "labels": {
+          "liquid-documentation": "Documentazione Liquid",
+          "asset-name": "Nome risorsa",
+          "upload-new-file": "Carica nuovo file",
+          "progress": "Progresso"
+        },
+        "placeholders": {
+          "asset-name": "Inserisci nome risorsa"
+        },
+        "validations": {
+          "name-invalid": "Il nome può contenere solo caratteri alfanumerici, \"_\", \"-\" e \".\"."
+        }
+      },
+      "edit-image-asset": {
+        "subtitle": "Modifica {{name}}"
+      },
+      "pages-list": {
+        "published": "Pubblicato",
+        "unpublished": "Non pubblicato",
+        "has-changes": "Ha modifiche",
+        "title-pages": "Elenco pagine {{name}}",
+        "subtitle-pages": "Elenco pagine",
+        "title-blogs": "Elenco pagine {{name}}",
+        "subtitle-blogs": "Elenco blog",
+        "labels": {
+          "name": "Nome",
+          "modified": "Modificato"
+        },
+        "context-menu": {
+          "duplicate": "Duplica",
+          "download": "Scarica",
+          "copy-link": "Copia link",
+          "open-folder": "Apri cartella",
+          "move": "Sposta"
+        }
+      },
+      "link-lists": {
+        "title": "Elenco link",
+        "subtitle": "Elenco link nel negozio '{{name}}'",
+        "labels": {
+          "name": "Nome",
+          "language": "Lingua",
+          "no-data": "Nessun elenco link ancora"
+        }
+      },
+      "theme-detail": {
+        "subtitle": "Gestisci tema",
+        "title-new": "Nuovo tema",
+        "subtitle-new": "Crea nuovo tema",
+        "labels": {
+          "theme-name": "Nome tema"
+        },
+        "placeholders": {
+          "theme-name": "Inserisci nome tema"
+        }
+      },
+      "theme-upload": {
+        "title": "Caricamento tema",
+        "labels": {
+          "select-files": "Seleziona file tema",
+          "drag-note": "Trascina il file tema (.zip) qui",
+          "progress": "Progresso",
+          "file-selected": "File tema: ",
+          "asset-uploaded": "File tema caricato"
+        },
+        "placeholders": {
+          "image-url": "Incolla l'URL del file tema qui"
+        }
+      },
+      "edit-page": {
+        "title": "Modifica '{{name}}'",
+        "subtitle": "Modifica pagina",
+        "title-new": "Nuova pagina",
+        "subtitle-new": "Crea nuova pagina",
+        "subtitle-post": "Modifica blogpost",
+        "title-new-post": "Nuovo post",
+        "subtitle-new-post": "Crea nuovo blogpost",
+        "labels": {
+          "name": "Nome",
+          "language": "Lingua",
+          "drag-note": "Trascina e rilascia il file qui",
+          "progress": "Progresso",
+          "markdown": "Markdown",
+          "metadata": "Metadati",
+          "relativePath": "Percorso relativo"
+        },
+        "placeholders": {
+          "name": "Inserisci nome",
+          "language": "Seleziona...",
+          "metadata": "Inserisci metadati"
+        },
+        "validations": {
+          "pageName-invalid": "Il nome della pagina può contenere solo caratteri alfanumerici, \"_\", \"-\" e \".\"."
+        }
+      },
+      "menu-link-list": {
+        "title": "'{{name}}' elenco",
+        "subtitle": "Modifica elenco link",
+        "title-new": "Nuovo elenco",
+        "subtitle-new": "Crea nuovo elenco link",
+        "labels": {
+          "name": "Nome",
+          "language": "Lingua",
+          "list-note": "Organizza l'ordine in cui i link vengono visualizzati nel negozio online. Usa il drag and drop per riordinarli",
+          "link-title": "Titolo link",
+          "link-url": "URL",
+          "links-to": "Collegamenti a",
+          "linked-object": "Oggetto collegato"
+        },
+        "placeholders": {
+          "name": "Inserisci nome elenco",
+          "language": "Seleziona...",
+          "associated-object-type": "Seleziona tipo",
+          "select-linked-object": "Seleziona"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "Seleziona prodotto per il link",
+        "title-category": "Seleziona categoria per il link"
+      },
+      "edit-blog": {
+        "subtitle": "Modifica blog",
+        "title-new": "Nuovo blog",
+        "subtitle-new": "Crea nuovo blog",
+        "labels": {
+          "blog-name": "Nome blog",
+          "metadata": "Metadati"
+        },
+        "placeholders": {
+          "blog-name": "Inserisci nome blog"
+        },
+        "validations": {
+          "name-invalid": "Il nome può contenere solo caratteri alfanumerici minuscoli, \" \" e \"-\".",
+          "name-used": "Questo nome è già in uso"
+        }
+      },
+      "asset-list": {
+        "subtitle": "Gestisci risorse tema",
+        "labels": {
+          "add-new": "Aggiungi nuovo",
+          "nodata": "Nessuna risorsa ancora"
+        }
+      },
+      "theme-asset-list": {
+        "title": "Modifica {{path}}",
+        "subtitle": "Elenco risorse tema",
+        "labels": {
+          "add-new": "Aggiungi nuovo",
+          "nodata": "Nessuna risorsa ancora"
+        }
+      },
+      "store-url-list": {
+        "labels": {
+          "pick-url-to-preview": "Seleziona un URL negozio per l'anteprima",
+          "no-store-urls": "Nessun URL negozio ancora"
+        }
+      }
+    },
+    "widgets": {
+      "menu": {
+        "title": "Elenco link",
+        "blade-subtitle": "Elenco link"
+      },
+      "pages": {
+        "title": "Pagine",
+        "blade-subtitle": "Elenco pagine"
+      },
+      "store-cms": {
+        "themes": "Temi",
+        "pages": "Pagine",
+        "blogs": "Blog",
+        "links": "Elenco link",
+        "active-theme": "Tema attivo"
+      }
+    },
+    "dialogs": {
+      "theme-upload-confirmation": {
+        "title": "Conferma caricamento tema",
+        "message": "Esiste già un tema con lo stesso nome. I file verranno estratti sopra i file esistenti di questo tema. Sei sicuro?"
+      },
+      "theme-clone": {
+        "title": "Conferma clonazione",
+        "message": "Sei sicuro di voler clonare il tema selezionato?"
+      },
+      "link-list-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare gli elenchi link selezionati?"
+      },
+      "links-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare i link selezionati?"
+      },
+      "blog-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare il blog selezionato?"
+      },
+      "page-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare questa pagina?"
+      },
+      "blog-save": {
+        "title": "Salva modifiche",
+        "message": "Il blog è stato modificato. Vuoi salvare le modifiche?"
+      },
+      "page-save": {
+        "title": "Salva modifiche",
+        "message": "La pagina è stata modificata. Vuoi salvare le modifiche?"
+      },
+      "theme-save": {
+        "title": "Salva modifiche",
+        "message": "Il tema è stato modificato. Vuoi salvare le modifiche?"
+      },
+      "theme-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare '{{name}}'?",
+        "message-last-one": "Questo tema è l'ultimo. Se lo elimini, potresti danneggiare la tua applicazione frontend. Sei sicuro di voler eliminare '{{name}}'?"
+      },
+      "asset-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare questa risorsa?"
+      },
+      "asset-save": {
+        "title": "Salva modifiche",
+        "message": "La risorsa è stata modificata. Vuoi salvare le modifiche?"
+      },
+      "link-list-save": {
+        "title": "Salva modifiche",
+        "message": "L'elenco link del menu è stato modificato. Vuoi salvare le modifiche?"
+      },
+      "set-store-url": {
+        "title": "URL non impostato per il negozio",
+        "message": "Imposta l'URL del negozio prima di visualizzare l'anteprima!"
+      },
+      "name-must-unique": {
+        "title": "Nome non unico",
+        "message": "Il nome deve essere unico per questa lingua!"
+      },
+      "store-no-url": {
+        "title": "Avviso impostazioni negozio",
+        "message": "L'URL del negozio non è stato configurato nelle impostazioni del negozio. Contatta l'amministratore."
+      }
+    },
+    "commands": {
+      "add-link": "Aggiungi link",
+      "add-list": "Aggiungi elenco",
+      "add-blog": "Aggiungi blog",
+      "add-post": "Aggiungi post",
+      "add-page": "Aggiungi",
+      "publish": "Pubblica",
+      "unpublish": "Annulla pubblicazione",
+      "delete-links": "Elimina link",
+      "delete-theme": "Elimina",
+      "manage-metadata": "Gestisci proprietà metadati",
+      "edit-as-markdown": "Modifica come markdown",
+      "edit-as-html": "Modifica come html",
+      "preview-theme": "Anteprima",
+      "preview-index": "Indice di ricerca",
+      "edit-css-html": "Modifica CSS/HTML",
+      "add-theme": "Aggiungi nuovo tema",
+      "set-active": "Imposta attivo",
+      "preview-page": "Anteprima pagina",
+      "move": "Sposta",
+      "move-files": "Sposta qui"
+    },
+    "front-matter-description": {
+      "Title_FrontMatterHeader": "Titolo della pagina",
+      "Layout_FrontMatterHeader": "Se impostato, specifica il file di layout del tema da utilizzare. Usa il nome del file di layout senza estensione. es. 'Tema'",
+      "Template_FrontMatterHeader": "Nome del template liquid nel tema utilizzato per visualizzare questa pagina includendo l'espressione {{ page.content }}",
+      "Permalink_FrontMatterHeader": "Riferisci agli URL (escludendo il nome di dominio o la cartella) per le tue pagine, post. Valori possibili: folder/:categories/:year/:month/:day/:title, my-page, :folder/my-page",
+      "Published_FrontMatterHeader": "Imposta su falso se non vuoi che un post specifico venga visualizzato quando il sito viene generato",
+      "Category_FrontMatterHeader": "Invece di posizionare i post in cartelle, puoi specificare una o più categorie a cui appartiene il post. Quando il sito viene generato, il post si comporterà come se fosse stato posizionato in quelle categorie normalmente. Le categorie (chiave plurale) possono essere specificate come un elenco YAML o una stringa separata da virgole",
+      "Tags_FrontMatterHeader": "Simile alle categorie, una o più etichette possono essere aggiunte a un post. Anche come categorie, le etichette possono essere specificate come un elenco YAML o come una stringa separata da virgole",
+      "Alias_FrontMatterHeader": "Definisci alias per le singole pagine specificandoli nel front matter YAML. Questi alias possono essere utilizzati per il reindirizzamento",
+      "Authorize_FrontMatterHeader": "Imposta su vero se vuoi bloccare l'accesso anonimo alla pagina"
+    },
+    "permissions": {
+      "content:access": "Apri menu contenuto negozio",
+      "content:create": "Crea dati contenuto negozio",
+      "content:read": "Visualizza dati contenuto negozio",
+      "content:update": "Aggiorna dati contenuto negozio",
+      "content:delete": "Elimina dati contenuto negozio"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Content": {
+      "description": "Esporta/Importa pagine, temi, link, elementi di menu"
+    }
+  },
+  "settings": {
+    "VirtoCommerce": {
+      "Search": {
+        "IndexingJobs": {
+          "IndexationDate": {
+            "ContentFile": {
+              "title": "Data e ora di indicizzazione del contenuto",
+              "description": "Data e ora in cui inizierà il compito di indicizzazione del contenuto"
+            }
+          }
+        }
+      }
+    }
+  }
+}
