@@ -54,7 +54,7 @@ public class ContentSeoResolver : ISeoResolver
 
         var criteria = new ContentSearchCriteria
         {
-            Keyword = "permalink:" + permalink,
+            Keyword = $"permalink:\"{permalink}\"",
             Take = 100,
         };
 
