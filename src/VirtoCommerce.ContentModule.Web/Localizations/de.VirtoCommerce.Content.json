@@ -1,144 +1,178 @@
 {
   "content": {
-  "main-menu-title": "CMS",
+    "main-menu-title": "Inhalt",
     "blades": {
       "scope-value-pick-from-simple-list": {
-        "title": "Nur für ausgewählte Shops",
-        "subtitle": "Shops wählen"
+        "title": "Nur für ausgewählte Geschäfte",
+        "subtitle": "Geschäfte auswählen"
+      },
+      "move": {
+        "title": "Ordner auswählen"
+      },
+      "choose-action": {
+        "create": {
+          "title": "Neu",
+          "subtitle": "Wählen Sie, welche Seite Sie erstellen möchten"
+        },
+        "edit": {
+          "title": "Bearbeiten",
+          "subtitle": "Wählen Sie, wie Sie die Seite bearbeiten möchten"
+        }
+      },
+      "markdownEditor": {
+        "create": {
+          "title": "HTML-Seite",
+          "description": "Verwenden Sie Markdown oder HTML, um eine neue Seite zu erstellen"
+        },
+        "edit": {
+          "title": "HTML-Seite",
+          "description": "Verwenden Sie Markdown oder HTML, um die Seite zu bearbeiten"
+        }
       },
       "content-main": {
         "title": "Inhalt",
-        "subtitle": "Inhalt Service",
+        "subtitle": "Inhaltsdienst",
         "labels": {
-          "no-active-theme": "Kein Theme aktiv, klicken Sie um auszuwählen",
-          "active-theme": "Aktives Theme :",
-          "edit-css-html": "Bearbeiten von CSS/HTML",
-          "preview-theme": "Theme Vorschau",
-          "customize-theme": "Theme anpassen",
-          "themes": "Themes",
+          "no-active-theme": "Kein aktives Thema, klicken Sie, um auszuwählen",
+          "active-theme": "Aktives Thema:",
+          "edit-css-html": "CSS/HTML bearbeiten",
+          "preview-theme": "Thema Vorschau",
+          "customize-theme": "Thema anpassen",
+          "themes": "Themen",
           "pages": "Seiten",
-          "link-lists": "Link listen",
+          "link-lists": "Linklisten",
           "blogs": "Blogs",
-          "stores": "Shops",
-          "no-stores": "Hier können Sie Shops-Inhalte konfigurieren, aber es wurden keine Shops gefunden. Öffnen Sie das SHOPS-Menü, um eine zu erstellen."
+          "stores": "Geschäfte",
+          "no-stores": "Sie können hier Inhalte für Geschäfte konfigurieren, aber es wurden keine Geschäfte gefunden. Öffnen Sie das MENÜ GESCHÄFTE, um eines zu erstellen"
         }
       },
       "themes-list": {
         "title": "{{name}}",
-        "subtitle": "Themen Liste",
+        "subtitle": "Themenliste",
         "labels": {
           "name": "Name",
-          "activated": "In Shop aktiviert",
-          "no-data": "Keine Themen noch"
+          "activated": "Aktiviert im Geschäft",
+          "no-data": "Noch keine Themen"
         }
       },
       "edit-asset": {
-        "subtitle": "Dokument bearbeiten Inhalt",
+        "subtitle": "Dokumenteninhalt bearbeiten",
         "title-new": "Neues Dokument",
         "subtitle-new": "Neues Dokument erstellen",
         "labels": {
-          "liquid-documentation": "Flüssige Dokumentation",
-          "asset-name": "Asset Name",
+          "liquid-documentation": "Liquid-Dokumentation",
+          "asset-name": "Ressourcenname",
           "upload-new-file": "Neue Datei hochladen",
           "progress": "Fortschritt"
         },
         "placeholders": {
-          "asset-name": "Asset Name eingeben"
+          "asset-name": "Ressourcenname eingeben"
         },
         "validations": {
-          "name-invalid": "Die name kann alphanumerisch, '_', '-' und '.' Zeichen nur enthalten"
+          "name-invalid": "Der Name darf nur alphanumerische Zeichen, \"_\", \"-\" und \".\" enthalten."
         }
       },
       "edit-image-asset": {
-        "subtitle": "{{name}} beartbeiten"
+        "subtitle": "Bearbeiten {{name}}"
       },
       "pages-list": {
+        "published": "Veröffentlicht",
+        "unpublished": "Nicht veröffentlicht",
+        "has-changes": "Hat Änderungen",
         "title-pages": "{{name}} Seitenliste",
         "subtitle-pages": "Seitenliste",
         "title-blogs": "{{name}} Seitenliste",
         "subtitle-blogs": "Blogs Liste",
         "labels": {
           "name": "Name",
-          "modified": "Geändert"
+          "modified": "Bearbeitet"
+        },
+        "context-menu": {
+          "duplicate": "Duplizieren",
+          "download": "Herunterladen",
+          "copy-link": "Link kopieren",
+          "open-folder": "Ordner öffnen",
+          "move": "Verschieben"
         }
       },
       "link-lists": {
-        "title": "Link Listen",
-        "subtitle": "Link Listen in Shop' {{name}}'",
+        "title": "Linklisten",
+        "subtitle": "Linklisten im Geschäft '{{name}}'",
         "labels": {
           "name": "Name",
           "language": "Sprache",
-          "no-data": "Keine Linklisten noch"
+          "no-data": "Noch keine Linklisten"
         }
       },
       "theme-detail": {
-        "subtitle": "Das Theme verwalten",
-        "title-new": "Neues Theme",
-        "subtitle-new": "Neues Theme erstellen",
+        "subtitle": "Thema verwalten",
+        "title-new": "Neues Thema",
+        "subtitle-new": "Neues Thema erstellen",
         "labels": {
-          "theme-name": "Name des Designs"
+          "theme-name": "Themenname"
         },
         "placeholders": {
-          "theme-name": "Theme Namen eingeben"
+          "theme-name": "Themenname eingeben"
         }
       },
       "theme-upload": {
-        "title": "Theme hochladen",
+        "title": "Thema hochladen",
         "labels": {
-          "select-files": "Wählen Sie die Theme-Datei",
-          "drag-note": "Theme (.zip) datei hier ablegen",
+          "select-files": "Thema-Datei auswählen",
+          "drag-note": "Thema (.zip) Datei hier ablegen",
           "progress": "Fortschritt",
-          "file-selected": "Theme Datei",
-          "asset-uploaded": "Theme Datei hochgeladen."
+          "file-selected": "Thema-Datei: ",
+          "asset-uploaded": "Thema-Datei hochgeladen"
         },
         "placeholders": {
-          "image-url": "Theme Datei-URL hier einfügen"
+          "image-url": "Fügen Sie hier die URL der Thema-Datei ein"
         }
       },
       "edit-page": {
-        "title": "{{name}}' bearbeiten",
-        "subtitle": "Seite bearbeiten",
+        "title": "Bearbeiten '{{name}}'",
+        "subtitle": "Seitenbearbeitung",
         "title-new": "Neue Seite",
         "subtitle-new": "Neue Seite erstellen",
-        "subtitle-post": "Blogpost bearbeiten",
-        "title-new-post": "Neue Post",
-        "subtitle-new-post": "Neuen Blogpost erstellen",
+        "subtitle-post": "Blogbeitrag bearbeiten",
+        "title-new-post": "Neuer Beitrag",
+        "subtitle-new-post": "Neuen Blogbeitrag erstellen",
         "labels": {
           "name": "Name",
           "language": "Sprache",
-          "drag-note": "Die Datei hier ziehen und loslassen",
+          "drag-note": "Datei hierher ziehen und ablegen",
           "progress": "Fortschritt",
           "markdown": "Markdown",
-          "metadata": "Metadaten"
+          "metadata": "Metadaten",
+          "relativePath": "Relativer Pfad"
         },
         "placeholders": {
           "name": "Namen eingeben",
-          "language": "Wählen Sie aus...",
+          "language": "Auswählen...",
           "metadata": "Metadaten eingeben"
         },
         "validations": {
-          "pageName-invalid": "Die Seitenname kann alphanumerisch, '_', '-' und '.' Zeichen nur enthalten"
+          "pageName-invalid": "Der Seitenname darf nur alphanumerische Zeichen, \"_\", \"-\" und \".\" enthalten."
         }
       },
       "menu-link-list": {
-        "title": "' {{name}}'-Liste",
-        "subtitle": "Link Liste bearbeiten",
+        "title": "'{{name}}' Liste",
+        "subtitle": "Linkliste bearbeiten",
         "title-new": "Neue Liste",
-        "subtitle-new": "Neuen Link Liste erstellen.",
+        "subtitle-new": "Neue Linkliste erstellen",
         "labels": {
           "name": "Name",
           "language": "Sprache",
-          "list-note": "Legen Sie den Auftrag fest, wie die Links im Web Store sortiert werden. Ziehen und loslassen, um die Reihenfolge zu ändern.",
-          "link-title": "Link Titel",
+          "list-note": "Ordnen Sie die Reihenfolge an, in der Links im Webshop angezeigt werden. Verwenden Sie Drag & Drop, um sie neu anzuordnen",
+          "link-title": "Linktitel",
           "link-url": "URL",
           "links-to": "Links zu",
           "linked-object": "Verknüpftes Objekt"
         },
         "placeholders": {
-          "name": "Liste Namen eingeben",
-          "language": "Wählen Sie aus...",
+          "name": "Listenname eingeben",
+          "language": "Auswählen...",
           "associated-object-type": "Typ auswählen",
-          "select-linked-object": "Wählen Sie"
+          "select-linked-object": "Auswählen"
         }
       },
       "catalog-items-select": {
@@ -150,42 +184,43 @@
         "title-new": "Neuer Blog",
         "subtitle-new": "Neuen Blog erstellen",
         "labels": {
-          "blog-name": "Blog Namen",
+          "blog-name": "Blogname",
           "metadata": "Metadaten"
         },
         "placeholders": {
-          "blog-name": "Blog Namen eingeben"
+          "blog-name": "Blogname eingeben"
         },
         "validations": {
-          "name-invalid": "Namen können nur alphanumerische Zeichen, '_', '-' und '.' Zeichen enthalten."
+          "name-invalid": "Der Name darf nur alphanumerische Kleinbuchstaben, \" \" und \"-\" enthalten.",
+          "name-used": "Dieser Name wird bereits verwendet"
         }
       },
       "asset-list": {
-        "subtitle": "Theme Assets verwalten",
+        "subtitle": "Themenressourcen verwalten",
         "labels": {
           "add-new": "Neu hinzufügen",
-          "nodata": "Keine Vermögenswerte noch"
+          "nodata": "Noch keine Ressourcen"
         }
       },
       "theme-asset-list": {
-        "title": "{{path}} bearbeiten",
-        "subtitle": "Theme Objektliste",
+        "title": "Bearbeiten {{path}}",
+        "subtitle": "Themenressourcenliste",
         "labels": {
           "add-new": "Neu hinzufügen",
-          "nodata": "Keine Vermögenswerte noch"
+          "nodata": "Noch keine Ressourcen"
         }
       },
       "store-url-list": {
         "labels": {
-          "pick-url-to-preview": "Wählen Sie eine Store-URL für die Vorschau aus",
-          "no-store-urls": "Noch keine Store-URLs"
+          "pick-url-to-preview": "Wählen Sie eine Geschäfts-URL zur Vorschau",
+          "no-store-urls": "Noch keine Geschäfts-URLs"
         }
       }
     },
     "widgets": {
       "menu": {
-        "title": "Link Listen",
-        "blade-subtitle": "Link Listen"
+        "title": "Linklisten",
+        "blade-subtitle": "Linklisten"
       },
       "pages": {
         "title": "Seiten",
@@ -195,34 +230,34 @@
         "themes": "Themen",
         "pages": "Seiten",
         "blogs": "Blogs",
-        "links": "Link Listen",
-        "active-theme": "Aktive Themen"
+        "links": "Linklisten",
+        "active-theme": "Aktives Thema"
       }
     },
     "dialogs": {
       "theme-upload-confirmation": {
-        "title": "Bestätigung für das Hochladen des Themas",
-        "message": "Es ist bereits ein Thema mit demselben Namen vorhanden. Dateien werden über vorhandene Dateien dieses Themas entpackt. Bist du sicher?"
+        "title": "Bestätigung des Themas hochladen",
+        "message": "Ein Thema mit demselben Namen existiert bereits. Dateien werden über die vorhandenen Dateien dieses Themas entpackt. Sind Sie sicher?"
       },
       "theme-clone": {
-        "title": "Klon Bestätigung",
-        "message": "Sind Sie sicher, dass Sie das ausgewählte Theme klonen möchten?"
+        "title": "Bestätigung des Klonens",
+        "message": "Sind Sie sicher, dass Sie das ausgewählte Thema klonen möchten?"
       },
       "link-list-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Sind Sie sicher, dass Sie ausgewählte Linklisten löschen möchten?"
+        "title": "Bestätigung der Löschung",
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Linklisten löschen möchten?"
       },
       "links-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Sind Sie sicher, dass Sie ausgewählte Links löschen möchten?"
+        "title": "Bestätigung der Löschung",
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Links löschen möchten?"
       },
       "blog-delete": {
-        "title": "Bestätigung löschen",
+        "title": "Bestätigung der Löschung",
         "message": "Sind Sie sicher, dass Sie den ausgewählten Blog löschen möchten?"
       },
       "page-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Möchten Sie diese Seite wirklich löschen?"
+        "title": "Bestätigung der Löschung",
+        "message": "Sind Sie sicher, dass Sie diese Seite löschen möchten?"
       },
       "blog-save": {
         "title": "Änderungen speichern",
@@ -234,53 +269,96 @@
       },
       "theme-save": {
         "title": "Änderungen speichern",
-        "message": "Das Theme wurde geändert. Möchten Sie die Änderungen speichern?"
+        "message": "Das Thema wurde geändert. Möchten Sie die Änderungen speichern?"
       },
       "theme-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Sind Sie sicher, dass Sie die '{{name}}' löschen möchten?",
-        "message-last-one": "Dieses Theme ist das letzte. Wenn du es löschst, kannst du deine Schaufenster brechen. Bist du sicher, dass du '{{name}} löschen möchtest?"
+        "title": "Bestätigung der Löschung",
+        "message": "Sind Sie sicher, dass Sie '{{name}}' löschen möchten?",
+        "message-last-one": "Dieses Thema ist das letzte. Wenn Sie es löschen, könnte dies Ihre Frontend-Anwendung beschädigen. Sind Sie sicher, dass Sie '{{name}}' löschen möchten?"
       },
       "asset-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Sind Sie sicher, dass Sie diese Anlagen löschen möchten?"
+        "title": "Bestätigung der Löschung",
+        "message": "Sind Sie sicher, dass Sie diese Ressource löschen möchten?"
       },
       "asset-save": {
         "title": "Änderungen speichern",
-        "message": "Das Asset wurde geändert. Möchten Sie die Änderungen speichern?"
+        "message": "Die Ressource wurde geändert. Möchten Sie die Änderungen speichern?"
       },
       "link-list-save": {
         "title": "Änderungen speichern",
-        "message": "Das Menü Link Liste wurde geändert. Möchten Sie die Änderungen speichern?"
+        "message": "Die Menü-Linkliste wurde geändert. Möchten Sie die Änderungen speichern?"
       },
       "set-store-url": {
-        "title": "URL ist nicht für den Shop eingestellt",
-        "message": "Bitte, stellen Sie Shop url vor der Vorschau!"
+        "title": "URL ist nicht für das Geschäft festgelegt",
+        "message": "Legen Sie die Geschäfts-URL fest, bevor Sie eine Vorschau anzeigen!"
       },
       "name-must-unique": {
         "title": "Name nicht eindeutig",
-        "message": "Name muss eindeutig für diese Sprache!"
+        "message": "Der Name muss für diese Sprache eindeutig sein!"
       },
       "store-no-url": {
-        "title": "Warnung zu Speichereinstellungen",
-        "message": "Die Store-URL wurde in den Store-Einstellungen nicht konfiguriert. Bitte wenden Sie sich an den Administrator."
+        "title": "Warnung zu den Geschäftseinstellungen",
+        "message": "Die Geschäfts-URL wurde in den Geschäftseinstellungen nicht konfiguriert. Bitte kontaktieren Sie den Administrator"
       }
     },
     "commands": {
       "add-link": "Link hinzufügen",
       "add-list": "Liste hinzufügen",
       "add-blog": "Blog hinzufügen",
-      "add-post": "Post hinzufügen",
+      "add-post": "Beitrag hinzufügen",
       "add-page": "Hinzufügen",
-      "delete-links": "Löschen links",
+      "publish": "Veröffentlichen",
+      "unpublish": "Nicht veröffentlichen",
+      "delete-links": "Links löschen",
       "delete-theme": "Löschen",
-      "manage-metadata": "Metadaten berarbeiten",
+      "manage-metadata": "Metadaten verwalten",
       "edit-as-markdown": "Als Markdown bearbeiten",
       "edit-as-html": "Als HTML bearbeiten",
       "preview-theme": "Vorschau",
-      "edit-css-html": "Bearbeiten von CSS/HTML",
-      "add-theme": "Neues Theme hinzufügen",
-      "set-active": "Aktiv setzen"
+      "preview-index": "Suchindex",
+      "edit-css-html": "CSS/HTML bearbeiten",
+      "add-theme": "Neues Thema hinzufügen",
+      "set-active": "Aktiv setzen",
+      "preview-page": "Seite Vorschau",
+      "move": "Verschieben",
+      "move-files": "Hierher verschieben"
+    },
+    "front-matter-description": {
+      "Title_FrontMatterHeader": "Der Seitentitel",
+      "Layout_FrontMatterHeader": "Wenn festgelegt, gibt es die Layoutdatei des Themas an, die verwendet werden soll. Verwenden Sie den Dateinamen des Layouts ohne die Erweiterung. z.B. 'Theme'",
+      "Template_FrontMatterHeader": "Name der Liquid-Vorlage im Thema, die verwendet wird, um diese Seite anzuzeigen, indem der Ausdruck {{ page.content }} eingeschlossen wird",
+      "Permalink_FrontMatterHeader": "Verweisen Sie auf die URLs (ohne den Domainnamen oder das Verzeichnis) für Ihre Seiten, Beiträge. Mögliche Werte: folder/:categories/:year/:month/:day/:title, my-page, :folder/my-page",
+      "Published_FrontMatterHeader": "Auf false setzen, wenn Sie nicht möchten, dass ein bestimmter Beitrag angezeigt wird, wenn die Website generiert wird",
+      "Category_FrontMatterHeader": "Anstatt Beiträge in Ordnern zu platzieren, können Sie eine oder mehrere Kategorien angeben, zu denen der Beitrag gehört. Wenn die Website generiert wird, verhält sich der Beitrag so, als wäre er normalerweise in diesen Kategorien platziert worden. Kategorien (Plural) können als YAML-Liste oder als durch Kommas getrennte Zeichenfolge angegeben werden",
+      "Tags_FrontMatterHeader": "Ähnlich wie Kategorien können ein oder mehrere Tags zu einem Beitrag hinzugefügt werden. Auch wie Kategorien können Tags als YAML-Liste oder als durch Kommas getrennte Zeichenfolge angegeben werden",
+      "Alias_FrontMatterHeader": "Definieren Sie Aliase für einzelne Seiten, indem Sie sie im YAML-Frontmatter angeben. Diese Aliase können für Weiterleitungen verwendet werden",
+      "Authorize_FrontMatterHeader": "Auf true setzen, wenn Sie den anonymen Zugriff auf die Seite blockieren möchten"
+    },
+    "permissions": {
+      "content:access": "Öffnen Sie das Menü für Geschäftsinhalte",
+      "content:create": "Erstellen Sie Geschäftsinhaltsdaten",
+      "content:read": "Anzeigen von Geschäftsinhaltsdaten",
+      "content:update": "Aktualisieren Sie Geschäftsinhaltsdaten",
+      "content:delete": "Löschen Sie Geschäftsinhaltsdaten"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Content": {
+      "description": "Exportieren/Importieren von Seiten, Themen, Links, Menüelementen"
+    }
+  },
+  "settings": {
+    "VirtoCommerce": {
+      "Search": {
+        "IndexingJobs": {
+          "IndexationDate": {
+            "ContentFile": {
+              "title": "Inhaltsindexierungsdatum und -uhrzeit",
+              "description": "Datum und Uhrzeit, zu der die Inhaltsindexierungsaufgabe gestartet wird"
+            }
+          }
+        }
+      }
     }
   }
 }

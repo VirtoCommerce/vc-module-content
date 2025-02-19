@@ -1,0 +1,364 @@
+{
+  "content": {
+    "main-menu-title": "コンテンツ",
+    "blades": {
+      "scope-value-pick-from-simple-list": {
+        "title": "選択したストアのみ",
+        "subtitle": "ストアを選択"
+      },
+      "move": {
+        "title": "フォルダーを選択"
+      },
+      "choose-action": {
+        "create": {
+          "title": "新規",
+          "subtitle": "作成したいページを選択"
+        },
+        "edit": {
+          "title": "編集",
+          "subtitle": "ページを編集する方法を選択"
+        }
+      },
+      "markdownEditor": {
+        "create": {
+          "title": "HTMLページ",
+          "description": "マークダウンまたはHTMLを使用して新しいページを作成"
+        },
+        "edit": {
+          "title": "HTMLページ",
+          "description": "マークダウンまたはHTMLを使用してページを編集"
+        }
+      },
+      "content-main": {
+        "title": "コンテンツ",
+        "subtitle": "コンテンツサービス",
+        "labels": {
+          "no-active-theme": "アクティブなテーマはありません。選択するにはクリックしてください。",
+          "active-theme": "アクティブなテーマ:",
+          "edit-css-html": "CSS/HTMLを編集",
+          "preview-theme": "テーマのプレビュー",
+          "customize-theme": "テーマをカスタマイズ",
+          "themes": "テーマ",
+          "pages": "ページ",
+          "link-lists": "リンクリスト",
+          "blogs": "ブログ",
+          "stores": "ストア",
+          "no-stores": "ここでストアのコンテンツを構成できますが、ストアは見つかりませんでした。ストアを作成するには、ストアメニューを開いてください。"
+        }
+      },
+      "themes-list": {
+        "title": "{{name}}",
+        "subtitle": "テーマリスト",
+        "labels": {
+          "name": "名前",
+          "activated": "ストアでアクティブ",
+          "no-data": "まだテーマはありません"
+        }
+      },
+      "edit-asset": {
+        "subtitle": "ドキュメントコンテンツを編集",
+        "title-new": "新しいドキュメント",
+        "subtitle-new": "新しいドキュメントを作成",
+        "labels": {
+          "liquid-documentation": "Liquidドキュメント",
+          "asset-name": "アセット名",
+          "upload-new-file": "新しいファイルをアップロード",
+          "progress": "進行状況"
+        },
+        "placeholders": {
+          "asset-name": "アセット名を入力"
+        },
+        "validations": {
+          "name-invalid": "名前には英数字、\"_\"、\"-\"、および\".\"の文字のみを含めることができます。"
+        }
+      },
+      "edit-image-asset": {
+        "subtitle": "{{name}}を編集"
+      },
+      "pages-list": {
+        "published": "公開済み",
+        "unpublished": "未公開",
+        "has-changes": "変更があります",
+        "title-pages": "{{name}}のページリスト",
+        "subtitle-pages": "ページリスト",
+        "title-blogs": "{{name}}のページリスト",
+        "subtitle-blogs": "ブログリスト",
+        "labels": {
+          "name": "名前",
+          "modified": "修正済み"
+        },
+        "context-menu": {
+          "duplicate": "複製",
+          "download": "ダウンロード",
+          "copy-link": "リンクをコピー",
+          "open-folder": "フォルダーを開く",
+          "move": "移動"
+        }
+      },
+      "link-lists": {
+        "title": "リンクリスト",
+        "subtitle": "'{{name}}'のストア内のリンクリスト",
+        "labels": {
+          "name": "名前",
+          "language": "言語",
+          "no-data": "まだリンクリストはありません"
+        }
+      },
+      "theme-detail": {
+        "subtitle": "テーマを管理",
+        "title-new": "新しいテーマ",
+        "subtitle-new": "新しいテーマを作成",
+        "labels": {
+          "theme-name": "テーマ名"
+        },
+        "placeholders": {
+          "theme-name": "テーマ名を入力"
+        }
+      },
+      "theme-upload": {
+        "title": "テーマのアップロード",
+        "labels": {
+          "select-files": "テーマファイルを選択",
+          "drag-note": "ここにテーマ（.zip）ファイルをドロップ",
+          "progress": "進行状況",
+          "file-selected": "テーマファイル: ",
+          "asset-uploaded": "テーマファイルがアップロードされました"
+        },
+        "placeholders": {
+          "image-url": "ここにテーマファイルのURLを貼り付け"
+        }
+      },
+      "edit-page": {
+        "title": "'{{name}}'を編集",
+        "subtitle": "ページ編集",
+        "title-new": "新しいページ",
+        "subtitle-new": "新しいページを作成",
+        "subtitle-post": "ブログ投稿編集",
+        "title-new-post": "新しい投稿",
+        "subtitle-new-post": "新しいブログ投稿を作成",
+        "labels": {
+          "name": "名前",
+          "language": "言語",
+          "drag-note": "ファイルをここにドラッグ＆ドロップ",
+          "progress": "進行状況",
+          "markdown": "マークダウン",
+          "metadata": "メタデータ",
+          "relativePath": "相対パス"
+        },
+        "placeholders": {
+          "name": "名前を入力",
+          "language": "選択...",
+          "metadata": "メタデータを入力"
+        },
+        "validations": {
+          "pageName-invalid": "ページ名には英数字、\"_\"、\"-\"、および\".\"の文字のみを含めることができます。"
+        }
+      },
+      "menu-link-list": {
+        "title": "'{{name}}'リスト",
+        "subtitle": "リンクリストを編集",
+        "title-new": "新しいリスト",
+        "subtitle-new": "新しいリンクリストを作成",
+        "labels": {
+          "name": "名前",
+          "language": "言語",
+          "list-note": "ウェブストアに表示されるリンクの順序を整理します。ドラッグ＆ドロップを使用して順序を変更します。",
+          "link-title": "リンクタイトル",
+          "link-url": "URL",
+          "links-to": "リンク先",
+          "linked-object": "リンクされたオブジェクト"
+        },
+        "placeholders": {
+          "name": "リスト名を入力",
+          "language": "選択...",
+          "associated-object-type": "タイプを選択",
+          "select-linked-object": "選択"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "リンク用の製品を選択",
+        "title-category": "リンク用のカテゴリを選択"
+      },
+      "edit-blog": {
+        "subtitle": "ブログを編集",
+        "title-new": "新しいブログ",
+        "subtitle-new": "新しいブログを作成",
+        "labels": {
+          "blog-name": "ブログ名",
+          "metadata": "メタデータ"
+        },
+        "placeholders": {
+          "blog-name": "ブログ名を入力"
+        },
+        "validations": {
+          "name-invalid": "名前には英数字の小文字、\" \"、および\"-\"の文字のみを含めることができます。",
+          "name-used": "この名前はすでに使用されています"
+        }
+      },
+      "asset-list": {
+        "subtitle": "テーマアセットを管理",
+        "labels": {
+          "add-new": "新規追加",
+          "nodata": "まだアセットはありません"
+        }
+      },
+      "theme-asset-list": {
+        "title": "{{path}}を編集",
+        "subtitle": "テーマアセットリスト",
+        "labels": {
+          "add-new": "新規追加",
+          "nodata": "まだアセットはありません"
+        }
+      },
+      "store-url-list": {
+        "labels": {
+          "pick-url-to-preview": "プレビューするストアURLを選択",
+          "no-store-urls": "まだストアURLはありません"
+        }
+      }
+    },
+    "widgets": {
+      "menu": {
+        "title": "リンクリスト",
+        "blade-subtitle": "リンクリスト"
+      },
+      "pages": {
+        "title": "ページ",
+        "blade-subtitle": "ページリスト"
+      },
+      "store-cms": {
+        "themes": "テーマ",
+        "pages": "ページ",
+        "blogs": "ブログ",
+        "links": "リンクリスト",
+        "active-theme": "アクティブなテーマ"
+      }
+    },
+    "dialogs": {
+      "theme-upload-confirmation": {
+        "title": "テーマアップロード確認",
+        "message": "同じ名前のテーマがすでに存在します。ファイルは既存のテーマの上に展開されます。よろしいですか？"
+      },
+      "theme-clone": {
+        "title": "クローン確認",
+        "message": "選択したテーマをクローンしてもよろしいですか？"
+      },
+      "link-list-delete": {
+        "title": "削除確認",
+        "message": "選択したリンクリストを削除してもよろしいですか？"
+      },
+      "links-delete": {
+        "title": "削除確認",
+        "message": "選択したリンクを削除してもよろしいですか？"
+      },
+      "blog-delete": {
+        "title": "削除確認",
+        "message": "選択したブログを削除してもよろしいですか？"
+      },
+      "page-delete": {
+        "title": "削除確認",
+        "message": "このページを削除してもよろしいですか？"
+      },
+      "blog-save": {
+        "title": "変更を保存",
+        "message": "ブログが変更されました。変更を保存しますか？"
+      },
+      "page-save": {
+        "title": "変更を保存",
+        "message": "ページが変更されました。変更を保存しますか？"
+      },
+      "theme-save": {
+        "title": "変更を保存",
+        "message": "テーマが変更されました。変更を保存しますか？"
+      },
+      "theme-delete": {
+        "title": "削除確認",
+        "message": "'{{name}}'を削除してもよろしいですか？",
+        "message-last-one": "このテーマは最後のテーマです。削除するとフロントエンドアプリケーションが壊れる可能性があります。'{{name}}'を削除してもよろしいですか？"
+      },
+      "asset-delete": {
+        "title": "削除確認",
+        "message": "このアセットを削除してもよろしいですか？"
+      },
+      "asset-save": {
+        "title": "変更を保存",
+        "message": "アセットが変更されました。変更を保存しますか？"
+      },
+      "link-list-save": {
+        "title": "変更を保存",
+        "message": "メニューリンクリストが変更されました。変更を保存しますか？"
+      },
+      "set-store-url": {
+        "title": "ストアのURLが設定されていません",
+        "message": "プレビューする前にストアのURLを設定してください！"
+      },
+      "name-must-unique": {
+        "title": "名前がユニークではありません",
+        "message": "この言語の名前はユニークでなければなりません！"
+      },
+      "store-no-url": {
+        "title": "ストア設定の警告",
+        "message": "ストアのURLがストア設定で構成されていません。管理者に連絡してください。"
+      }
+    },
+    "commands": {
+      "add-link": "リンクを追加",
+      "add-list": "リストを追加",
+      "add-blog": "ブログを追加",
+      "add-post": "投稿を追加",
+      "add-page": "追加",
+      "publish": "公開",
+      "unpublish": "未公開",
+      "delete-links": "リンクを削除",
+      "delete-theme": "削除",
+      "manage-metadata": "メタデータプロパティを管理",
+      "edit-as-markdown": "マークダウンとして編集",
+      "edit-as-html": "HTMLとして編集",
+      "preview-theme": "プレビュー",
+      "preview-index": "検索インデックス",
+      "edit-css-html": "CSS/HTMLを編集",
+      "add-theme": "新しいテーマを追加",
+      "set-active": "アクティブに設定",
+      "preview-page": "ページをプレビュー",
+      "move": "移動",
+      "move-files": "ここに移動"
+    },
+    "front-matter-description": {
+      "Title_FrontMatterHeader": "ページタイトル",
+      "Layout_FrontMatterHeader": "設定されている場合、使用するテーマレイアウトファイルを指定します。拡張子なしのレイアウトファイル名を使用します。例：'テーマ'",
+      "Template_FrontMatterHeader": "このページを表示するために使用されるテーマ内のLiquidテンプレートの名前。{{ page.content }}式を含めます。",
+      "Permalink_FrontMatterHeader": "ページや投稿のURL（ドメイン名やディレクトリフォルダを除く）を参照します。可能な値：folder/:categories/:year/:month/:day/:title、my-page、:folder/my-page",
+      "Published_FrontMatterHeader": "サイトが生成されるときに特定の投稿を表示したくない場合は、falseに設定します。",
+      "Category_FrontMatterHeader": "投稿をフォルダに配置する代わりに、投稿が属する1つ以上のカテゴリを指定できます。サイトが生成されると、投稿は通常そのカテゴリに配置されたかのように振る舞います。カテゴリ（複数形のキー）は、YAMLリストまたはカンマ区切りの文字列として指定できます。",
+      "Tags_FrontMatterHeader": "カテゴリと同様に、投稿に1つ以上のタグを追加できます。カテゴリと同様に、タグはYAMLリストまたはカンマ区切りの文字列として指定できます。",
+      "Alias_FrontMatterHeader": "YAMLフロントマターで指定することによって、個々のページのエイリアスを定義します。これらのエイリアスはリダイレクトに使用できます。",
+      "Authorize_FrontMatterHeader": "ページへの匿名アクセスをブロックしたい場合は、trueに設定します。"
+    },
+    "permissions": {
+      "content:access": "ストアコンテンツメニューを開く",
+      "content:create": "ストアコンテンツデータを作成",
+      "content:read": "ストアコンテンツデータを表示",
+      "content:update": "ストアコンテンツデータを更新",
+      "content:delete": "ストアコンテンツデータを削除"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Content": {
+      "description": "ページ、テーマ、リンク、メニュー項目のエクスポート/インポート"
+    }
+  },
+  "settings": {
+    "VirtoCommerce": {
+      "Search": {
+        "IndexingJobs": {
+          "IndexationDate": {
+            "ContentFile": {
+              "title": "コンテンツインデックスの日付と時刻",
+              "description": "コンテンツインデックス作業が開始される日付と時刻"
+            }
+          }
+        }
+      }
+    }
+  }
+}
