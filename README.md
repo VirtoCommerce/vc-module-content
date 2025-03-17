@@ -21,7 +21,6 @@ The Virto Commerce Content module is a  Content Management System. The Content m
 ## Documentation
 
 * [Content module user documentation](https://docs.virtocommerce.org/platform/user-guide/content/overview/)
-* [GraphQL API documentation](https://docs.virtocommerce.org/platform/developer-guide/GraphQL-Storefront-API-Reference-xAPI/Content/overview/)
 * [REST API](https://virtostart-demo-admin.govirto.com/docs/index.html?urls.primaryName=VirtoCommerce.Content)
 * [View on GitHub](https://github.com/VirtoCommerce/vc-module-content/)
 
