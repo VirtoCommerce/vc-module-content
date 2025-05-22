@@ -13,6 +13,21 @@ angular.module('virtoCommerce.contentModule')
                     });
             }
         ])
+    .factory('virtoCommerce.contentModule.newMenus',
+        [
+            '$resource', function ($resource) {
+                return $resource('api/cms/:storeId/new-menu/',
+                    {},
+                    {
+                        get: { url: 'api/cms/:storeId/new-menu/', method: 'GET', isArray: true },
+                        getMenu: { url: 'api/cms/:storeId/new-menu/:menuId', method: 'GET' },
+                        checkList: { url: 'api/cms/:storeId/new-menu/checkname', method: 'GET' },
+                        create: { url: 'api/cms/:storeId/new-menu/', method: 'POST' },
+                        update: { url: 'api/cms/:storeId/new-menu/', method: 'PUT' },
+                        delete: { url: 'api/cms/:storeId/new-menu/', method: 'DELETE' }
+                    });
+            }
+        ])
     .factory('virtoCommerce.contentModule.themes',
         [
             '$resource', function($resource) {

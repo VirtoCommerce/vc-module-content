@@ -215,6 +215,29 @@
           "pick-url-to-preview": "Escolha uma URL de loja para pré-visualizar",
           "no-store-urls": "Nenhuma URL de loja ainda"
         }
+      },
+      "menu-details": {
+        "title-new": "Novo menu",
+        "labels": {
+          "name": "Nome do menu",
+          "language": "Idioma",
+          "menu-items": "Itens do menu"
+        },
+        "placeholders": {
+          "name": "Digite o nome do menu...",
+          "language": "Selecione o idioma...",
+          "item-name": "Digite o nome...",
+          "item-link": "Digite a URL...",
+          "item-type": "Selecione o tipo..."
+        }
+      },
+      "menu-list": {
+        "title": "Menus",
+        "labels": {
+          "no-data": "Nenhum menu ainda",
+          "language": "Idioma",
+          "name": "Nome"
+        }
       }
     },
     "widgets": {
@@ -299,6 +322,14 @@
       "store-no-url": {
         "title": "Aviso sobre configurações da loja",
         "message": "A URL da loja não foi configurada nas configurações da loja. Por favor, entre em contato com o administrador."
+      },
+      "menu-list-delete": {
+        "title": "Confirmação de exclusão",
+        "message": "Tem certeza de que deseja excluir os menus selecionados?"
+      },
+      "menu-details-save": {
+        "title": "Salvar alterações",
+        "message": "O menu foi modificado. Deseja salvar as alterações?"
       }
     },
     "commands": {
@@ -321,7 +352,8 @@
       "set-active": "Definir como ativo",
       "preview-page": "Pré-visualizar página",
       "move": "Mover",
-      "move-files": "Mover aqui"
+      "move-files": "Mover aqui",
+      "add-block": "Adicionar bloco"
     },
     "front-matter-description": {
       "Title_FrontMatterHeader": "Título da página",

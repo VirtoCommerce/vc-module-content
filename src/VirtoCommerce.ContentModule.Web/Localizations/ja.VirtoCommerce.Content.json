@@ -215,6 +215,29 @@
           "pick-url-to-preview": "プレビューするストアURLを選択",
           "no-store-urls": "まだストアURLはありません"
         }
+      },
+      "menu-details": {
+        "title-new": "新しいメニュー",
+        "labels": {
+          "name": "メニュー名",
+          "language": "言語",
+          "menu-items": "メニュー項目"
+        },
+        "placeholders": {
+          "name": "メニュー名を入力...",
+          "language": "言語を選択...",
+          "item-name": "名前を入力...",
+          "item-link": "URLを入力...",
+          "item-type": "タイプを選択..."
+        }
+      },
+      "menu-list": {
+        "title": "メニュー",
+        "labels": {
+          "no-data": "メニューはまだありません",
+          "language": "言語",
+          "name": "名前"
+        }
       }
     },
     "widgets": {
@@ -299,6 +322,14 @@
       "store-no-url": {
         "title": "ストア設定の警告",
         "message": "ストアのURLがストア設定で構成されていません。管理者に連絡してください。"
+      },
+      "menu-list-delete": {
+        "title": "削除の確認",
+        "message": "選択したメニューを削除してもよろしいですか？"
+      },
+      "menu-details-save": {
+        "title": "変更を保存",
+        "message": "メニューが変更されました。変更を保存しますか？"
       }
     },
     "commands": {
@@ -321,7 +352,8 @@
       "set-active": "アクティブに設定",
       "preview-page": "ページをプレビュー",
       "move": "移動",
-      "move-files": "ここに移動"
+      "move-files": "ここに移動",
+      "add-block": "ブロックを追加"
     },
     "front-matter-description": {
       "Title_FrontMatterHeader": "ページタイトル",

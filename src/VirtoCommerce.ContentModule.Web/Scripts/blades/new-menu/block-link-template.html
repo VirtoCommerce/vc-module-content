@@ -1,0 +1,39 @@
+<div class="block-container" ui-sortable="sortableOptions" ng-model="items">
+  <div ng-repeat="item in items | orderBy: '-priority'" class="item" ng-class="{'links-block': item.type === 'block', 'link': item.type === 'link', 'dragging': item.isDragging}">
+    <div class="item-header">
+      <span class="drag-handle" title="{{'content.blades.menu-details.tooltips.drag-to-reorder' | translate}}">
+        <i class="form-icon fa fa-bars"></i>
+      </span>
+      <span ng-if="item.type === 'block'" class="accordion-toggle" ng-click="toggleAccordion(item)">
+        <i class="form-ico fa" ng-class="item.isCollapsed ? 'fa-angle-down' : 'fa-angle-up'"></i>
+      </span>
+      <input class="item-property" required type="text" ng-model="item.name" placeholder="{{'content.blades.menu-details.placeholders.item-name' | translate}}" />
+      <input class="item-property" ng-if="item.type === 'link'" type="text" required ng-model="item.url" placeholder="{{'content.blades.menu-details.placeholders.item-link' | translate}}" />
+      <ui-select class="item-type" ng-if="item.type === 'link'" ng-model="item.associatedObjectType" ng-change="item.associatedObject = $select.selected;item.associatedObjectId=item.associatedObjectName=undefined">
+        <ui-select-match allow-clear placeholder="{{'content.blades.menu-details.placeholders.item-type' | translate}}">{{$select.selected.name}}</ui-select-match>
+        <ui-select-choices repeat="x.id as x in associatedObjectTypes | filter: $select.search">
+          <span ng-bind-html="x.name | highlight: $select.search"></span>
+        </ui-select-choices>
+      </ui-select>
+      <a class="btn"
+         ng-if="item.type === 'link' && item.associatedObjectType"
+         ng-click="item.associatedObject.openSelectWizard(item, blade)"
+         title="{{item.associatedObjectName}}"
+         style="margin-right:10px">
+          {{item.associatedObjectName ? item.associatedObjectName: ('content.blades.menu-link-list.placeholders.select-linked-object' | translate)}}
+      </a>
+      <span class="item-button" ng-click="removeItem($index)">
+        <i class="form-ico fa fa-trash-o"></i>
+      </span>
+    </div>
+    <div ng-if="item.type === 'block'" class="block-content" ng-class="{'collapsed': item.isCollapsed}">
+      <div block-link-manager="item.items" depth="depth + 1" parent="item" associated-object-types="associatedObjectTypes"></div>
+      <div class="actions">
+        <span class="link-lists" ng-disabled="!canAddItems()">
+          <i class="form-ico fa fa-plus"></i> Add to {{ item.name }} new <a ng-click="addItem(item, 'block')">Block</a>|<a ng-click="addItem(item, 'link')">Link</a>
+        </span>
+      </div>
+      <span class="max-depth-warning" ng-if="!canAddItems()">Maximum depth reached (5 levels)</span>
+    </div>
+  </div>
+</div>

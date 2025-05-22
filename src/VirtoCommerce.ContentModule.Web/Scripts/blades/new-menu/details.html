@@ -1,0 +1,36 @@
+<div class="blade-content __xxlarge-wide">
+  <div class="blade-inner">
+    <div class="inner-block">
+
+      <form name="formScope">
+        <div class="clearfix" ng-init="setForm(formScope)">
+          <div class="column">
+            <div class="form-group">
+              <label class="form-label">{{ 'content.blades.menu-details.labels.name' | translate }}</label>
+              <div class="form-input">
+                <input focus-on="" required class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.menu-details.placeholders.name' | translate }}" />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="form-group">
+              <label class="form-label">{{ 'content.blades.menu-details.labels.language' | translate }}</label>
+              <div class="form-input">
+                <ui-select ng-model="blade.currentEntity.language" required>
+                  <ui-select-match allow-clear placeholder="{{ 'content.blades.menu-details.placeholders.language' | translate }}">{{$select.selected}}</ui-select-match>
+                  <ui-select-choices repeat="x in blade.languages | filter: $select.search">
+                    <span ng-bind-html="x | highlight: $select.search"></span>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">{{ 'content.blades.menu-details.labels.menu-items' | translate }}</label>
+          <div block-link-manager="blade.currentEntity.items" associated-object-types="blade.associatedObjectTypes" menu-id="blade.currentEntity.id" class="menu-items"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

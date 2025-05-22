@@ -215,6 +215,29 @@
           "pick-url-to-preview": "Wählen Sie eine Geschäfts-URL zur Vorschau",
           "no-store-urls": "Noch keine Geschäfts-URLs"
         }
+      },
+      "menu-details": {
+        "title-new": "Neues Menü",
+        "labels": {
+          "name": "Menüname",
+          "language": "Sprache",
+          "menu-items": "Menüpunkte"
+        },
+        "placeholders": {
+          "name": "Menünamen eingeben...",
+          "language": "Sprache auswählen...",
+          "item-name": "Name eingeben...",
+          "item-link": "URL eingeben...",
+          "item-type": "Typ auswählen..."
+        }
+      },
+      "menu-list": {
+        "title": "Menüs",
+        "labels": {
+          "no-data": "Noch keine Menüs",
+          "language": "Sprache",
+          "name": "Name"
+        }
       }
     },
     "widgets": {
@@ -299,6 +322,14 @@
       "store-no-url": {
         "title": "Warnung zu den Geschäftseinstellungen",
         "message": "Die Geschäfts-URL wurde in den Geschäftseinstellungen nicht konfiguriert. Bitte kontaktieren Sie den Administrator"
+      },
+      "menu-list-delete": {
+        "title": "Löschbestätigung",
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Menüs löschen möchten?"
+      },
+      "menu-details-save": {
+        "title": "Änderungen speichern",
+        "message": "Das Menü wurde geändert. Möchten Sie die Änderungen speichern?"
       }
     },
     "commands": {
@@ -321,7 +352,8 @@
       "set-active": "Aktiv setzen",
       "preview-page": "Seite Vorschau",
       "move": "Verschieben",
-      "move-files": "Hierher verschieben"
+      "move-files": "Hierher verschieben",
+      "add-block": "Block hinzufügen"
     },
     "front-matter-description": {
       "Title_FrontMatterHeader": "Der Seitentitel",

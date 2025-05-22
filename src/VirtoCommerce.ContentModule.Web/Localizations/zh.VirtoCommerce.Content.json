@@ -215,6 +215,29 @@
           "pick-url-to-preview": "选择一个商店URL进行预览",
           "no-store-urls": "尚无商店URL"
         }
+      },
+      "menu-details": {
+        "title-new": "新菜单",
+        "labels": {
+          "name": "菜单名称",
+          "language": "语言",
+          "menu-items": "菜单项"
+        },
+        "placeholders": {
+          "name": "输入菜单名称...",
+          "language": "选择语言...",
+          "item-name": "输入名称...",
+          "item-link": "输入网址...",
+          "item-type": "选择类型..."
+        }
+      },
+      "menu-list": {
+        "title": "菜单",
+        "labels": {
+          "no-data": "尚无菜单",
+          "language": "语言",
+          "name": "名称"
+        }
       }
     },
     "widgets": {
@@ -299,6 +322,14 @@
       "store-no-url": {
         "title": "商店设置警告",
         "message": "商店URL未在商店设置中配置。请联系管理员"
+      },
+      "menu-list-delete": {
+        "title": "删除确认",
+        "message": "您确定要删除选中的菜单吗？"
+      },
+      "menu-details-save": {
+        "title": "保存更改",
+        "message": "菜单已被修改。您想保存更改吗？"
       }
     },
     "commands": {
@@ -321,7 +352,8 @@
       "set-active": "设置为活动",
       "preview-page": "预览页面",
       "move": "移动",
-      "move-files": "移动到这里"
+      "move-files": "移动到此处",
+      "add-block": "添加区块"
     },
     "front-matter-description": {
       "Title_FrontMatterHeader": "页面标题",

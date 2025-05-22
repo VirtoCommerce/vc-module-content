@@ -28,28 +28,34 @@
                   {{ 'content.blades.content-main.labels.active-theme' | translate }} {{data.activeThemeName}}
               </div>
               <ul class="menu __inline __theme-links">
-                  <li class="menu-item" ng-click="blade.openTheme(data); $event.stopPropagation();">
-                      <a class="menu-link">
-                          <i class="menu-ico fa fa-edit"></i>
-                          {{ 'content.blades.content-main.labels.edit-css-html' | translate }}
-                      </a>
-                  </li>
-                  <li class="menu-item" ng-click="blade.previewTheme(data); $event.stopPropagation();">
-                      <a class="menu-link">
-                          <i class="menu-ico fa fa-eye"></i>
-                          {{ 'content.blades.content-main.labels.preview-theme' | translate }}
-                      </a>
-                  </li>
-                  <!--
-        <li class="menu-item" ng-click="blade.customizeTheme(data); $event.stopPropagation();">
-            <a class="menu-link">
-                <i class="menu-ico fa fa-wrench"></i>
-                {{ 'content.blades.content-main.labels.customize-theme' | translate }}
-            </a>
-        </li>
-        // TODO: Uncomment when and if this feature would be implemented in page builder
-        // TODO: After uncommenting add check for page builder installed or controller overloaded.
-        -->
+                <li class="menu-item" ng-click="blade.openTheme(data); $event.stopPropagation();">
+                  <a class="menu-link">
+                    <i class="menu-ico fa fa-edit"></i>
+                    {{ 'content.blades.content-main.labels.edit-css-html' | translate }}
+                  </a>
+                </li>
+                <li class="menu-item" ng-click="blade.previewTheme(data); $event.stopPropagation();">
+                  <a class="menu-link">
+                    <i class="menu-ico fa fa-eye"></i>
+                    {{ 'content.blades.content-main.labels.preview-theme' | translate }}
+                  </a>
+                </li>
+                <li class="menu-item" ng-click="blade.openNewMenus(data); $event.stopPropagation();">
+                  <a class="menu-link">
+                    <i class="menu-ico fa fa-list-ol"></i>
+                    New menus
+                  </a>
+                </li>
+                <!--
+  <li class="menu-item" ng-click="blade.customizeTheme(data); $event.stopPropagation();">
+      <a class="menu-link">
+          <i class="menu-ico fa fa-wrench"></i>
+          {{ 'content.blades.content-main.labels.customize-theme' | translate }}
+      </a>
+  </li>
+  // TODO: Uncomment when and if this feature would be implemented in page builder
+  // TODO: After uncommenting add check for page builder installed or controller overloaded.
+  -->
               </ul>
           </div>
           <div class="tile" ng-click="blade.openThemes(data.store)">

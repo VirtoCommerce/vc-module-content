@@ -215,6 +215,29 @@
           "pick-url-to-preview": "Choisissez une URL de magasin pour l'aperçu",
           "no-store-urls": "Aucune URL de magasin pour le moment"
         }
+      },
+      "menu-details": {
+        "title-new": "Nouveau menu",
+        "labels": {
+          "name": "Nom du menu",
+          "language": "Langue",
+          "menu-items": "Éléments du menu"
+        },
+        "placeholders": {
+          "name": "Entrez le nom du menu...",
+          "language": "Sélectionnez la langue...",
+          "item-name": "Entrez le nom...",
+          "item-link": "Entrez l'URL...",
+          "item-type": "Sélectionnez le type..."
+        }
+      },
+      "menu-list": {
+        "title": "Menus",
+        "labels": {
+          "no-data": "Aucun menu pour le moment",
+          "language": "Langue",
+          "name": "Nom"
+        }
       }
     },
     "widgets": {
@@ -299,6 +322,14 @@
       "store-no-url": {
         "title": "Avertissement sur les paramètres du magasin",
         "message": "L'URL du magasin n'a pas été configurée dans les paramètres du magasin. Veuillez contacter l'administrateur."
+      },
+      "menu-list-delete": {
+        "title": "Confirmation de suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer les menus sélectionnés ?"
+      },
+      "menu-details-save": {
+        "title": "Enregistrer les modifications",
+        "message": "Le menu a été modifié. Voulez-vous enregistrer les modifications ?"
       }
     },
     "commands": {
@@ -321,7 +352,8 @@
       "set-active": "Définir comme actif",
       "preview-page": "Aperçu de la page",
       "move": "Déplacer",
-      "move-files": "Déplacer ici"
+      "move-files": "Déplacer ici",
+      "add-block": "Ajouter un bloc"
     },
     "front-matter-description": {
       "Title_FrontMatterHeader": "Titre de la page",

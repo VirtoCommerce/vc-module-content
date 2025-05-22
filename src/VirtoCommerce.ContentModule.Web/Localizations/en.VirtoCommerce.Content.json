@@ -215,6 +215,29 @@
           "pick-url-to-preview": "Pick a store URL to preview",
           "no-store-urls": "No store URLs yet"
         }
+      },
+      "menu-details": {
+        "title-new": "New menu",
+        "labels": {
+          "name": "Menu name",
+          "language": "Language",
+          "menu-items": "Menu items"
+        },
+        "placeholders": {
+          "name": "Enter menu name...",
+          "language": "Select language...",
+          "item-name": "Enter name...",
+          "item-link": "Enter URL...",
+          "item-type": "Select type..."
+        }
+      },
+      "menu-list": {
+        "title": "Menus",
+        "labels": {
+          "no-data": "No menus yet",
+          "language": "Language",
+          "name": "Name"
+        }
       }
     },
     "widgets": {
@@ -299,6 +322,14 @@
       "store-no-url": {
         "title": "Store settings warning",
         "message": "Store URL was not configured in the store setting. Please contact administrator"
+      },
+      "menu-list-delete": {
+        "title": "Delete confirmation",
+        "message": "Are you sure you want to delete selected menus?"
+      },
+      "menu-details-save": {
+        "title": "Save changes",
+        "message": "The menu has been modified. Do you want to save changes?"
       }
     },
     "commands": {
@@ -321,7 +352,8 @@
       "set-active": "Set active",
       "preview-page": "Preview page",
       "move": "Move",
-      "move-files": "Move here"
+      "move-files": "Move here",
+      "add-block": "Add block"
     },
     "front-matter-description": {
       "Title_FrontMatterHeader": "Page title",

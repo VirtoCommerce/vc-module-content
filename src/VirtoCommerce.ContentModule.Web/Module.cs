@@ -93,6 +93,9 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<ISeoResolver, ContentSeoResolver>();
             serviceCollection.AddTransient<ContentSeoResolver>();
 
+            serviceCollection.AddTransient<IMenuService, MenuService>();
+            serviceCollection.AddTransient<IMenuSearchService, MenuSearchService>();
+
             serviceCollection.AddTransient<IndexContentChangesEventHandler>();
 
             serviceCollection.AddSingleton<IContentItemTypeRegistrar, ContentItemTypeRegistrar>();

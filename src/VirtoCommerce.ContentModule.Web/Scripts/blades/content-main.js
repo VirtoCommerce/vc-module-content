@@ -225,7 +225,19 @@ angular.module('virtoCommerce.contentModule')
 	            }
 	            dialogService.showNotificationDialog(dialog);
 	        }
-	    }
+        }
+
+        blade.openNewMenus = function (data) {
+            var newBlade = {
+                id: 'newMenuListBlade',
+                title: 'content.blades.menu-list.title',
+                storeId: data.storeId,
+                currentEntity: { name: data.activeThemeName, url: data.activeThemeURL },
+                controller: 'virtoCommerce.contentModule.newMenuListController',
+                template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/new-menu/list.html'
+            };
+            bladeNavigationService.showBlade(newBlade, blade);
+        }
 
 	    $scope.openStoresModule = function () {
 	        $state.go('workspace.storeModule');

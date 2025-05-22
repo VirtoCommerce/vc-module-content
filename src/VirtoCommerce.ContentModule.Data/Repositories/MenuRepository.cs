@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
@@ -19,6 +22,10 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
 
         public IQueryable<MenuLinkEntity> MenuLinks => DbContext.Set<MenuLinkEntity>();
 
+        public IQueryable<MenuEntity> Menus => DbContext.Set<MenuEntity>();
+
+        public IQueryable<MenuItemEntity> MenuItems => DbContext.Set<MenuItemEntity>();
+
         public async Task<IList<MenuLinkListEntity>> GetListsByIdsAsync(IList<string> ids)
         {
             var lists = await MenuLinkLists
@@ -32,6 +39,32 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
             }
 
             return lists;
+        }
+
+        public virtual async Task<IList<MenuEntity>> GetMenus(IList<string> ids)
+        {
+            var menus = await Menus
+                .Where(x => ids.Contains(x.Id))
+                .ToListAsync();
+
+            if (menus.Count != 0)
+            {
+                var existingIds = menus.Select(x => x.Id).ToList();
+                await LoadMenuItems(existingIds);
+            }
+
+            return menus;
+        }
+
+        public virtual async Task LoadMenuItems(IList<string> ids)
+        {
+            var items = await MenuItems.Where(x => ids.Contains(x.MenuId) || ids.Contains(x.ParentMenuItemId)).ToListAsync();
+
+            if (items.Count != 0)
+            {
+                var existingIds = items.Select(x => x.Id).ToList();
+                await LoadMenuItems(existingIds);
+            }
         }
 
         [Obsolete("Use GetListsByIdsAsync()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]

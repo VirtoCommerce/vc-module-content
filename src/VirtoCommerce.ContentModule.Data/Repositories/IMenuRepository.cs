@@ -11,7 +11,11 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
     {
         public IQueryable<MenuLinkListEntity> MenuLinkLists { get; }
 
+        public IQueryable<MenuEntity> Menus { get; }
+
         Task<IList<MenuLinkListEntity>> GetListsByIdsAsync(IList<string> ids);
+
+        Task<IList<MenuEntity>> GetMenus(IList<string> ids);
 
         [Obsolete("Use GetListsByIdsAsync()", DiagnosticId = "VC0005", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         Task<IEnumerable<MenuLinkListEntity>> GetAllLinkListsAsync();

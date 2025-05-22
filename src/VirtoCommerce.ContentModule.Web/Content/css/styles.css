@@ -1,0 +1,137 @@
+.container {
+  max-width: 1200px;
+  padding: 20px;
+}
+
+.block-container {
+  min-height: 20px;
+}
+
+.menu-items {
+  border-left: 1px solid lightgray;
+  border-top: 1px solid lightgray;
+}
+
+.item {
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+  .item.dragging {
+    opacity: 0.5;
+    background-color: #fbfdfe;
+  }
+
+  .item.links-block {
+    background-color: #fbfdfe;
+  }
+
+  .item.link {
+    background-color: #E8E8E8;
+  }
+
+.item-header {
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+  padding: 5px;
+  border-bottom: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+}
+
+.item-property {
+  padding: 9px;
+  border: 1px solid #ddd;
+  margin-right: 10px;
+  flex-grow: 1;
+}
+
+.item-button {
+  padding-right: 5px;
+}
+
+  .item-button:hover {
+    color: #43b0e6;
+  }
+
+.drag-handle {
+  cursor: move;
+  padding: 8px 8px;
+  width: 14px;
+}
+
+  .drag-handle:hover {
+    background-color: #ccc;
+  }
+
+.item-type {
+  border: 1px solid #ddd;
+  font-size: 14px;
+  width: 150px;
+  margin-right: 10px;
+}
+
+.depth-info {
+  font-size: 12px;
+  color: #666;
+  background-color: #fff;
+  padding: 2px 6px;
+}
+
+.actions {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  border-bottom: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+}
+
+.actions span.link-lists {
+  font-size: 14px;
+}
+
+  .actions i.form-ico {
+    margin-right: 5px;
+  }
+
+  .max-depth-warning {
+    color: #f44336;
+    font-size: 12px;
+    padding-left: 10px;
+  }
+
+.accordion-toggle {
+  padding: 4px 8px;
+  background-color: #e3f2fd;
+  cursor: pointer;
+  font-size: 12px;
+  min-width: 24px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+  .accordion-toggle:hover {
+    background-color: #bbdefb;
+  }
+
+.block-content {
+  padding-left: 25px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  background-clip: content-box;
+  box-shadow: inset 25px 0 0 0px lightgray;
+}
+
+  .block-content.collapsed {
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+  }
+
+.sortable-placeholder {
+  background-color: rgba(33, 150, 243, 0.1);
+  padding: 10px 0;
+  height: 50px;
+}
