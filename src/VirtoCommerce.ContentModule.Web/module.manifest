@@ -11,6 +11,7 @@
     <dependency id="VirtoCommerce.FileSystemAssets" version="3.805.0" />
     <dependency id="VirtoCommerce.Search" version="3.804.0" />
   	<dependency id="VirtoCommerce.Seo" version="3.800.0-alpha.20-vcst-3299" />
+    <dependency id="VirtoCommerce.Store" version="3.817.0-alpha.746-vcst-3299" />
   </dependencies>
 
   <title>Content</title>
