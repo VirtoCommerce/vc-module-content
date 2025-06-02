@@ -27,7 +27,6 @@ using VirtoCommerce.ContentModule.Data.SqlServer;
 using VirtoCommerce.ContentModule.FileSystem;
 using VirtoCommerce.ContentModule.FileSystem.Extensions;
 using VirtoCommerce.ContentModule.Web.Extensions;
-using VirtoCommerce.CoreModule.Core.Seo;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.Events;
@@ -41,6 +40,7 @@ using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
 using VirtoCommerce.Platform.Data.SqlServer.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
+using VirtoCommerce.Seo.Core.Services;
 
 namespace VirtoCommerce.ContentModule.Web
 {
@@ -89,7 +89,6 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<IContentFileService, ContentFileService>();
             serviceCollection.AddTransient<IPublishingService, PublishingServices>();
             serviceCollection.AddTransient<IContentPathResolver, ContentPathResolver>();
-            serviceCollection.AddTransient<ISeoBySlugResolver, ContentSlugResolver>();
             serviceCollection.AddTransient<ISeoResolver, ContentSeoResolver>();
             serviceCollection.AddTransient<ContentSeoResolver>();
 
