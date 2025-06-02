@@ -21,7 +21,7 @@ public static class MenuLinkListSearchServiceExtensions
     {
         return
             string.IsNullOrEmpty(menuLinkList.Language) && string.IsNullOrEmpty(language) ||
-            menuLinkList.Language.EqualsInvariant(language);
+            menuLinkList.Language.EqualsIgnoreCase(language);
     }
 
     public static Task<IList<MenuLinkList>> SearchAllNoClone(this IMenuLinkListSearchService searchService, string storeId = null, string name = null, int batchSize = 50)

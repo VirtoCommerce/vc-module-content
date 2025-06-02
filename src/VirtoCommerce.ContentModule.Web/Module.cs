@@ -123,7 +123,7 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddOptions<ContentOptions>().Bind(Configuration.GetSection("Content"));
 
             var contentProvider = Configuration.GetSection("Content:Provider").Value;
-            if (contentProvider.EqualsInvariant(AzureBlobProvider.ProviderName))
+            if (contentProvider.EqualsIgnoreCase(AzureBlobProvider.ProviderName))
             {
                 serviceCollection.AddOptions<AzureContentBlobOptions>().Bind(Configuration.GetSection("Content:AzureBlobStorage")).ValidateDataAnnotations();
                 serviceCollection.AddAzureContentBlobProvider();

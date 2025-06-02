@@ -65,7 +65,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
             var result = blobs.Count(x => (startDate == null || x.ModifiedDate >= startDate) && (endDate == null || x.ModifiedDate <= endDate));
             var children = folders.Where(x =>
-                (excludedFolderName.IsNullOrEmpty() || !x.Name.EqualsInvariant(excludedFolderName)) // exclude predefined folders
+                (excludedFolderName.IsNullOrEmpty() || !x.Name.EqualsIgnoreCase(excludedFolderName)) // exclude predefined folders
                 && x.Url != folderUrl); // the simplest way to avoid loop (i.e. "https://qademovc3.blob.core.windows.net/cms/Pages/Electronics/blogs/https://")
 
             foreach (var child in children)
