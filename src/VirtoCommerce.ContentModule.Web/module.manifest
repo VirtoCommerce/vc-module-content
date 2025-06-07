@@ -26,7 +26,7 @@
   <iconUrl>Modules/$(VirtoCommerce.Content)/Content/logo.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <releaseNotes>First version.</releaseNotes>
-  <copyright>Copyright © 2011-2024 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2011-2025 Virto Commerce. All rights reserved</copyright>
   <tags>cms menu</tags>
   <assemblyFile>VirtoCommerce.ContentModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.ContentModule.Web.Module, VirtoCommerce.ContentModule.Web</moduleType>
