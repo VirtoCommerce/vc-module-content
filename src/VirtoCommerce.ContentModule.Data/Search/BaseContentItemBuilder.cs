@@ -57,7 +57,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
         private static void RemoveFieldAndAddNew(IndexDocument document, string fieldName, string value)
         {
-            var field = document.Fields.FirstOrDefault(x => x.Name.EqualsInvariant(fieldName));
+            var field = document.Fields.FirstOrDefault(x => x.Name.EqualsIgnoreCase(fieldName));
             if (field != null)
             {
                 document.Fields.Remove(field);

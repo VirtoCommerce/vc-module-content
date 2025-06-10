@@ -5,8 +5,9 @@ using Microsoft.Extensions.Configuration;
 using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
-using VirtoCommerce.CoreModule.Core.Seo;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Seo.Core.Models;
+using VirtoCommerce.Seo.Core.Services;
 
 namespace VirtoCommerce.ContentModule.Data.Search;
 

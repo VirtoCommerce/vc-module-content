@@ -50,9 +50,9 @@ namespace VirtoCommerce.ContentModule.Data.Services
         {
             var retVal = contentType switch
             {
-                _ when contentType.EqualsInvariant(ContentConstants.ContentTypes.Themes) => "Themes/" + storeId,
-                _ when contentType.EqualsInvariant(ContentConstants.ContentTypes.Pages) => "Pages/" + storeId,
-                _ when contentType.EqualsInvariant(ContentConstants.ContentTypes.Blogs) => $"Pages/{storeId}/{ContentConstants.ContentTypes.Blogs}",
+                _ when contentType.EqualsIgnoreCase(ContentConstants.ContentTypes.Themes) => "Themes/" + storeId,
+                _ when contentType.EqualsIgnoreCase(ContentConstants.ContentTypes.Pages) => "Pages/" + storeId,
+                _ when contentType.EqualsIgnoreCase(ContentConstants.ContentTypes.Blogs) => $"Pages/{storeId}/{ContentConstants.ContentTypes.Blogs}",
                 _ => string.Empty
             };
 

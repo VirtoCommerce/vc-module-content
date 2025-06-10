@@ -28,7 +28,7 @@ public class ContentFileService(IBlobContentStorageProviderFactory blobContentSt
 
         var result = folders
             // Exclude Blogs folder at root level
-            .Where(x => criteria.FolderUrl != null || !x.Name.EqualsInvariant(ContentConstants.ContentTypes.Blogs))
+            .Where(x => criteria.FolderUrl != null || !x.Name.EqualsIgnoreCase(ContentConstants.ContentTypes.Blogs))
             .Concat(files)
             .ToList();
 
@@ -56,7 +56,7 @@ public class ContentFileService(IBlobContentStorageProviderFactory blobContentSt
     {
         var searchResult = await storageProvider.SearchAsync(path, null);
 
-        var folders = searchResult.Results.OfType<BlobFolder>().Where(x => x.RelativeUrl != path && (path != null || !x.Name.EqualsInvariant(ContentConstants.ContentTypes.Blogs)));
+        var folders = searchResult.Results.OfType<BlobFolder>().Where(x => x.RelativeUrl != path && (path != null || !x.Name.EqualsIgnoreCase(ContentConstants.ContentTypes.Blogs)));
         var files = searchResult.Results.OfType<BlobInfo>()
             .Where(x => contentItemTypeRegistrar.IsRegisteredContentItemType(x.RelativeUrl))
             .Select(x => x.ToContentModel()).ToList();
