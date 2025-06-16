@@ -16,7 +16,7 @@
             <div class="form-group">
               <label class="form-label">{{ 'content.blades.menu-details.labels.language' | translate }}</label>
               <div class="form-input">
-                <ui-select ng-model="blade.currentEntity.language" required>
+                <ui-select ng-model="blade.currentEntity.languageCode" required>
                   <ui-select-match allow-clear placeholder="{{ 'content.blades.menu-details.placeholders.language' | translate }}">{{$select.selected}}</ui-select-match>
                   <ui-select-choices repeat="x in blade.languages | filter: $select.search">
                     <span ng-bind-html="x | highlight: $select.search"></span>

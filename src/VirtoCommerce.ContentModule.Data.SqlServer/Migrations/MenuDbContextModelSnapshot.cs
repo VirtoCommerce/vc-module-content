@@ -22,47 +22,6 @@ namespace VirtoCommerce.ContentModule.Data.SqlServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("VirtoCommerce.ContentModule.Data.Model.MenuEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Language")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OuterId")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("StoreId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ContentMenu", (string)null);
-                });
-
             modelBuilder.Entity("VirtoCommerce.ContentModule.Data.Model.MenuItemEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -86,8 +45,8 @@ namespace VirtoCommerce.ContentModule.Data.SqlServer.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MenuId")
-                        .HasColumnType("nvarchar(128)");
+                    b.Property<string>("LanguageCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
@@ -97,9 +56,7 @@ namespace VirtoCommerce.ContentModule.Data.SqlServer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OuterId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ParentMenuItemId")
@@ -108,6 +65,9 @@ namespace VirtoCommerce.ContentModule.Data.SqlServer.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
+                    b.Property<string>("StoreId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
@@ -115,8 +75,6 @@ namespace VirtoCommerce.ContentModule.Data.SqlServer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MenuId");
 
                     b.HasIndex("ParentMenuItemId");
 
@@ -226,17 +184,10 @@ namespace VirtoCommerce.ContentModule.Data.SqlServer.Migrations
 
             modelBuilder.Entity("VirtoCommerce.ContentModule.Data.Model.MenuItemEntity", b =>
                 {
-                    b.HasOne("VirtoCommerce.ContentModule.Data.Model.MenuEntity", "Menu")
-                        .WithMany("Items")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("VirtoCommerce.ContentModule.Data.Model.MenuItemEntity", "ParentMenuItem")
                         .WithMany("Items")
                         .HasForeignKey("ParentMenuItemId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Menu");
 
                     b.Navigation("ParentMenuItem");
                 });
@@ -249,11 +200,6 @@ namespace VirtoCommerce.ContentModule.Data.SqlServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("MenuLinkList");
-                });
-
-            modelBuilder.Entity("VirtoCommerce.ContentModule.Data.Model.MenuEntity", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("VirtoCommerce.ContentModule.Data.Model.MenuItemEntity", b =>

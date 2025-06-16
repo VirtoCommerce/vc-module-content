@@ -9,6 +9,8 @@ namespace VirtoCommerce.ContentModule.Core.Model;
 public class MenuItem : AuditableEntity, IHasOuterId, ICloneable
 {
     public string Name { get; set; }
+    public string StoreId { get; set; }
+    public string LanguageCode { get; set; }
     public string Type { get; set; }
     public string Url { get; set; }
     public int Priority { get; set; }

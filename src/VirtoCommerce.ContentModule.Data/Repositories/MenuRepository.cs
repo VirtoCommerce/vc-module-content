@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json.Linq;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Data.Model;
@@ -16,13 +17,12 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
         public MenuRepository(MenuDbContext dbContext)
             : base(dbContext)
         {
+            dbContext.SavingChanges += OnSavingChanges;
         }
 
         public IQueryable<MenuLinkListEntity> MenuLinkLists => DbContext.Set<MenuLinkListEntity>();
 
         public IQueryable<MenuLinkEntity> MenuLinks => DbContext.Set<MenuLinkEntity>();
-
-        public IQueryable<MenuEntity> Menus => DbContext.Set<MenuEntity>();
 
         public IQueryable<MenuItemEntity> MenuItems => DbContext.Set<MenuItemEntity>();
 
@@ -41,29 +41,29 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
             return lists;
         }
 
-        public virtual async Task<IList<MenuEntity>> GetMenus(IList<string> ids)
+        public virtual async Task<IList<MenuItemEntity>> GetMenuItems(IList<string> ids)
         {
-            var menus = await Menus
+            var menus = await MenuItems
                 .Where(x => ids.Contains(x.Id))
                 .ToListAsync();
 
             if (menus.Count != 0)
             {
                 var existingIds = menus.Select(x => x.Id).ToList();
-                await LoadMenuItems(existingIds);
+                await LoadMenuItemsInner(existingIds);
             }
 
             return menus;
         }
 
-        public virtual async Task LoadMenuItems(IList<string> ids)
+        public virtual async Task LoadMenuItemsInner(IList<string> ids)
         {
-            var items = await MenuItems.Where(x => ids.Contains(x.MenuId) || ids.Contains(x.ParentMenuItemId)).ToListAsync();
+            var items = await MenuItems.Where(x => ids.Contains(x.ParentMenuItemId)).ToListAsync();
 
             if (items.Count != 0)
             {
                 var existingIds = items.Select(x => x.Id).ToList();
-                await LoadMenuItems(existingIds);
+                await LoadMenuItemsInner(existingIds);
             }
         }
 
@@ -83,6 +83,26 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
         public async Task<IEnumerable<MenuLinkListEntity>> GetListsByStoreIdAsync(string storeId)
         {
             return await MenuLinkLists.Include(m => m.MenuLinks).Where(m => m.StoreId == storeId).ToArrayAsync();
+        }
+
+        private void OnSavingChanges(object sender, SavingChangesEventArgs args)
+        {
+            var ctx = (DbContext)sender;
+            var entries = ctx.ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                if (entry.State == EntityState.Modified &&
+                    IsOrphanedEntity(entry))
+                {
+                    entry.State = EntityState.Deleted;
+                }
+            }
+        }
+
+        protected virtual bool IsOrphanedEntity(EntityEntry entry)
+        {
+            return entry.Entity is MenuItemEntity { ParentMenuItemId: null, Type: not "Menu" };
         }
     }
 }

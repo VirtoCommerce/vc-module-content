@@ -14,24 +14,29 @@ using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Data.GenericCrud;
 
 namespace VirtoCommerce.ContentModule.Data.Services;
-public class MenuSearchService : SearchService<MenuSearchCriteria, MenuSearchResult, Menu, MenuEntity>, IMenuSearchService
+public class MenuItemSearchService : SearchService<MenuItemSearchCriteria, MenuItemSearchResult, MenuItem, MenuItemEntity>, IMenuItemSearchService
 {
-    public MenuSearchService(
+    public MenuItemSearchService(
         Func<IMenuRepository> repositoryFactory,
         IPlatformMemoryCache platformMemoryCache,
-        IMenuService crudService,
+        IMenuItemService crudService,
         IOptions<CrudOptions> crudOptions)
         : base(repositoryFactory, platformMemoryCache, crudService, crudOptions)
     {
     }
 
-    protected override IQueryable<MenuEntity> BuildQuery(IRepository repository, MenuSearchCriteria criteria)
+    protected override IQueryable<MenuItemEntity> BuildQuery(IRepository repository, MenuItemSearchCriteria criteria)
     {
-        var query = ((IMenuRepository)repository).Menus;
+        var query = ((IMenuRepository)repository).MenuItems;
 
         if (criteria.StoreId != null)
         {
             query = query.Where(x => x.StoreId == criteria.StoreId);
+        }
+
+        if (criteria.Type != null)
+        {
+            query = query.Where(x => x.Type == criteria.Type);
         }
 
         if (criteria.Name != null)
@@ -42,7 +47,7 @@ public class MenuSearchService : SearchService<MenuSearchCriteria, MenuSearchRes
         return query;
     }
 
-    protected override IList<SortInfo> BuildSortExpression(MenuSearchCriteria criteria)
+    protected override IList<SortInfo> BuildSortExpression(MenuItemSearchCriteria criteria)
     {
         var sortInfos = criteria.SortInfos;
 
@@ -50,7 +55,7 @@ public class MenuSearchService : SearchService<MenuSearchCriteria, MenuSearchRes
         {
             sortInfos = new[]
             {
-                new SortInfo { SortColumn = nameof(MenuEntity.Name) },
+                new SortInfo { SortColumn = nameof(MenuItemEntity.Name) },
             };
         }
 

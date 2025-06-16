@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,12 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
 
 namespace VirtoCommerce.ContentModule.Data.Model;
-public class MenuItemEntity : AuditableEntity, IHasOuterId, IDataEntity<MenuItemEntity, MenuItem>
+public class MenuItemEntity : AuditableEntity, IDataEntity<MenuItemEntity, MenuItem>
 {
+    [Required]
     public string Name { get; set; }
+    public string StoreId { get; set; }
+    public string LanguageCode { get; set; }
     public string Type { get; set; }
     public string Url { get; set; }
     public int Priority { get; set; }
@@ -20,14 +24,9 @@ public class MenuItemEntity : AuditableEntity, IHasOuterId, IDataEntity<MenuItem
     public string AssociatedObjectName { get; set; }
     public string AssociatedObjectType { get; set; }
 
-    public string OuterId { get; set; }
-
     public IList<MenuItemEntity> Items { get; set; } = new NullCollection<MenuItemEntity>();
 
     #region Navigation properties
-
-    public string MenuId { get; set; }
-    public virtual MenuEntity Menu { get; set; }
 
     public string ParentMenuItemId { get; set; }
     public virtual MenuItemEntity ParentMenuItem { get; set; }
@@ -43,6 +42,8 @@ public class MenuItemEntity : AuditableEntity, IHasOuterId, IDataEntity<MenuItem
         menuItem.ModifiedDate = ModifiedDate;
 
         menuItem.Name = Name;
+        menuItem.StoreId = StoreId;
+        menuItem.LanguageCode = LanguageCode;
         menuItem.Type = Type;
         menuItem.Url = Url;
         menuItem.Priority = Priority;
@@ -76,6 +77,8 @@ public class MenuItemEntity : AuditableEntity, IHasOuterId, IDataEntity<MenuItem
         ModifiedBy = menuItem.ModifiedBy;
 
         Name = menuItem.Name;
+        StoreId = menuItem.StoreId;
+        LanguageCode = menuItem.LanguageCode;
         Type = menuItem.Type;
         Url = menuItem.Url;
         Priority = menuItem.Priority;
@@ -94,6 +97,8 @@ public class MenuItemEntity : AuditableEntity, IHasOuterId, IDataEntity<MenuItem
     public void Patch(MenuItemEntity target)
     {
         target.Name = Name;
+        target.StoreId = StoreId;
+        target.LanguageCode = LanguageCode;
         target.Type = Type;
         target.Url = Url;
         target.Priority = Priority;

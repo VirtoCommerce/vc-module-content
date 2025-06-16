@@ -11,22 +11,24 @@ angular.module('virtoCommerce.contentModule')
             blade.addItem = function (type) {
                 blade.currentEntity.items.push({
                     type: type,
-                    name: type === 'link' ? 'New Link' : 'New Block',
-                    items: type === 'link' ? null : [],
-                    url: type === 'link' ? '' : null,
+                    name: type === 'Link' ? 'New Link' : 'New Block',
+                    items: type === 'Link' ? null : [],
+                    url: type === 'Link' ? '' : null,
                     associatedObjectType: null,
                     associatedObjectName: null,
                     associatedObjectId: null,
                     isCollapsed: true,
-                    priority: blade.currentEntity.items.length + 1,
                     menuId: blade.currentEntity.id
+                });
+
+                blade.currentEntity.items.forEach((item, index) => {
+                    item.priority = $scope.items.length - index;
                 });
             }
 
             $scope.saveChanges = function () {
                 if (blade.isNew) {
                     menus.create({ storeId: blade.storeId }, blade.currentEntity, function (data) {
-                        blade.currentEntity = data;
                         blade.parentBlade.refresh();
                         $scope.bladeClose();
                     });
@@ -67,7 +69,7 @@ angular.module('virtoCommerce.contentModule')
 
             blade.initialize = function () {
                 if (blade.isNew) {
-                    blade.currentEntity = { storeId: blade.storeId };
+                    blade.currentEntity = { storeId: blade.storeId, type: 'Menu', };
                     blade.currentEntity.items = [];
                     blade.originalEntity = angular.copy(blade.currentEntity);
                 }
@@ -95,12 +97,12 @@ angular.module('virtoCommerce.contentModule')
                 blade.toolbarCommands = [
                     {
                         name: 'content.commands.add-block', icon: 'fa fa-plus',
-                        executeMethod: function () { blade.addItem('block'); },
+                        executeMethod: function () { blade.addItem('Block'); },
                         canExecuteMethod: function () { return true; },
                     },
                     {
                         name: 'content.commands.add-link', icon: 'fa fa-plus',
-                        executeMethod: function () { blade.addItem('link'); },
+                        executeMethod: function () { blade.addItem('Link'); },
                         canExecuteMethod: function () { return true; },
                     },
                     {
@@ -170,7 +172,7 @@ angular.module('virtoCommerce.contentModule')
                         items.forEach((item, index) => {
                             item.priority = items.length - index;
                             item.id = null;
-                            if (item.type === 'block' && item.items) {
+                            if (item.type === 'Block' && item.items) {
                                 updateNestedPriorities(item.items);
                             }
                         });
@@ -202,9 +204,9 @@ angular.module('virtoCommerce.contentModule')
                         
                         parent.items.push({
                             type: type,
-                            name: type === 'link' ? 'New Link' : 'New Block',
-                            items: type === 'link' ? null : [],
-                            url: type === 'link' ? '' : null,
+                            name: type === 'Link' ? 'New Link' : 'New Block',
+                            items: type === 'Link' ? null : [],
+                            url: type === 'Link' ? '' : null,
                             associatedObjectType: null,
                             associatedObjectName: null,
                             associatedObjectId: null,

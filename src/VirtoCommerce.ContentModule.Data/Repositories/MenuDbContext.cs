@@ -2,6 +2,8 @@ using System.Reflection;
 using EntityFrameworkCore.Triggers;
 using Hangfire.Dashboard;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using VirtoCommerce.ContentModule.Data.Model;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
@@ -45,21 +47,12 @@ namespace VirtoCommerce.ContentModule.Data.Repositories
 
             #endregion
 
-            #region Menu
-
-            modelBuilder.Entity<MenuEntity>().ToTable("ContentMenu").HasKey(x => x.Id);
-            modelBuilder.Entity<MenuEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
-
-            #endregion
-
             #region MenuItem
 
             modelBuilder.Entity<MenuItemEntity>().ToTable("ContentMenuItem").HasKey(x => x.Id);
             modelBuilder.Entity<MenuItemEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
-            modelBuilder.Entity<MenuItemEntity>().HasOne(x => x.Menu).WithMany(x => x.Items)
-                        .HasForeignKey(x => x.MenuId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<MenuItemEntity>().HasOne(x => x.ParentMenuItem).WithMany(x => x.Items)
-                        .HasForeignKey(x => x.ParentMenuItemId).OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey(x => x.ParentMenuItemId).OnDelete(DeleteBehavior.NoAction);
 
             #endregion
 

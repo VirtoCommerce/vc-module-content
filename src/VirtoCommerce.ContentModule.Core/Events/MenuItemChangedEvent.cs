@@ -7,9 +7,9 @@ using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.Platform.Core.Events;
 
 namespace VirtoCommerce.ContentModule.Core.Events;
-public class MenuChangedEvent : GenericChangedEntryEvent<Menu>
+public class MenuItemChangedEvent : GenericChangedEntryEvent<MenuItem>
 {
-    public MenuChangedEvent(IEnumerable<GenericChangedEntry<Menu>> changedEntries) : base(changedEntries)
+    public MenuItemChangedEvent(IEnumerable<GenericChangedEntry<MenuItem>> changedEntries) : base(changedEntries)
     {
     }
 }

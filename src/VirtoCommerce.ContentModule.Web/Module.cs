@@ -79,7 +79,7 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<Func<IMenuRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetService<IMenuRepository>());
 
 #pragma warning disable VC0005 // Type or member is obsolete
-            serviceCollection.AddTransient<IMenuService, MenuService>();
+            serviceCollection.AddTransient<IMenuItemService, MenuItemService>();
 #pragma warning restore VC0005 // Type or member is obsolete
             serviceCollection.AddTransient<IMenuLinkListService, MenuLinkListService>();
             serviceCollection.AddTransient<IMenuLinkListSearchService, MenuLinkListSearchService>();
@@ -93,8 +93,8 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<ISeoResolver, ContentSeoResolver>();
             serviceCollection.AddTransient<ContentSeoResolver>();
 
-            serviceCollection.AddTransient<IMenuService, MenuService>();
-            serviceCollection.AddTransient<IMenuSearchService, MenuSearchService>();
+            serviceCollection.AddTransient<IMenuItemService, MenuItemService>();
+            serviceCollection.AddTransient<IMenuItemSearchService, MenuItemSearchService>();
 
             serviceCollection.AddTransient<IndexContentChangesEventHandler>();
 

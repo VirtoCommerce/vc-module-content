@@ -14,18 +14,13 @@ using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Data.GenericCrud;
 
 namespace VirtoCommerce.ContentModule.Data.Services;
-public class MenuService : CrudService<Menu, MenuEntity, MenuChangingEvent, MenuChangedEvent>, IMenuService
+public class MenuItemService(
+    Func<IMenuRepository> repositoryFactory,
+    IPlatformMemoryCache platformMemoryCache,
+    IEventPublisher eventPublisher) : CrudService<MenuItem, MenuItemEntity, MenuItemChangingEvent, MenuItemChangedEvent>(repositoryFactory, platformMemoryCache, eventPublisher), IMenuItemService
 {
-    public MenuService(
-        Func<IMenuRepository> repositoryFactory,
-        IPlatformMemoryCache platformMemoryCache,
-        IEventPublisher eventPublisher)
-        : base(repositoryFactory, platformMemoryCache, eventPublisher)
+    protected override Task<IList<MenuItemEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
     {
-    }
-
-    protected override Task<IList<MenuEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
-    {
-        return ((IMenuRepository)repository).GetMenus(ids);
+        return ((IMenuRepository)repository).GetMenuItems(ids);
     }
 }

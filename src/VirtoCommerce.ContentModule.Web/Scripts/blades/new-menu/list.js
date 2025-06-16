@@ -9,7 +9,7 @@ angular.module('virtoCommerce.contentModule')
 
             blade.refresh = function () {
                 blade.isLoading = true;
-                menus.get({ storeId: blade.storeId }, function (data) {
+                menus.get({ storeId: blade.storeId, type: 'Menu' }, function (data) {
                     blade.currentEntities = data;
                     blade.isLoading = false;
                 },

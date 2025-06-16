@@ -15,10 +15,10 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
     [Route("api/cms/{storeId}/new-menu")]
     public class NewMenuController : Controller
     {
-        private readonly IMenuService _crudService;
-        private readonly IMenuSearchService _searchService;
+        private readonly IMenuItemService _crudService;
+        private readonly IMenuItemSearchService _searchService;
 
-        public NewMenuController(IMenuService crudService, IMenuSearchService searchService)
+        public NewMenuController(IMenuItemService crudService, IMenuItemSearchService searchService)
         {
             _crudService = crudService;
             _searchService = searchService;
@@ -27,7 +27,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("")]
         [Authorize(Permissions.Read)]
-        public async Task<ActionResult<Menu[]>> GetMenus([FromRoute] string storeId, string responseGroup)
+        public async Task<ActionResult<MenuItem[]>> GetMenus([FromRoute] string storeId, string responseGroup)
         {
             var lists = await _searchService.SearchAllNoClone(storeId);
 
@@ -42,7 +42,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpGet]
         [Route("{menuId}")]
         [Authorize(Permissions.Read)]
-        public async Task<ActionResult<Menu>> GetMenu([FromRoute] string menuId)
+        public async Task<ActionResult<MenuItem>> GetMenu([FromRoute] string menuId)
         {
             var item = await _crudService.GetNoCloneAsync(menuId);
             return Ok(item);
@@ -61,7 +61,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [Route("")]
         [Authorize(Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> CreateMenu([FromBody] Menu menu)
+        public async Task<ActionResult> CreateMenu([FromBody] MenuItem menu)
         {
             if (menu == null)
             {
@@ -75,7 +75,7 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [HttpPut]
         [Route("")]
         [Authorize(Permissions.Update)]
-        public async Task<ActionResult<Menu>> UpdateMenu([FromBody] Menu menu)
+        public async Task<ActionResult<MenuItem>> UpdateMenu([FromBody] MenuItem menu)
         {
             if (menu == null)
             {
