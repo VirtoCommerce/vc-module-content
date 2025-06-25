@@ -55,7 +55,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 }
             }
 
-            if (result.Fields.All(x => !x.Name.EqualsInvariant("displayname")))
+            if (result.Fields.All(x => !x.Name.EqualsIgnoreCase("displayname")))
             {
                 var name = Path.GetFileNameWithoutExtension(file.Name);
                 result.AddFilterableStringAndContentString("displayName", name);
