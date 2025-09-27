@@ -185,6 +185,7 @@ angular.module('virtoCommerce.contentModule')
                         blade.isLoading = false;
                         var needRefresh = true;
                         blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
+                        blade.published = blade.currentEntity.published;
                         angular.copy(blade.currentEntity, blade.origEntity);
                         if (blade.isNew) {
                             $scope.bladeClose();
