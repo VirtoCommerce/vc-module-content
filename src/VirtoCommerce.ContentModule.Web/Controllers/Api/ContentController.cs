@@ -116,7 +116,7 @@ public class ContentController(
     }
 
     /// <summary>
-    ///     Return streamed data for requested by relativeUrl content (Used to prevent Cross domain requests in manager)
+    /// Return streamed data for requested by relativeUrl content (Used to prevent Cross domain requests in manager)
     /// </summary>
     /// <param name="contentType">possible values Themes or Pages</param>
     /// <param name="storeId">Store id</param>
