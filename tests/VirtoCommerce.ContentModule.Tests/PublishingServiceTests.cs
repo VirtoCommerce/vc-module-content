@@ -142,6 +142,7 @@ public class PublishingServiceTests
             return new ContentFile
             {
                 Name = filename,
+                RelativeUrl = filename,
             };
         }
 
