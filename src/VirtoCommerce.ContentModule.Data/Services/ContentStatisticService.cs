@@ -12,7 +12,8 @@ namespace VirtoCommerce.ContentModule.Data.Services
     public class ContentStatisticService(
             IBlobContentStorageProviderFactory blobContentStorageProviderFactory,
             IContentPathResolver contentPathResolver,
-            IContentItemTypeRegistrar contentItemTypeRegistrar)
+            IContentItemTypeRegistrar contentItemTypeRegistrar,
+            IPublishingService publishingService)
         : IContentStatisticService
     {
         public async Task<int> GetStorePagesCountAsync(string storeId)
@@ -61,9 +62,14 @@ namespace VirtoCommerce.ContentModule.Data.Services
             var searchResult = await blobContentStorageProvider.SearchAsync(folderUrl, keyword: null);
             var folders = searchResult.Results.OfType<BlobFolder>();
             var blobs = searchResult.Results.OfType<BlobInfo>()
-                .Where(x => contentItemTypeRegistrar.IsRegisteredContentItemType(x.RelativeUrl));
+                .Where(x => contentItemTypeRegistrar.IsRegisteredContentItemType(x.RelativeUrl))
+                .Where(x => (startDate == null || x.ModifiedDate >= startDate) && (endDate == null || x.ModifiedDate <= endDate));
 
-            var result = blobs.Count(x => (startDate == null || x.ModifiedDate >= startDate) && (endDate == null || x.ModifiedDate <= endDate));
+            var result = blobs
+                .Select(x => publishingService.GetRelativeDraftUrl(x.RelativeUrl, false))
+                .Distinct()
+                .Count();
+
             var children = folders.Where(x =>
                 (excludedFolderName.IsNullOrEmpty() || !x.Name.EqualsIgnoreCase(excludedFolderName)) // exclude predefined folders
                 && x.Url != folderUrl); // the simplest way to avoid loop (i.e. "https://qademovc3.blob.core.windows.net/cms/Pages/Electronics/blogs/https://")
