@@ -17,14 +17,14 @@ namespace VirtoCommerce.ContentModule.Data.Services
     {
         public async Task<int> GetStorePagesCountAsync(string storeId)
         {
-            var (contentStorageProvider, path) = Prepare(storeId, ContentConstants.ContentTypes.Pages);
+            var contentStorageProvider = Prepare(storeId, ContentConstants.ContentTypes.Pages);
             var result = await CountContentItemsRecursive(folderUrl: null, contentStorageProvider, startDate: null, endDate: null, ContentConstants.ContentTypes.Blogs);
             return result;
         }
 
         public async Task<int> GetStoreChangedPagesCountAsync(string storeId, DateTime? startDate, DateTime? endDate)
         {
-            var (contentStorageProvider, path) = Prepare(storeId, ContentConstants.ContentTypes.Pages);
+            var contentStorageProvider = Prepare(storeId, ContentConstants.ContentTypes.Pages);
             var result = await CountContentItemsRecursive(folderUrl: null, contentStorageProvider, startDate, endDate);
             return result;
         }
@@ -43,17 +43,17 @@ namespace VirtoCommerce.ContentModule.Data.Services
 
         private async Task<int> GetFoldersCount(string storeId, string contentType)
         {
-            var (contentStorageProvider, targetPath) = Prepare(storeId, contentType);
+            var contentStorageProvider = Prepare(storeId, contentType);
             var folders = await contentStorageProvider.SearchAsync(folderUrl: null, keyword: null);
             var result = folders.Results.OfType<BlobFolder>().Count();
             return result;
         }
 
-        private (IBlobContentStorageProvider provider, string targetPath) Prepare(string storeId, string contentType)
+        private IBlobContentStorageProvider Prepare(string storeId, string contentType)
         {
             var targetPath = contentPathResolver.GetContentBasePath(contentType, storeId);
             var contentStorageProvider = blobContentStorageProviderFactory.CreateProvider(targetPath);
-            return (contentStorageProvider, targetPath);
+            return contentStorageProvider;
         }
 
         private async Task<int> CountContentItemsRecursive(string folderUrl, IBlobStorageProvider blobContentStorageProvider, DateTime? startDate, DateTime? endDate, string excludedFolderName = null)
