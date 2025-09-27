@@ -74,7 +74,6 @@ public class PublishingServices(IContentService contentService) : IPublishingSer
 
         file.Name = RemoveDraftSuffix(file.Name);
         file.RelativeUrl = RemoveDraftSuffix(file.RelativeUrl);
-        return;
 
         string RemoveDraftSuffix(string name) => isDraft
             ? name[..^"-draft".Length]

@@ -58,7 +58,6 @@ public class PublishingServiceTests
     {
         var (sut, contentService) = GetPublishingService([("file.md", false), ("file.md-draft", true)]);
 
-
         await sut.PublishingAsync(ContentType, StoreId, "file.md", true);
 
         contentService.Verify(x => x.MoveContentAsync(ContentType, StoreId, "file.md-draft", "file.md"), Times.Exactly(1));
