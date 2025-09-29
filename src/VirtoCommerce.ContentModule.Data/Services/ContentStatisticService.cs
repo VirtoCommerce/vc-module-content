@@ -62,11 +62,12 @@ namespace VirtoCommerce.ContentModule.Data.Services
             var searchResult = await blobContentStorageProvider.SearchAsync(folderUrl, keyword: null);
             var folders = searchResult.Results.OfType<BlobFolder>();
             var blobs = searchResult.Results.OfType<BlobInfo>()
-                .Where(x => contentItemTypeRegistrar.IsRegisteredContentItemType(x.RelativeUrl))
-                .Where(x => (startDate == null || x.ModifiedDate >= startDate) && (endDate == null || x.ModifiedDate <= endDate));
+                .Where(x => contentItemTypeRegistrar.IsRegisteredContentItemType(x.RelativeUrl) &&
+                            (startDate == null || x.ModifiedDate >= startDate) &&
+                            (endDate == null || x.ModifiedDate <= endDate));
 
             var result = blobs
-                .Select(x => publishingService.GetRelativeDraftUrl(x.RelativeUrl, false))
+                .Select(x => publishingService.GetRelativeDraftUrl(x.RelativeUrl, draft: false))
                 .Distinct()
                 .Count();
 

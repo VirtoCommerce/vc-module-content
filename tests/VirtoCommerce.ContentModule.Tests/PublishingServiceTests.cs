@@ -14,30 +14,30 @@ public class PublishingServiceTests
     private const string StoreId = "storeId";
 
     [Theory]
-    [InlineData(false, "file.md")]
-    [InlineData(true, "file.md-draft")]
-    [InlineData(false, "file")]
-    public void IsDraft_IsCorrect(bool isDraft, string filename)
+    [InlineData("file.md", false)]
+    [InlineData("file.md-draft", true)]
+    [InlineData("file", false)]
+    public void IsDraft_IsCorrect(string filename, bool expectedIsDraft)
     {
         var contentService = new Mock<IContentService>();
         var sut = new PublishingServices(contentService.Object);
 
         var result = sut.IsDraft(filename);
-        Assert.Equal(isDraft, result);
+        Assert.Equal(expectedIsDraft, result);
     }
 
     [Theory]
-    [InlineData(true, "file.md", "file.md-draft")]
-    [InlineData(true, "file.md-draft", "file.md-draft")]
-    [InlineData(false, "file.md", "file.md")]
-    [InlineData(false, "file.md-draft", "file.md")]
-    public void GetRelativeDraftUrlTests(bool isDraft, string source, string target)
+    [InlineData("file.md", true, "file.md-draft")]
+    [InlineData("file.md-draft", true, "file.md-draft")]
+    [InlineData("file.md", false, "file.md")]
+    [InlineData("file.md-draft", false, "file.md")]
+    public void GetRelativeDraftUrlTests(string source, bool isDraft, string expectedTarget)
     {
         var contentService = new Mock<IContentService>();
         var sut = new PublishingServices(contentService.Object);
 
         var result = sut.GetRelativeDraftUrl(source, isDraft);
-        Assert.Equal(target, result);
+        Assert.Equal(expectedTarget, result);
     }
 
     #region PublishingAsync
@@ -47,7 +47,7 @@ public class PublishingServiceTests
     {
         var (sut, contentService) = GetPublishingService([("file.md", true), ("file.md-draft", false)]);
 
-        await sut.PublishingAsync(ContentType, StoreId, "file.md", false);
+        await sut.PublishingAsync(ContentType, StoreId, "file.md", publish: false);
 
         contentService.Verify(x => x.MoveContentAsync(ContentType, StoreId, "file.md", "file.md-draft"), Times.Exactly(1));
         contentService.Verify(x => x.DeleteContentAsync(ContentType, StoreId, It.IsAny<string[]>()), Times.Never);
@@ -58,7 +58,7 @@ public class PublishingServiceTests
     {
         var (sut, contentService) = GetPublishingService([("file.md", false), ("file.md-draft", true)]);
 
-        await sut.PublishingAsync(ContentType, StoreId, "file.md", true);
+        await sut.PublishingAsync(ContentType, StoreId, "file.md", publish: true);
 
         contentService.Verify(x => x.MoveContentAsync(ContentType, StoreId, "file.md-draft", "file.md"), Times.Exactly(1));
         contentService.Verify(x => x.DeleteContentAsync(ContentType, StoreId, It.IsAny<string[]>()), Times.Never);
@@ -69,7 +69,7 @@ public class PublishingServiceTests
     {
         var (sut, contentService) = GetPublishingService([("file.md", true), ("file.md-draft", true)]);
 
-        await sut.PublishingAsync(ContentType, StoreId, "file.md", true);
+        await sut.PublishingAsync(ContentType, StoreId, "file.md", publish: true);
 
         contentService.Verify(x => x.MoveContentAsync(ContentType, StoreId, "file.md-draft", "file.md"), Times.Exactly(1));
 
@@ -82,7 +82,7 @@ public class PublishingServiceTests
     {
         var (sut, contentService) = GetPublishingService([("file.md", true), ("file.md-draft", true)]);
 
-        await sut.PublishingAsync(ContentType, StoreId, "file.md", false);
+        await sut.PublishingAsync(ContentType, StoreId, "file.md", publish: false);
 
         contentService.Verify(x => x.MoveContentAsync(ContentType, StoreId, It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         contentService.Verify(x => x.DeleteContentAsync(ContentType, StoreId, It.IsAny<string[]>()), Times.Never);
@@ -131,7 +131,7 @@ public class PublishingServiceTests
     [InlineData(1, 1, 1, 2, "file1.md-draft", "file2.md")]
     [InlineData(2, 0, 1, 2, "file1.md-draft", "file1.md", "file2.md")]
     [InlineData(1, 1, 2, 2, "file1.md-draft", "file1.md", "file2.md-draft")]
-    public async Task SetFileStatuses(int publishedCount, int unpublishedCount, int hasChangesCount, int totalCount, params string[] filenames)
+    public async Task SetFileStatuses(int expectedPublishedCount, int expectedUnpublishedCount, int expectedHasChangesCount, int expectedTotalCount, params string[] filenames)
     {
         var contentService = new Mock<IContentService>();
         var sut = new PublishingServices(contentService.Object);
@@ -149,10 +149,10 @@ public class PublishingServiceTests
 
         var result = (await sut.SetFilesStatuses(files)).ToList();
 
-        Assert.Equal(publishedCount, result.Count(x => x.Published));
-        Assert.Equal(unpublishedCount, result.Count(x => !x.Published));
-        Assert.Equal(hasChangesCount, result.Count(x => x.HasChanges));
-        Assert.Equal(totalCount, result.Count());
+        Assert.Equal(expectedPublishedCount, result.Count(x => x.Published));
+        Assert.Equal(expectedUnpublishedCount, result.Count(x => !x.Published));
+        Assert.Equal(expectedHasChangesCount, result.Count(x => x.HasChanges));
+        Assert.Equal(expectedTotalCount, result.Count());
     }
 
     private (PublishingServices, Mock<IContentService>) GetPublishingService((string Filename, bool Exists)[] files)

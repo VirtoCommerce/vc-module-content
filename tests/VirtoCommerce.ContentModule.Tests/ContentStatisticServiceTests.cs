@@ -17,15 +17,15 @@ public class ContentStatisticServiceTests
     private const string StoreId = "TestStore";
 
     [Theory]
-    [InlineData(2, "file1.md", "file2.md")]
-    [InlineData(2, "file1.md-draft", "file2.md-draft")]
-    [InlineData(2, "file1.md-draft", "file2.md")]
-    [InlineData(1, "file1.md-draft", "file1.md")]
-    public async Task GetStorePagesCount_IsCorrect(int count, params string[] files)
+    [InlineData("file1.md", "file2.md", 2)]
+    [InlineData("file1.md-draft", "file2.md-draft", 2)]
+    [InlineData("file1.md-draft", "file2.md", 2)]
+    [InlineData("file1.md-draft", "file1.md", 1)]
+    public async Task GetStorePagesCount_IsCorrect(string filename1, string filename2, int expectedCount)
     {
-        var sut = GetService(files);
+        var sut = GetService([filename1, filename2]);
         var result = await sut.GetStorePagesCountAsync(StoreId);
-        Assert.Equal(count, result);
+        Assert.Equal(expectedCount, result);
     }
 
     private ContentStatisticService GetService(params string[] files)
