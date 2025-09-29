@@ -169,7 +169,7 @@ angular.module('virtoCommerce.contentModule')
 	    };
 
         blade.addNewPage = function (data) {
-            fileHandlerFactory.handleAction('create', { blade: blade, store: data });
+            fileHandlerFactory.handleAction('create', { blade: blade, store: data.store });
 	    };
 
 	    blade.addNewLinkList = function (data) {
