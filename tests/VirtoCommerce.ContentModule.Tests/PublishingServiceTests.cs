@@ -152,10 +152,10 @@ public class PublishingServiceTests
         Assert.Equal(expectedPublishedCount, result.Count(x => x.Published));
         Assert.Equal(expectedUnpublishedCount, result.Count(x => !x.Published));
         Assert.Equal(expectedHasChangesCount, result.Count(x => x.HasChanges));
-        Assert.Equal(expectedTotalCount, result.Count());
+        Assert.Equal(expectedTotalCount, result.Count);
     }
 
-    private (PublishingServices, Mock<IContentService>) GetPublishingService((string Filename, bool Exists)[] files)
+    private static (PublishingServices, Mock<IContentService>) GetPublishingService((string Filename, bool Exists)[] files)
     {
         var contentService = new Mock<IContentService>();
 

@@ -28,7 +28,7 @@ public class ContentStatisticServiceTests
         Assert.Equal(expectedCount, result);
     }
 
-    private ContentStatisticService GetService(params string[] files)
+    private static ContentStatisticService GetService(params string[] files)
     {
         var blobContentProviderFactory = new BlobContentStorageProviderStub(files);
         var contentPathResolver = new ContentPathResolverStub();

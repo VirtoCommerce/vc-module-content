@@ -63,8 +63,7 @@ namespace VirtoCommerce.ContentModule.Data.Services
             var folders = searchResult.Results.OfType<BlobFolder>();
             var blobs = searchResult.Results.OfType<BlobInfo>()
                 .Where(x => contentItemTypeRegistrar.IsRegisteredContentItemType(x.RelativeUrl) &&
-                            (startDate == null || x.ModifiedDate >= startDate) &&
-                            (endDate == null || x.ModifiedDate <= endDate));
+                            IsDateBetween(x.ModifiedDate, startDate, endDate));
 
             var result = blobs
                 .Select(x => publishingService.GetRelativeDraftUrl(x.RelativeUrl, draft: false))
@@ -82,6 +81,12 @@ namespace VirtoCommerce.ContentModule.Data.Services
             }
 
             return result;
+        }
+
+        private static bool IsDateBetween(DateTime? modifiedDate, DateTime? startDate, DateTime? endDate)
+        {
+            return (startDate == null || modifiedDate >= startDate) &&
+                   (endDate == null || modifiedDate <= endDate);
         }
     }
 }
