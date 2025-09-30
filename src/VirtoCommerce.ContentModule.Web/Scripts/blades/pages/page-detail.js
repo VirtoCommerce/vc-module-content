@@ -27,7 +27,7 @@ angular.module('virtoCommerce.contentModule')
             searchApi,
             moment, broadcastChannelFactory, filesDraftService) {
 
-
+            var extension = 'md';
             var momentFormat = "YYYYMMDDHHmmss";
 
             var blade = $scope.blade;
@@ -105,14 +105,22 @@ angular.module('virtoCommerce.contentModule')
 
             function fillMetadata(data) {
                 var blobName = blade.currentEntity.name || '';
-                var idx = blobName.lastIndexOf('.');
-                if (idx >= 0) {
-                    blobName = blobName.substring(0, idx);
-                    idx = blobName.lastIndexOf('.'); // language
-                    if (idx >= 0) {
-                        blade.currentEntity.language = blobName.substring(idx + 1);
+
+                var blobNameParts = blobName.split('.');
+                blobNameParts.length > 1 ? blobNameParts.pop() : ''; // ignore extension
+
+                if (blade.languages && blade.languages.length) {
+                    var possibleFileLanguage = blobNameParts.length > 1 ? blobNameParts[blobNameParts.length - 1] : '';
+
+                    var language = blade.languages.find(function (lang) { return lang.toLowerCase() === possibleFileLanguage.toLowerCase(); });
+
+                    if (language) {
+                        blobNameParts.pop();
+                        blade.currentEntity.language = language;
                     }
                 }
+
+                blade.currentEntity.pageName = blobNameParts.join('.');
 
                 blade.currentEntity.content = data.content;
                 blade.origEntity = angular.copy(blade.currentEntity);
@@ -175,6 +183,8 @@ angular.module('virtoCommerce.contentModule')
 
                 var oldRelativeUrl = blade.origEntity && blade.origEntity.relativeUrl;
 
+                blade.currentEntity.name = [blade.currentEntity.pageName, blade.currentEntity.language, extension].filter(x => x).join('.');
+
                 contentApi.saveWithMetadata({
                         contentType: blade.contentType,
                         storeId: blade.storeId,
@@ -185,7 +195,8 @@ angular.module('virtoCommerce.contentModule')
                         blade.isLoading = false;
                         var needRefresh = true;
                         blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
-                        angular.copy(blade.currentEntity, blade.origEntity);
+                        fillMetadata(result);
+                        //angular.copy(blade.currentEntity, blade.origEntity);
                         if (blade.isNew) {
                             $scope.bladeClose();
                             blade.parentBlade.refresh();

@@ -21,8 +21,9 @@
       <div class="column">
         <div class="form-group" ng-init="setForm(formScope)">
           <label class="form-label">{{ 'content.blades.edit-page.labels.name' | translate }}</label>
-          <div class="form-input">
-            <input focus-on="" required class="form-control" ng-model="blade.currentEntity.name" placeholder="{{ 'content.blades.edit-page.placeholders.name' | translate }}" name="pageName" ui-validate=" 'validators.webSafeFileNameValidator($value)' " />
+          <div class="form-input __langs">
+            <label class="lang-code">{{blade.origEntity.language}}</label>
+            <input required focus-on="" name="pageName" ng-model="blade.currentEntity.pageName" placeholder="{{ 'content.blades.edit-page.placeholders.name' | translate }}" ui-validate=" 'validators.webSafeFileNameValidator($value)' " />
           </div>
           <div class="form-error" ng-show="formScope.pageName.$dirty">
             <span ng-show="formScope.pageName.$error.validator">{{ 'content.blades.edit-page.validations.pageName-invalid' | translate }}</span>
