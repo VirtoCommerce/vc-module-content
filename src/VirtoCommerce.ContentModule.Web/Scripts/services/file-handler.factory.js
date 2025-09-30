@@ -60,7 +60,7 @@ angular.module('virtoCommerce.contentModule')
 
                         var newBlade = {
                             contentType: blade.contentType || 'pages',
-                            storeId: store.id,
+                            storeId: blade.storeId ?? store?.id,
                             storeUrl: publicStoreUrl,
                             languages: blade.languages || store.languages,
                             folderUrl: (blade.currentEntity && blade.currentEntity.relativeUrl) || '/',
