@@ -107,7 +107,7 @@ angular.module('virtoCommerce.contentModule')
                 var blobName = blade.currentEntity.name || '';
 
                 var blobNameParts = blobName.split('.');
-                blobNameParts.length > 1 ? blobNameParts.pop() : ''; // ignore extension
+                var extension = blobNameParts.length > 1 ? blobNameParts.pop() : ''; // ignore extension
 
                 if (blade.languages && blade.languages.length) {
                     var possibleFileLanguage = blobNameParts.length > 1 ? blobNameParts[blobNameParts.length - 1] : '';
