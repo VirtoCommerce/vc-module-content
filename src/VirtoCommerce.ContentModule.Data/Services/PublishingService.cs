@@ -72,12 +72,9 @@ public class PublishingServices(IContentService contentService) : IPublishingSer
         file.HasChanges = isDraft;
         file.Published = !isDraft;
 
-        file.Name = RemoveDraftSuffix(file.Name);
-        file.RelativeUrl = RemoveDraftSuffix(file.RelativeUrl);
-
-        string RemoveDraftSuffix(string name) => name.EndsWith("-draft")
-            ? name.Substring(0, name.Length - "-draft".Length)
-            : name;
+        file.Name = file.Name.EndsWith("-draft")
+            ? file.Name.Substring(0, file.Name.Length - "-draft".Length)
+            : file.Name;
     }
 
     public string GetRelativeDraftUrl(string source, bool draft)
