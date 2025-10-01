@@ -104,6 +104,19 @@ angular.module('virtoCommerce.contentModule')
             };
 
             function fillMetadata(data) {
+                parseName();
+
+                blade.currentEntity.content = data.content || '';
+                blade.origEntity = angular.copy(blade.currentEntity);
+                blade.hasChanges = blade.currentEntity.hasChanges;
+                blade.published = blade.currentEntity.published;
+
+                $scope.metadata = data.metadata;
+
+                getDynamicProperties();
+            }
+
+            function parseName() {
                 var blobName = blade.currentEntity.name || '';
 
                 var blobNameParts = blobName.split('.');
@@ -125,13 +138,6 @@ angular.module('virtoCommerce.contentModule')
                 }
 
                 blade.currentEntity.pageName = blobNameParts.join('.');
-                blade.origEntity = angular.copy(blade.currentEntity);
-                blade.hasChanges = blade.currentEntity.hasChanges;
-                blade.published = blade.currentEntity.published;
-
-                $scope.metadata = data.metadata;
-
-                getDynamicProperties();
             }
 
             function getDynamicProperties(take, skip) {
@@ -195,8 +201,11 @@ angular.module('virtoCommerce.contentModule')
                     function (result) {
                         blade.isLoading = false;
                         var needRefresh = true;
+
                         blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
-                        fillMetadata(result);
+                        parseName();
+                        blade.origEntity = angular.copy(blade.currentEntity);
+
                         if (blade.isNew) {
                             $scope.bladeClose();
                             blade.parentBlade.refresh();
