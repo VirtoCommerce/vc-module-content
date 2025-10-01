@@ -185,6 +185,13 @@ angular.module('virtoCommerce.contentModule')
                 }
             };
 
+            function getNonDraftName(value) {
+                if (value && value.endsWith('-draft')) {
+                    return value.slice(0, -6);
+                }
+                return value;
+            }
+
             $scope.saveChanges = function () {
                 blade.isLoading = true;
 
@@ -206,11 +213,14 @@ angular.module('virtoCommerce.contentModule')
                         parseName();
                         blade.origEntity = angular.copy(blade.currentEntity);
 
+                        var newUrl = getNonDraftName(blade.currentEntity.relativeUrl);
+                        var oldUrl = getNonDraftName(oldRelativeUrl);
+
                         if (blade.isNew) {
                             $scope.bladeClose();
                             blade.parentBlade.refresh();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
-                        } else if (oldRelativeUrl && oldRelativeUrl !== blade.currentEntity.relativeUrl) {
+                        } else if (oldUrl && oldUrl !== newUrl) {
                             needRefresh = false;
                             contentApi.delete({
                                 contentType: blade.contentType,
