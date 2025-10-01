@@ -212,6 +212,8 @@ angular.module('virtoCommerce.contentModule')
                         blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
                         parseName();
                         blade.origEntity = angular.copy(blade.currentEntity);
+                        blade.hasChanges = blade.currentEntity.hasChanges;
+                        blade.published = blade.currentEntity.published;
 
                         var newUrl = getNonDraftName(blade.currentEntity.relativeUrl);
                         var oldUrl = getNonDraftName(oldRelativeUrl);
@@ -282,7 +284,7 @@ angular.module('virtoCommerce.contentModule')
                         broadcastChanges({ published: true, hasChanges: false });
                     });
                 },
-                canExecuteMethod: function () { return true; }
+                canExecuteMethod: function () { return !isDirty(); }
             };
             var unpublishCommand = {
                 name: "content.commands.unpublish", icon: 'fa fa-file-alt',
@@ -298,7 +300,7 @@ angular.module('virtoCommerce.contentModule')
                         broadcastChanges({ published: false, hasChanges: true });
                     });
                 },
-                canExecuteMethod: function () { return true; }
+                canExecuteMethod: function () { return !isDirty(); }
             };
 
 
