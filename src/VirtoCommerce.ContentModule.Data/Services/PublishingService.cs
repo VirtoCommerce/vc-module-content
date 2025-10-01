@@ -71,7 +71,8 @@ public class PublishingServices(IContentService contentService) : IPublishingSer
         var isDraft = file.Name.EndsWith("-draft");
         file.HasChanges = isDraft;
         file.Published = !isDraft;
-        file.Name = isDraft
+
+        file.Name = file.Name.EndsWith("-draft")
             ? file.Name.Substring(0, file.Name.Length - "-draft".Length)
             : file.Name;
     }
