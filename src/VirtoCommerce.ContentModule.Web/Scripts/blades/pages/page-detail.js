@@ -107,12 +107,16 @@ angular.module('virtoCommerce.contentModule')
                 var blobName = blade.currentEntity.name || '';
 
                 var blobNameParts = blobName.split('.');
-                var extension = blobNameParts.length > 1 ? blobNameParts.pop() : ''; // ignore extension
+                if (blobNameParts.length > 1) {
+                    blobNameParts.pop(); // ignore extension
+                }
 
                 if (blade.languages && blade.languages.length) {
                     var possibleFileLanguage = blobNameParts.length > 1 ? blobNameParts[blobNameParts.length - 1] : '';
 
-                    var language = blade.languages.find(function (lang) { return lang.toLowerCase() === possibleFileLanguage.toLowerCase(); });
+                    var language = blade.languages.find(function (lang) {
+                        return lang.toLowerCase() === possibleFileLanguage.toLowerCase();
+                    });
 
                     if (language) {
                         blobNameParts.pop();
@@ -193,7 +197,6 @@ angular.module('virtoCommerce.contentModule')
                         var needRefresh = true;
                         blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
                         fillMetadata(result);
-                        //angular.copy(blade.currentEntity, blade.origEntity);
                         if (blade.isNew) {
                             $scope.bladeClose();
                             blade.parentBlade.refresh();
