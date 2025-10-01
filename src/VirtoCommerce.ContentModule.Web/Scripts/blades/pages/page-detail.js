@@ -121,10 +121,7 @@ angular.module('virtoCommerce.contentModule')
                 }
 
                 blade.currentEntity.pageName = blobNameParts.join('.');
-
-                blade.currentEntity.content = data.content;
                 blade.origEntity = angular.copy(blade.currentEntity);
-
                 blade.hasChanges = blade.currentEntity.hasChanges;
                 blade.published = blade.currentEntity.published;
 
