@@ -282,6 +282,7 @@ angular.module('virtoCommerce.contentModule')
                         getDocumentIndex();
                         updateToolbarCommands();
                         broadcastChanges({ published: true, hasChanges: false });
+                        blade.parentBlade.refresh();
                     });
                 },
                 canExecuteMethod: function () { return !isDirty(); }
@@ -298,6 +299,7 @@ angular.module('virtoCommerce.contentModule')
                         blade.published = false;
                         updateToolbarCommands();
                         broadcastChanges({ published: false, hasChanges: true });
+                        blade.parentBlade.refresh();
                     });
                 },
                 canExecuteMethod: function () { return !isDirty(); }
