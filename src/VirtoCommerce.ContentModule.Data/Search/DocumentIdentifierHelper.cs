@@ -14,7 +14,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
         public static (string storeId, string contentType, string relativeUrl) ParseId(string id)
         {
             var decoded = Encoding.ASCII.GetString(Convert.FromBase64String(id.Replace('-', '=')));
-            var result = decoded.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+            var result = decoded.Split(["::"], StringSplitOptions.RemoveEmptyEntries);
 
             if (result.Length == 3)
             {

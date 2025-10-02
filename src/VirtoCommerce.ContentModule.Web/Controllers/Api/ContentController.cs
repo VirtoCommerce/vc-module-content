@@ -41,7 +41,6 @@ public class ContentController(
             IConfiguration configuration)
         : Controller
 {
-    private readonly IPublishingService _publishingService = publishingService;
     private static readonly FormOptions _defaultFormOptions = new();
 
     /// <summary>
@@ -93,8 +92,8 @@ public class ContentController(
         foreach (var url in urls)
         {
             var isFolder = true;
-            var draftUrl = _publishingService.GetRelativeDraftUrl(url, true);
-            var publishedUrl = _publishingService.GetRelativeDraftUrl(url, false);
+            var draftUrl = publishingService.GetRelativeDraftUrl(url, true);
+            var publishedUrl = publishingService.GetRelativeDraftUrl(url, false);
             if (await contentService.ItemExistsAsync(contentType, storeId, draftUrl))
             {
                 urlsToRemove.Add(draftUrl);
@@ -116,7 +115,7 @@ public class ContentController(
     }
 
     /// <summary>
-    ///     Return streamed data for requested by relativeUrl content (Used to prevent Cross domain requests in manager)
+    /// Return streamed data for requested by relativeUrl content (Used to prevent Cross domain requests in manager)
     /// </summary>
     /// <param name="contentType">possible values Themes or Pages</param>
     /// <param name="storeId">Store id</param>
@@ -131,13 +130,13 @@ public class ContentController(
         if (draft)
         {
             // use the draft logic, try to load the draft file, and if it isn't found, load to published version
-            var draftUrl = _publishingService.GetRelativeDraftUrl(relativeUrl, true);
+            var draftUrl = publishingService.GetRelativeDraftUrl(relativeUrl, true);
             if (await contentService.ItemExistsAsync(contentType, storeId, draftUrl))
             {
                 var result = await contentService.GetItemStreamAsync(contentType, storeId, draftUrl);
                 return File(result, MimeTypeResolver.ResolveContentType(relativeUrl));
             }
-            var sourceUrl = _publishingService.GetRelativeDraftUrl(relativeUrl, false);
+            var sourceUrl = publishingService.GetRelativeDraftUrl(relativeUrl, false);
             if (await contentService.ItemExistsAsync(contentType, storeId, sourceUrl))
             {
                 var result = await contentService.GetItemStreamAsync(contentType, storeId, sourceUrl);
@@ -176,7 +175,7 @@ public class ContentController(
         criteria.Keyword = keyword;
         var result = await contentFileService.FilterItemsAsync(criteria);
         var folders = result.Where(x => x is not ContentFile);
-        var files = await _publishingService.SetFilesStatuses(result.OfType<ContentFile>());
+        var files = await publishingService.SetFilesStatuses(result.OfType<ContentFile>());
         var response = folders.Union(files);
         return Ok(response);
     }
@@ -194,7 +193,7 @@ public class ContentController(
         criteria.Skip = 0;
         criteria.Take = 100;
         var result = await fullTextContentSearchService.SearchAllAsync(criteria);
-        var response = _publishingService.SetFilesStatuses(result);
+        var response = publishingService.SetFilesStatuses(result);
         return Ok(response);
     }
 
@@ -220,22 +219,22 @@ public class ContentController(
     [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
     public async Task<ActionResult> MoveContent(string contentType, string storeId, [FromQuery] string oldUrl, [FromQuery] string newUrl)
     {
-        var publishedSrc = _publishingService.GetRelativeDraftUrl(oldUrl, false);
-        var unpublishedSrc = _publishingService.GetRelativeDraftUrl(oldUrl, true);
+        var publishedSrc = publishingService.GetRelativeDraftUrl(oldUrl, false);
+        var unpublishedSrc = publishingService.GetRelativeDraftUrl(oldUrl, true);
 
         var isFile = false;
 
         if (await contentService.ItemExistsAsync(contentType, storeId, publishedSrc))
         {
             isFile = true;
-            var publishedDest = _publishingService.GetRelativeDraftUrl(newUrl, false);
+            var publishedDest = publishingService.GetRelativeDraftUrl(newUrl, false);
             await contentService.MoveContentAsync(contentType, storeId, publishedSrc, publishedDest);
         }
 
         if (await contentService.ItemExistsAsync(contentType, storeId, unpublishedSrc))
         {
             isFile = true;
-            var unpublishedDest = _publishingService.GetRelativeDraftUrl(newUrl, true);
+            var unpublishedDest = publishingService.GetRelativeDraftUrl(newUrl, true);
             await contentService.MoveContentAsync(contentType, storeId, unpublishedSrc, unpublishedDest);
         }
 
@@ -302,7 +301,7 @@ public class ContentController(
             destFile = Path.Combine(path, $"{filename}_{index}{langSuffix}{ext}");
         }
 
-        destFile = _publishingService.GetRelativeDraftUrl(destFile, true);
+        destFile = publishingService.GetRelativeDraftUrl(destFile, true);
         await contentService.CopyFileAsync(contentType, storeId, srcFile, destFile);
         return NoContent();
     }
@@ -401,7 +400,7 @@ public class ContentController(
                 {
                     var fileName = Path.GetFileName(contentDisposition.FileName.Value ?? contentDisposition.Name.Value.Replace("\"", string.Empty));
 
-                    fileName = _publishingService.GetRelativeDraftUrl(fileName, draft);
+                    fileName = publishingService.GetRelativeDraftUrl(fileName, draft);
 
                     var file = await contentService.SaveContentAsync(contentType, storeId, folderUrl, fileName, section.Body);
                     retVal.Add(file);
@@ -420,7 +419,9 @@ public class ContentController(
 
         ContentCacheRegion.ExpireContent(($"content-{storeId}"));
 
-        return Ok(retVal.ToArray());
+        var files = await publishingService.SetFilesStatuses(retVal);
+
+        return Ok(files);
     }
 
     [HttpPost]
@@ -428,7 +429,7 @@ public class ContentController(
     [Authorize(Permissions.Create)]
     public async Task<ActionResult> Publishing(string contentType, string storeId, [FromQuery] string relativeUrl, [FromQuery] bool publish)
     {
-        await _publishingService.PublishingAsync(contentType, storeId, relativeUrl, publish);
+        await publishingService.PublishingAsync(contentType, storeId, relativeUrl, publish);
         return Ok();
     }
 
@@ -437,7 +438,7 @@ public class ContentController(
     [Authorize(Permissions.Create)]
     public async Task<ActionResult<FilePublishStatus>> PublishStatus(string contentType, string storeId, [FromQuery] string relativeUrl)
     {
-        var result = await _publishingService.PublishStatusAsync(contentType, storeId, relativeUrl);
+        var result = await publishingService.PublishStatusAsync(contentType, storeId, relativeUrl);
         return Ok(result);
     }
 }
