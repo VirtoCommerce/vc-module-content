@@ -1,0 +1,364 @@
+{
+  "content": {
+    "main-menu-title": "Innhold",
+    "blades": {
+      "scope-value-pick-from-simple-list": {
+        "title": "Kun for valgte butikker",
+        "subtitle": "Velg butikker"
+      },
+      "move": {
+        "title": "Velg mappe"
+      },
+      "choose-action": {
+        "create": {
+          "title": "Ny",
+          "subtitle": "Velg hvilken side du vil opprette"
+        },
+        "edit": {
+          "title": "Rediger",
+          "subtitle": "Velg hvordan du vil redigere siden"
+        }
+      },
+      "markdownEditor": {
+        "create": {
+          "title": "HTML-side",
+          "description": "Bruk Markdown eller HTML for å opprette en ny side"
+        },
+        "edit": {
+          "title": "HTML-side",
+          "description": "Bruk Markdown eller HTML for å redigere siden"
+        }
+      },
+      "content-main": {
+        "title": "Innhold",
+        "subtitle": "Innholdstjeneste",
+        "labels": {
+          "no-active-theme": "Ingen aktivt tema, klikk for å velge",
+          "active-theme": "Aktivt tema:",
+          "edit-css-html": "Rediger CSS/HTML",
+          "preview-theme": "Forhåndsvis tema",
+          "customize-theme": "Tilpass tema",
+          "themes": "Temaer",
+          "pages": "Sider",
+          "link-lists": "Lenkelister",
+          "blogs": "Blogger",
+          "stores": "Butikker",
+          "no-stores": "Du kan konfigurere butikkinnhold her, men ingen butikker ble funnet. Åpne BUTIKKER-menyen for å opprette en"
+        }
+      },
+      "themes-list": {
+        "title": "{{name}}",
+        "subtitle": "Temaliste",
+        "labels": {
+          "name": "Navn",
+          "activated": "Aktivert i butikk",
+          "no-data": "Ingen temaer ennå"
+        }
+      },
+      "edit-asset": {
+        "subtitle": "Rediger dokumentinnhold",
+        "title-new": "Nytt dokument",
+        "subtitle-new": "Opprett nytt dokument",
+        "labels": {
+          "liquid-documentation": "Liquid-dokumentasjon",
+          "asset-name": "Ressursnavn",
+          "upload-new-file": "Last opp ny fil",
+          "progress": "Fremdrift"
+        },
+        "placeholders": {
+          "asset-name": "Skriv inn ressursnavn"
+        },
+        "validations": {
+          "name-invalid": "Navnet kan kun inneholde alfanumeriske tegn, \"_\", \"-\" og \".\"."
+        }
+      },
+      "edit-image-asset": {
+        "subtitle": "Rediger {{name}}"
+      },
+      "pages-list": {
+        "published": "Publisert",
+        "unpublished": "Upublisert",
+        "has-changes": "Har endringer",
+        "title-pages": "{{name}} sideliste",
+        "subtitle-pages": "Sideliste",
+        "title-blogs": "{{name}} sideliste",
+        "subtitle-blogs": "Bloggliste",
+        "labels": {
+          "name": "Navn",
+          "modified": "Endret"
+        },
+        "context-menu": {
+          "duplicate": "Dupliser",
+          "download": "Last ned",
+          "copy-link": "Kopier lenke",
+          "open-folder": "Åpne mappe",
+          "move": "Flytt"
+        }
+      },
+      "link-lists": {
+        "title": "Lenkelister",
+        "subtitle": "Lenkelister i butikk '{{name}}'",
+        "labels": {
+          "name": "Navn",
+          "language": "Språk",
+          "no-data": "Ingen lenkelister ennå"
+        }
+      },
+      "theme-detail": {
+        "subtitle": "Administrer tema",
+        "title-new": "Nytt tema",
+        "subtitle-new": "Opprett nytt tema",
+        "labels": {
+          "theme-name": "Temanavn"
+        },
+        "placeholders": {
+          "theme-name": "Skriv inn temanavn"
+        }
+      },
+      "theme-upload": {
+        "title": "Temalasting",
+        "labels": {
+          "select-files": "Velg temafil",
+          "drag-note": "Slipp tema (.zip) fil her",
+          "progress": "Fremdrift",
+          "file-selected": "Temafil: ",
+          "asset-uploaded": "Temafil lastet opp"
+        },
+        "placeholders": {
+          "image-url": "Lim inn temafilens URL her"
+        }
+      },
+      "edit-page": {
+        "title": "Rediger '{{name}}'",
+        "subtitle": "Sideredigering",
+        "title-new": "Ny side",
+        "subtitle-new": "Opprett ny side",
+        "subtitle-post": "Blogginnleggsredigering",
+        "title-new-post": "Nytt innlegg",
+        "subtitle-new-post": "Opprett nytt blogginnlegg",
+        "labels": {
+          "name": "Navn",
+          "language": "Språk",
+          "drag-note": "Dra og slipp fil her",
+          "progress": "Fremdrift",
+          "markdown": "Markdown",
+          "metadata": "Metadata",
+          "relativePath": "Relativ sti"
+        },
+        "placeholders": {
+          "name": "Skriv inn navn",
+          "language": "Velg...",
+          "metadata": "Skriv inn metadata"
+        },
+        "validations": {
+          "pageName-invalid": "Sidenavnet kan kun inneholde alfanumeriske tegn, \"_\", \"-\" og \".\"."
+        }
+      },
+      "menu-link-list": {
+        "title": "'{{name}}' liste",
+        "subtitle": "Rediger lenkeliste",
+        "title-new": "Ny liste",
+        "subtitle-new": "Opprett ny lenkeliste",
+        "labels": {
+          "name": "Navn",
+          "language": "Språk",
+          "list-note": "Arranger rekkefølgen lenkene vises i nettbutikken. Bruk dra og slipp for å endre rekkefølge",
+          "link-title": "Lenketittel",
+          "link-url": "URL",
+          "links-to": "Lenker til",
+          "linked-object": "Lenket objekt"
+        },
+        "placeholders": {
+          "name": "Skriv inn listenavn",
+          "language": "Velg...",
+          "associated-object-type": "Velg type",
+          "select-linked-object": "Velg"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "Velg produkt for lenke",
+        "title-category": "Velg kategori for lenke"
+      },
+      "edit-blog": {
+        "subtitle": "Rediger blogg",
+        "title-new": "Ny blogg",
+        "subtitle-new": "Opprett ny blogg",
+        "labels": {
+          "blog-name": "Bloggnavn",
+          "metadata": "Metadata"
+        },
+        "placeholders": {
+          "blog-name": "Skriv inn bloggnavn"
+        },
+        "validations": {
+          "name-invalid": "Navnet kan kun inneholde små alfanumeriske tegn, \" \" og \"-\".",
+          "name-used": "Dette navnet er allerede i bruk"
+        }
+      },
+      "asset-list": {
+        "subtitle": "Administrer temarressurser",
+        "labels": {
+          "add-new": "Legg til ny",
+          "nodata": "Ingen ressurser ennå"
+        }
+      },
+      "theme-asset-list": {
+        "title": "Rediger {{path}}",
+        "subtitle": "Temarressursliste",
+        "labels": {
+          "add-new": "Legg til ny",
+          "nodata": "Ingen ressurser ennå"
+        }
+      },
+      "store-url-list": {
+        "labels": {
+          "pick-url-to-preview": "Velg en butikk-URL for forhåndsvisning",
+          "no-store-urls": "Ingen butikk-URL-er ennå"
+        }
+      }
+    },
+    "widgets": {
+      "menu": {
+        "title": "Lenkelister",
+        "blade-subtitle": "Lenkelister"
+      },
+      "pages": {
+        "title": "Sider",
+        "blade-subtitle": "Sideliste"
+      },
+      "store-cms": {
+        "themes": "Temaer",
+        "pages": "Sider",
+        "blogs": "Blogger",
+        "links": "Lenkelister",
+        "active-theme": "Aktivt tema"
+      }
+    },
+    "dialogs": {
+      "theme-upload-confirmation": {
+        "title": "Bekreftelse av temalasting",
+        "message": "Et tema med samme navn finnes allerede. Filer vil bli pakket ut oppå eksisterende filer for dette temaet. Er du sikker?"
+      },
+      "theme-clone": {
+        "title": "Kloningsbekreftelse",
+        "message": "Er du sikker på at du vil klone det valgte temaet?"
+      },
+      "link-list-delete": {
+        "title": "Slettebekreftelse",
+        "message": "Er du sikker på at du vil slette de valgte lenkelistene?"
+      },
+      "links-delete": {
+        "title": "Slettebekreftelse",
+        "message": "Er du sikker på at du vil slette de valgte lenkene?"
+      },
+      "blog-delete": {
+        "title": "Slettebekreftelse",
+        "message": "Er du sikker på at du vil slette den valgte bloggen?"
+      },
+      "page-delete": {
+        "title": "Slettebekreftelse",
+        "message": "Er du sikker på at du vil slette denne siden?"
+      },
+      "blog-save": {
+        "title": "Lagre endringer",
+        "message": "Bloggen har blitt endret. Vil du lagre endringene?"
+      },
+      "page-save": {
+        "title": "Lagre endringer",
+        "message": "Siden har blitt endret. Vil du lagre endringene?"
+      },
+      "theme-save": {
+        "title": "Lagre endringer",
+        "message": "Temaet har blitt endret. Vil du lagre endringene?"
+      },
+      "theme-delete": {
+        "title": "Slettebekreftelse",
+        "message": "Er du sikker på at du vil slette '{{name}}'?",
+        "message-last-one": "Dette temaet er det siste. Hvis du sletter det, kan det føre til problemer med frontend-applikasjonen din. Er du sikker på at du vil slette '{{name}}'?"
+      },
+      "asset-delete": {
+        "title": "Slettebekreftelse",
+        "message": "Er du sikker på at du vil slette denne ressursen?"
+      },
+      "asset-save": {
+        "title": "Lagre endringer",
+        "message": "Ressursen har blitt endret. Vil du lagre endringene?"
+      },
+      "link-list-save": {
+        "title": "Lagre endringer",
+        "message": "Menylenkelisten har blitt endret. Vil du lagre endringene?"
+      },
+      "set-store-url": {
+        "title": "Butikkens URL er ikke angitt",
+        "message": "Angi butikkens URL før forhåndsvisning!"
+      },
+      "name-must-unique": {
+        "title": "Navnet er ikke unikt",
+        "message": "Navnet må være unikt for dette språket!"
+      },
+      "store-no-url": {
+        "title": "Advarsel om butikkinnstillinger",
+        "message": "Butikkens URL ble ikke konfigurert i butikkinnstillingene. Kontakt administratoren"
+      }
+    },
+    "commands": {
+      "add-link": "Legg til lenke",
+      "add-list": "Legg til liste",
+      "add-blog": "Legg til blogg",
+      "add-post": "Legg til innlegg",
+      "add-page": "Legg til",
+      "publish": "Publiser",
+      "unpublish": "Avpubliser",
+      "delete-links": "Slett lenker",
+      "delete-theme": "Slett",
+      "manage-metadata": "Administrer metadataegenskaper",
+      "edit-as-markdown": "Rediger som Markdown",
+      "edit-as-html": "Rediger som HTML",
+      "preview-theme": "Forhåndsvis",
+      "preview-index": "Søkeindeks",
+      "edit-css-html": "Rediger CSS/HTML",
+      "add-theme": "Legg til nytt tema",
+      "set-active": "Sett som aktivt",
+      "preview-page": "Forhåndsvis side",
+      "move": "Flytt",
+      "move-files": "Flytt hit"
+    },
+    "front-matter-description": {
+      "Title_FrontMatterHeader": "Sidetittel",
+      "Layout_FrontMatterHeader": "Hvis angitt, spesifiserer temalayoutfilen som skal brukes. Bruk layoutfilens navn uten filendelse, f.eks. 'Theme'",
+      "Template_FrontMatterHeader": "Navn på Liquid-mal i temaet som brukes til å vise denne siden ved å inkludere uttrykket {{ page.content }}",
+      "Permalink_FrontMatterHeader": "Henviser til URL-er (ekskludert domenenavn eller mappemappe) for sidene og innleggene dine. Mulige verdier: :folder/:categories/:year/:month/:day/:title, my-page, :folder/my-page",
+      "Published_FrontMatterHeader": "Sett til false hvis du ikke vil at et spesifikt innlegg skal vises når nettstedet genereres",
+      "Category_FrontMatterHeader": "I stedet for å plassere innlegg i mapper, kan du angi en eller flere kategorier som innlegget tilhører. Når nettstedet genereres, vil innlegget oppføre seg som om det hadde blitt plassert i disse kategoriene normalt. Kategorier (flertall) kan angis som en YAML-liste eller som en kommaseparert streng",
+      "Tags_FrontMatterHeader": "Lignende kategorier kan en eller flere tagger legges til et innlegg. Også som kategorier kan tagger angis som en YAML-liste eller som en kommaseparert streng",
+      "Alias_FrontMatterHeader": "Definer aliaser for enkeltsider ved å angi dem i YAML-frontmatter. Disse aliasene kan brukes til omdirigeringer",
+      "Authorize_FrontMatterHeader": "Sett til true hvis du vil blokkere anonym tilgang til siden"
+    },
+    "permissions": {
+      "content:access": "Åpne butikkens innholdsmeny",
+      "content:create": "Opprett butikkens innholdsdata",
+      "content:read": "Vis butikkens innholdsdata",
+      "content:update": "Oppdater butikkens innholdsdata",
+      "content:delete": "Slett butikkens innholdsdata"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Content": {
+      "description": "Eksporter/importer sider, temaer, lenker, menyelementer"
+    }
+  },
+  "settings": {
+    "VirtoCommerce": {
+      "Search": {
+        "IndexingJobs": {
+          "IndexationDate": {
+            "ContentFile": {
+              "title": "Dato og tid for innholdsindeksering",
+              "description": "Dato og tid da innholdsindekseringsoppgaven starter"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,364 @@
+{
+  "content": {
+    "main-menu-title": "Sisältö",
+    "blades": {
+      "scope-value-pick-from-simple-list": {
+        "title": "Vain valituille kaupoille",
+        "subtitle": "Valitse kaupat"
+      },
+      "move": {
+        "title": "Valitse kansio"
+      },
+      "choose-action": {
+        "create": {
+          "title": "Uusi",
+          "subtitle": "Valitse, minkä sivun haluat luoda"
+        },
+        "edit": {
+          "title": "Muokkaa",
+          "subtitle": "Valitse, miten haluat muokata sivua"
+        }
+      },
+      "markdownEditor": {
+        "create": {
+          "title": "HTML-sivu",
+          "description": "Käytä Markdownia tai HTML:ää uuden sivun luomiseen"
+        },
+        "edit": {
+          "title": "HTML-sivu",
+          "description": "Käytä Markdownia tai HTML:ää sivun muokkaamiseen"
+        }
+      },
+      "content-main": {
+        "title": "Sisältö",
+        "subtitle": "Sisältöpalvelu",
+        "labels": {
+          "no-active-theme": "Ei aktiivista teemaa, klikkaa valitaksesi",
+          "active-theme": "Aktiivinen teema:",
+          "edit-css-html": "Muokkaa CSS/HTML",
+          "preview-theme": "Esikatsele teemaa",
+          "customize-theme": "Mukauta teemaa",
+          "themes": "Teemat",
+          "pages": "Sivut",
+          "link-lists": "Linkkilistat",
+          "blogs": "Blogit",
+          "stores": "Kaupat",
+          "no-stores": "Voit määrittää kauppojen sisällön täällä, mutta yhtään kauppaa ei löytynyt. Avaa KAUPAT-valikko luodaksesi sellaisen"
+        }
+      },
+      "themes-list": {
+        "title": "{{name}}",
+        "subtitle": "Teemaluettelo",
+        "labels": {
+          "name": "Nimi",
+          "activated": "Aktivoitu kaupassa",
+          "no-data": "Ei vielä teemoja"
+        }
+      },
+      "edit-asset": {
+        "subtitle": "Muokkaa asiakirjan sisältöä",
+        "title-new": "Uusi asiakirja",
+        "subtitle-new": "Luo uusi asiakirja",
+        "labels": {
+          "liquid-documentation": "Liquid-dokumentaatio",
+          "asset-name": "Resurssin nimi",
+          "upload-new-file": "Lataa uusi tiedosto",
+          "progress": "Edistyminen"
+        },
+        "placeholders": {
+          "asset-name": "Syötä resurssin nimi"
+        },
+        "validations": {
+          "name-invalid": "Nimi voi sisältää vain aakkosnumeerisia merkkejä, \"_\", \"-\" ja \".\"."
+        }
+      },
+      "edit-image-asset": {
+        "subtitle": "Muokkaa {{name}}"
+      },
+      "pages-list": {
+        "published": "Julkaistu",
+        "unpublished": "Julkaisematon",
+        "has-changes": "Sisältää muutoksia",
+        "title-pages": "{{name}} sivuluettelo",
+        "subtitle-pages": "Sivuluettelo",
+        "title-blogs": "{{name}} sivuluettelo",
+        "subtitle-blogs": "Blogiluettelo",
+        "labels": {
+          "name": "Nimi",
+          "modified": "Muokattu"
+        },
+        "context-menu": {
+          "duplicate": "Kopioi",
+          "download": "Lataa",
+          "copy-link": "Kopioi linkki",
+          "open-folder": "Avaa kansio",
+          "move": "Siirrä"
+        }
+      },
+      "link-lists": {
+        "title": "Linkkilistat",
+        "subtitle": "Linkkilistat kaupassa '{{name}}'",
+        "labels": {
+          "name": "Nimi",
+          "language": "Kieli",
+          "no-data": "Ei vielä linkkilistoja"
+        }
+      },
+      "theme-detail": {
+        "subtitle": "Hallinnoi teemaa",
+        "title-new": "Uusi teema",
+        "subtitle-new": "Luo uusi teema",
+        "labels": {
+          "theme-name": "Teeman nimi"
+        },
+        "placeholders": {
+          "theme-name": "Syötä teeman nimi"
+        }
+      },
+      "theme-upload": {
+        "title": "Teeman lataus",
+        "labels": {
+          "select-files": "Valitse teematiedosto",
+          "drag-note": "Pudota teema (.zip) tiedosto tähän",
+          "progress": "Edistyminen",
+          "file-selected": "Teematiedosto: ",
+          "asset-uploaded": "Teematiedosto ladattu"
+        },
+        "placeholders": {
+          "image-url": "Liitä teematiedoston URL tähän"
+        }
+      },
+      "edit-page": {
+        "title": "Muokkaa '{{name}}'",
+        "subtitle": "Sivun muokkaus",
+        "title-new": "Uusi sivu",
+        "subtitle-new": "Luo uusi sivu",
+        "subtitle-post": "Blogikirjoituksen muokkaus",
+        "title-new-post": "Uusi kirjoitus",
+        "subtitle-new-post": "Luo uusi blogikirjoitus",
+        "labels": {
+          "name": "Nimi",
+          "language": "Kieli",
+          "drag-note": "Raahaa ja pudota tiedosto tähän",
+          "progress": "Edistyminen",
+          "markdown": "Markdown",
+          "metadata": "Metatiedot",
+          "relativePath": "Suhteellinen polku"
+        },
+        "placeholders": {
+          "name": "Syötä nimi",
+          "language": "Valitse...",
+          "metadata": "Syötä metatiedot"
+        },
+        "validations": {
+          "pageName-invalid": "Sivun nimi voi sisältää vain aakkosnumeerisia merkkejä, \"_\", \"-\" ja \".\"."
+        }
+      },
+      "menu-link-list": {
+        "title": "'{{name}}' lista",
+        "subtitle": "Muokkaa linkkilistaa",
+        "title-new": "Uusi lista",
+        "subtitle-new": "Luo uusi linkkilista",
+        "labels": {
+          "name": "Nimi",
+          "language": "Kieli",
+          "list-note": "Järjestä linkkien näyttöjärjestys verkkokaupassa. Käytä raahausta ja pudotusta uudelleenjärjestämiseen",
+          "link-title": "Linkin otsikko",
+          "link-url": "URL",
+          "links-to": "Linkittää kohteeseen",
+          "linked-object": "Linkitetty kohde"
+        },
+        "placeholders": {
+          "name": "Syötä listan nimi",
+          "language": "Valitse...",
+          "associated-object-type": "Valitse tyyppi",
+          "select-linked-object": "Valitse"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "Valitse tuote linkkiin",
+        "title-category": "Valitse kategoria linkkiin"
+      },
+      "edit-blog": {
+        "subtitle": "Muokkaa blogia",
+        "title-new": "Uusi blogi",
+        "subtitle-new": "Luo uusi blogi",
+        "labels": {
+          "blog-name": "Blogin nimi",
+          "metadata": "Metatiedot"
+        },
+        "placeholders": {
+          "blog-name": "Syötä blogin nimi"
+        },
+        "validations": {
+          "name-invalid": "Nimi voi sisältää vain pieniä aakkosnumeerisia merkkejä, \" \" ja \"-\".",
+          "name-used": "Tämä nimi on jo käytössä"
+        }
+      },
+      "asset-list": {
+        "subtitle": "Hallinnoi teeman resursseja",
+        "labels": {
+          "add-new": "Lisää uusi",
+          "nodata": "Ei vielä resursseja"
+        }
+      },
+      "theme-asset-list": {
+        "title": "Muokkaa {{path}}",
+        "subtitle": "Teeman resurssilista",
+        "labels": {
+          "add-new": "Lisää uusi",
+          "nodata": "Ei vielä resursseja"
+        }
+      },
+      "store-url-list": {
+        "labels": {
+          "pick-url-to-preview": "Valitse kaupan URL esikatselua varten",
+          "no-store-urls": "Ei vielä kaupan URL-osoitteita"
+        }
+      }
+    },
+    "widgets": {
+      "menu": {
+        "title": "Linkkilistat",
+        "blade-subtitle": "Linkkilistat"
+      },
+      "pages": {
+        "title": "Sivut",
+        "blade-subtitle": "Sivuluettelo"
+      },
+      "store-cms": {
+        "themes": "Teemat",
+        "pages": "Sivut",
+        "blogs": "Blogit",
+        "links": "Linkkilistat",
+        "active-theme": "Aktiivinen teema"
+      }
+    },
+    "dialogs": {
+      "theme-upload-confirmation": {
+        "title": "Teeman latauksen vahvistus",
+        "message": "Samanniminen teema on jo olemassa. Tiedostot puretaan olemassa olevien teeman tiedostojen päälle. Oletko varma?"
+      },
+      "theme-clone": {
+        "title": "Kloonauksen vahvistus",
+        "message": "Oletko varma, että haluat kloonata valitun teeman?"
+      },
+      "link-list-delete": {
+        "title": "Poiston vahvistus",
+        "message": "Oletko varma, että haluat poistaa valitut linkkilistat?"
+      },
+      "links-delete": {
+        "title": "Poiston vahvistus",
+        "message": "Oletko varma, että haluat poistaa valitut linkit?"
+      },
+      "blog-delete": {
+        "title": "Poiston vahvistus",
+        "message": "Oletko varma, että haluat poistaa valitun blogin?"
+      },
+      "page-delete": {
+        "title": "Poiston vahvistus",
+        "message": "Oletko varma, että haluat poistaa tämän sivun?"
+      },
+      "blog-save": {
+        "title": "Tallenna muutokset",
+        "message": "Blogia on muokattu. Haluatko tallentaa muutokset?"
+      },
+      "page-save": {
+        "title": "Tallenna muutokset",
+        "message": "Sivua on muokattu. Haluatko tallentaa muutokset?"
+      },
+      "theme-save": {
+        "title": "Tallenna muutokset",
+        "message": "Teemaa on muokattu. Haluatko tallentaa muutokset?"
+      },
+      "theme-delete": {
+        "title": "Poiston vahvistus",
+        "message": "Oletko varma, että haluat poistaa '{{name}}'?",
+        "message-last-one": "Tämä teema on viimeinen. Jos poistat sen, saatat rikkoa käyttöliittymäsovelluksesi. Oletko varma, että haluat poistaa '{{name}}'?"
+      },
+      "asset-delete": {
+        "title": "Poiston vahvistus",
+        "message": "Oletko varma, että haluat poistaa tämän resurssin?"
+      },
+      "asset-save": {
+        "title": "Tallenna muutokset",
+        "message": "Resurssia on muokattu. Haluatko tallentaa muutokset?"
+      },
+      "link-list-save": {
+        "title": "Tallenna muutokset",
+        "message": "Valikkolinkkilistaa on muokattu. Haluatko tallentaa muutokset?"
+      },
+      "set-store-url": {
+        "title": "Kaupan URL-osoitetta ei ole asetettu",
+        "message": "Aseta kaupan URL ennen esikatselua!"
+      },
+      "name-must-unique": {
+        "title": "Nimi ei ole yksilöllinen",
+        "message": "Nimen tulee olla yksilöllinen tälle kielelle!"
+      },
+      "store-no-url": {
+        "title": "Kaupan asetusten varoitus",
+        "message": "Kaupan URL-osoitetta ei ole määritetty kaupan asetuksissa. Ota yhteyttä järjestelmänvalvojaan"
+      }
+    },
+    "commands": {
+      "add-link": "Lisää linkki",
+      "add-list": "Lisää lista",
+      "add-blog": "Lisää blogi",
+      "add-post": "Lisää kirjoitus",
+      "add-page": "Lisää",
+      "publish": "Julkaise",
+      "unpublish": "Poista julkaisusta",
+      "delete-links": "Poista linkit",
+      "delete-theme": "Poista",
+      "manage-metadata": "Hallinnoi metatietojen ominaisuuksia",
+      "edit-as-markdown": "Muokkaa Markdownina",
+      "edit-as-html": "Muokkaa HTML:nä",
+      "preview-theme": "Esikatsele",
+      "preview-index": "Hakuindeksi",
+      "edit-css-html": "Muokkaa CSS/HTML",
+      "add-theme": "Lisää uusi teema",
+      "set-active": "Aseta aktiiviseksi",
+      "preview-page": "Esikatsele sivu",
+      "move": "Siirrä",
+      "move-files": "Siirrä tänne"
+    },
+    "front-matter-description": {
+      "Title_FrontMatterHeader": "Sivun otsikko",
+      "Layout_FrontMatterHeader": "Jos asetettu, määrittää käytettävän teeman asettelutiedoston. Käytä asettelutiedoston nimeä ilman tiedostopäätettä, esim. 'Theme'",
+      "Template_FrontMatterHeader": "Teemassa käytetyn Liquid-mallin nimi, jota käytetään tämän sivun näyttämiseen sisällyttämällä {{ page.content }} -lauseke",
+      "Permalink_FrontMatterHeader": "Viittaa sivujen ja kirjoitusten URL-osoitteisiin (ilman verkkotunnusta tai kansiota). Mahdollisia arvoja: :folder/:categories/:year/:month/:day/:title, my-page, :folder/my-page",
+      "Published_FrontMatterHeader": "Aseta arvoon false, jos et halua tietyn kirjoituksen näkyvän, kun sivusto generoidaan",
+      "Category_FrontMatterHeader": "Sen sijaan, että sijoittaisit kirjoitukset kansioihin, voit määrittää yhden tai useamman kategorian, joihin kirjoitus kuuluu. Kun sivusto generoidaan, kirjoitus käyttäytyy kuin se olisi sijoitettu näihin kategorioihin normaalisti. Kategoriat (monikkomuoto) voidaan määrittää YAML-listana tai pilkulla erotettuna merkkijonona",
+      "Tags_FrontMatterHeader": "Kategorioiden tapaan kirjoitukseen voidaan lisätä yksi tai useampi tunniste. Kuten kategoriat, myös tunnisteet voidaan määrittää YAML-listana tai pilkulla erotettuna merkkijonona",
+      "Alias_FrontMatterHeader": "Määritä aliakset yksittäisille sivuille YAML-etumateriaalissa. Näitä aliaksia voidaan käyttää uudelleenohjauksiin",
+      "Authorize_FrontMatterHeader": "Aseta arvoon true, jos haluat estää anonyymin pääsyn sivulle"
+    },
+    "permissions": {
+      "content:access": "Avaa kaupan sisältövalikko",
+      "content:create": "Luo kaupan sisältödataa",
+      "content:read": "Näytä kaupan sisältödataa",
+      "content:update": "Päivitä kaupan sisältödataa",
+      "content:delete": "Poista kaupan sisältödataa"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Content": {
+      "description": "Vie/tuo sivuja, teemoja, linkkejä, valikkokohteita"
+    }
+  },
+  "settings": {
+    "VirtoCommerce": {
+      "Search": {
+        "IndexingJobs": {
+          "IndexationDate": {
+            "ContentFile": {
+              "title": "Sisällön indeksointipäivä ja -aika",
+              "description": "Päivä ja aika, jolloin sisällön indeksointitehtävä aloitetaan"
+            }
+          }
+        }
+      }
+    }
+  }
+}
