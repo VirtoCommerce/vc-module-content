@@ -21,12 +21,12 @@
       },
       "markdownEditor": {
         "create": {
-          "title": "Html page",
-          "description": "Use markdown or html to create a new page"
+          "title": "HTML page",
+          "description": "Use Markdown or HTML to create a new page"
         },
         "edit": {
-          "title": "Html page",
-          "description": "Use markdown or html to edit the page"
+          "title": "HTML page",
+          "description": "Use Markdown or HTML to edit the page"
         }
       },
       "content-main": {
@@ -96,7 +96,7 @@
         }
       },
       "link-lists": {
-        "title": "Link Lists",
+        "title": "Link lists",
         "subtitle": "Link Lists in store '{{name}}'",
         "labels": {
           "name": "Name",
@@ -158,7 +158,7 @@
         "title": "'{{name}}' list",
         "subtitle": "Edit Link list",
         "title-new": "New list",
-        "subtitle-new": "Create new Link list",
+        "subtitle-new": "Create new link list",
         "labels": {
           "name": "Name",
           "language": "Language",
@@ -313,7 +313,7 @@
       "delete-theme": "Delete",
       "manage-metadata": "Manage metadata properties",
       "edit-as-markdown": "Edit as markdown",
-      "edit-as-html": "Edit as html",
+      "edit-as-html": "Edit as HTML",
       "preview-theme": "Preview",
       "preview-index": "Search index",
       "edit-css-html": "Edit CSS/HTML",
@@ -325,10 +325,10 @@
     },
     "front-matter-description": {
       "Title_FrontMatterHeader": "Page title",
-      "Layout_FrontMatterHeader": "If set, specifies the theme layout file to use. Use the layout file name without the extension. e.g. 'Theme'",
+      "Layout_FrontMatterHeader": "If set, specifies the theme layout file to use. Use the layout file name without the extension, e.g. 'Theme'",
       "Template_FrontMatterHeader": "Name of liquid template in the theme used to display this page by including the {{ page.content }} expression",
       "Permalink_FrontMatterHeader": "Refer to the URLs (excluding the domain name or directory folder) for your pages, posts. Possible values :folder/:categories/:year/:month/:day/:title, my-page, :folder/my-page",
-      "Published_FrontMatterHeader": "Set to false if you do not want a specific post to be diplayed when the site is generated",
+      "Published_FrontMatterHeader": "Set to false if you do not want a specific post to be displayed when the site is generated",
       "Category_FrontMatterHeader": "Instead of placing posts in folders, you can specify one or more categories to which the post belongs. When the site is generated, the post will behave as if it had been placed in those categories normally. Categories (plural key) can be specified as a YAML list or a comma-separated string",
       "Tags_FrontMatterHeader": "Similar to categories, one or more tags can be added to a post. Also like categories, tags can be specified as a YAML list or as a comma-separated string",
       "Alias_FrontMatterHeader": "Define aliases for individual pages by specifying them in the YAML front matter. These aliases can be used for redirection",
@@ -344,7 +344,7 @@
   },
   "module": {
     "VirtoCommerce.Content": {
-      "description": "Export/Import pages, themes, links, menu items"
+      "description": "Export/ import pages, themes, links, menu items"
     }
   },
   "settings": {

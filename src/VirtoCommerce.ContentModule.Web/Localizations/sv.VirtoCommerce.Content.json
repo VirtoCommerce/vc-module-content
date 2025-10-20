@@ -1,0 +1,364 @@
+{
+  "content": {
+    "main-menu-title": "Innehåll",
+    "blades": {
+      "scope-value-pick-from-simple-list": {
+        "title": "Endast för valda butiker",
+        "subtitle": "Välj butiker"
+      },
+      "move": {
+        "title": "Välj mapp"
+      },
+      "choose-action": {
+        "create": {
+          "title": "Ny",
+          "subtitle": "Välj vilken sida du vill skapa"
+        },
+        "edit": {
+          "title": "Redigera",
+          "subtitle": "Välj hur du vill redigera sidan"
+        }
+      },
+      "markdownEditor": {
+        "create": {
+          "title": "HTML-sida",
+          "description": "Använd Markdown eller HTML för att skapa en ny sida"
+        },
+        "edit": {
+          "title": "HTML-sida",
+          "description": "Använd Markdown eller HTML för att redigera sidan"
+        }
+      },
+      "content-main": {
+        "title": "Innehåll",
+        "subtitle": "Innehållstjänst",
+        "labels": {
+          "no-active-theme": "Inget aktivt tema, klicka för att välja",
+          "active-theme": "Aktivt tema:",
+          "edit-css-html": "Redigera CSS/HTML",
+          "preview-theme": "Förhandsgranska tema",
+          "customize-theme": "Anpassa tema",
+          "themes": "Teman",
+          "pages": "Sidor",
+          "link-lists": "Länklister",
+          "blogs": "Bloggar",
+          "stores": "Butiker",
+          "no-stores": "Du kan konfigurera butiksinnehåll här, men inga butiker hittades. Öppna BUTIKER-menyn för att skapa en"
+        }
+      },
+      "themes-list": {
+        "title": "{{name}}",
+        "subtitle": "Temalista",
+        "labels": {
+          "name": "Namn",
+          "activated": "Aktiverat i butik",
+          "no-data": "Inga teman ännu"
+        }
+      },
+      "edit-asset": {
+        "subtitle": "Redigera dokumentinnehåll",
+        "title-new": "Nytt dokument",
+        "subtitle-new": "Skapa nytt dokument",
+        "labels": {
+          "liquid-documentation": "Liquid-dokumentation",
+          "asset-name": "Tillgångsnamn",
+          "upload-new-file": "Ladda upp ny fil",
+          "progress": "Förlopp"
+        },
+        "placeholders": {
+          "asset-name": "Ange tillgångsnamn"
+        },
+        "validations": {
+          "name-invalid": "Namnet får endast innehålla alfanumeriska tecken, \"_\", \"-\" och \".\"."
+        }
+      },
+      "edit-image-asset": {
+        "subtitle": "Redigera {{name}}"
+      },
+      "pages-list": {
+        "published": "Publicerad",
+        "unpublished": "Opublicerad",
+        "has-changes": "Har ändringar",
+        "title-pages": "{{name}} sidlista",
+        "subtitle-pages": "Sidlista",
+        "title-blogs": "{{name}} sidlista",
+        "subtitle-blogs": "Blogglista",
+        "labels": {
+          "name": "Namn",
+          "modified": "Ändrad"
+        },
+        "context-menu": {
+          "duplicate": "Duplicera",
+          "download": "Ladda ner",
+          "copy-link": "Kopiera länk",
+          "open-folder": "Öppna mapp",
+          "move": "Flytta"
+        }
+      },
+      "link-lists": {
+        "title": "Länklister",
+        "subtitle": "Länklister i butik '{{name}}'",
+        "labels": {
+          "name": "Namn",
+          "language": "Språk",
+          "no-data": "Inga länklister ännu"
+        }
+      },
+      "theme-detail": {
+        "subtitle": "Hantera tema",
+        "title-new": "Nytt tema",
+        "subtitle-new": "Skapa nytt tema",
+        "labels": {
+          "theme-name": "Temanamn"
+        },
+        "placeholders": {
+          "theme-name": "Ange temanamn"
+        }
+      },
+      "theme-upload": {
+        "title": "Temaladdning",
+        "labels": {
+          "select-files": "Välj temafil",
+          "drag-note": "Släpp tema (.zip) fil här",
+          "progress": "Förlopp",
+          "file-selected": "Temafil: ",
+          "asset-uploaded": "Temafil uppladdad"
+        },
+        "placeholders": {
+          "image-url": "Klistra in temafilens URL här"
+        }
+      },
+      "edit-page": {
+        "title": "Redigera '{{name}}'",
+        "subtitle": "Sidredigering",
+        "title-new": "Ny sida",
+        "subtitle-new": "Skapa ny sida",
+        "subtitle-post": "Blogginläggsredigering",
+        "title-new-post": "Nytt inlägg",
+        "subtitle-new-post": "Skapa nytt blogginlägg",
+        "labels": {
+          "name": "Namn",
+          "language": "Språk",
+          "drag-note": "Dra och släpp fil här",
+          "progress": "Förlopp",
+          "markdown": "Markdown",
+          "metadata": "Metadata",
+          "relativePath": "Relativ sökväg"
+        },
+        "placeholders": {
+          "name": "Ange namn",
+          "language": "Välj...",
+          "metadata": "Ange metadata"
+        },
+        "validations": {
+          "pageName-invalid": "Sidnamnet får endast innehålla alfanumeriska tecken, \"_\", \"-\" och \".\"."
+        }
+      },
+      "menu-link-list": {
+        "title": "'{{name}}' lista",
+        "subtitle": "Redigera länklista",
+        "title-new": "Ny lista",
+        "subtitle-new": "Skapa ny länklista",
+        "labels": {
+          "name": "Namn",
+          "language": "Språk",
+          "list-note": "Ordna ordningen för hur länkar visas i webbutiken. Använd dra och släpp för att ändra ordning",
+          "link-title": "Länktitel",
+          "link-url": "URL",
+          "links-to": "Länkar till",
+          "linked-object": "Länkat objekt"
+        },
+        "placeholders": {
+          "name": "Ange listans namn",
+          "language": "Välj...",
+          "associated-object-type": "Välj typ",
+          "select-linked-object": "Välj"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "Välj produkt för länk",
+        "title-category": "Välj kategori för länk"
+      },
+      "edit-blog": {
+        "subtitle": "Redigera blogg",
+        "title-new": "Ny blogg",
+        "subtitle-new": "Skapa ny blogg",
+        "labels": {
+          "blog-name": "Bloggnamn",
+          "metadata": "Metadata"
+        },
+        "placeholders": {
+          "blog-name": "Ange bloggnamn"
+        },
+        "validations": {
+          "name-invalid": "Namnet får endast innehålla små alfanumeriska tecken, \" \" och \"-\".",
+          "name-used": "Detta namn används redan"
+        }
+      },
+      "asset-list": {
+        "subtitle": "Hantera tematillgångar",
+        "labels": {
+          "add-new": "Lägg till ny",
+          "nodata": "Inga tillgångar ännu"
+        }
+      },
+      "theme-asset-list": {
+        "title": "Redigera {{path}}",
+        "subtitle": "Tematillgångslista",
+        "labels": {
+          "add-new": "Lägg till ny",
+          "nodata": "Inga tillgångar ännu"
+        }
+      },
+      "store-url-list": {
+        "labels": {
+          "pick-url-to-preview": "Välj en butiks-URL för förhandsgranskning",
+          "no-store-urls": "Inga butiks-URL:er ännu"
+        }
+      }
+    },
+    "widgets": {
+      "menu": {
+        "title": "Länklister",
+        "blade-subtitle": "Länklister"
+      },
+      "pages": {
+        "title": "Sidor",
+        "blade-subtitle": "Sidlista"
+      },
+      "store-cms": {
+        "themes": "Teman",
+        "pages": "Sidor",
+        "blogs": "Bloggar",
+        "links": "Länklister",
+        "active-theme": "Aktivt tema"
+      }
+    },
+    "dialogs": {
+      "theme-upload-confirmation": {
+        "title": "Bekräftelse av temaladdning",
+        "message": "Ett tema med samma namn finns redan. Filer kommer att packas upp ovanpå befintliga filer för detta tema. Är du säker?"
+      },
+      "theme-clone": {
+        "title": "Kloningsbekräftelse",
+        "message": "Är du säker på att du vill klona det valda temat?"
+      },
+      "link-list-delete": {
+        "title": "Raderingsbekräftelse",
+        "message": "Är du säker på att du vill radera de valda länklistorna?"
+      },
+      "links-delete": {
+        "title": "Raderingsbekräftelse",
+        "message": "Är du säker på att du vill radera de valda länkarna?"
+      },
+      "blog-delete": {
+        "title": "Raderingsbekräftelse",
+        "message": "Är du säker på att du vill radera den valda bloggen?"
+      },
+      "page-delete": {
+        "title": "Raderingsbekräftelse",
+        "message": "Är du säker på att du vill radera denna sida?"
+      },
+      "blog-save": {
+        "title": "Spara ändringar",
+        "message": "Bloggen har ändrats. Vill du spara ändringarna?"
+      },
+      "page-save": {
+        "title": "Spara ändringar",
+        "message": "Sidan har ändrats. Vill du spara ändringarna?"
+      },
+      "theme-save": {
+        "title": "Spara ändringar",
+        "message": "Temat har ändrats. Vill du spara ändringarna?"
+      },
+      "theme-delete": {
+        "title": "Raderingsbekräftelse",
+        "message": "Är du säker på att du vill radera '{{name}}'?",
+        "message-last-one": "Detta tema är det sista. Om du raderar det kan du orsaka problem med din frontend-applikation. Är du säker på att du vill radera '{{name}}'?"
+      },
+      "asset-delete": {
+        "title": "Raderingsbekräftelse",
+        "message": "Är du säker på att du vill radera denna tillgång?"
+      },
+      "asset-save": {
+        "title": "Spara ändringar",
+        "message": "Tillgången har ändrats. Vill du spara ändringarna?"
+      },
+      "link-list-save": {
+        "title": "Spara ändringar",
+        "message": "Menylänklistan har ändrats. Vill du spara ändringarna?"
+      },
+      "set-store-url": {
+        "title": "URL för butiken är inte angiven",
+        "message": "Ange butikens URL innan du förhandsgranskar!"
+      },
+      "name-must-unique": {
+        "title": "Namnet är inte unikt",
+        "message": "Namnet måste vara unikt för detta språk!"
+      },
+      "store-no-url": {
+        "title": "Varning för butiksinställningar",
+        "message": "Butikens URL har inte konfigurerats i butiksinställningarna. Kontakta administratören"
+      }
+    },
+    "commands": {
+      "add-link": "Lägg till länk",
+      "add-list": "Lägg till lista",
+      "add-blog": "Lägg till blogg",
+      "add-post": "Lägg till inlägg",
+      "add-page": "Lägg till",
+      "publish": "Publicera",
+      "unpublish": "Avpublicera",
+      "delete-links": "Radera länkar",
+      "delete-theme": "Radera",
+      "manage-metadata": "Hantera metadataegenskaper",
+      "edit-as-markdown": "Redigera som Markdown",
+      "edit-as-html": "Redigera som HTML",
+      "preview-theme": "Förhandsgranska",
+      "preview-index": "Sökindex",
+      "edit-css-html": "Redigera CSS/HTML",
+      "add-theme": "Lägg till nytt tema",
+      "set-active": "Sätt som aktivt",
+      "preview-page": "Förhandsgranska sida",
+      "move": "Flytta",
+      "move-files": "Flytta hit"
+    },
+    "front-matter-description": {
+      "Title_FrontMatterHeader": "Sidtitel",
+      "Layout_FrontMatterHeader": "Om angivet, specificerar temats layoutfil som ska användas. Använd layoutfilens namn utan filändelse, t.ex. 'Theme'",
+      "Template_FrontMatterHeader": "Namn på Liquid-mall i temat som används för att visa denna sida genom att inkludera uttrycket {{ page.content }}",
+      "Permalink_FrontMatterHeader": "Hänvisar till URL:er (exklusive domännamn eller mapp) för dina sidor och inlägg. Möjliga värden: :folder/:categories/:year/:month/:day/:title, my-page, :folder/my-page",
+      "Published_FrontMatterHeader": "Sätt till false om du inte vill att ett specifikt inlägg ska visas när webbplatsen genereras",
+      "Category_FrontMatterHeader": "Istället för att placera inlägg i mappar kan du ange en eller flera kategorier som inlägget tillhör. När webbplatsen genereras kommer inlägget att bete sig som om det hade placerats i dessa kategorier normalt. Kategorier (plural) kan anges som en YAML-lista eller som en kommaseparerad sträng",
+      "Tags_FrontMatterHeader": "Liknande kategorier kan en eller flera taggar läggas till ett inlägg. Liksom kategorier kan taggar anges som en YAML-lista eller som en kommaseparerad sträng",
+      "Alias_FrontMatterHeader": "Definiera alias för enskilda sidor genom att ange dem i YAML-frontmatter. Dessa alias kan användas för omdirigeringar",
+      "Authorize_FrontMatterHeader": "Sätt till true om du vill blockera anonym åtkomst till sidan"
+    },
+    "permissions": {
+      "content:access": "Öppna butikens innehållsmeny",
+      "content:create": "Skapa butikens innehållsdata",
+      "content:read": "Visa butikens innehållsdata",
+      "content:update": "Uppdatera butikens innehållsdata",
+      "content:delete": "Radera butikens innehållsdata"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Content": {
+      "description": "Exportera/importera sidor, teman, länkar, menyobjekt"
+    }
+  },
+  "settings": {
+    "VirtoCommerce": {
+      "Search": {
+        "IndexingJobs": {
+          "IndexationDate": {
+            "ContentFile": {
+              "title": "Datum och tid för innehållsindexering",
+              "description": "Datum och tid då innehållsindexeringsuppgiften startar"
+            }
+          }
+        }
+      }
+    }
+  }
+}
