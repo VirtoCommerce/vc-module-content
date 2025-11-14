@@ -8,5 +8,6 @@ namespace VirtoCommerce.ContentModule.Core.Model
         public string CultureName { get; set; }
         public string FolderUrl { get; set; }
         public string ContentType { get; set; }
+        public string OrganizationId { get; set; }
     }
 }
