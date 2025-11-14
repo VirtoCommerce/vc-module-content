@@ -78,6 +78,10 @@ namespace VirtoCommerce.ContentModule.Data.Search
             {
                 result.Add(CreateTermFilter("ContentType", criteria.ContentType));
             }
+            if (!string.IsNullOrEmpty(criteria.OrganizationId))
+            {
+                result.Add(CreateTermFilter("OrganizationId", criteria.OrganizationId));
+            }
 
 
             return result;
