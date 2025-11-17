@@ -213,6 +213,20 @@ angular.module('virtoCommerce.contentModule')
 			bladeNavigationService.showBlade(newBlade, blade);
 		};
 
+		blade.openStore = function (store) {
+			if (store.url) {
+				window.open(store.url, '_blank');
+			}
+			else {
+				var dialog = {
+					id: "noUrlInStore",
+					title: "content.dialogs.set-store-url.title",
+					message: "content.dialogs.set-store-url.message"
+				}
+				dialogService.showNotificationDialog(dialog);
+			}
+		}
+
 		blade.previewTheme = function (data) {
 			if (data.store.url) {
 				window.open(data.store.url + '?previewtheme=' + data.activeThemeName, '_blank');

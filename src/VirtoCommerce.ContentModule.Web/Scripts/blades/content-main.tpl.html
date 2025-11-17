@@ -14,8 +14,8 @@
     <div class="inner-block">
       <div class="form">
         <div class="tile-group six" ng-repeat-start="data in blade.currentEntities | orderBy:'store.name'">
-          <div class="tile double __brand">
-            <div class="tile-descr" style="line-height:30px">{{data.store.name}}</div>
+          <div class="tile double __brand" ng-click="blade.openStore(data.store)">
+            <div class="tile-descr" style="font-size: 18px; line-height: 30px">{{data.store.name}}</div>
             <div class="tile-image">
               <img fallback-src="Modules/$(VirtoCommerce.Content)/Content/logo.png" ng-src="{{data.activeThemeName ? ('api/content/themes/' + data.storeId + '?relativeUrl=' + data.activeThemeName +'/logo.png') : 'Modules/$(VirtoCommerce.Content)/Content/logo.png'}}" />
             </div>
@@ -23,30 +23,54 @@
           <div class="tile quadro wide mini __informer" ng-if="!data.activeThemeName" ng-click="blade.openThemes(data.store)">
             <p>{{ 'content.blades.content-main.labels.no-active-theme' | translate }}</p>
           </div>
-          <div class="tile quadro wide mini" ng-if="data.activeThemeName">
-              <div  title="{{data.activeThemeName}}" class="tile-t" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 10px;">
-                  {{ 'content.blades.content-main.labels.active-theme' | translate }} {{data.activeThemeName}}
-              </div>
+          <div class="tile quadro wide mini" ng-if="data.activeThemeName" ng-click="blade.openThemes(data.store)">
+            <div title="{{data.activeThemeName}}" class="tile-t" style="font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 10px;">
+              {{ 'content.blades.content-main.labels.active-theme' | translate }} {{data.activeThemeName}}
+            </div>
           </div>
-          <div class="tile" ng-click="blade.openThemes(data.store)">
-            <div class="tile-descr">{{ 'content.blades.content-main.labels.themes' | translate }}</div>
-            <div ng-if="data.themesCount >= 0" class="tile-count">{{data.themesCount}}</div>
-            <!--<a class="btn" ng-click="blade.addNewTheme(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>-->
+          <div class="tile vc-content-widget" ng-click="blade.openThemes(data.store)">
+            <div class="vc-content-widget__icon">
+              <i class="fa fa-code"></i>
+            </div>
+            <div class="vc-content-widget__title">
+              {{ 'content.blades.content-main.labels.themes' | translate }}
+            </div>
+            <div class="vc-content-widget__counter" ng-if="data.themesCount >= 0">
+              {{data.themesCount}}
+            </div>
           </div>
-          <div class="tile" ng-click="blade.openPages(data)">
-            <div class="tile-descr">{{ 'content.blades.content-main.labels.pages' | translate }}</div>
-            <div ng-if="data.pagesCount >= 0" class="tile-count">{{data.pagesCount}}</div>
-            <!--<a class="btn" ng-click="blade.addNewPage(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>-->
+          <div class="tile vc-content-widget" ng-click="blade.openPages(data)">
+            <div class="vc-content-widget__icon">
+              <i class="fa fa-file-text"></i>
+            </div>
+            <div class="vc-content-widget__title">
+              {{ 'content.blades.content-main.labels.pages' | translate }}
+            </div>
+            <div class="vc-content-widget__counter" ng-if="data.pagesCount >= 0">
+              {{data.pagesCount}}
+            </div>
           </div>
-          <div class="tile" ng-click="blade.openLinkLists(data)">
-            <div class="tile-descr">{{ 'content.blades.content-main.labels.link-lists' | translate }}</div>
-            <div ng-if="data.listLinksCount >= 0" class="tile-count">{{data.listLinksCount}}</div>
-            <!--<a class="btn" ng-click="blade.addNewLinkList(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>-->
+          <div class="tile vc-content-widget" ng-click="blade.openBlogs(data)">
+            <div class="vc-content-widget__icon">
+              <i class="fa fa-file-text-o"></i>
+            </div>
+            <div class="vc-content-widget__title">
+              {{ 'content.blades.content-main.labels.blogs' | translate }}
+            </div>
+            <div class="vc-content-widget__counter" ng-if="data.blogsCount >= 0">
+              {{data.blogsCount}}
+            </div>
           </div>
-          <div class="tile" ng-click="blade.openBlogs(data)">
-            <div class="tile-descr">{{ 'content.blades.content-main.labels.blogs' | translate }}</div>
-            <div ng-if="data.blogsCount >= 0" class="tile-count">{{data.blogsCount}}</div>
-            <!--<a class="btn" ng-click="blade.addBlog(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>-->
+          <div class="tile vc-content-widget" ng-click="blade.openLinkLists(data)">
+            <div class="vc-content-widget__icon">
+              <i class="fa fa-link"></i>
+            </div>
+            <div class="vc-content-widget__title">
+              {{ 'content.blades.content-main.labels.link-lists' | translate }}
+            </div>
+            <div class="vc-content-widget__counter" ng-if="data.listLinksCount >= 0">
+              {{data.listLinksCount}}
+            </div>
           </div>
         </div>
         <div ng-repeat-end class="form-group" ng-if="thereIsWidgetToShow">
