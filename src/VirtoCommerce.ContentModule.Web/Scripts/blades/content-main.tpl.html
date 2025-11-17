@@ -27,50 +27,26 @@
               <div  title="{{data.activeThemeName}}" class="tile-t" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 10px;">
                   {{ 'content.blades.content-main.labels.active-theme' | translate }} {{data.activeThemeName}}
               </div>
-              <ul class="menu __inline __theme-links">
-                  <li class="menu-item" ng-click="blade.openTheme(data); $event.stopPropagation();">
-                      <a class="menu-link">
-                          <i class="menu-ico fa fa-edit"></i>
-                          {{ 'content.blades.content-main.labels.edit-css-html' | translate }}
-                      </a>
-                  </li>
-                  <li class="menu-item" ng-click="blade.previewTheme(data); $event.stopPropagation();">
-                      <a class="menu-link">
-                          <i class="menu-ico fa fa-eye"></i>
-                          {{ 'content.blades.content-main.labels.preview-theme' | translate }}
-                      </a>
-                  </li>
-                  <!--
-        <li class="menu-item" ng-click="blade.customizeTheme(data); $event.stopPropagation();">
-            <a class="menu-link">
-                <i class="menu-ico fa fa-wrench"></i>
-                {{ 'content.blades.content-main.labels.customize-theme' | translate }}
-            </a>
-        </li>
-        // TODO: Uncomment when and if this feature would be implemented in page builder
-        // TODO: After uncommenting add check for page builder installed or controller overloaded.
-        -->
-              </ul>
           </div>
           <div class="tile" ng-click="blade.openThemes(data.store)">
             <div class="tile-descr">{{ 'content.blades.content-main.labels.themes' | translate }}</div>
-            <div class="tile-count">{{data.themesCount}}</div>
-            <a class="btn" ng-click="blade.addNewTheme(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>
+            <div ng-if="data.themesCount >= 0" class="tile-count">{{data.themesCount}}</div>
+            <!--<a class="btn" ng-click="blade.addNewTheme(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>-->
           </div>
           <div class="tile" ng-click="blade.openPages(data)">
             <div class="tile-descr">{{ 'content.blades.content-main.labels.pages' | translate }}</div>
-            <div class="tile-count">{{data.pagesCount}}</div>
-            <a class="btn" ng-click="blade.addNewPage(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>
+            <div ng-if="data.pagesCount >= 0" class="tile-count">{{data.pagesCount}}</div>
+            <!--<a class="btn" ng-click="blade.addNewPage(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>-->
           </div>
           <div class="tile" ng-click="blade.openLinkLists(data)">
             <div class="tile-descr">{{ 'content.blades.content-main.labels.link-lists' | translate }}</div>
-            <div class="tile-count">{{data.listLinksCount}}</div>
-            <a class="btn" ng-click="blade.addNewLinkList(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>
+            <div ng-if="data.listLinksCount >= 0" class="tile-count">{{data.listLinksCount}}</div>
+            <!--<a class="btn" ng-click="blade.addNewLinkList(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>-->
           </div>
           <div class="tile" ng-click="blade.openBlogs(data)">
             <div class="tile-descr">{{ 'content.blades.content-main.labels.blogs' | translate }}</div>
-            <div class="tile-count">{{data.blogsCount}}</div>
-            <a class="btn" ng-click="blade.addBlog(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>
+            <div ng-if="data.blogsCount >= 0" class="tile-count">{{data.blogsCount}}</div>
+            <!--<a class="btn" ng-click="blade.addBlog(data); $event.stopPropagation();">{{ 'platform.commands.add' | translate }}</a>-->
           </div>
         </div>
         <div ng-repeat-end class="form-group" ng-if="thereIsWidgetToShow">
