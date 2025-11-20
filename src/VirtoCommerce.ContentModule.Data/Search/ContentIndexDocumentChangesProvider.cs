@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.ContentModule.Data.Model;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
@@ -19,15 +22,18 @@ namespace VirtoCommerce.ContentModule.Data.Search
         private readonly IContentFileService _contentFileService;
         private readonly IStoreSearchService _storeSearchService;
         private readonly IContentStatisticService _contentStatisticService;
+        private readonly IPlatformMemoryCache _platformMemoryCache;
 
         public ContentIndexDocumentChangesProvider(
             IContentFileService contentFileService,
             IStoreSearchService storeSearchService,
-            IContentStatisticService contentStatisticService)
+            IContentStatisticService contentStatisticService,
+            IPlatformMemoryCache platformMemoryCache)
         {
             _contentFileService = contentFileService;
             _storeSearchService = storeSearchService;
             _contentStatisticService = contentStatisticService;
+            _platformMemoryCache = platformMemoryCache;
         }
 
         public virtual async Task<IList<IndexDocumentChange>> GetChangesAsync(DateTime? startDate, DateTime? endDate, long skip, long take)
@@ -90,18 +96,25 @@ namespace VirtoCommerce.ContentModule.Data.Search
             return stores;
         }
 
-        private async Task<IList<(ContentFile File, IndexDocumentChange Document)>> GetFiles(Store store, string contentType, DateTime now)
+        private Task<IList<(ContentFile File, IndexDocumentChange Document)>> GetFiles(Store store, string contentType, DateTime now)
         {
-            var filter = AbstractTypeFactory<FilterItemsCriteria>.TryCreateInstance();
-            filter.ContentType = contentType;
-            filter.StoreId = store.Id;
-            var files = await _contentFileService.EnumerateFiles(filter);
-            return files.Select(x => (x, new IndexDocumentChange
+            var cacheKey = CacheKey.With(GetType(), nameof(GetFiles), store.Id, contentType);
+            return _platformMemoryCache.GetOrCreateAsync<IList<(ContentFile File, IndexDocumentChange Document)>>(cacheKey, async (cacheEntry) =>
             {
-                DocumentId = DocumentIdentifierHelper.GenerateId(store.Id, contentType, x),
-                ChangeType = IndexDocumentChangeType.Modified,
-                ChangeDate = x.ModifiedDate ?? now,
-            })).ToList();
+                cacheEntry.AddExpirationToken(ContentCacheRegion.CreateChangeToken());
+                cacheEntry.SetAbsoluteExpiration(TimeSpan.FromHours(3));
+
+                var filter = AbstractTypeFactory<FilterItemsCriteria>.TryCreateInstance();
+                filter.ContentType = contentType;
+                filter.StoreId = store.Id;
+                var files = await _contentFileService.EnumerateFiles(filter);
+                return files.Select(x => (x, new IndexDocumentChange
+                {
+                    DocumentId = DocumentIdentifierHelper.GenerateId(store.Id, contentType, x),
+                    ChangeType = IndexDocumentChangeType.Modified,
+                    ChangeDate = x.ModifiedDate ?? now,
+                })).ToList();
+            });
         }
     }
 }
