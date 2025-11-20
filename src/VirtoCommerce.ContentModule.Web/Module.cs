@@ -78,9 +78,6 @@ namespace VirtoCommerce.ContentModule.Web
             serviceCollection.AddTransient<IMenuRepository, MenuRepository>();
             serviceCollection.AddTransient<Func<IMenuRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetService<IMenuRepository>());
 
-#pragma warning disable VC0005 // Type or member is obsolete
-            serviceCollection.AddTransient<IMenuService, MenuService>();
-#pragma warning restore VC0005 // Type or member is obsolete
             serviceCollection.AddTransient<IMenuLinkListService, MenuLinkListService>();
             serviceCollection.AddTransient<IMenuLinkListSearchService, MenuLinkListSearchService>();
             serviceCollection.AddTransient<IFullTextContentSearchService, FullTextContentSearchService>();
