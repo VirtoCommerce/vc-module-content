@@ -10,7 +10,7 @@
     <dependency id="VirtoCommerce.AzureBlobAssets" version="3.812.0-alpha.147-vcst-4203-cleanup" />
     <dependency id="VirtoCommerce.FileSystemAssets" version="3.806.0-alpha.113-vcst-4203-cleanup" />
     <dependency id="VirtoCommerce.Search" version="3.820.0-alpha.795-vcst-4203-cleanup" />
-    <dependency id="VirtoCommerce.Store" version="3.823.0-alpha.751-vcst-4203-cleanup" />
+    <dependency id="VirtoCommerce.Store" version="3.823.0-alpha.763-vcst-4203-cleanup" />
   </dependencies>
 
   <title>Content</title>
