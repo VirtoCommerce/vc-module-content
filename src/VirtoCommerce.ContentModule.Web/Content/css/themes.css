@@ -1,4 +1,53 @@
 .form-input.__expanded textarea {
-    max-height: 500px;
-    min-height: 500px;
+  max-height: 500px;
+  min-height: 500px;
+}
+
+/* Content widgets (tiles with icon + text) */
+.vc-content-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 12px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: #ffffff;
+  transition: box-shadow 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+}
+
+.vc-content-widget__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*background-color: #f0f2f5;*/
+  color: #a5a5a5;
+  margin-bottom: 10px;
+  font-size: 32px;
+}
+
+.vc-content-widget__title {
+  font-size: 12px;
+  font-weight: 500;
+  color: #161d25;
+  line-height: 1.4;
+  margin-bottom: 2px;
+}
+
+.vc-content-widget__counter {
+  font-size: 11px;
+  font-weight: 600;
+  color: #a0a4b5;
+}
+
+.vc-content-widget:hover {
+}
+
+.vc-content-widget:active {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transform: translateY(0);
 }
