@@ -33,6 +33,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
         public Task BuildSchemaAsync(IndexDocument schema)
         {
             schema.AddFilterableStringAndContentString("StoreId");
+            schema.AddFilterableStringAndContentString("OrganizationId");
             schema.AddFilterableStringAndContentString("Name");
             schema.AddFilterableStringAndContentString("CultureName");
             schema.AddFilterableStringAndContentString("ContentType");
