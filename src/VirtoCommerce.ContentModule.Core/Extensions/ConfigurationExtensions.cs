@@ -10,5 +10,11 @@ namespace VirtoCommerce.ContentModule.Core.Extensions
             var value = configuration["Search:ContentFullTextSearchEnabled"];
             return value.TryParse(false);
         }
+
+        public static bool IsContentStatisticEnabled(this IConfiguration configuration)
+        {
+            var value = configuration["Content:StatisticEnabled"];
+            return value.TryParse(false);
+        }
     }
 }

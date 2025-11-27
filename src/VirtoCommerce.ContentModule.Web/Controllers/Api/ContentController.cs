@@ -53,25 +53,40 @@ public class ContentController(
     [Authorize(Permissions.Read)]
     public async Task<ActionResult<ContentStatistic>> GetStoreContentStats(string storeId)
     {
-        var pagesTask = contentStats.GetStorePagesCountAsync(storeId);
-        var blogsTask = contentStats.GetStoreBlogsCountAsync(storeId);
-        var themesTask = contentStats.GetStoreThemesCountAsync(storeId);
+        var store = await storeService.GetNoCloneAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
 
-        var storeTask = storeService.GetNoCloneAsync(storeId, StoreResponseGroup.DynamicProperties.ToString());
+        if (store == null)
+        {
+            return NotFound();
+        }
 
-        await Task.WhenAll(themesTask, blogsTask, pagesTask, storeTask);
-
-        var activeThemeProperty = storeTask.Result.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName");
+        var activeThemeProperty = store.DynamicProperties.FirstOrDefault(x => x.Name == "DefaultThemeName");
         var activeTheme = activeThemeProperty?.Values?.FirstOrDefault()?.Value?.ToString();
 
         var result = new ContentStatistic
         {
-            PagesCount = pagesTask.Result,
-            BlogsCount = blogsTask.Result,
-            ThemesCount = themesTask.Result,
+            ActiveThemeName = activeTheme ?? ContentConstants.DefaultTheme,
 
-            ActiveThemeName = activeTheme ?? ContentConstants.DefaultTheme
+            PagesCount = -1,
+            BlogsCount = -1,
+            ThemesCount = -1,
         };
+
+        if (!configuration.IsContentStatisticEnabled())
+        {
+            return Ok(result);
+        }
+
+        var pagesTask = contentStats.GetStorePagesCountAsync(storeId);
+        var blogsTask = contentStats.GetStoreBlogsCountAsync(storeId);
+        var themesTask = contentStats.GetStoreThemesCountAsync(storeId);
+
+        await Task.WhenAll(themesTask, blogsTask, pagesTask);
+
+        result.PagesCount = pagesTask.Result;
+        result.BlogsCount = blogsTask.Result;
+        result.ThemesCount = themesTask.Result;
+
         return Ok(result);
     }
 
