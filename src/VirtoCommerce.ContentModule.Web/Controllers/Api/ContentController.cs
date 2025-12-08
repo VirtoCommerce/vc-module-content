@@ -22,6 +22,7 @@ using VirtoCommerce.ContentModule.Web.Filters;
 using VirtoCommerce.ContentModule.Web.Validators;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Exceptions;
+using VirtoCommerce.Platform.Core.Swagger;
 using VirtoCommerce.Platform.Data.Helpers;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
@@ -369,17 +370,25 @@ public class ContentController(
     }
 
     /// <summary>
-    ///     Upload content item
+    /// Upload a content file to the specified store and folder.
+    /// Supports two modes:
+    /// 1) Multipart upload (single file) via request body.
+    /// 2) Remote download via the provided `url`.
+    /// When `draft` is true, the file is saved as a draft using `IPublishingService.GetRelativeDraftUrl`.
+    /// Returns the uploaded files with publish status resolved by `IPublishingService.SetFilesStatuses`.
+    /// Responds with 405 (Method Not Allowed) on platform validation errors and 400 (Bad Request) on malformed requests.
     /// </summary>
-    /// <param name="contentType">possible values Themes or Pages</param>
-    /// <param name="storeId">Store id</param>
-    /// <param name="folderUrl">folder relative url where content will be uploaded</param>
-    /// <param name="url">external url which will be used to download content item data</param>
-    /// <param name="draft">Whether file should be saved as draft.</param>
-    /// <returns></returns>
+    /// <param name="contentType">Content type (e.g., Themes, Pages).</param>
+    /// <param name="storeId">Target store identifier.</param>
+    /// <param name="folderUrl">Destination folder relative URL.</param>
+    /// <param name="url">Optional external URL to download the file from instead of multipart upload.</param>
+    /// <param name="draft">If true, saves the uploaded file as a draft.</param>
+    /// <returns>An array of `ContentItem` entries representing uploaded files with resolved publish statuses.</returns>
     [HttpPost]
     [Route("")]
     [DisableFormValueModelBinding]
+    [DisableRequestSizeLimit]
+    [UploadFile(AllowMultiple = false, Description = "Upload file to content folder", Required = false)]
     [Authorize(Permissions.Create)]
     [ProducesResponseType(typeof(void), StatusCodes.Status405MethodNotAllowed)]
     public async Task<ActionResult<ContentItem[]>> UploadContent(string contentType, string storeId, [FromQuery] string folderUrl, [FromQuery] string url = null, [FromQuery] bool draft = false)

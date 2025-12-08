@@ -4,7 +4,7 @@
   <version>3.835.0</version>
   <version-tag />
 
-  <platformVersion>3.917.0</platformVersion>
+  <platformVersion>3.918.0-alpha.13171-vcst-4353</platformVersion>
   <dependencies>
     <dependency id="VirtoCommerce.Assets" version="3.814.0" />
     <dependency id="VirtoCommerce.AzureBlobAssets" version="3.813.0" />
