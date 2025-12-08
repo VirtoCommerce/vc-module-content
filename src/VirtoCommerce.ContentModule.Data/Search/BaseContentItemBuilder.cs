@@ -8,7 +8,6 @@ using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SearchModule.Core.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
-using static Npgsql.PostgresTypes.PostgresCompositeType;
 
 namespace VirtoCommerce.ContentModule.Data.Search
 {
