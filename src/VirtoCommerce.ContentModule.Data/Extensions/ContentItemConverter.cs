@@ -10,6 +10,8 @@ namespace VirtoCommerce.ContentModule.Data.Extensions
 {
     public static class ContentItemConverter
     {
+        public const string Any = "any";
+
         public static string RemoveGetParameters(this string url)
         {
             if (url.IsNullOrEmpty())

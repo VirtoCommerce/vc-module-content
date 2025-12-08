@@ -6,6 +6,7 @@ using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
+using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SearchModule.Core.Exceptions;
 using VirtoCommerce.SearchModule.Core.Model;
@@ -98,7 +99,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                     contentItem.Name = GetStringValueOrDefault(document, "name", contentItem.Name);
                     contentItem.DisplayName = GetStringValueOrDefault(document, "displayname", contentItem.DisplayName);
                     contentItem.Language = GetStringValueOrDefault(document, "culturename", contentItem.Language);
-                    if (contentItem.Language == "any")
+                    if (contentItem.Language == ContentItemConverter.Any)
                     {
                         contentItem.Language = null;
                     }
