@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="3.814.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.918.0-alpha.13171-vcst-4353" />
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.919.0" />
     <PackageReference Include="VirtoCommerce.SearchModule.Core" Version="3.821.0" />
   </ItemGroup>
 </Project>
