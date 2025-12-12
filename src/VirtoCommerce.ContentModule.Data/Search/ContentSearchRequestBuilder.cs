@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
-using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SearchModule.Core.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
@@ -72,10 +71,12 @@ public class ContentSearchRequestBuilder(ISearchPhraseParser searchPhraseParser,
         {
             result.Add(CreateTermFilter("FolderUrl", criteria.FolderUrl));
         }
+
         if (!string.IsNullOrEmpty(criteria.ContentType))
         {
             result.Add(CreateTermFilter("ContentType", criteria.ContentType));
         }
+
         return result;
     }
 
@@ -85,16 +86,17 @@ public class ContentSearchRequestBuilder(ISearchPhraseParser searchPhraseParser,
         {
             return;
         }
-        var userGroups = criteria.UserGroups;
+
         var filter = new TermFilter
         {
             FieldName = "UserGroups",
             Values =
             [
                 ContentConstants.AnyIndexValue,
-                    ..userGroups
+                ..criteria.UserGroups
             ]
         };
+
         result.Add(filter);
     }
 
@@ -115,11 +117,13 @@ public class ContentSearchRequestBuilder(ISearchPhraseParser searchPhraseParser,
         {
             return;
         }
+
         var anyFilter = new TermFilter
         {
             FieldName = "OrganizationId",
             Values = [ContentConstants.AnyIndexValue, criteria.OrganizationId],
         };
+
         result.Add(anyFilter);
     }
 
@@ -133,6 +137,7 @@ public class ContentSearchRequestBuilder(ISearchPhraseParser searchPhraseParser,
             useFilter = true;
             cultureFilter = cultureFilter.Or(CreateTermFilter("CultureName", criteria.CultureName));
         }
+
         if (!criteria.LanguageCode.IsNullOrEmpty())
         {
             useFilter = true;
