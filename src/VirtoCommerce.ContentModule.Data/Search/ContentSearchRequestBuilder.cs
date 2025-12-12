@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.Platform.Core.Common;
@@ -90,7 +91,7 @@ public class ContentSearchRequestBuilder(ISearchPhraseParser searchPhraseParser,
             FieldName = "UserGroups",
             Values =
             [
-                ContentItemConverter.Any,
+                ContentConstants.AnyIndexValue,
                     ..userGroups
             ]
         };
@@ -117,14 +118,14 @@ public class ContentSearchRequestBuilder(ISearchPhraseParser searchPhraseParser,
         var anyFilter = new TermFilter
         {
             FieldName = "OrganizationId",
-            Values = [ContentItemConverter.Any, criteria.OrganizationId],
+            Values = [ContentConstants.AnyIndexValue, criteria.OrganizationId],
         };
         result.Add(anyFilter);
     }
 
     private async Task AddLanguageFilter(ContentSearchCriteria criteria, List<IFilter> filter)
     {
-        var cultureFilter = CreateTermFilter("CultureName", ContentItemConverter.Any);
+        var cultureFilter = CreateTermFilter("CultureName", ContentConstants.AnyIndexValue);
         var useFilter = false;
 
         if (!criteria.CultureName.IsNullOrEmpty())

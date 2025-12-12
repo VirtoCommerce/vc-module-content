@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Data.Extensions;
@@ -23,13 +24,13 @@ namespace VirtoCommerce.ContentModule.Data.Search
             RemoveFieldAndAddNew(result, "RelativeUrl", file.RelativeUrl);
             AddLanguage(result, file);
 
-            AddStringFieldIfMissed(result, "OrganizationId", ContentItemConverter.Any);
+            AddStringFieldIfMissed(result, "OrganizationId", ContentConstants.AnyIndexValue);
             AddDateTimeFieldIfMissed(result, "StartDate", DateTime.MinValue);
             AddDateTimeFieldIfMissed(result, "EndDate", DateTime.MaxValue);
 
             if (result.Fields.All(x => !x.Name.EqualsIgnoreCase("UserGroups")))
             {
-                result.AddFilterableCollectionAndContentString("UserGroups", [ContentItemConverter.Any]);
+                result.AddFilterableCollectionAndContentString("UserGroups", [ContentConstants.AnyIndexValue]);
             }
 
             var folder = file.ParentUrl;
@@ -58,7 +59,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             if (language.IsNullOrEmpty())
             {
-                language = ContentItemConverter.Any;
+                language = ContentConstants.AnyIndexValue;
             }
 
             result.AddFilterableStringAndContentString("CultureName", language);

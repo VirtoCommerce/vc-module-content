@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
@@ -99,7 +100,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
                     contentItem.Name = GetStringValueOrDefault(document, "name", contentItem.Name);
                     contentItem.DisplayName = GetStringValueOrDefault(document, "displayname", contentItem.DisplayName);
                     contentItem.Language = GetStringValueOrDefault(document, "culturename", contentItem.Language);
-                    if (contentItem.Language == ContentItemConverter.Any)
+                    if (contentItem.Language == ContentConstants.AnyIndexValue)
                     {
                         contentItem.Language = null;
                     }
