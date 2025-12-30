@@ -37,6 +37,9 @@ namespace VirtoCommerce.ContentModule.Data.Search
             schema.AddFilterableStringAndContentString("Name");
             schema.AddFilterableStringAndContentString("CultureName");
             schema.AddFilterableStringAndContentString("ContentType");
+            schema.AddFilterableCollectionAndContentString("UserGroups");
+            schema.AddFilterableDateTime("StartDate");
+            schema.AddFilterableDateTime("EndDate");
             return Task.CompletedTask;
         }
 
