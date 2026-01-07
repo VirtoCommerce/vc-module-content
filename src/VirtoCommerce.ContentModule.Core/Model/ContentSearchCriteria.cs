@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.ContentModule.Core.Model
@@ -9,5 +11,7 @@ namespace VirtoCommerce.ContentModule.Core.Model
         public string FolderUrl { get; set; }
         public string ContentType { get; set; }
         public string OrganizationId { get; set; }
+        public IList<string> UserGroups { get; set; }
+        public DateTime? ActiveOn { get; set; }
     }
 }
