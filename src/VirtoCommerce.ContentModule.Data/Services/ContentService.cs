@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using System.Web;
 using VirtoCommerce.AssetsModule.Core.Assets;
@@ -11,6 +12,7 @@ using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.Extensions;
 using VirtoCommerce.ContentModule.Data.Model;
+using VirtoCommerce.ContentModule.Data.Search;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 using UrlHelperExtensions = VirtoCommerce.Platform.Core.Extensions.UrlHelperExtensions;
@@ -102,6 +104,12 @@ namespace VirtoCommerce.ContentModule.Data.Services
             return result;
         }
 
+        public async Task<IndexableContentFile> GetFileContentAsync(string id)
+        {
+            var (storeId, contentType, relativeUrl) = DocumentIdentifierHelper.ParseId(id);
+            return await GetFileContentAsync(contentType, storeId, relativeUrl);
+        }
+
         public async Task CreateFolderAsync(string contentType, string storeId, ContentFolder folder)
         {
             var storageProvider = GetStorageProvider(contentType, storeId);
@@ -121,6 +129,12 @@ namespace VirtoCommerce.ContentModule.Data.Services
             var blobInfo = await storageProvider.GetBlobInfoAsync(relativeUrl);
             var fileStream = await storageProvider.OpenReadAsync(blobInfo.RelativeUrl);
             return fileStream;
+        }
+
+        public async Task<Stream> GetItemStreamAsync(string id)
+        {
+            var (storeId, contentType, relativeUrl) = DocumentIdentifierHelper.ParseId(id);
+            return await GetItemStreamAsync(contentType, storeId, relativeUrl);
         }
 
         public async Task UnpackAsync(string contentType, string storeId, string archivePath, string destPath)
