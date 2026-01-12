@@ -350,8 +350,8 @@ angular.module('virtoCommerce.contentModule')
                         name: "content.commands.preview-page",
                         icon: 'fa fa-eye',
                         executeMethod: function () {
-                            var showPreview = function (storeUrl) {
-                                storeUrl = (storeUrl || blade.storeUrl)?.replace(/\/$/, '');
+                            var showPreview = function () {
+                                var storeUrl = blade.storeUrl?.replace(/\/$/, '');
                                 if (storeUrl) {
                                     var documentId = filesDraftService.getSearchDocumentId(blade);
                                     window.open(`${storeUrl}/designer-preview?pageId=${encodeURIComponent(documentId)}`, '_blank');
