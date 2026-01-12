@@ -351,7 +351,7 @@ angular.module('virtoCommerce.contentModule')
                         icon: 'fa fa-eye',
                         executeMethod: function () {
                             var showPreview = function (storeUrl) {
-                                storeUrl = (storeUrl || blade.storeUrl).replace(/\/$/, '');
+                                storeUrl = (storeUrl || blade.storeUrl)?.replace(/\/$/, '');
                                 if (storeUrl) {
                                     var documentId = filesDraftService.getSearchDocumentId(blade);
                                     window.open(storeUrl + '/designer-preview?pageId=' + documentId, '_blank');
