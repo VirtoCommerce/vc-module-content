@@ -14,10 +14,13 @@ angular.module('virtoCommerce.contentModule')
         this.getRealFileName = function (blade) {
             var relativeUrl = blade.currentEntity.relativeUrl;
             var isDraft = blade.currentEntity.hasChanges;
-            if (isDraft && !relativeUrl.endsWith('-draft')) {
+            if (!isDraft) {
+                return $this.undraftUrl(relativeUrl);
+            }
+            if (!relativeUrl.endsWith('-draft')) {
                 return $this.getDraftFileName(blade);
             }
-            return $this.undraftUrl(relativeUrl);
+            return relativeUrl;
         }
 
         this.getDraftFileName = function (blade) {

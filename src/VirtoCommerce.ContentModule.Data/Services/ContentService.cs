@@ -3,7 +3,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using System.Web;
 using VirtoCommerce.AssetsModule.Core.Assets;
