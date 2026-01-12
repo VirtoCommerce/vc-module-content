@@ -3,11 +3,11 @@ angular.module('virtoCommerce.contentModule')
 
         var $this = this;
 
-        this.getSearchDocumentId = function (blade) {
+        this.getDocumentId = function (blade, real) {
             if (!blade || !blade.currentEntity) {
                 return null;
             }
-            const relativeUrl = $this.getRealFileName(blade);
+            const relativeUrl = real ? $this.getRealFileName(blade) : blade.currentEntity.relativeUrl;
             return btoa(`${blade.storeId}::${blade.contentType}::${relativeUrl}`).replaceAll('=', '-');
         }
 

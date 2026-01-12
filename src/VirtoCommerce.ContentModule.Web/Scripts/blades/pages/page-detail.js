@@ -353,7 +353,7 @@ angular.module('virtoCommerce.contentModule')
                             var showPreview = function () {
                                 var storeUrl = blade.storeUrl?.replace(/\/$/, '');
                                 if (storeUrl) {
-                                    var documentId = filesDraftService.getSearchDocumentId(blade);
+                                    var documentId = filesDraftService.getDocumentId(blade, true);
                                     window.open(`${storeUrl}/designer-preview?pageId=${encodeURIComponent(documentId)}`, '_blank');
                                 } else {
                                     var dialog = {
@@ -450,7 +450,7 @@ angular.module('virtoCommerce.contentModule')
             }
 
             function getSearchDocumentInfo() {
-                var documentId = filesDraftService.getSearchDocumentId(blade);
+                var documentId = filesDraftService.getDocumentId(blade);
                 if (!documentId) {
                     return null;
                 }
