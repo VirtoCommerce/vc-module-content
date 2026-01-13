@@ -7,7 +7,7 @@ angular.module('virtoCommerce.contentModule')
             if (!blade || !blade.currentEntity) {
                 return null;
             }
-            const relativeUrl = real ? $this.getRealFileName(blade) : blade.currentEntity.relativeUrl;
+            const relativeUrl = real ? $this.getRealFileName(blade) : $this.undraftUrl(blade.currentEntity.relativeUrl);
             return btoa(`${blade.storeId}::${blade.contentType}::${relativeUrl}`).replaceAll('=', '-');
         }
 
