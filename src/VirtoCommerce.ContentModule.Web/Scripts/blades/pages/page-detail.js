@@ -412,7 +412,7 @@ angular.module('virtoCommerce.contentModule')
                                 return;
                             }
                             const searchBlade = {
-                                id: 'sesarchDetails',
+                                id: 'searchDetails',
                                 currentEntityId: doc.documentId,
                                 currentEntity: blade.currentEntity,
                                 data: $scope.index,
