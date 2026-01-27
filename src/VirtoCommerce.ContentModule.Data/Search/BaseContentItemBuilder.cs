@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Data.Extensions;
@@ -22,6 +23,15 @@ namespace VirtoCommerce.ContentModule.Data.Search
             RemoveFieldAndAddNew(result, "Name", file.Name);
             RemoveFieldAndAddNew(result, "RelativeUrl", file.RelativeUrl);
             AddLanguage(result, file);
+
+            AddStringFieldIfMissed(result, "OrganizationId", ContentConstants.AnyIndexValue);
+            AddDateTimeFieldIfMissed(result, "StartDate", DateTime.MinValue);
+            AddDateTimeFieldIfMissed(result, "EndDate", DateTime.MaxValue);
+
+            if (result.Fields.All(x => !x.Name.EqualsIgnoreCase("UserGroups")))
+            {
+                result.AddFilterableCollectionAndContentString("UserGroups", [ContentConstants.AnyIndexValue]);
+            }
 
             var folder = file.ParentUrl;
             if (!string.IsNullOrEmpty(folder))
@@ -49,7 +59,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             if (language.IsNullOrEmpty())
             {
-                language = "any";
+                language = ContentConstants.AnyIndexValue;
             }
 
             result.AddFilterableStringAndContentString("CultureName", language);
@@ -63,6 +73,24 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 document.Fields.Remove(field);
             }
             document.AddFilterableStringAndContentString(fieldName, value);
+        }
+
+        private static void AddStringFieldIfMissed(IndexDocument document, string fieldName, string value)
+        {
+            var fieldExists = document.Fields.Any(x => x.Name.EqualsIgnoreCase(fieldName));
+            if (!fieldExists)
+            {
+                document.AddFilterableStringAndContentString(fieldName, value);
+            }
+        }
+
+        private static void AddDateTimeFieldIfMissed(IndexDocument document, string fieldName, DateTime value)
+        {
+            var fieldExists = document.Fields.Any(x => x.Name.EqualsIgnoreCase(fieldName));
+            if (!fieldExists)
+            {
+                document.AddFilterableDateTime(fieldName, value);
+            }
         }
 
         protected abstract IndexDocument BuildIndexDocumentInternal(string documentId, string storeId, IndexableContentFile file);

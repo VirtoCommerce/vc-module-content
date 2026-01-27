@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using VirtoCommerce.ContentModule.Core.Model;
@@ -31,17 +33,21 @@ namespace VirtoCommerce.ContentModule.Data.Search
         public Task BuildSchemaAsync(IndexDocument schema)
         {
             schema.AddFilterableStringAndContentString("StoreId");
+            schema.AddFilterableStringAndContentString("OrganizationId");
             schema.AddFilterableStringAndContentString("Name");
             schema.AddFilterableStringAndContentString("CultureName");
             schema.AddFilterableStringAndContentString("ContentType");
+            schema.AddFilterableCollectionAndContentString("UserGroups");
+            schema.AddFilterableDateTime("StartDate");
+            schema.AddFilterableDateTime("EndDate");
             return Task.CompletedTask;
         }
 
         public virtual async Task<IList<IndexDocument>> GetDocumentsAsync(IList<string> documentIds)
         {
-            var result = new List<IndexDocument>();
+            var result = new ConcurrentBag<IndexDocument>();
 
-            foreach (var documentId in documentIds)
+            await Parallel.ForEachAsync(documentIds, async (documentId, cancellationToken) =>
             {
                 try
                 {
@@ -59,9 +65,9 @@ namespace VirtoCommerce.ContentModule.Data.Search
                 {
                     _log.LogError(e, "Cannot create document for ID '{DocumentId}'", documentId);
                 }
-            }
+            });
 
-            return result;
+            return result.ToList();
         }
 
         private async Task<(string, string, ContentFile)> GetFile(string documentId)

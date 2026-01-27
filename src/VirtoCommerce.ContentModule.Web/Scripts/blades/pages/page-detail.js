@@ -27,7 +27,7 @@ angular.module('virtoCommerce.contentModule')
             searchApi,
             moment, broadcastChannelFactory, filesDraftService) {
 
-
+            var extension = 'md';
             var momentFormat = "YYYYMMDDHHmmss";
 
             var blade = $scope.blade;
@@ -104,25 +104,40 @@ angular.module('virtoCommerce.contentModule')
             };
 
             function fillMetadata(data) {
-                var blobName = blade.currentEntity.name || '';
-                var idx = blobName.lastIndexOf('.');
-                if (idx >= 0) {
-                    blobName = blobName.substring(0, idx);
-                    idx = blobName.lastIndexOf('.'); // language
-                    if (idx >= 0) {
-                        blade.currentEntity.language = blobName.substring(idx + 1);
-                    }
-                }
+                parseName();
 
-                blade.currentEntity.content = data.content;
+                blade.currentEntity.content = data.content || '';
                 blade.origEntity = angular.copy(blade.currentEntity);
-
                 blade.hasChanges = blade.currentEntity.hasChanges;
                 blade.published = blade.currentEntity.published;
 
                 $scope.metadata = data.metadata;
 
                 getDynamicProperties();
+            }
+
+            function parseName() {
+                var blobName = blade.currentEntity.name || '';
+
+                var blobNameParts = blobName.split('.');
+                if (blobNameParts.length > 1) {
+                    blobNameParts.pop(); // ignore extension
+                }
+
+                if (blade.languages && blade.languages.length) {
+                    var possibleFileLanguage = blobNameParts.length > 1 ? blobNameParts[blobNameParts.length - 1] : '';
+
+                    var language = blade.languages.find(function (lang) {
+                        return lang.toLowerCase() === possibleFileLanguage.toLowerCase();
+                    });
+
+                    if (language) {
+                        blobNameParts.pop();
+                        blade.currentEntity.language = language;
+                    }
+                }
+
+                blade.currentEntity.pageName = blobNameParts.join('.');
             }
 
             function getDynamicProperties(take, skip) {
@@ -170,10 +185,19 @@ angular.module('virtoCommerce.contentModule')
                 }
             };
 
+            function getNonDraftName(value) {
+                if (value && value.endsWith('-draft')) {
+                    return value.slice(0, -6);
+                }
+                return value;
+            }
+
             $scope.saveChanges = function () {
                 blade.isLoading = true;
 
                 var oldRelativeUrl = blade.origEntity && blade.origEntity.relativeUrl;
+
+                blade.currentEntity.name = [blade.currentEntity.pageName, blade.currentEntity.language, extension].filter(x => x).join('.');
 
                 contentApi.saveWithMetadata({
                         contentType: blade.contentType,
@@ -184,14 +208,21 @@ angular.module('virtoCommerce.contentModule')
                     function (result) {
                         blade.isLoading = false;
                         var needRefresh = true;
+
                         blade.currentEntity = Object.assign(blade.currentEntity, result[0]);
+                        parseName();
+                        blade.origEntity = angular.copy(blade.currentEntity);
+                        blade.hasChanges = blade.currentEntity.hasChanges;
                         blade.published = blade.currentEntity.published;
-                        angular.copy(blade.currentEntity, blade.origEntity);
+
+                        var newUrl = getNonDraftName(blade.currentEntity.relativeUrl);
+                        var oldUrl = getNonDraftName(oldRelativeUrl);
+
                         if (blade.isNew) {
                             $scope.bladeClose();
                             blade.parentBlade.refresh();
                             $rootScope.$broadcast("cms-statistics-changed", blade.storeId);
-                        } else if (oldRelativeUrl && oldRelativeUrl !== blade.currentEntity.relativeUrl) {
+                        } else if (oldUrl && oldUrl !== newUrl) {
                             needRefresh = false;
                             contentApi.delete({
                                 contentType: blade.contentType,
@@ -251,9 +282,10 @@ angular.module('virtoCommerce.contentModule')
                         getDocumentIndex();
                         updateToolbarCommands();
                         broadcastChanges({ published: true, hasChanges: false });
+                        blade.parentBlade.refresh();
                     });
                 },
-                canExecuteMethod: function () { return true; }
+                canExecuteMethod: function () { return !isDirty(); }
             };
             var unpublishCommand = {
                 name: "content.commands.unpublish", icon: 'fa fa-file-alt',
@@ -267,11 +299,11 @@ angular.module('virtoCommerce.contentModule')
                         blade.published = false;
                         updateToolbarCommands();
                         broadcastChanges({ published: false, hasChanges: true });
+                        blade.parentBlade.refresh();
                     });
                 },
-                canExecuteMethod: function () { return true; }
+                canExecuteMethod: function () { return !isDirty(); }
             };
-
 
             if (!blade.isNew) {
                 toolbarCommands = [
@@ -318,17 +350,21 @@ angular.module('virtoCommerce.contentModule')
                         name: "content.commands.preview-page",
                         icon: 'fa fa-eye',
                         executeMethod: function () {
-                            const urlListBlade = {
-                                id: "storeUrlList",
-                                storeId: blade.storeId,
-                                contentType: blade.contentType,
-                                relativeUrl: blade.currentEntity.relativeUrl,
-                                headIcon: 'fa-plus-square-o',
-                                controller: 'virtoCommerce.contentModule.storeUrlListController',
-                                template: 'Modules/$(VirtoCommerce.Content)/Scripts/blades/pages/store-url-list.tpl.html'
+                            var showPreview = function () {
+                                var storeUrl = blade.storeUrl?.replace(/\/$/, '');
+                                if (storeUrl) {
+                                    var documentId = filesDraftService.getDocumentId(blade, true);
+                                    window.open(`${storeUrl}/designer-preview?pageId=${encodeURIComponent(documentId)}`, '_blank');
+                                } else {
+                                    var dialog = {
+                                        id: "noUrlInStore",
+                                        title: "content.dialogs.set-store-url.title",
+                                        message: "content.dialogs.set-store-url.message"
+                                    };
+                                    dialogService.showNotificationDialog(dialog);
+                                }
                             };
-
-                            bladeNavigationService.showBlade(urlListBlade, blade);
+                            showPreview();
                         },
                         canExecuteMethod: function () { return true; }
                     }
@@ -371,8 +407,12 @@ angular.module('virtoCommerce.contentModule')
                     executeMethod: function () {
                         getDocumentIndex(function (data) {
                             var doc = getSearchDocumentInfo();
+                            if (!doc) {
+                                console.log('Document id error', blade);
+                                return;
+                            }
                             const searchBlade = {
-                                id: 'sesarchDetails',
+                                id: 'searchDetails',
                                 currentEntityId: doc.documentId,
                                 currentEntity: blade.currentEntity,
                                 data: $scope.index,
@@ -385,11 +425,15 @@ angular.module('virtoCommerce.contentModule')
                             bladeNavigationService.showBlade(searchBlade, blade);
                         });
                     },
-                    canExecuteMethod: function () { return true; }
+                    canExecuteMethod: function () { return !!$scope.index; }
                 });
             }
 
             function updateIndexStatus(data, doc) {
+                if (!doc || !_.any(data)) {
+                    $scope.index = null;
+                    return;
+                }
                 if (_.any(data)) {
                     $scope.index = data[0];
                     $scope.indexDate = moment.utc($scope.index.indexationdate, momentFormat);
@@ -406,8 +450,10 @@ angular.module('virtoCommerce.contentModule')
             }
 
             function getSearchDocumentInfo() {
-                var relativeUrl = filesDraftService.undraftUrl(blade.currentEntity.relativeUrl);
-                var documentId = btoa(`${blade.storeId}::${blade.contentType}::${relativeUrl}`).replaceAll('=', '-');
+                var documentId = filesDraftService.getDocumentId(blade);
+                if (!documentId) {
+                    return null;
+                }
                 var documentType = 'ContentFile';
                 return { documentType: documentType, documentId: documentId };
             }
@@ -415,10 +461,14 @@ angular.module('virtoCommerce.contentModule')
             function getDocumentIndex(callback) {
                 if ($scope.searchEnabled) {
                     var doc = getSearchDocumentInfo();
-                    searchApi.getDocIndex(doc, function (data) {
-                        updateIndexStatus(data, doc);
-                        callback && _.any(data) && callback();
-                    });
+                    if (!!doc) {
+                        searchApi.getDocIndex(doc, function (data) {
+                            updateIndexStatus(data, doc);
+                            callback && _.any(data) && callback();
+                        });
+                    } else {
+                        updateIndexStatus(null, null);
+                    }
                 }
             }
 

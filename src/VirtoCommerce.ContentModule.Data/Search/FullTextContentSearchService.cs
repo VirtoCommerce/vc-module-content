@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using VirtoCommerce.ContentModule.Core;
 using VirtoCommerce.ContentModule.Core.Extensions;
 using VirtoCommerce.ContentModule.Core.Model;
 using VirtoCommerce.ContentModule.Core.Search;
@@ -90,15 +91,14 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             foreach (var document in documents)
             {
-                var (storeId, contentType, relativeUrl) = DocumentIdentifierHelper.ParseId(document.Id);
-                var contentItem = await _contentService.GetFileContentAsync(contentType, storeId, relativeUrl);
+                var contentItem = await _contentService.GetFileContentAsync(document.Id);
                 if (contentItem != null)
                 {
                     contentItem.Id = document.Id;
                     contentItem.Name = GetStringValueOrDefault(document, "name", contentItem.Name);
                     contentItem.DisplayName = GetStringValueOrDefault(document, "displayname", contentItem.DisplayName);
                     contentItem.Language = GetStringValueOrDefault(document, "culturename", contentItem.Language);
-                    if (contentItem.Language == "any")
+                    if (contentItem.Language == ContentConstants.AnyIndexValue)
                     {
                         contentItem.Language = null;
                     }

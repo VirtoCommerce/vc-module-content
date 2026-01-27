@@ -29,7 +29,7 @@ public class ContentSeoResolver : ISeoResolver
             return [];
         }
 
-        return (await FindFiles(criteria.Permalink))
+        return (await FindFiles(criteria.Permalink ?? criteria.Slug))
             .DistinctBy(x => x.Id)
             .Select(x => new SeoInfo
             {

@@ -66,7 +66,7 @@ angular.module('virtoCommerce.contentModule')
                     setTimeout(function () {
                         const link = document.createElement('a');
                         link.setAttribute('href', data.url);
-                        link.setAttribute('download', "");
+                        link.setAttribute('download', data.name || 'download');
                         link.style.display = 'none';
                         document.body.appendChild(link);
                         link.click();
