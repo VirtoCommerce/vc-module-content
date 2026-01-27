@@ -91,8 +91,7 @@ namespace VirtoCommerce.ContentModule.Data.Search
 
             foreach (var document in documents)
             {
-                var (storeId, contentType, relativeUrl) = DocumentIdentifierHelper.ParseId(document.Id);
-                var contentItem = await _contentService.GetFileContentAsync(contentType, storeId, relativeUrl);
+                var contentItem = await _contentService.GetFileContentAsync(document.Id);
                 if (contentItem != null)
                 {
                     contentItem.Id = document.Id;
