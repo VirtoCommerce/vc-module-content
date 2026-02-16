@@ -105,7 +105,7 @@ angular.module('virtoCommerce.contentModule')
                                 var retVal = {};
                                 var parts = rawData.split('---');
                                 if (parts.length > 2) { // parts[0] is left empty
-                                    retVal.content = parts[2].trim();
+                                    retVal.content = parts.slice(2).join('---').trim();
                                     var parsedMetadata = [];
                                     var parsedYAML = YAML.parse(parts[1].trim());
                                     retVal.metadata = _.map(parsedYAML,
