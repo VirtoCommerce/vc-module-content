@@ -18,7 +18,7 @@ jobs:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
 
   build:
-    uses: VirtoCommerce/.github/.github/workflows/build.yml@v3.800.26    
+    uses: VirtoCommerce/.github/.github/workflows/build.yml@fix-hotfix-release
     with:
       uploadPackage: 'true'
       uploadDocker: 'false'
