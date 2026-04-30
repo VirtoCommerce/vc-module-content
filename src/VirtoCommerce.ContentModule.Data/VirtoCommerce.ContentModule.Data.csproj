@@ -10,8 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.1002.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.1002.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.1016.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.1016.0" />
     <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.1000.0" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>

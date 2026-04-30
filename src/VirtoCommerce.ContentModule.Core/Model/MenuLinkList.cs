@@ -20,7 +20,7 @@ namespace VirtoCommerce.ContentModule.Core.Model
         /// </summary>
         public string Language { get; set; }
 
-        public ICollection<MenuLink> MenuLinks { get; set; }
+        public ICollection<MenuLink> MenuLinks { get; set; } = [];
 
         public string[] SecurityScopes { get; set; }
         public string OuterId { get; set; }
