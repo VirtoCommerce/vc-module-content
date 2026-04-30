@@ -70,7 +70,7 @@ namespace VirtoCommerce.ContentModule.Data.Model
             ModifiedDate = menuLinkList.ModifiedDate;
             ModifiedBy = menuLinkList.ModifiedBy;
 
-            foreach (var link in menuLinkList.MenuLinks)
+            foreach (var link in menuLinkList.MenuLinks ?? [])
             {
                 MenuLinks.Add(AbstractTypeFactory<MenuLinkEntity>.TryCreateInstance().FromModel(link));
             }
