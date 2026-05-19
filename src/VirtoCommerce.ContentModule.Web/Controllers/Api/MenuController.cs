@@ -102,9 +102,9 @@ namespace VirtoCommerce.ContentModule.Web.Controllers.Api
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteMenuLinkLists([FromQuery] string[] listIds)
         {
-            if (listIds == null)
+            if (listIds.IsNullOrEmpty())
             {
-                throw new ArgumentNullException(nameof(listIds));
+                return BadRequest("Query parameter 'listIds' is required.");
             }
 
             await _crudService.DeleteAsync(listIds);
