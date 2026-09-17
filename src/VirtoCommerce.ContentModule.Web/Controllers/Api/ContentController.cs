@@ -132,14 +132,13 @@ public class ContentController(
             // asking for it to be gone: the state they want already holds. The deploy that unpublishes a
             // page somebody had already removed by hand hit exactly this, and that one failed request
             // froze a deployment pipeline for a week.
-            if (await FolderExistsAsync(contentType, storeId, url))
-            {
-                urlsToRemove.Add(url);
-            }
-            else
+            if (await IsKnownAbsentAsync(contentType, storeId, url))
             {
                 logger.LogInformation("Nothing to delete at {Url}: neither a file nor a folder in {ContentType}/{StoreId}.", url, contentType, storeId);
+                continue;
             }
+
+            urlsToRemove.Add(url);
         }
 
         if (urlsToRemove.Count > 0)
@@ -151,14 +150,27 @@ public class ContentController(
     }
 
     /// <summary>
-    /// A folder is known by its parent's listing — the one question both storage providers answer the
-    /// same way: blob storage has no folders of its own and lists a prefix, the file system lists a
-    /// directory. Asking the folder itself would not tell an empty folder from a missing one.
+    /// True only when this url is known to name nothing at all — not a file (the caller has just
+    /// established that) and not a folder either.
+    /// <para>
+    /// Deliberately one-sided. Skipping something that is really there would be worse than the failure
+    /// this check exists to avoid: the caller is told the thing is gone and it is still live. So every
+    /// answer short of "the parent lists its contents and this is not among them" is <c>false</c>, and
+    /// the url goes to the storage provider exactly as it did before — including when the parent cannot
+    /// be listed, when it comes back empty, and when the url is an absolute one. Callers send both
+    /// forms: the admin blades pass <c>relativeUrl</c> in some places and the public <c>url</c> in
+    /// others, and path arithmetic on the latter is not ours to do — the provider resolves it.
+    /// </para>
+    /// <para>
+    /// A folder is looked for in its parent's listing, which is the one question both storage providers
+    /// answer the same way: blob storage has no folders of its own and lists a prefix, the file system
+    /// lists a directory. Asking about the folder itself would not tell an empty one from a missing one.
+    /// </para>
     /// </summary>
-    private async Task<bool> FolderExistsAsync(string contentType, string storeId, string url)
+    private async Task<bool> IsKnownAbsentAsync(string contentType, string storeId, string url)
     {
         var trimmed = url?.Trim('/') ?? string.Empty;
-        if (trimmed.Length == 0)
+        if (trimmed.Length == 0 || Uri.TryCreate(trimmed, UriKind.Absolute, out _))
         {
             return false;
         }
@@ -172,18 +184,20 @@ public class ContentController(
         // empty rather than null for the root: null is the admin's "root listing", which hides the blogs folder
         criteria.FolderUrl = slash < 0 ? string.Empty : trimmed[..slash];
 
+        IList<ContentItem> siblings;
         try
         {
-            var siblings = await contentFileService.FilterItemsAsync(criteria);
-            return siblings.Any(item => item is not ContentFile && item.Name.EqualsIgnoreCase(name));
+            siblings = await contentFileService.FilterItemsAsync(criteria);
         }
         catch (Exception ex)
         {
-            // A parent that cannot be listed has no folder in it. The file checks above went through
-            // the same provider a moment ago, so this is not the provider being unreachable.
-            logger.LogWarning(ex, "Could not list {Parent} in {ContentType}/{StoreId} to check whether {Url} is a folder; treating it as absent.", criteria.FolderUrl, contentType, storeId, url);
+            logger.LogWarning(ex, "Could not list {Parent} in {ContentType}/{StoreId} to check whether {Url} is still there; deleting it as before.", criteria.FolderUrl, contentType, storeId, url);
             return false;
         }
+
+        // An empty answer does not distinguish "the parent is empty" from "that is not where this url
+        // lives" — and only the first of those means the url names nothing.
+        return siblings.Count > 0 && !siblings.Any(item => item.Name.EqualsIgnoreCase(name));
     }
 
     /// <summary>

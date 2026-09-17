@@ -19,6 +19,11 @@ namespace VirtoCommerce.ContentModule.Tests;
 /// safe to ask twice. It used to take any url that was not a file for a folder and hand it to the
 /// storage provider, which fails on a folder that is not there; a CI unpublish of a page already
 /// removed by hand answered 500, and that single failure froze a deployment pipeline for a week.
+/// <para>
+/// The check that avoids it is deliberately one-sided: a url is skipped only when the parent listing
+/// shows it is not there. Anything less certain is deleted exactly as before, because reporting
+/// something gone while it is still live would be the worse failure of the two.
+/// </para>
 /// </summary>
 public class ContentControllerDeleteTests
 {
@@ -34,9 +39,18 @@ public class ContentControllerDeleteTests
         _contentFileService.Setup(x => x.FilterItemsAsync(It.IsAny<FilterItemsCriteria>())).ReturnsAsync(new List<ContentItem>());
     }
 
+    /// <summary>What a folder that exists and holds other things looks like to the listing.</summary>
+    private void ParentHolds(string folderUrl, params ContentItem[] items) =>
+        _contentFileService
+            .Setup(x => x.FilterItemsAsync(It.Is<FilterItemsCriteria>(c =>
+                c.FolderUrl == folderUrl && c.ContentType == ContentType && c.StoreId == StoreId)))
+            .ReturnsAsync(new List<ContentItem>(items));
+
     [Fact]
     public async Task DeleteContent_APageThatIsAlreadyGone_IsNoContent_AndDeletesNothing()
     {
+        ParentHolds("blogs/integrations", new ContentFile { Name = "still-here.page" });
+
         var result = await Controller().DeleteContent(ContentType, StoreId, ["blogs/integrations/old.page"]);
 
         Assert.IsType<NoContentResult>(result);
@@ -60,9 +74,7 @@ public class ContentControllerDeleteTests
     [Fact]
     public async Task DeleteContent_AFolderItsParentLists_IsDeleted()
     {
-        _contentFileService
-            .Setup(x => x.FilterItemsAsync(It.Is<FilterItemsCriteria>(c => c.FolderUrl == "blogs" && c.ContentType == ContentType && c.StoreId == StoreId)))
-            .ReturnsAsync(new List<ContentItem> { new ContentFolder { Name = "Archive" }, new ContentFile { Name = "index.page" } });
+        ParentHolds("blogs", new ContentFolder { Name = "Archive" }, new ContentFile { Name = "index.page" });
 
         await Controller().DeleteContent(ContentType, StoreId, ["blogs/archive"]);
 
@@ -74,9 +86,7 @@ public class ContentControllerDeleteTests
     public async Task DeleteContent_ARootFolder_IsLookedUpInTheRootListing_NotTheAdminsRootView()
     {
         // an empty folder url rather than null: null is the admin's root view, which hides "blogs"
-        _contentFileService
-            .Setup(x => x.FilterItemsAsync(It.Is<FilterItemsCriteria>(c => c.FolderUrl == string.Empty)))
-            .ReturnsAsync(new List<ContentItem> { new ContentFolder { Name = "blogs" } });
+        ParentHolds(string.Empty, new ContentFolder { Name = "blogs" });
 
         await Controller().DeleteContent(ContentType, StoreId, ["blogs"]);
 
@@ -88,6 +98,7 @@ public class ContentControllerDeleteTests
     public async Task DeleteContent_AMixedList_DeletesOnlyWhatIsThere()
     {
         _contentService.Setup(x => x.ItemExistsAsync(ContentType, StoreId, "a.page")).ReturnsAsync(true);
+        ParentHolds(string.Empty, new ContentFile { Name = "a.page" });
 
         await Controller().DeleteContent(ContentType, StoreId, ["a.page", "gone.page", "gone-folder"]);
 
@@ -95,8 +106,25 @@ public class ContentControllerDeleteTests
             It.Is<string[]>(urls => urls.Length == 1 && urls[0] == "a.page")), Times.Once);
     }
 
+    // ── the three ways the check declines to answer ──
+    //
+    // Each of these used to delete, and still does. Guessing "gone" from them would report something
+    // removed while it is still live — the failure worth avoiding more than a 500.
+
     [Fact]
-    public async Task DeleteContent_WhenTheParentCannotBeListed_TreatsTheFolderAsAbsent()
+    public async Task DeleteContent_AnAbsoluteUrl_IsPassedThroughAsBefore()
+    {
+        // the admin blades send the public `url` in several places and `relativeUrl` in others; only the
+        // storage provider knows how to resolve the first, so it is not second-guessed here
+        await Controller().DeleteContent(ContentType, StoreId, ["https://cdn.example.com/cms-content/pages/vccom/blogs/archive"]);
+
+        _contentService.Verify(x => x.DeleteContentAsync(ContentType, StoreId,
+            It.Is<string[]>(urls => urls.Length == 1 && urls[0].StartsWith("https://"))), Times.Once);
+        _contentFileService.Verify(x => x.FilterItemsAsync(It.IsAny<FilterItemsCriteria>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task DeleteContent_WhenTheParentCannotBeListed_DeletesAsBefore()
     {
         _contentFileService
             .Setup(x => x.FilterItemsAsync(It.IsAny<FilterItemsCriteria>()))
@@ -105,7 +133,19 @@ public class ContentControllerDeleteTests
         var result = await Controller().DeleteContent(ContentType, StoreId, ["no/such/folder"]);
 
         Assert.IsType<NoContentResult>(result);
-        _contentService.Verify(x => x.DeleteContentAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>()), Times.Never);
+        _contentService.Verify(x => x.DeleteContentAsync(ContentType, StoreId,
+            It.Is<string[]>(urls => urls.Length == 1 && urls[0] == "no/such/folder")), Times.Once);
+    }
+
+    [Fact]
+    public async Task DeleteContent_WhenTheParentListingIsEmpty_DeletesAsBefore()
+    {
+        // an empty answer cannot tell "the parent is empty" from "that is not where this url lives"
+        var result = await Controller().DeleteContent(ContentType, StoreId, ["blogs/empty-parent/thing"]);
+
+        Assert.IsType<NoContentResult>(result);
+        _contentService.Verify(x => x.DeleteContentAsync(ContentType, StoreId,
+            It.Is<string[]>(urls => urls.Length == 1 && urls[0] == "blogs/empty-parent/thing")), Times.Once);
     }
 
     private ContentController Controller() => new(
