@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.AssetsModule.Core.Assets;
@@ -9,7 +10,10 @@ using VirtoCommerce.AzureBlobAssetsModule.Core;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Exceptions;
 using VirtoCommerce.Platform.Core.Extensions;
+
+[assembly: InternalsVisibleTo("VirtoCommerce.ContentModule.Tests")]
 
 namespace VirtoCommerce.ContentModule.Azure
 {
@@ -97,7 +101,7 @@ namespace VirtoCommerce.ContentModule.Azure
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        private string NormalizeUrl(string url)
+        internal string NormalizeUrl(string url)
         {
             var result = _options.RootPath;
             if (!string.IsNullOrEmpty(url))
@@ -112,8 +116,30 @@ namespace VirtoCommerce.ContentModule.Azure
                 {
                     result = UrlHelperExtensions.Combine(_options.RootPath, url);
                 }
+
+                // An absolute URL discards the configured RootPath and lets the first path
+                // segment select the storage container. Enforce that the normalized path
+                // stays within the configured content root to prevent cross-container access.
+                EnsureWithinConfiguredRoot(result);
             }
             return result;
+        }
+
+        private void EnsureWithinConfiguredRoot(string normalizedUrl)
+        {
+            var root = _options.RootPath?.Replace('\\', '/').Trim('/');
+            if (string.IsNullOrEmpty(root))
+            {
+                return;
+            }
+
+            var normalized = normalizedUrl.Replace('\\', '/').TrimStart('/');
+
+            if (!normalized.Equals(root, StringComparison.OrdinalIgnoreCase) &&
+                !normalized.StartsWith(root + "/", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new PlatformException($"Access to '{normalizedUrl}' is outside the configured content root '{_options.RootPath}'.");
+            }
         }
     }
 }
