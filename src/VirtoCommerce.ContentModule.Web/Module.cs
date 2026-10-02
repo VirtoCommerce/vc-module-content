@@ -1,4 +1,4 @@
-using System;
+using System;
 using System.Threading;
 using System.IO;
 using System.Linq;
@@ -19,6 +19,7 @@ using VirtoCommerce.ContentModule.Core.Search;
 using VirtoCommerce.ContentModule.Core.Services;
 using VirtoCommerce.ContentModule.Data.ExportImport;
 using VirtoCommerce.ContentModule.Data.Handlers;
+using VirtoCommerce.ContentModule.Data.Jobs;
 using VirtoCommerce.ContentModule.Data.MySql;
 using VirtoCommerce.ContentModule.Data.PostgreSql;
 using VirtoCommerce.ContentModule.Data.Repositories;
@@ -32,6 +33,7 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
@@ -56,6 +58,7 @@ namespace VirtoCommerce.ContentModule.Web
         {
 
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
+            serviceCollection.AddBackgroundJob<LogEntityChangesJobHandler, LogEntityChangesJobPayload>(triggerable: false);
 
             serviceCollection.AddDbContext<MenuDbContext>(options =>
             {
