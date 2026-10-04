@@ -31,9 +31,7 @@ public class IndexContentChangesEventHandler : IEventHandler<ContentFileChangedE
             .Where(x => x != null)
             .ToArray();
 
-        _indexingJobService.EnqueueIndexAndDeleteDocuments(entries);
-
-        return Task.CompletedTask;
+        return _indexingJobService.EnqueueIndexAndDeleteDocumentsAsync(entries);
     }
 
     private IndexEntry GetIndexEntry(string storeId, string contentType, GenericChangedEntry<ContentFile> entry)
