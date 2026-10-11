@@ -75,11 +75,25 @@ angular.module('virtoCommerce.contentModule')
                 };
 
                 $scope.duplicate = function (data) {
-                    contentApi.copyFile({
-                        srcFile: data.relativeUrl,
-                        contentType: blade.contentType,
-                        storeId: blade.storeId
-                    }, blade.refresh);
+                    // Copying here is a blob-level copy to a "-draft" name. A file type whose files
+                    // are not kept in blob storage can take the operation over; it either performs
+                    // the copy or calls back to say this store is not one of its own, and then the
+                    // blob copy — which is right for that store — runs after all.
+                    function copyInBlobStorage() {
+                        contentApi.copyFile({
+                            srcFile: data.relativeUrl,
+                            contentType: blade.contentType,
+                            storeId: blade.storeId
+                        }, blade.refresh);
+                    }
+
+                    var handlers = fileHandlerFactory.getHandlers('duplicate', { file: data });
+                    if (handlers.length) {
+                        handlers[0].execute({ blade: blade, file: data }, blade.refresh, copyInBlobStorage);
+                        return;
+                    }
+
+                    copyInBlobStorage();
                 };
 
                 $scope.selectNode = function (listItem) {
