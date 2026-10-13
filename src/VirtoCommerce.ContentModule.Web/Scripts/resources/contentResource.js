@@ -46,8 +46,7 @@ angular.module('virtoCommerce.contentModule')
                                 }
                                 return JSON.stringify(angular.extend({}, request, { searchPhrase: query }));
                             },
-                            isArray: true,
-                            transformResponse: function (rawData) { return JSON.parse(rawData).result; }
+                            isArray: true
                         },
                         publish: {
                             url: 'api/content/:contentType/:storeId/publishing',
