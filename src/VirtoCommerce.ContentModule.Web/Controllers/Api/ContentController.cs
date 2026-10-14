@@ -209,7 +209,7 @@ public class ContentController(
         criteria.Skip = 0;
         criteria.Take = 100;
         var result = await fullTextContentSearchService.SearchAllAsync(criteria);
-        var response = publishingService.SetFilesStatuses(result);
+        var response = await publishingService.SetFilesStatuses(result);
         return Ok(response);
     }
 
