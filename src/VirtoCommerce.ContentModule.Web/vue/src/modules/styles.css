@@ -1,0 +1,31 @@
+/* classes shared by several content blades */
+
+/* the design's blade body padding (as in the Orders detail) */
+.content-form {
+  padding: 20px 22px 36px;
+}
+
+/* source files: monospace, kept exactly as typed */
+.content-code textarea {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 60vh;
+  white-space: pre;
+  tab-size: 2;
+}
+
+.content-crumbs {
+  padding: 8px 16px;
+}
+
+.content-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--neutrals-900);
+}
+
+.content-list__name {
+  color: var(--neutrals-900);
+}

@@ -1,0 +1,18 @@
+{
+  // Content (CMS) admin UI for the Admin Shell host (Module Federation remote)
+  "remote": { "name": "content_admin", "exposed": "./Module" },
+  "contributions": {
+    "menu": [
+      {
+        "id": "content",
+        "sectionId": "marketing",
+        "title": "Content",
+        "icon": "lucide-code-xml",
+        "route": "/content",
+        "permission": "content:access",
+        "priority": 20,
+        "replaces": "legacy.content"
+      }
+    ]
+  }
+}
