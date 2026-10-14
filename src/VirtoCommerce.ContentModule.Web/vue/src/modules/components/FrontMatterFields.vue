@@ -60,7 +60,10 @@ useApiClient(DynamicPropertiesClient)
     definitions.value = (result.results ?? []).sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
   });
 
-const textValue = (v: unknown) => (Array.isArray(v) ? v.join(", ") : v == null ? "" : String(v));
+const textValue = (v: unknown) => {
+  if (Array.isArray(v)) return v.join(", ");
+  return v == null ? "" : String(v);
+};
 const fromText = (v: unknown, isArray?: boolean) => {
   const text = v == null ? "" : String(v);
   return isArray ? text.split(",").map((x) => x.trim()).filter(Boolean) : text || undefined;

@@ -132,9 +132,10 @@ const form = useBladeForm({
 });
 
 const isPost = computed(() => contentType.value === "blogs");
-const title = computed(() =>
-  isNew.value ? t(isPost.value ? "CONTENT.PAGES.PAGE.TITLE_NEW_POST" : "CONTENT.PAGES.PAGE.TITLE_NEW") : file.value!.name!,
-);
+const title = computed(() => {
+  if (!isNew.value) return file.value!.name!;
+  return t(isPost.value ? "CONTENT.PAGES.PAGE.TITLE_NEW_POST" : "CONTENT.PAGES.PAGE.TITLE_NEW");
+});
 const subtitle = computed(() => t(isPost.value ? "CONTENT.PAGES.PAGE.SUBTITLE_POST" : "CONTENT.PAGES.PAGE.SUBTITLE"));
 const nameError = computed(() =>
   item.value.pageName && !/^[^\\/:*?"<>|.][^\\/:*?"<>|]*$/.test(item.value.pageName)

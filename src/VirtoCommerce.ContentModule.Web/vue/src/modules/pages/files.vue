@@ -236,19 +236,19 @@ function openItem(item: ContentFile) {
   if (isDesignedPage(item)) return openPageBuilder(storeId.value);
   const onOpen = () => (activeItemId.value = item.relativeUrl);
   const onClose = () => (activeItemId.value = undefined);
-  const options = { contentType: contentType.value, store: store.value, folderUrl: folderUrl.value, item };
+  const childOptions = { contentType: contentType.value, store: store.value, folderUrl: folderUrl.value, item };
   if (contentType.value === "themes") {
-    if (isText(item) || isImage(item)) openBlade({ name: "ContentAssetDetails", param: storeId.value, options, onOpen, onClose });
+    if (isText(item) || isImage(item)) openBlade({ name: "ContentAssetDetails", param: storeId.value, options: childOptions, onOpen, onClose });
   } else if (isText(item)) {
-    openBlade({ name: "ContentPageDetails", param: storeId.value, options, onOpen, onClose });
+    openBlade({ name: "ContentPageDetails", param: storeId.value, options: childOptions, onOpen, onClose });
   }
 }
 
 function addItem() {
-  const options = { contentType: contentType.value, store: store.value, folderUrl: folderUrl.value };
-  if (isBlogsRoot.value) openBlade({ name: "ContentBlogDetails", param: storeId.value, options });
-  else if (contentType.value === "themes") openBlade({ name: "ContentAssetDetails", param: storeId.value, options });
-  else openBlade({ name: "ContentPageDetails", param: storeId.value, options });
+  const childOptions = { contentType: contentType.value, store: store.value, folderUrl: folderUrl.value };
+  if (isBlogsRoot.value) openBlade({ name: "ContentBlogDetails", param: storeId.value, options: childOptions });
+  else if (contentType.value === "themes") openBlade({ name: "ContentAssetDetails", param: storeId.value, options: childOptions });
+  else openBlade({ name: "ContentPageDetails", param: storeId.value, options: childOptions });
 }
 
 function ask(request: Omit<NamePromptRequest, "resolve">) {

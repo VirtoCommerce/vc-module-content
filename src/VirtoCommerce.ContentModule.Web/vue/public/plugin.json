@@ -1,5 +1,4 @@
 {
-  // Content (CMS) admin UI for the Admin Shell host (Module Federation remote)
   "remote": { "name": "content_admin", "exposed": "./Module" },
   "contributions": {
     "menu": [
