@@ -1,16 +1,39 @@
 {
-  "remote": { "name": "content_admin", "exposed": "./Module" },
+  "remote": {
+    "name": "content_admin",
+    "exposed": "./Module"
+  },
   "contributions": {
     "menu": [
       {
         "id": "content",
         "sectionId": "marketing",
-        "title": "Content",
-        "icon": "lucide-code-xml",
+        "title": "Sites",
+        "icon": "lucide-globe",
         "route": "/content",
         "permission": "content:access",
         "priority": 20,
         "replaces": "legacy.content"
+      },
+      {
+        "id": "content.blogs",
+        "sectionId": "marketing",
+        "group": "Content",
+        "title": "Blogs",
+        "icon": "lucide-notebook-pen",
+        "route": "/content-blogs",
+        "permission": "content:access",
+        "priority": 41
+      },
+      {
+        "id": "content.menus",
+        "sectionId": "marketing",
+        "group": "Content",
+        "title": "Menus",
+        "icon": "lucide-list-tree",
+        "route": "/content-menus",
+        "permission": "content:access",
+        "priority": 42
       }
     ]
   }

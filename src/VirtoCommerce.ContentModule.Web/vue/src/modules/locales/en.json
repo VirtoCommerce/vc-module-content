@@ -1,7 +1,9 @@
 {
   "CONTENT": {
     "MENU": {
-      "TITLE": "Content"
+      "TITLE": "Sites",
+      "BLOGS": "Blogs",
+      "MENUS": "Menus"
     },
     "WIDGETS": {
       "STORE_CONTENT": "Content"
@@ -10,7 +12,7 @@
       "THEMES": "Themes",
       "PAGES": "Pages",
       "BLOGS": "Blogs",
-      "LINKLISTS": "Link lists"
+      "LINKLISTS": "Menus"
     },
     "STATUS": {
       "PUBLISHED": "Published",
@@ -27,8 +29,7 @@
       "UPLOAD": "Upload",
       "PUBLISH": "Publish",
       "UNPUBLISH": "Unpublish",
-      "PREVIEW": "Preview",
-      "PAGE_BUILDER": "Page Builder"
+      "PREVIEW": "Preview"
     },
     "PROMPT": {
       "OK": "OK",
@@ -36,26 +37,9 @@
     },
     "PAGES": {
       "STORES": {
-        "TITLE": "Content",
-        "EMPTY": "No stores found",
-        "COLUMNS": {
-          "NAME": "Store",
-          "THEME": "Active theme"
-        },
-        "ACTIONS": {
-          "OPEN_STOREFRONT": "Open storefront",
-          "PREVIEW_THEME": "Preview active theme"
-        }
-      },
-      "STORE": {
-        "SUBTITLE": "Store content",
-        "ACTIVE_THEME": "Active: {name}",
-        "NO_ACTIVE_THEME": "No active theme",
-        "COLUMNS": {
-          "TYPE": "Content",
-          "DETAILS": "Details",
-          "COUNT": "Items"
-        }
+        "TITLE": "Sites",
+        "EMPTY": "No sites found",
+        "NO_URL": "No storefront URL yet"
       },
       "FILES": {
         "ROOT": "All",
@@ -140,7 +124,7 @@
         }
       },
       "LINK_LISTS": {
-        "EMPTY": "No link lists yet",
+        "EMPTY": "No menus yet",
         "COLUMNS": {
           "NAME": "Name",
           "LANGUAGE": "Language",
@@ -148,8 +132,8 @@
         }
       },
       "LINK_LIST": {
-        "TITLE_NEW": "New link list",
-        "SUBTITLE": "Link list",
+        "TITLE_NEW": "New menu",
+        "SUBTITLE": "Menu",
         "LINKS": "Links",
         "NO_LINKS": "No links",
         "ADD_LINK": "Add link",
@@ -168,6 +152,30 @@
           "TYPE": "Linked to",
           "OBJECT": "Product / category"
         }
+      },
+      "SITE": {
+        "VIEW_SITE": "View site"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "Settings",
+        "NAME": "Site name",
+        "URL": "Storefront URL",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "Status",
+        "LANGUAGES": "Languages",
+        "ALL_SETTINGS": "All settings",
+        "SAVED": "Settings saved",
+        "CURRENCIES": "Currencies",
+        "DEFAULT": "Default"
+      },
+      "BLOGS": {
+        "EMPTY": "No blogs yet",
+        "COLUMNS": {
+          "NAME": "Blog"
+        }
+      },
+      "MENUS": {
+        "ADD": "Add menu"
       }
     },
     "VALIDATION": {
@@ -176,7 +184,7 @@
       "ASSET_NAME": "Enter a file name with an extension",
       "BLOG_EXISTS": "A blog with this name already exists",
       "THEME_EXISTS": "A theme with this name already exists",
-      "LINK_LIST_EXISTS": "A link list with this name and language already exists"
+      "LINK_LIST_EXISTS": "A menu with this name and language already exists"
     },
     "ALERTS": {
       "CLOSE_CONFIRMATION": "You have unsaved changes. Close anyway?",
@@ -188,8 +196,24 @@
       "DELETE_THEME": "Delete theme \"{name}\"?",
       "DELETE_LAST_THEME": "\"{name}\" is the only theme of this store. Delete it anyway?",
       "OVERWRITE_THEME": "Theme \"{name}\" already exists. Overwrite its files?",
-      "DELETE_LINK_LISTS": "Delete {count} link list(s)?",
+      "DELETE_LINK_LISTS": "Delete {count} menu(s)?",
       "DELETE_LINKS": "Delete {count} link(s)?"
+    },
+    "STATES": {
+      "OPEN": "Open",
+      "RESTRICTEDACCESS": "Restricted",
+      "CLOSED": "Closed"
+    },
+    "SITE_TAB": {
+      "FILES": "Files",
+      "THEMES_DETAIL": "Active: {name}",
+      "PAGES_DETAIL": "Pages, drafts and folders",
+      "NO_ACTIVE_THEME": "No active theme"
+    },
+    "SITES": {
+      "ALL": "All sites",
+      "FILTER": "Site",
+      "COLUMN": "Site"
     }
   }
 }

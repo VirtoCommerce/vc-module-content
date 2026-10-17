@@ -1,169 +1,207 @@
 <template>
   <VcBlade
     :title="$t('CONTENT.PAGES.STORES.TITLE')"
-    :toolbar-items="bladeToolbar"
     :loading="loading"
-    width="50%"
+    :width="380"
   >
-    <VcDataTable
-      v-model:search-value="searchValue"
-      :items="rows"
-      :total-count="totalCount"
-      :pagination="pagination"
-      :searchable="true"
-      :state-key="'CONTENT_STORES'"
-      :active-item-id="activeChildParam"
-      :row-actions="rowActions"
-      :empty-state="{ icon: 'lucide-store', title: $t('CONTENT.PAGES.STORES.EMPTY') }"
-      @row-click="(e: { data: Row }) => openStore(e.data.id!)"
-      @pagination-click="pagination.goToPage"
-    >
-      <VcColumn
-        id="name"
-        :title="$t('CONTENT.PAGES.STORES.COLUMNS.NAME')"
-        body-class="content-list__name"
-        always-visible
-      />
-      <VcColumn
-        id="activeThemeName"
-        :title="$t('CONTENT.PAGES.STORES.COLUMNS.THEME')"
-      />
-      <VcColumn
-        v-for="col in countColumns"
-        :id="col"
-        :key="col"
-        :title="$t(`CONTENT.TYPES.${col.toUpperCase()}`)"
-        align="end"
+    <div class="sites">
+      <p
+        v-if="!loading && !stores.length"
+        class="sites__empty"
       >
-        <template #body="{ data }"><span class="vc-table-cell-number">{{ count(data[col]) }}</span></template>
-      </VcColumn>
-    </VcDataTable>
+        {{ $t("CONTENT.PAGES.STORES.EMPTY") }}
+      </p>
+      <div class="sites__grid">
+        <div
+          v-for="store in stores"
+          :key="store.id"
+          class="site-tile"
+          :class="{ 'site-tile--active': store.id === activeChildParam, 'site-tile--closed': store.storeState === 'Closed' }"
+        >
+          <button
+            type="button"
+            class="site-tile__open"
+            :aria-label="store.name"
+            @click="openSite(store.id!)"
+          >
+            <SitePreview :store="store" />
+          </button>
+          <span class="site-tile__meta">
+            <span class="site-tile__text">
+              <button
+                type="button"
+                class="site-tile__name"
+                @click="openSite(store.id!)"
+              >
+                {{ store.name }}
+              </button>
+              <a
+                v-if="store.url"
+                class="site-tile__host site-tile__host--link"
+                :href="store.url"
+                target="_blank"
+                rel="noopener"
+                :title="$t('CONTENT.PAGES.SITE.VIEW_SITE')"
+              >
+                {{ siteHost(store.url) }}
+                <VcIcon
+                  icon="lucide-external-link"
+                  size="xs"
+                />
+              </a>
+              <span
+                v-else
+                class="site-tile__host"
+                >{{ $t("CONTENT.PAGES.STORES.NO_URL") }}</span
+              >
+            </span>
+            <SiteState :store="store" />
+          </span>
+        </div>
+      </div>
+    </div>
   </VcBlade>
 </template>
 
 <script setup lang="ts">
-import {
-  useAsync,
-  useBlade,
-  useDataTablePagination,
-  useFunctions,
-  useLatestRequest,
-  useTableSearch,
-  type IBladeToolbar,
-} from "@vc-shell/framework";
-import { VcBlade, VcColumn, VcDataTable } from "@vc-shell/framework/ui";
-import { onMounted, ref, watch } from "vue";
-import { useI18n } from "vue-i18n";
+import { useAsync, useBlade } from "@vc-shell/framework";
+import { VcBlade, VcIcon } from "@vc-shell/framework/ui";
+import { onMounted, ref } from "vue";
 import type { Store } from "../../api_client/virtocommerce.store";
-import { count, useContentClients } from "../api";
+import SitePreview from "../components/SitePreview.vue";
+import SiteState from "../components/SiteState.vue";
+import { siteHost, useContentClients } from "../api";
 
 defineBlade({
   url: "/content",
   name: "ContentStores",
   isWorkspace: true,
   permissions: ["content:access"],
-  menuItem: { title: "CONTENT.MENU.TITLE", icon: "lucide-code-xml", priority: 20 },
+  menuItem: { title: "CONTENT.MENU.TITLE", icon: "lucide-globe", priority: 20 },
 });
 
-type Row = Store & { activeThemeName?: string; themes?: number; pages?: number; blogs?: number; linkLists?: number };
-
-const PAGE_SIZE = 20;
-const countColumns = ["themes", "pages", "blogs", "linkLists"] as const;
-
-const { t } = useI18n({ useScope: "global" });
 const { openBlade, query, exposeToChildren, activeChildParam } = useBlade();
-const { debounce } = useFunctions();
 const clients = useContentClients();
 
-const rows = ref<Row[]>([]);
-const totalCount = ref(0);
-const { searchValue } = useTableSearch({ stateKey: "CONTENT_STORES" });
-const pagination = useDataTablePagination({ stateKey: "CONTENT_STORES", pageSize: PAGE_SIZE, totalCount });
+const stores = ref<Store[]>([]);
 
-// a newer search wins: responses of an older one (list or counters) are dropped
-const search = useLatestRequest();
-const loading = search.pending;
-
-const { action: load } = useAsync(async () => {
-  const request = search.begin();
-  try {
-    const result = await (await clients.stores()).searchStores({
-      keyword: searchValue.value || undefined,
-      skip: pagination.skip,
-      take: PAGE_SIZE,
-      sort: "name",
-    });
-    if (!request.isCurrent()) return;
-    rows.value = result.results ?? [];
-    totalCount.value = result.totalCount ?? 0;
-  } finally {
-    request.complete();
-  }
-  // per-store counters load after the list, like the AngularJS tiles
-  rows.value.forEach((row) => countStore(row.id!, request.isCurrent));
+const { loading, action: load } = useAsync(async () => {
+  // ponytail: one page of 100 and no search, sites are few; add both if a tenant runs many
+  stores.value = (await (await clients.stores()).searchStores({ take: 100, sort: "name" })).results ?? [];
 });
 
-/** a store's active theme and content counts */
-async function countStore(storeId: string, isCurrent = () => true) {
-  const [content, menu] = await Promise.all([clients.content(), clients.menu()]);
-  const [stats, lists] = await Promise.all([
-    content.getStoreContentStats(storeId).catch(() => undefined),
-    menu.getLists(storeId).catch(() => []),
-  ]);
-  const i = rows.value.findIndex((x) => x.id === storeId);
-  if (!isCurrent() || i < 0) return;
-  rows.value[i] = {
-    ...rows.value[i],
-    activeThemeName: stats?.activeThemeName,
-    themes: stats?.themesCount,
-    pages: stats?.pagesCount,
-    blogs: stats?.blogsCount,
-    linkLists: lists?.length ?? 0,
-  };
+function openSite(storeId: string) {
+  openBlade({ name: "SiteDetails", param: storeId });
 }
-
-function openStore(storeId: string) {
-  openBlade({ name: "ContentStore", param: storeId });
-}
-
-function openStorefront(row: Row, previewTheme = false) {
-  if (row.url) {
-    window.open(previewTheme ? `${row.url}?previewtheme=${row.activeThemeName}` : row.url, "_blank");
-  }
-}
-
-const rowActions = (row: Row) => [
-  {
-    type: "info" as const,
-    id: "storefront",
-    title: t("CONTENT.PAGES.STORES.ACTIONS.OPEN_STOREFRONT"),
-    icon: "lucide-external-link",
-    disabled: !row.url,
-    clickHandler: () => openStorefront(row),
-  },
-  {
-    type: "info" as const,
-    id: "preview",
-    title: t("CONTENT.PAGES.STORES.ACTIONS.PREVIEW_THEME"),
-    icon: "lucide-eye",
-    disabled: !row.url || !row.activeThemeName,
-    clickHandler: () => openStorefront(row, true),
-  },
-];
-
-const bladeToolbar = ref<IBladeToolbar[]>([
-  { id: "refresh", title: t("CONTENT.TOOLBAR.REFRESH"), icon: "lucide-refresh-cw", clickHandler: () => load() },
-]);
-
-watch(searchValue, () => pagination.setPage(1));
-watch([searchValue, () => pagination.skip], debounce(load, 300));
 
 onMounted(async () => {
   await load();
-  // /content?storeId=… (the AngularJS workspace link) opens that store straight away
-  if (query.value?.storeId) openStore(query.value.storeId);
+  // /content?storeId=… (the AngularJS workspace link) opens that site straight away
+  if (query.value?.storeId) openSite(query.value.storeId);
 });
 
-// a change in a store's content blades: only that row's counters
-exposeToChildren({ refreshStore: (storeId: string) => countStore(storeId) });
+// a site's settings changed: re-read that tile only
+exposeToChildren({
+  async refreshStore(storeId: string) {
+    const store = await (await clients.stores()).getStoreById(storeId);
+    const i = stores.value.findIndex((x) => x.id === storeId);
+    if (i >= 0) stores.value[i] = store;
+  },
+});
 </script>
+
+<style lang="scss">
+.sites {
+  padding: 24px 28px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &__empty {
+    margin: 0;
+    color: var(--neutrals-500);
+  }
+
+  &__grid {
+    display: grid;
+    /* tiles keep their size: one site doesn't stretch across the blade */
+    grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 320px));
+    gap: 28px 24px;
+  }
+}
+
+.site-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--neutrals-900);
+
+  &--closed .site-preview {
+    opacity: 0.55;
+  }
+
+  &__open,
+  &__name {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  &__open {
+    display: block;
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  &__open:hover .site-preview,
+  &__open:focus-visible .site-preview,
+  &--active .site-preview {
+    border-color: var(--primary-500);
+  }
+
+  &__meta {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  &__text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  &__host {
+    max-width: 100%;
+    font-size: 13px;
+    color: var(--neutrals-500);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &--link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+
+      &:hover {
+        color: var(--primary-500);
+      }
+    }
+  }
+}
+</style>

@@ -33,6 +33,6 @@ useWidgetTrigger({ onRefresh: load });
 
 const { openBlade } = useBlade();
 function open() {
-  if (storeId.value) openBlade({ name: "ContentStore", param: storeId.value });
+  if (storeId.value) openBlade({ name: "SiteDetails", param: storeId.value });
 }
 </script>

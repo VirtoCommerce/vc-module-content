@@ -1,6 +1,6 @@
 import YAML from "yaml";
 import type { Ref } from "vue";
-import { DynamicPropertiesClient, useApiClient } from "@vc-shell/framework";
+import { DynamicPropertiesClient, getBladeConfig, useApiClient, type BladeOpenEvent } from "@vc-shell/framework";
 import { ContentClient, MenuClient, type ContentItem } from "../api_client/virtocommerce.content";
 import { StoreModuleClient, type Store } from "../api_client/virtocommerce.store";
 
@@ -177,11 +177,46 @@ export function buildFrontMatter(metadata: FrontMatter, content: string) {
   return `---\n${header}\n---\n${(content ?? "").trim()}`;
 }
 
-/** Opens the Page Builder module's app for a store (what that module's own store widget does). */
-export function openPageBuilder(storeId: string) {
+/** A store's pages in the Page Builder module: its blades when this shell has them, else its own app in a new tab. */
+export function openPageBuilder(openBlade: (event: BladeOpenEvent) => unknown, storeId: string, store?: Store) {
+  if (getBladeConfig("PageBuilderPages")) return openBlade({ name: "PageBuilderPages", param: storeId, options: { store } });
   const prefix = window.location.pathname.replace(/\/apps\/.*$/, "").replace(/\/$/, "");
   window.open(`${window.location.origin}${prefix}/apps/page-builder-shell/?storeId=${encodeURIComponent(storeId)}`, "_blank");
 }
+
+/**
+ * A designed page file (*.page) in the Page Builder's designer: its full-screen blade when this shell has it (the
+ * file's draft, and with the store's pages in git its versions too), else the module's pages list.
+ */
+export function openPageDesigner(
+  openBlade: (event: BladeOpenEvent) => unknown,
+  page: { storeId: string; contentType: string; relativeUrl: string },
+  store?: Store,
+) {
+  if (!getBladeConfig("PageBuilderDesigner")) return openPageBuilder(openBlade, page.storeId, store);
+  return openBlade({ name: "PageBuilderDesigner", query: { storeId: page.storeId, path: page.relativeUrl, type: page.contentType } });
+}
+
+/** A site's colours and monogram, derived from its id: the stand-in for a logo and a storefront preview. */
+export function siteBrand(store?: Store) {
+  const key = store?.id ?? "";
+  let hash = 0;
+  for (const ch of key) hash = (hash * 31 + ch.charCodeAt(0)) | 0;
+  const hue = Math.abs(hash) % 360;
+  const words = (store?.name || key).split(/[\s\-_.]+/).filter(Boolean);
+  const mono = (words.length > 1 ? words[0][0] + words[1][0] : (words[0] ?? "?").slice(0, 2)).toUpperCase();
+  return { mono, color: `hsl(${hue} 62% 48%)`, tint: `hsl(${hue} 55% 90%)`, paper: `hsl(${hue} 40% 98%)` };
+}
+
+/** A store state's dot colour and label key */
+export const siteState = (store?: Store) => {
+  const state = store?.storeState ?? "Open";
+  const dot = { Open: "var(--success-500)", RestrictedAccess: "var(--warning-500)", Closed: "var(--danger-500)" }[state];
+  return { state, dot, label: `CONTENT.STATES.${state.toUpperCase()}` };
+};
+
+/** A storefront URL without its scheme, for display */
+export const siteHost = (url?: string) => url?.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 /** The server's folder (and theme) name rule: 3-63 of [0-9a-z -], no leading, trailing or double dash. */
 export const validateFolderName = (name: string) =>

@@ -124,7 +124,7 @@ import {
   isFolder,
   isImage,
   isText,
-  openPageBuilder,
+  openPageDesigner,
   renameBlog,
   saveFile,
   trimSlashes,
@@ -230,10 +230,15 @@ function navigate(url: string) {
   load();
 }
 
+// a designed page opens in the Page Builder's designer
+function openDesigner(item: ContentFile) {
+  return openPageDesigner(openBlade, { storeId: storeId.value, contentType: contentType.value, relativeUrl: item.relativeUrl! }, store.value);
+}
+
 // the row is a file, not the child's param (the store): highlighted once its blade opened
 function openItem(item: ContentFile) {
   if (isFolder(item)) return navigate(item.relativeUrl!);
-  if (isDesignedPage(item)) return openPageBuilder(storeId.value);
+  if (isDesignedPage(item)) return openDesigner(item);
   const onOpen = () => (activeItemId.value = item.relativeUrl);
   const onClose = () => (activeItemId.value = undefined);
   const childOptions = { contentType: contentType.value, store: store.value, folderUrl: folderUrl.value, item };
@@ -374,7 +379,7 @@ const rowActions = (item: ContentFile) => {
       title: t("CONTENT.PAGES.FILES.ACTIONS.PAGE_BUILDER"),
       icon: "lucide-layout-template",
       hidden: !isDesignedPage(item),
-      clickHandler: () => openPageBuilder(storeId.value),
+      clickHandler: () => openDesigner(item),
     },
     {
       type: "info" as const,
