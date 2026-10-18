@@ -1,0 +1,219 @@
+{
+  "CONTENT": {
+    "MENU": {
+      "TITLE": "Witryny",
+      "BLOGS": "Blogi",
+      "MENUS": "Menu"
+    },
+    "WIDGETS": {
+      "STORE_CONTENT": "Zawartość"
+    },
+    "TYPES": {
+      "THEMES": "Motywy",
+      "PAGES": "Strony",
+      "BLOGS": "Blogi",
+      "LINKLISTS": "Menu"
+    },
+    "STATUS": {
+      "PUBLISHED": "Opublikowane",
+      "CHANGED": "Nieopublikowane zmiany",
+      "DRAFT": "Wersja robocza"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Odśwież",
+      "ADD": "Dodaj",
+      "CREATE": "Utwórz",
+      "SAVE": "Zapisz",
+      "RESET": "Resetuj",
+      "DELETE": "Usuń",
+      "UPLOAD": "Prześlij",
+      "PUBLISH": "Opublikuj",
+      "UNPUBLISH": "Cofnij publikację",
+      "PREVIEW": "Podgląd"
+    },
+    "PROMPT": {
+      "OK": "OK",
+      "CANCEL": "Anuluj"
+    },
+    "PAGES": {
+      "STORES": {
+        "TITLE": "Witryny",
+        "EMPTY": "Nie znaleziono witryn",
+        "NO_URL": "Brak adresu URL witryny sklepu"
+      },
+      "FILES": {
+        "ROOT": "Wszystko",
+        "EMPTY": "Ten folder jest pusty",
+        "COLUMNS": {
+          "NAME": "Nazwa",
+          "STATUS": "Status",
+          "SIZE": "Rozmiar",
+          "MODIFIED": "Zmodyfikowano"
+        },
+        "ADD_PAGE": "Dodaj stronę",
+        "ADD_POST": "Dodaj wpis",
+        "ADD_BLOG": "Dodaj blog",
+        "ADD_FILE": "Dodaj plik",
+        "NEW_FOLDER": "Nowy folder",
+        "FOLDER_NAME": "Nazwa folderu",
+        "RENAME": "Zmień nazwę",
+        "NEW_NAME": "Nowa nazwa",
+        "UPLOAD_TITLE": "Prześlij pliki",
+        "UPLOAD_URL": "Lub prześlij z adresu URL",
+        "UPLOAD_URL_PLACEHOLDER": "https://…",
+        "ACTIONS": {
+          "PAGE_BUILDER": "Edytuj w Page Builder",
+          "EDIT_BLOG": "Edytuj blog",
+          "MOVE": "Przenieś",
+          "RENAME": "Zmień nazwę",
+          "DUPLICATE": "Duplikuj",
+          "DOWNLOAD": "Pobierz",
+          "COPY_URL": "Kopiuj URL"
+        }
+      },
+      "MOVE": {
+        "TITLE": "Przenieś do folderu",
+        "SUBTITLE": "Elementy ({count}): otwórz folder docelowy, a następnie wybierz „Przenieś tutaj”",
+        "FOLDER": "Folder",
+        "NO_FOLDERS": "Brak podfolderów",
+        "MOVE_HERE": "Przenieś tutaj"
+      },
+      "PAGE": {
+        "TITLE_NEW": "Nowa strona",
+        "TITLE_NEW_POST": "Nowy wpis",
+        "SUBTITLE": "Strona",
+        "SUBTITLE_POST": "Wpis na blogu",
+        "METADATA": "Metadane",
+        "LIST_HINT": "Wartości oddzielone przecinkami",
+        "CONTENT_HINT": "Markdown lub HTML (dozwolony Liquid)",
+        "FIELDS": {
+          "PATH": "Ścieżka względna",
+          "NAME": "Nazwa",
+          "NAME_PLACEHOLDER": "Wpisz nazwę strony",
+          "LANGUAGE": "Język",
+          "LANGUAGE_PLACEHOLDER": "Dowolny język",
+          "CONTENT": "Zawartość"
+        }
+      },
+      "BLOG": {
+        "TITLE_NEW": "Nowy blog",
+        "SUBTITLE": "Blog",
+        "FIELDS": {
+          "NAME": "Nazwa bloga"
+        }
+      },
+      "THEMES": {
+        "EMPTY": "Brak motywów",
+        "NEW": "Nowy motyw",
+        "NAME": "Nazwa motywu",
+        "ACTIVE": "Aktywny",
+        "SET_ACTIVE": "Ustaw jako aktywny",
+        "UPLOAD_TITLE": "Prześlij motyw (.zip)",
+        "COLUMNS": {
+          "NAME": "Motyw",
+          "STATUS": "Status"
+        }
+      },
+      "ASSET": {
+        "TITLE_NEW": "Nowy plik",
+        "SUBTITLE": "Plik motywu",
+        "FIELDS": {
+          "NAME": "Nazwa pliku",
+          "NAME_PLACEHOLDER": "np. product.liquid",
+          "CONTENT": "Zawartość"
+        }
+      },
+      "LINK_LISTS": {
+        "EMPTY": "Brak menu",
+        "COLUMNS": {
+          "NAME": "Nazwa",
+          "LANGUAGE": "Język",
+          "LINKS": "Linki"
+        }
+      },
+      "LINK_LIST": {
+        "TITLE_NEW": "Nowe menu",
+        "SUBTITLE": "Menu",
+        "LINKS": "Linki",
+        "NO_LINKS": "Brak linków",
+        "ADD_LINK": "Dodaj link",
+        "DELETE_LINKS": "Usuń linki",
+        "CLONE": "Klonuj",
+        "NONE": "Brak",
+        "PRODUCT": "Produkt",
+        "CATEGORY": "Kategoria",
+        "FIELDS": {
+          "NAME": "Nazwa",
+          "LANGUAGE": "Język"
+        },
+        "COLUMNS": {
+          "TITLE": "Tytuł",
+          "URL": "URL",
+          "TYPE": "Powiązane z",
+          "OBJECT": "Produkt / kategoria"
+        }
+      },
+      "SITE": {
+        "VIEW_SITE": "Wyświetl witrynę"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "Ustawienia",
+        "NAME": "Nazwa witryny",
+        "URL": "URL witryny sklepu",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "Status",
+        "LANGUAGES": "Języki",
+        "ALL_SETTINGS": "Wszystkie ustawienia",
+        "SAVED": "Ustawienia zapisane",
+        "CURRENCIES": "Waluty",
+        "DEFAULT": "Domyślny"
+      },
+      "BLOGS": {
+        "EMPTY": "Brak blogów",
+        "COLUMNS": {
+          "NAME": "Blog"
+        }
+      },
+      "MENUS": {
+        "ADD": "Dodaj menu"
+      }
+    },
+    "VALIDATION": {
+      "FOLDER_NAME": "3–63 znaki: małe litery, cyfry, spacje i pojedyncze myślniki (nie na początku ani na końcu)",
+      "FILE_NAME": "Nazwa zawiera znaki niedozwolone w nazwie pliku",
+      "ASSET_NAME": "Wpisz nazwę pliku z rozszerzeniem",
+      "BLOG_EXISTS": "Blog o tej nazwie już istnieje",
+      "THEME_EXISTS": "Motyw o tej nazwie już istnieje",
+      "LINK_LIST_EXISTS": "Menu o tej nazwie i w tym języku już istnieje"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Masz niezapisane zmiany. Zamknąć mimo to?",
+      "NO_STORE_URL": "Sklep nie ma adresu URL. Najpierw ustaw adres URL sklepu w ustawieniach sklepu.",
+      "URL_COPIED": "Adres URL skopiowano do schowka",
+      "DELETE_FILES": "Usunąć wybrane elementy ({count})?",
+      "DELETE_BLOGS": "Usunąć blogi ({count}) wraz ze wszystkimi wpisami?",
+      "DELETE_PAGE": "Usunąć „{name}”?",
+      "DELETE_THEME": "Usunąć motyw „{name}”?",
+      "DELETE_LAST_THEME": "„{name}” to jedyny motyw tego sklepu. Usunąć go mimo to?",
+      "OVERWRITE_THEME": "Motyw „{name}” już istnieje. Zastąpić jego pliki?",
+      "DELETE_LINK_LISTS": "Usunąć menu ({count})?",
+      "DELETE_LINKS": "Usunąć linki ({count})?"
+    },
+    "STATES": {
+      "OPEN": "Otwarty",
+      "RESTRICTEDACCESS": "Ograniczony",
+      "CLOSED": "Zamknięty"
+    },
+    "SITE_TAB": {
+      "FILES": "Pliki",
+      "THEMES_DETAIL": "Aktywny: {name}",
+      "PAGES_DETAIL": "Strony, wersje robocze i foldery",
+      "NO_ACTIVE_THEME": "Brak aktywnego motywu"
+    },
+    "SITES": {
+      "ALL": "Wszystkie witryny",
+      "FILTER": "Witryna",
+      "COLUMN": "Witryna"
+    }
+  }
+}
