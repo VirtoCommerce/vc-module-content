@@ -1,0 +1,219 @@
+{
+  "CONTENT": {
+    "MENU": {
+      "TITLE": "站点",
+      "BLOGS": "博客",
+      "MENUS": "菜单"
+    },
+    "WIDGETS": {
+      "STORE_CONTENT": "内容"
+    },
+    "TYPES": {
+      "THEMES": "主题",
+      "PAGES": "页面",
+      "BLOGS": "博客",
+      "LINKLISTS": "菜单"
+    },
+    "STATUS": {
+      "PUBLISHED": "已发布",
+      "CHANGED": "有未发布的更改",
+      "DRAFT": "草稿"
+    },
+    "TOOLBAR": {
+      "REFRESH": "刷新",
+      "ADD": "添加",
+      "CREATE": "创建",
+      "SAVE": "保存",
+      "RESET": "重置",
+      "DELETE": "删除",
+      "UPLOAD": "上传",
+      "PUBLISH": "发布",
+      "UNPUBLISH": "取消发布",
+      "PREVIEW": "预览"
+    },
+    "PROMPT": {
+      "OK": "确定",
+      "CANCEL": "取消"
+    },
+    "PAGES": {
+      "STORES": {
+        "TITLE": "站点",
+        "EMPTY": "未找到站点",
+        "NO_URL": "尚无店面 URL"
+      },
+      "FILES": {
+        "ROOT": "全部",
+        "EMPTY": "此文件夹为空",
+        "COLUMNS": {
+          "NAME": "名称",
+          "STATUS": "状态",
+          "SIZE": "大小",
+          "MODIFIED": "修改时间"
+        },
+        "ADD_PAGE": "添加页面",
+        "ADD_POST": "添加文章",
+        "ADD_BLOG": "添加博客",
+        "ADD_FILE": "添加文件",
+        "NEW_FOLDER": "新建文件夹",
+        "FOLDER_NAME": "文件夹名称",
+        "RENAME": "重命名",
+        "NEW_NAME": "新名称",
+        "UPLOAD_TITLE": "上传文件",
+        "UPLOAD_URL": "或从 URL 上传",
+        "UPLOAD_URL_PLACEHOLDER": "https://…",
+        "ACTIONS": {
+          "PAGE_BUILDER": "在 Page Builder 中编辑",
+          "EDIT_BLOG": "编辑博客",
+          "MOVE": "移动",
+          "RENAME": "重命名",
+          "DUPLICATE": "复制",
+          "DOWNLOAD": "下载",
+          "COPY_URL": "复制 URL"
+        }
+      },
+      "MOVE": {
+        "TITLE": "移动到文件夹",
+        "SUBTITLE": "{count} 项：打开目标文件夹，然后选择“移动到此处”",
+        "FOLDER": "文件夹",
+        "NO_FOLDERS": "没有子文件夹",
+        "MOVE_HERE": "移动到此处"
+      },
+      "PAGE": {
+        "TITLE_NEW": "新建页面",
+        "TITLE_NEW_POST": "新建文章",
+        "SUBTITLE": "页面",
+        "SUBTITLE_POST": "博客文章",
+        "METADATA": "元数据",
+        "LIST_HINT": "以逗号分隔的值",
+        "CONTENT_HINT": "Markdown 或 HTML（允许使用 Liquid）",
+        "FIELDS": {
+          "PATH": "相对路径",
+          "NAME": "名称",
+          "NAME_PLACEHOLDER": "输入页面名称",
+          "LANGUAGE": "语言",
+          "LANGUAGE_PLACEHOLDER": "任意语言",
+          "CONTENT": "内容"
+        }
+      },
+      "BLOG": {
+        "TITLE_NEW": "新建博客",
+        "SUBTITLE": "博客",
+        "FIELDS": {
+          "NAME": "博客名称"
+        }
+      },
+      "THEMES": {
+        "EMPTY": "尚无主题",
+        "NEW": "新建主题",
+        "NAME": "主题名称",
+        "ACTIVE": "当前",
+        "SET_ACTIVE": "设置为活动",
+        "UPLOAD_TITLE": "上传主题 (.zip)",
+        "COLUMNS": {
+          "NAME": "主题",
+          "STATUS": "状态"
+        }
+      },
+      "ASSET": {
+        "TITLE_NEW": "新建文件",
+        "SUBTITLE": "主题文件",
+        "FIELDS": {
+          "NAME": "文件名",
+          "NAME_PLACEHOLDER": "例如 product.liquid",
+          "CONTENT": "内容"
+        }
+      },
+      "LINK_LISTS": {
+        "EMPTY": "尚无菜单",
+        "COLUMNS": {
+          "NAME": "名称",
+          "LANGUAGE": "语言",
+          "LINKS": "链接"
+        }
+      },
+      "LINK_LIST": {
+        "TITLE_NEW": "新建菜单",
+        "SUBTITLE": "菜单",
+        "LINKS": "链接",
+        "NO_LINKS": "没有链接",
+        "ADD_LINK": "添加链接",
+        "DELETE_LINKS": "删除链接",
+        "CLONE": "克隆",
+        "NONE": "无",
+        "PRODUCT": "产品",
+        "CATEGORY": "类别",
+        "FIELDS": {
+          "NAME": "名称",
+          "LANGUAGE": "语言"
+        },
+        "COLUMNS": {
+          "TITLE": "标题",
+          "URL": "URL",
+          "TYPE": "链接到",
+          "OBJECT": "产品 / 类别"
+        }
+      },
+      "SITE": {
+        "VIEW_SITE": "查看站点"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "设置",
+        "NAME": "站点名称",
+        "URL": "店面 URL",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "状态",
+        "LANGUAGES": "语言",
+        "ALL_SETTINGS": "所有设置",
+        "SAVED": "设置已保存",
+        "CURRENCIES": "货币",
+        "DEFAULT": "默认"
+      },
+      "BLOGS": {
+        "EMPTY": "尚无博客",
+        "COLUMNS": {
+          "NAME": "博客"
+        }
+      },
+      "MENUS": {
+        "ADD": "添加菜单"
+      }
+    },
+    "VALIDATION": {
+      "FOLDER_NAME": "3-63 个字符：小写字母、数字、空格和单个连字符（不能位于开头或结尾）",
+      "FILE_NAME": "名称中包含文件名不允许使用的字符",
+      "ASSET_NAME": "请输入带扩展名的文件名",
+      "BLOG_EXISTS": "已存在同名博客",
+      "THEME_EXISTS": "已存在同名主题",
+      "LINK_LIST_EXISTS": "已存在相同名称和语言的菜单"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "有未保存的更改。仍要关闭吗？",
+      "NO_STORE_URL": "商店没有 URL。请先在商店设置中设置商店 URL。",
+      "URL_COPIED": "URL 已复制到剪贴板",
+      "DELETE_FILES": "删除所选的 {count} 项？",
+      "DELETE_BLOGS": "删除 {count} 个博客及其所有文章？",
+      "DELETE_PAGE": "删除“{name}”？",
+      "DELETE_THEME": "删除主题“{name}”？",
+      "DELETE_LAST_THEME": "“{name}”是此商店唯一的主题。仍要删除吗？",
+      "OVERWRITE_THEME": "主题“{name}”已存在。是否覆盖其文件？",
+      "DELETE_LINK_LISTS": "删除 {count} 个菜单？",
+      "DELETE_LINKS": "删除 {count} 个链接？"
+    },
+    "STATES": {
+      "OPEN": "开放",
+      "RESTRICTEDACCESS": "受限",
+      "CLOSED": "关闭"
+    },
+    "SITE_TAB": {
+      "FILES": "文件",
+      "THEMES_DETAIL": "当前：{name}",
+      "PAGES_DETAIL": "页面、草稿和文件夹",
+      "NO_ACTIVE_THEME": "没有当前主题"
+    },
+    "SITES": {
+      "ALL": "所有站点",
+      "FILTER": "站点",
+      "COLUMN": "站点"
+    }
+  }
+}

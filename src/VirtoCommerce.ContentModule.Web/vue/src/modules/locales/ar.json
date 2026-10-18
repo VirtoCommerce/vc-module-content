@@ -1,0 +1,219 @@
+{
+  "CONTENT": {
+    "MENU": {
+      "TITLE": "المواقع",
+      "BLOGS": "المدونات",
+      "MENUS": "القوائم"
+    },
+    "WIDGETS": {
+      "STORE_CONTENT": "المحتوى"
+    },
+    "TYPES": {
+      "THEMES": "السمات",
+      "PAGES": "الصفحات",
+      "BLOGS": "المدونات",
+      "LINKLISTS": "القوائم"
+    },
+    "STATUS": {
+      "PUBLISHED": "منشور",
+      "CHANGED": "تغييرات غير منشورة",
+      "DRAFT": "مسودة"
+    },
+    "TOOLBAR": {
+      "REFRESH": "تحديث",
+      "ADD": "إضافة",
+      "CREATE": "إنشاء",
+      "SAVE": "حفظ",
+      "RESET": "إعادة تعيين",
+      "DELETE": "حذف",
+      "UPLOAD": "رفع",
+      "PUBLISH": "نشر",
+      "UNPUBLISH": "إلغاء النشر",
+      "PREVIEW": "معاينة"
+    },
+    "PROMPT": {
+      "OK": "موافق",
+      "CANCEL": "إلغاء"
+    },
+    "PAGES": {
+      "STORES": {
+        "TITLE": "المواقع",
+        "EMPTY": "لم يتم العثور على مواقع",
+        "NO_URL": "لا يوجد عنوان URL لواجهة المتجر بعد"
+      },
+      "FILES": {
+        "ROOT": "الكل",
+        "EMPTY": "هذا المجلد فارغ",
+        "COLUMNS": {
+          "NAME": "الاسم",
+          "STATUS": "الحالة",
+          "SIZE": "الحجم",
+          "MODIFIED": "تاريخ التعديل"
+        },
+        "ADD_PAGE": "إضافة صفحة",
+        "ADD_POST": "إضافة منشور",
+        "ADD_BLOG": "إضافة مدونة",
+        "ADD_FILE": "إضافة ملف",
+        "NEW_FOLDER": "مجلد جديد",
+        "FOLDER_NAME": "اسم المجلد",
+        "RENAME": "إعادة تسمية",
+        "NEW_NAME": "الاسم الجديد",
+        "UPLOAD_TITLE": "رفع ملفات",
+        "UPLOAD_URL": "أو الرفع من عنوان URL",
+        "UPLOAD_URL_PLACEHOLDER": "https://…",
+        "ACTIONS": {
+          "PAGE_BUILDER": "التحرير في Page Builder",
+          "EDIT_BLOG": "تحرير المدونة",
+          "MOVE": "نقل",
+          "RENAME": "إعادة تسمية",
+          "DUPLICATE": "تكرار",
+          "DOWNLOAD": "تنزيل",
+          "COPY_URL": "نسخ عنوان URL"
+        }
+      },
+      "MOVE": {
+        "TITLE": "نقل إلى مجلد",
+        "SUBTITLE": "العناصر ({count}): افتح المجلد الهدف، ثم اختر «النقل إلى هنا»",
+        "FOLDER": "المجلد",
+        "NO_FOLDERS": "لا توجد مجلدات فرعية",
+        "MOVE_HERE": "النقل إلى هنا"
+      },
+      "PAGE": {
+        "TITLE_NEW": "صفحة جديدة",
+        "TITLE_NEW_POST": "منشور جديد",
+        "SUBTITLE": "صفحة",
+        "SUBTITLE_POST": "منشور مدونة",
+        "METADATA": "البيانات الوصفية",
+        "LIST_HINT": "قيم مفصولة بفواصل",
+        "CONTENT_HINT": "Markdown أو HTML (يُسمح باستخدام Liquid)",
+        "FIELDS": {
+          "PATH": "المسار النسبي",
+          "NAME": "الاسم",
+          "NAME_PLACEHOLDER": "أدخل اسم الصفحة",
+          "LANGUAGE": "اللغة",
+          "LANGUAGE_PLACEHOLDER": "أي لغة",
+          "CONTENT": "المحتوى"
+        }
+      },
+      "BLOG": {
+        "TITLE_NEW": "مدونة جديدة",
+        "SUBTITLE": "مدونة",
+        "FIELDS": {
+          "NAME": "اسم المدونة"
+        }
+      },
+      "THEMES": {
+        "EMPTY": "لا توجد سمات بعد",
+        "NEW": "سمة جديدة",
+        "NAME": "اسم السمة",
+        "ACTIVE": "نشطة",
+        "SET_ACTIVE": "تعيين كنشطة",
+        "UPLOAD_TITLE": "رفع سمة (.zip)",
+        "COLUMNS": {
+          "NAME": "السمة",
+          "STATUS": "الحالة"
+        }
+      },
+      "ASSET": {
+        "TITLE_NEW": "ملف جديد",
+        "SUBTITLE": "ملف السمة",
+        "FIELDS": {
+          "NAME": "اسم الملف",
+          "NAME_PLACEHOLDER": "مثل product.liquid",
+          "CONTENT": "المحتوى"
+        }
+      },
+      "LINK_LISTS": {
+        "EMPTY": "لا توجد قوائم بعد",
+        "COLUMNS": {
+          "NAME": "الاسم",
+          "LANGUAGE": "اللغة",
+          "LINKS": "الروابط"
+        }
+      },
+      "LINK_LIST": {
+        "TITLE_NEW": "قائمة جديدة",
+        "SUBTITLE": "قائمة",
+        "LINKS": "الروابط",
+        "NO_LINKS": "لا توجد روابط",
+        "ADD_LINK": "إضافة رابط",
+        "DELETE_LINKS": "حذف الروابط",
+        "CLONE": "استنساخ",
+        "NONE": "لا شيء",
+        "PRODUCT": "منتج",
+        "CATEGORY": "فئة",
+        "FIELDS": {
+          "NAME": "الاسم",
+          "LANGUAGE": "اللغة"
+        },
+        "COLUMNS": {
+          "TITLE": "العنوان",
+          "URL": "عنوان URL",
+          "TYPE": "مرتبط بـ",
+          "OBJECT": "المنتج / الفئة"
+        }
+      },
+      "SITE": {
+        "VIEW_SITE": "عرض الموقع"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "الإعدادات",
+        "NAME": "اسم الموقع",
+        "URL": "عنوان URL لواجهة المتجر",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "الحالة",
+        "LANGUAGES": "اللغات",
+        "ALL_SETTINGS": "كل الإعدادات",
+        "SAVED": "تم حفظ الإعدادات",
+        "CURRENCIES": "العملات",
+        "DEFAULT": "الافتراضي"
+      },
+      "BLOGS": {
+        "EMPTY": "لا توجد مدونات بعد",
+        "COLUMNS": {
+          "NAME": "المدونة"
+        }
+      },
+      "MENUS": {
+        "ADD": "إضافة قائمة"
+      }
+    },
+    "VALIDATION": {
+      "FOLDER_NAME": "من 3 إلى 63 حرفًا: أحرف لاتينية صغيرة وأرقام ومسافات وشرطات مفردة (ليس في البداية أو النهاية)",
+      "FILE_NAME": "يحتوي الاسم على أحرف غير مسموح بها في اسم الملف",
+      "ASSET_NAME": "أدخل اسم ملف مع امتداده",
+      "BLOG_EXISTS": "توجد مدونة بهذا الاسم بالفعل",
+      "THEME_EXISTS": "توجد سمة بهذا الاسم بالفعل",
+      "LINK_LIST_EXISTS": "توجد قائمة بهذا الاسم وهذه اللغة بالفعل"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "لديك تغييرات غير محفوظة. هل تريد الإغلاق على أي حال؟",
+      "NO_STORE_URL": "ليس للمتجر عنوان URL. عيّن عنوان URL للمتجر في إعدادات المتجر أولًا.",
+      "URL_COPIED": "تم نسخ عنوان URL إلى الحافظة",
+      "DELETE_FILES": "هل تريد حذف العناصر المحددة ({count})؟",
+      "DELETE_BLOGS": "هل تريد حذف المدونات ({count}) مع كل منشوراتها؟",
+      "DELETE_PAGE": "هل تريد حذف «{name}»؟",
+      "DELETE_THEME": "هل تريد حذف السمة «{name}»؟",
+      "DELETE_LAST_THEME": "«{name}» هي السمة الوحيدة لهذا المتجر. هل تريد حذفها على أي حال؟",
+      "OVERWRITE_THEME": "السمة «{name}» موجودة بالفعل. هل تريد استبدال ملفاتها؟",
+      "DELETE_LINK_LISTS": "هل تريد حذف القوائم ({count})؟",
+      "DELETE_LINKS": "هل تريد حذف الروابط ({count})؟"
+    },
+    "STATES": {
+      "OPEN": "مفتوح",
+      "RESTRICTEDACCESS": "مقيّد",
+      "CLOSED": "مغلق"
+    },
+    "SITE_TAB": {
+      "FILES": "الملفات",
+      "THEMES_DETAIL": "النشطة: {name}",
+      "PAGES_DETAIL": "الصفحات والمسودات والمجلدات",
+      "NO_ACTIVE_THEME": "لا توجد سمة نشطة"
+    },
+    "SITES": {
+      "ALL": "كل المواقع",
+      "FILTER": "الموقع",
+      "COLUMN": "الموقع"
+    }
+  }
+}

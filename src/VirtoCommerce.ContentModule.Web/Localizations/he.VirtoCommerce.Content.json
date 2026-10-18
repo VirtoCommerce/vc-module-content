@@ -1,0 +1,16 @@
+{
+  "settings": {
+    "VirtoCommerce": {
+      "Search": {
+        "IndexingJobs": {
+          "IndexationDate": {
+            "ContentFile": {
+              "title": "תאריך ושעת אינדוקס תוכן",
+              "description": "התאריך והשעה שבהם תתחיל משימת אינדוקס התוכן"
+            }
+          }
+        }
+      }
+    }
+  }
+}

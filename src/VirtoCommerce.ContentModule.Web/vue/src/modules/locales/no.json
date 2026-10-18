@@ -1,0 +1,219 @@
+{
+  "CONTENT": {
+    "MENU": {
+      "TITLE": "Nettsteder",
+      "BLOGS": "Blogger",
+      "MENUS": "Menyer"
+    },
+    "WIDGETS": {
+      "STORE_CONTENT": "Innhold"
+    },
+    "TYPES": {
+      "THEMES": "Temaer",
+      "PAGES": "Sider",
+      "BLOGS": "Blogger",
+      "LINKLISTS": "Menyer"
+    },
+    "STATUS": {
+      "PUBLISHED": "Publisert",
+      "CHANGED": "Upubliserte endringer",
+      "DRAFT": "Utkast"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Oppdater",
+      "ADD": "Legg til",
+      "CREATE": "Opprett",
+      "SAVE": "Lagre",
+      "RESET": "Tilbakestill",
+      "DELETE": "Slett",
+      "UPLOAD": "Last opp",
+      "PUBLISH": "Publiser",
+      "UNPUBLISH": "Avpubliser",
+      "PREVIEW": "Forhåndsvis"
+    },
+    "PROMPT": {
+      "OK": "OK",
+      "CANCEL": "Avbryt"
+    },
+    "PAGES": {
+      "STORES": {
+        "TITLE": "Nettsteder",
+        "EMPTY": "Fant ingen nettsteder",
+        "NO_URL": "Ingen nettbutikk-URL ennå"
+      },
+      "FILES": {
+        "ROOT": "Alle",
+        "EMPTY": "Denne mappen er tom",
+        "COLUMNS": {
+          "NAME": "Navn",
+          "STATUS": "Status",
+          "SIZE": "Størrelse",
+          "MODIFIED": "Endret"
+        },
+        "ADD_PAGE": "Legg til side",
+        "ADD_POST": "Legg til innlegg",
+        "ADD_BLOG": "Legg til blogg",
+        "ADD_FILE": "Legg til fil",
+        "NEW_FOLDER": "Ny mappe",
+        "FOLDER_NAME": "Mappenavn",
+        "RENAME": "Gi nytt navn",
+        "NEW_NAME": "Nytt navn",
+        "UPLOAD_TITLE": "Last opp filer",
+        "UPLOAD_URL": "Eller last opp fra URL",
+        "UPLOAD_URL_PLACEHOLDER": "https://…",
+        "ACTIONS": {
+          "PAGE_BUILDER": "Rediger i Page Builder",
+          "EDIT_BLOG": "Rediger blogg",
+          "MOVE": "Flytt",
+          "RENAME": "Gi nytt navn",
+          "DUPLICATE": "Dupliser",
+          "DOWNLOAD": "Last ned",
+          "COPY_URL": "Kopier URL"
+        }
+      },
+      "MOVE": {
+        "TITLE": "Flytt til mappe",
+        "SUBTITLE": "{count} element: åpne målmappen og velg deretter «Flytt hit»",
+        "FOLDER": "Mappe",
+        "NO_FOLDERS": "Ingen undermapper",
+        "MOVE_HERE": "Flytt hit"
+      },
+      "PAGE": {
+        "TITLE_NEW": "Ny side",
+        "TITLE_NEW_POST": "Nytt innlegg",
+        "SUBTITLE": "Side",
+        "SUBTITLE_POST": "Blogginnlegg",
+        "METADATA": "Metadata",
+        "LIST_HINT": "Kommaseparerte verdier",
+        "CONTENT_HINT": "Markdown eller HTML (Liquid tillatt)",
+        "FIELDS": {
+          "PATH": "Relativ sti",
+          "NAME": "Navn",
+          "NAME_PLACEHOLDER": "Skriv inn sidenavn",
+          "LANGUAGE": "Språk",
+          "LANGUAGE_PLACEHOLDER": "Alle språk",
+          "CONTENT": "Innhold"
+        }
+      },
+      "BLOG": {
+        "TITLE_NEW": "Ny blogg",
+        "SUBTITLE": "Blogg",
+        "FIELDS": {
+          "NAME": "Bloggnavn"
+        }
+      },
+      "THEMES": {
+        "EMPTY": "Ingen temaer ennå",
+        "NEW": "Nytt tema",
+        "NAME": "Temanavn",
+        "ACTIVE": "Aktiv",
+        "SET_ACTIVE": "Sett som aktivt",
+        "UPLOAD_TITLE": "Last opp tema (.zip)",
+        "COLUMNS": {
+          "NAME": "Tema",
+          "STATUS": "Status"
+        }
+      },
+      "ASSET": {
+        "TITLE_NEW": "Ny fil",
+        "SUBTITLE": "Temafil",
+        "FIELDS": {
+          "NAME": "Filnavn",
+          "NAME_PLACEHOLDER": "f.eks. product.liquid",
+          "CONTENT": "Innhold"
+        }
+      },
+      "LINK_LISTS": {
+        "EMPTY": "Ingen menyer ennå",
+        "COLUMNS": {
+          "NAME": "Navn",
+          "LANGUAGE": "Språk",
+          "LINKS": "Lenker"
+        }
+      },
+      "LINK_LIST": {
+        "TITLE_NEW": "Ny meny",
+        "SUBTITLE": "Meny",
+        "LINKS": "Lenker",
+        "NO_LINKS": "Ingen lenker",
+        "ADD_LINK": "Legg til lenke",
+        "DELETE_LINKS": "Slett lenker",
+        "CLONE": "Klon",
+        "NONE": "Ingen",
+        "PRODUCT": "Produkt",
+        "CATEGORY": "Kategori",
+        "FIELDS": {
+          "NAME": "Navn",
+          "LANGUAGE": "Språk"
+        },
+        "COLUMNS": {
+          "TITLE": "Tittel",
+          "URL": "URL",
+          "TYPE": "Koblet til",
+          "OBJECT": "Produkt / kategori"
+        }
+      },
+      "SITE": {
+        "VIEW_SITE": "Vis nettsted"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "Innstillinger",
+        "NAME": "Navn på nettsted",
+        "URL": "Nettbutikk-URL",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "Status",
+        "LANGUAGES": "Språk",
+        "ALL_SETTINGS": "Alle innstillinger",
+        "SAVED": "Innstillinger lagret",
+        "CURRENCIES": "Valutaer",
+        "DEFAULT": "Standard"
+      },
+      "BLOGS": {
+        "EMPTY": "Ingen blogger ennå",
+        "COLUMNS": {
+          "NAME": "Blogg"
+        }
+      },
+      "MENUS": {
+        "ADD": "Legg til meny"
+      }
+    },
+    "VALIDATION": {
+      "FOLDER_NAME": "3–63 tegn: små bokstaver, sifre, mellomrom og enkle bindestreker (ikke i begynnelsen eller slutten)",
+      "FILE_NAME": "Navnet inneholder tegn som ikke er tillatt i et filnavn",
+      "ASSET_NAME": "Skriv inn et filnavn med filtype",
+      "BLOG_EXISTS": "Det finnes allerede en blogg med dette navnet",
+      "THEME_EXISTS": "Det finnes allerede et tema med dette navnet",
+      "LINK_LIST_EXISTS": "Det finnes allerede en meny med dette navnet og språket"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Du har ulagrede endringer. Lukke likevel?",
+      "NO_STORE_URL": "Butikken har ingen URL. Angi først butikkens URL i butikkinnstillingene.",
+      "URL_COPIED": "URL kopiert til utklippstavlen",
+      "DELETE_FILES": "Slette {count} valgte element(er)?",
+      "DELETE_BLOGS": "Slette {count} blogg(er) med alle innleggene?",
+      "DELETE_PAGE": "Slette «{name}»?",
+      "DELETE_THEME": "Slette temaet «{name}»?",
+      "DELETE_LAST_THEME": "«{name}» er det eneste temaet i denne butikken. Slette det likevel?",
+      "OVERWRITE_THEME": "Temaet «{name}» finnes allerede. Overskrive filene?",
+      "DELETE_LINK_LISTS": "Slette {count} meny(er)?",
+      "DELETE_LINKS": "Slette {count} lenke(r)?"
+    },
+    "STATES": {
+      "OPEN": "Åpen",
+      "RESTRICTEDACCESS": "Begrenset",
+      "CLOSED": "Stengt"
+    },
+    "SITE_TAB": {
+      "FILES": "Filer",
+      "THEMES_DETAIL": "Aktivt: {name}",
+      "PAGES_DETAIL": "Sider, utkast og mapper",
+      "NO_ACTIVE_THEME": "Ingen aktivt tema"
+    },
+    "SITES": {
+      "ALL": "Alle nettsteder",
+      "FILTER": "Nettsted",
+      "COLUMN": "Nettsted"
+    }
+  }
+}
