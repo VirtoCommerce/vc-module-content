@@ -1,0 +1,219 @@
+{
+  "CONTENT": {
+    "MENU": {
+      "TITLE": "אתרים",
+      "BLOGS": "בלוגים",
+      "MENUS": "תפריטים"
+    },
+    "WIDGETS": {
+      "STORE_CONTENT": "תוכן"
+    },
+    "TYPES": {
+      "THEMES": "ערכות נושא",
+      "PAGES": "דפים",
+      "BLOGS": "בלוגים",
+      "LINKLISTS": "תפריטים"
+    },
+    "STATUS": {
+      "PUBLISHED": "פורסם",
+      "CHANGED": "שינויים שלא פורסמו",
+      "DRAFT": "טיוטה"
+    },
+    "TOOLBAR": {
+      "REFRESH": "רענון",
+      "ADD": "הוספה",
+      "CREATE": "יצירה",
+      "SAVE": "שמירה",
+      "RESET": "איפוס",
+      "DELETE": "מחיקה",
+      "UPLOAD": "העלאה",
+      "PUBLISH": "פרסום",
+      "UNPUBLISH": "ביטול פרסום",
+      "PREVIEW": "תצוגה מקדימה"
+    },
+    "PROMPT": {
+      "OK": "אישור",
+      "CANCEL": "ביטול"
+    },
+    "PAGES": {
+      "STORES": {
+        "TITLE": "אתרים",
+        "EMPTY": "לא נמצאו אתרים",
+        "NO_URL": "עדיין לא הוגדרה כתובת URL לאתר החנות"
+      },
+      "FILES": {
+        "ROOT": "הכול",
+        "EMPTY": "התיקייה ריקה",
+        "COLUMNS": {
+          "NAME": "שם",
+          "STATUS": "סטטוס",
+          "SIZE": "גודל",
+          "MODIFIED": "שינוי אחרון"
+        },
+        "ADD_PAGE": "הוספת דף",
+        "ADD_POST": "הוספת פוסט",
+        "ADD_BLOG": "הוספת בלוג",
+        "ADD_FILE": "הוספת קובץ",
+        "NEW_FOLDER": "תיקייה חדשה",
+        "FOLDER_NAME": "שם התיקייה",
+        "RENAME": "שינוי שם",
+        "NEW_NAME": "שם חדש",
+        "UPLOAD_TITLE": "העלאת קבצים",
+        "UPLOAD_URL": "או העלאה מכתובת URL",
+        "UPLOAD_URL_PLACEHOLDER": "https://…",
+        "ACTIONS": {
+          "PAGE_BUILDER": "עריכה ב-Page Builder",
+          "EDIT_BLOG": "עריכת בלוג",
+          "MOVE": "העברה",
+          "RENAME": "שינוי שם",
+          "DUPLICATE": "שכפול",
+          "DOWNLOAD": "הורדה",
+          "COPY_URL": "העתקת כתובת URL"
+        }
+      },
+      "MOVE": {
+        "TITLE": "העברה לתיקייה",
+        "SUBTITLE": "פריטים: {count}. יש לפתוח את תיקיית היעד ואז ללחוץ על \"העברה לכאן\"",
+        "FOLDER": "תיקייה",
+        "NO_FOLDERS": "אין תיקיות משנה",
+        "MOVE_HERE": "העברה לכאן"
+      },
+      "PAGE": {
+        "TITLE_NEW": "דף חדש",
+        "TITLE_NEW_POST": "פוסט חדש",
+        "SUBTITLE": "דף",
+        "SUBTITLE_POST": "פוסט בבלוג",
+        "METADATA": "מטא-נתונים",
+        "LIST_HINT": "ערכים מופרדים בפסיקים",
+        "CONTENT_HINT": "Markdown או HTML (אפשר להשתמש ב-Liquid)",
+        "FIELDS": {
+          "PATH": "נתיב יחסי",
+          "NAME": "שם",
+          "NAME_PLACEHOLDER": "יש להזין שם דף",
+          "LANGUAGE": "שפה",
+          "LANGUAGE_PLACEHOLDER": "כל שפה",
+          "CONTENT": "תוכן"
+        }
+      },
+      "BLOG": {
+        "TITLE_NEW": "בלוג חדש",
+        "SUBTITLE": "בלוג",
+        "FIELDS": {
+          "NAME": "שם הבלוג"
+        }
+      },
+      "THEMES": {
+        "EMPTY": "עדיין אין ערכות נושא",
+        "NEW": "ערכת נושא חדשה",
+        "NAME": "שם ערכת הנושא",
+        "ACTIVE": "פעילה",
+        "SET_ACTIVE": "הגדרה כפעילה",
+        "UPLOAD_TITLE": "העלאת ערכת נושא (קובץ ZIP)",
+        "COLUMNS": {
+          "NAME": "ערכת נושא",
+          "STATUS": "סטטוס"
+        }
+      },
+      "ASSET": {
+        "TITLE_NEW": "קובץ חדש",
+        "SUBTITLE": "קובץ של ערכת נושא",
+        "FIELDS": {
+          "NAME": "שם הקובץ",
+          "NAME_PLACEHOLDER": "לדוגמה: product.liquid",
+          "CONTENT": "תוכן"
+        }
+      },
+      "LINK_LISTS": {
+        "EMPTY": "עדיין אין תפריטים",
+        "COLUMNS": {
+          "NAME": "שם",
+          "LANGUAGE": "שפה",
+          "LINKS": "קישורים"
+        }
+      },
+      "LINK_LIST": {
+        "TITLE_NEW": "תפריט חדש",
+        "SUBTITLE": "תפריט",
+        "LINKS": "קישורים",
+        "NO_LINKS": "אין קישורים",
+        "ADD_LINK": "הוספת קישור",
+        "DELETE_LINKS": "מחיקת קישורים",
+        "CLONE": "שכפול",
+        "NONE": "ללא",
+        "PRODUCT": "מוצר",
+        "CATEGORY": "קטגוריה",
+        "FIELDS": {
+          "NAME": "שם",
+          "LANGUAGE": "שפה"
+        },
+        "COLUMNS": {
+          "TITLE": "כותרת",
+          "URL": "URL",
+          "TYPE": "מקושר אל",
+          "OBJECT": "מוצר / קטגוריה"
+        }
+      },
+      "SITE": {
+        "VIEW_SITE": "צפייה באתר"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "הגדרות",
+        "NAME": "שם האתר",
+        "URL": "כתובת URL של אתר החנות",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "סטטוס",
+        "LANGUAGES": "שפות",
+        "ALL_SETTINGS": "כל ההגדרות",
+        "SAVED": "ההגדרות נשמרו",
+        "CURRENCIES": "מטבעות",
+        "DEFAULT": "ברירת מחדל"
+      },
+      "BLOGS": {
+        "EMPTY": "עדיין אין בלוגים",
+        "COLUMNS": {
+          "NAME": "בלוג"
+        }
+      },
+      "MENUS": {
+        "ADD": "הוספת תפריט"
+      }
+    },
+    "VALIDATION": {
+      "FOLDER_NAME": "3-63 תווים: אותיות לטיניות קטנות, ספרות, רווחים ומקפים בודדים (לא בהתחלה ולא בסוף)",
+      "FILE_NAME": "השם מכיל תווים שאסור להשתמש בהם בשם קובץ",
+      "ASSET_NAME": "יש להזין שם קובץ עם סיומת",
+      "BLOG_EXISTS": "כבר קיים בלוג בשם זה",
+      "THEME_EXISTS": "כבר קיימת ערכת נושא בשם זה",
+      "LINK_LIST_EXISTS": "כבר קיים תפריט עם השם והשפה האלה"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "יש שינויים שלא נשמרו. האם לסגור בכל זאת?",
+      "NO_STORE_URL": "לחנות אין כתובת URL. יש להגדיר תחילה את כתובת ה-URL בהגדרות החנות.",
+      "URL_COPIED": "כתובת ה-URL הועתקה ללוח",
+      "DELETE_FILES": "האם למחוק את הפריטים שנבחרו ({count})?",
+      "DELETE_BLOGS": "האם למחוק את הבלוגים ({count}) עם כל הפוסטים שלהם?",
+      "DELETE_PAGE": "האם למחוק את \"{name}\"?",
+      "DELETE_THEME": "האם למחוק את ערכת הנושא \"{name}\"?",
+      "DELETE_LAST_THEME": "\"{name}\" היא ערכת הנושא היחידה של החנות. האם למחוק אותה בכל זאת?",
+      "OVERWRITE_THEME": "ערכת הנושא \"{name}\" כבר קיימת. האם לדרוס את הקבצים שלה?",
+      "DELETE_LINK_LISTS": "האם למחוק את התפריטים ({count})?",
+      "DELETE_LINKS": "האם למחוק את הקישורים ({count})?"
+    },
+    "STATES": {
+      "OPEN": "פתוח",
+      "RESTRICTEDACCESS": "גישה מוגבלת",
+      "CLOSED": "סגור"
+    },
+    "SITE_TAB": {
+      "FILES": "קבצים",
+      "THEMES_DETAIL": "פעילה: {name}",
+      "PAGES_DETAIL": "דפים, טיוטות ותיקיות",
+      "NO_ACTIVE_THEME": "אין ערכת נושא פעילה"
+    },
+    "SITES": {
+      "ALL": "כל האתרים",
+      "FILTER": "אתר",
+      "COLUMN": "אתר"
+    }
+  }
+}
