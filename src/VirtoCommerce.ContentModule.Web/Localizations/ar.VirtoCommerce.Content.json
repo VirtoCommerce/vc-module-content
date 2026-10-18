@@ -1,0 +1,16 @@
+{
+  "settings": {
+    "VirtoCommerce": {
+      "Search": {
+        "IndexingJobs": {
+          "IndexationDate": {
+            "ContentFile": {
+              "title": "تاريخ ووقت فهرسة المحتوى",
+              "description": "تاريخ ووقت بدء مهمة فهرسة المحتوى"
+            }
+          }
+        }
+      }
+    }
+  }
+}
