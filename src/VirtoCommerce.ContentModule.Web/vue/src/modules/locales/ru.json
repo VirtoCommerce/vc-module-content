@@ -1,0 +1,219 @@
+{
+  "CONTENT": {
+    "MENU": {
+      "TITLE": "Сайты",
+      "BLOGS": "Блоги",
+      "MENUS": "Меню"
+    },
+    "WIDGETS": {
+      "STORE_CONTENT": "Контент"
+    },
+    "TYPES": {
+      "THEMES": "Темы",
+      "PAGES": "Страницы",
+      "BLOGS": "Блоги",
+      "LINKLISTS": "Меню"
+    },
+    "STATUS": {
+      "PUBLISHED": "Опубликовано",
+      "CHANGED": "Неопубликованные изменения",
+      "DRAFT": "Черновик"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Обновить",
+      "ADD": "Добавить",
+      "CREATE": "Создать",
+      "SAVE": "Сохранить",
+      "RESET": "Сбросить",
+      "DELETE": "Удалить",
+      "UPLOAD": "Загрузить",
+      "PUBLISH": "Опубликовать",
+      "UNPUBLISH": "Снять с публикации",
+      "PREVIEW": "Предпросмотр"
+    },
+    "PROMPT": {
+      "OK": "ОК",
+      "CANCEL": "Отмена"
+    },
+    "PAGES": {
+      "STORES": {
+        "TITLE": "Сайты",
+        "EMPTY": "Сайты не найдены",
+        "NO_URL": "URL витрины еще не задан"
+      },
+      "FILES": {
+        "ROOT": "Все",
+        "EMPTY": "Эта папка пуста",
+        "COLUMNS": {
+          "NAME": "Название",
+          "STATUS": "Статус",
+          "SIZE": "Размер",
+          "MODIFIED": "Изменено"
+        },
+        "ADD_PAGE": "Добавить страницу",
+        "ADD_POST": "Добавить запись",
+        "ADD_BLOG": "Добавить блог",
+        "ADD_FILE": "Добавить файл",
+        "NEW_FOLDER": "Новая папка",
+        "FOLDER_NAME": "Имя папки",
+        "RENAME": "Переименовать",
+        "NEW_NAME": "Новое имя",
+        "UPLOAD_TITLE": "Загрузить файлы",
+        "UPLOAD_URL": "Или загрузить по URL",
+        "UPLOAD_URL_PLACEHOLDER": "https://…",
+        "ACTIONS": {
+          "PAGE_BUILDER": "Изменить в Page Builder",
+          "EDIT_BLOG": "Изменить блог",
+          "MOVE": "Переместить",
+          "RENAME": "Переименовать",
+          "DUPLICATE": "Дублировать",
+          "DOWNLOAD": "Скачать",
+          "COPY_URL": "Копировать URL"
+        }
+      },
+      "MOVE": {
+        "TITLE": "Переместить в папку",
+        "SUBTITLE": "Элементы ({count}): откройте целевую папку, затем нажмите «Переместить сюда»",
+        "FOLDER": "Папка",
+        "NO_FOLDERS": "Нет вложенных папок",
+        "MOVE_HERE": "Переместить сюда"
+      },
+      "PAGE": {
+        "TITLE_NEW": "Новая страница",
+        "TITLE_NEW_POST": "Новая запись",
+        "SUBTITLE": "Страница",
+        "SUBTITLE_POST": "Запись блога",
+        "METADATA": "Метаданные",
+        "LIST_HINT": "Значения через запятую",
+        "CONTENT_HINT": "Markdown или HTML (допускается Liquid)",
+        "FIELDS": {
+          "PATH": "Относительный путь",
+          "NAME": "Название",
+          "NAME_PLACEHOLDER": "Введите название страницы",
+          "LANGUAGE": "Язык",
+          "LANGUAGE_PLACEHOLDER": "Любой язык",
+          "CONTENT": "Контент"
+        }
+      },
+      "BLOG": {
+        "TITLE_NEW": "Новый блог",
+        "SUBTITLE": "Блог",
+        "FIELDS": {
+          "NAME": "Название блога"
+        }
+      },
+      "THEMES": {
+        "EMPTY": "Тем пока нет",
+        "NEW": "Новая тема",
+        "NAME": "Название темы",
+        "ACTIVE": "Активна",
+        "SET_ACTIVE": "Сделать активной",
+        "UPLOAD_TITLE": "Загрузить тему (.zip)",
+        "COLUMNS": {
+          "NAME": "Тема",
+          "STATUS": "Статус"
+        }
+      },
+      "ASSET": {
+        "TITLE_NEW": "Новый файл",
+        "SUBTITLE": "Файл темы",
+        "FIELDS": {
+          "NAME": "Имя файла",
+          "NAME_PLACEHOLDER": "например, product.liquid",
+          "CONTENT": "Контент"
+        }
+      },
+      "LINK_LISTS": {
+        "EMPTY": "Меню пока нет",
+        "COLUMNS": {
+          "NAME": "Название",
+          "LANGUAGE": "Язык",
+          "LINKS": "Ссылки"
+        }
+      },
+      "LINK_LIST": {
+        "TITLE_NEW": "Новое меню",
+        "SUBTITLE": "Меню",
+        "LINKS": "Ссылки",
+        "NO_LINKS": "Нет ссылок",
+        "ADD_LINK": "Добавить ссылку",
+        "DELETE_LINKS": "Удалить ссылки",
+        "CLONE": "Клонировать",
+        "NONE": "Нет",
+        "PRODUCT": "Товар",
+        "CATEGORY": "Категория",
+        "FIELDS": {
+          "NAME": "Название",
+          "LANGUAGE": "Язык"
+        },
+        "COLUMNS": {
+          "TITLE": "Заголовок",
+          "URL": "URL",
+          "TYPE": "Связано с",
+          "OBJECT": "Товар / категория"
+        }
+      },
+      "SITE": {
+        "VIEW_SITE": "Открыть сайт"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "Настройки",
+        "NAME": "Название сайта",
+        "URL": "URL витрины",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "Статус",
+        "LANGUAGES": "Языки",
+        "ALL_SETTINGS": "Все настройки",
+        "SAVED": "Настройки сохранены",
+        "CURRENCIES": "Валюты",
+        "DEFAULT": "По умолчанию"
+      },
+      "BLOGS": {
+        "EMPTY": "Блогов пока нет",
+        "COLUMNS": {
+          "NAME": "Блог"
+        }
+      },
+      "MENUS": {
+        "ADD": "Добавить меню"
+      }
+    },
+    "VALIDATION": {
+      "FOLDER_NAME": "3–63 символа: строчные буквы, цифры, пробелы и одиночные дефисы (не в начале и не в конце)",
+      "FILE_NAME": "Имя содержит символы, недопустимые в имени файла",
+      "ASSET_NAME": "Введите имя файла с расширением",
+      "BLOG_EXISTS": "Блог с таким названием уже существует",
+      "THEME_EXISTS": "Тема с таким названием уже существует",
+      "LINK_LIST_EXISTS": "Меню с таким названием и языком уже существует"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Есть несохраненные изменения. Все равно закрыть?",
+      "NO_STORE_URL": "У магазина нет URL. Сначала задайте URL магазина в настройках магазина.",
+      "URL_COPIED": "URL скопирован в буфер обмена",
+      "DELETE_FILES": "Удалить выбранные элементы ({count})?",
+      "DELETE_BLOGS": "Удалить блоги ({count}) со всеми записями?",
+      "DELETE_PAGE": "Удалить «{name}»?",
+      "DELETE_THEME": "Удалить тему «{name}»?",
+      "DELETE_LAST_THEME": "«{name}» — единственная тема этого магазина. Все равно удалить?",
+      "OVERWRITE_THEME": "Тема «{name}» уже существует. Перезаписать ее файлы?",
+      "DELETE_LINK_LISTS": "Удалить меню ({count})?",
+      "DELETE_LINKS": "Удалить ссылки ({count})?"
+    },
+    "STATES": {
+      "OPEN": "Открыт",
+      "RESTRICTEDACCESS": "Ограничен",
+      "CLOSED": "Закрыт"
+    },
+    "SITE_TAB": {
+      "FILES": "Файлы",
+      "THEMES_DETAIL": "Активная: {name}",
+      "PAGES_DETAIL": "Страницы, черновики и папки",
+      "NO_ACTIVE_THEME": "Нет активной темы"
+    },
+    "SITES": {
+      "ALL": "Все сайты",
+      "FILTER": "Сайт",
+      "COLUMN": "Сайт"
+    }
+  }
+}

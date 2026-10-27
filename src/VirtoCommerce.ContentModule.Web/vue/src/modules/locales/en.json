@@ -1,0 +1,219 @@
+{
+  "CONTENT": {
+    "MENU": {
+      "TITLE": "Sites",
+      "BLOGS": "Blogs",
+      "MENUS": "Menus"
+    },
+    "WIDGETS": {
+      "STORE_CONTENT": "Content"
+    },
+    "TYPES": {
+      "THEMES": "Themes",
+      "PAGES": "Pages",
+      "BLOGS": "Blogs",
+      "LINKLISTS": "Menus"
+    },
+    "STATUS": {
+      "PUBLISHED": "Published",
+      "CHANGED": "Unpublished changes",
+      "DRAFT": "Draft"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Refresh",
+      "ADD": "Add",
+      "CREATE": "Create",
+      "SAVE": "Save",
+      "RESET": "Reset",
+      "DELETE": "Delete",
+      "UPLOAD": "Upload",
+      "PUBLISH": "Publish",
+      "UNPUBLISH": "Unpublish",
+      "PREVIEW": "Preview"
+    },
+    "PROMPT": {
+      "OK": "OK",
+      "CANCEL": "Cancel"
+    },
+    "PAGES": {
+      "STORES": {
+        "TITLE": "Sites",
+        "EMPTY": "No sites found",
+        "NO_URL": "No storefront URL yet"
+      },
+      "FILES": {
+        "ROOT": "All",
+        "EMPTY": "This folder is empty",
+        "COLUMNS": {
+          "NAME": "Name",
+          "STATUS": "Status",
+          "SIZE": "Size",
+          "MODIFIED": "Modified"
+        },
+        "ADD_PAGE": "Add page",
+        "ADD_POST": "Add post",
+        "ADD_BLOG": "Add blog",
+        "ADD_FILE": "Add file",
+        "NEW_FOLDER": "New folder",
+        "FOLDER_NAME": "Folder name",
+        "RENAME": "Rename",
+        "NEW_NAME": "New name",
+        "UPLOAD_TITLE": "Upload files",
+        "UPLOAD_URL": "Or upload from URL",
+        "UPLOAD_URL_PLACEHOLDER": "https://…",
+        "ACTIONS": {
+          "PAGE_BUILDER": "Edit in Page Builder",
+          "EDIT_BLOG": "Edit blog",
+          "MOVE": "Move",
+          "RENAME": "Rename",
+          "DUPLICATE": "Duplicate",
+          "DOWNLOAD": "Download",
+          "COPY_URL": "Copy URL"
+        }
+      },
+      "MOVE": {
+        "TITLE": "Move to folder",
+        "SUBTITLE": "{count} item(s): open the target folder, then Move here",
+        "FOLDER": "Folder",
+        "NO_FOLDERS": "No subfolders",
+        "MOVE_HERE": "Move here"
+      },
+      "PAGE": {
+        "TITLE_NEW": "New page",
+        "TITLE_NEW_POST": "New post",
+        "SUBTITLE": "Page",
+        "SUBTITLE_POST": "Blog post",
+        "METADATA": "Metadata",
+        "LIST_HINT": "Comma-separated values",
+        "CONTENT_HINT": "Markdown or HTML (Liquid allowed)",
+        "FIELDS": {
+          "PATH": "Relative path",
+          "NAME": "Name",
+          "NAME_PLACEHOLDER": "Enter page name",
+          "LANGUAGE": "Language",
+          "LANGUAGE_PLACEHOLDER": "Any language",
+          "CONTENT": "Content"
+        }
+      },
+      "BLOG": {
+        "TITLE_NEW": "New blog",
+        "SUBTITLE": "Blog",
+        "FIELDS": {
+          "NAME": "Blog name"
+        }
+      },
+      "THEMES": {
+        "EMPTY": "No themes yet",
+        "NEW": "New theme",
+        "NAME": "Theme name",
+        "ACTIVE": "Active",
+        "SET_ACTIVE": "Set active",
+        "UPLOAD_TITLE": "Upload theme (.zip)",
+        "COLUMNS": {
+          "NAME": "Theme",
+          "STATUS": "Status"
+        }
+      },
+      "ASSET": {
+        "TITLE_NEW": "New file",
+        "SUBTITLE": "Theme file",
+        "FIELDS": {
+          "NAME": "File name",
+          "NAME_PLACEHOLDER": "e.g. product.liquid",
+          "CONTENT": "Content"
+        }
+      },
+      "LINK_LISTS": {
+        "EMPTY": "No menus yet",
+        "COLUMNS": {
+          "NAME": "Name",
+          "LANGUAGE": "Language",
+          "LINKS": "Links"
+        }
+      },
+      "LINK_LIST": {
+        "TITLE_NEW": "New menu",
+        "SUBTITLE": "Menu",
+        "LINKS": "Links",
+        "NO_LINKS": "No links",
+        "ADD_LINK": "Add link",
+        "DELETE_LINKS": "Delete links",
+        "CLONE": "Clone",
+        "NONE": "None",
+        "PRODUCT": "Product",
+        "CATEGORY": "Category",
+        "FIELDS": {
+          "NAME": "Name",
+          "LANGUAGE": "Language"
+        },
+        "COLUMNS": {
+          "TITLE": "Title",
+          "URL": "URL",
+          "TYPE": "Linked to",
+          "OBJECT": "Product / category"
+        }
+      },
+      "SITE": {
+        "VIEW_SITE": "View site"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "Settings",
+        "NAME": "Site name",
+        "URL": "Storefront URL",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "Status",
+        "LANGUAGES": "Languages",
+        "ALL_SETTINGS": "All settings",
+        "SAVED": "Settings saved",
+        "CURRENCIES": "Currencies",
+        "DEFAULT": "Default"
+      },
+      "BLOGS": {
+        "EMPTY": "No blogs yet",
+        "COLUMNS": {
+          "NAME": "Blog"
+        }
+      },
+      "MENUS": {
+        "ADD": "Add menu"
+      }
+    },
+    "VALIDATION": {
+      "FOLDER_NAME": "3-63 characters: lowercase letters, digits, spaces and single dashes (not at the start or end)",
+      "FILE_NAME": "The name contains characters that are not allowed in a file name",
+      "ASSET_NAME": "Enter a file name with an extension",
+      "BLOG_EXISTS": "A blog with this name already exists",
+      "THEME_EXISTS": "A theme with this name already exists",
+      "LINK_LIST_EXISTS": "A menu with this name and language already exists"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "You have unsaved changes. Close anyway?",
+      "NO_STORE_URL": "The store has no URL. Set the store URL in the store settings first.",
+      "URL_COPIED": "URL copied to the clipboard",
+      "DELETE_FILES": "Delete {count} selected item(s)?",
+      "DELETE_BLOGS": "Delete {count} blog(s) with all their posts?",
+      "DELETE_PAGE": "Delete \"{name}\"?",
+      "DELETE_THEME": "Delete theme \"{name}\"?",
+      "DELETE_LAST_THEME": "\"{name}\" is the only theme of this store. Delete it anyway?",
+      "OVERWRITE_THEME": "Theme \"{name}\" already exists. Overwrite its files?",
+      "DELETE_LINK_LISTS": "Delete {count} menu(s)?",
+      "DELETE_LINKS": "Delete {count} link(s)?"
+    },
+    "STATES": {
+      "OPEN": "Open",
+      "RESTRICTEDACCESS": "Restricted",
+      "CLOSED": "Closed"
+    },
+    "SITE_TAB": {
+      "FILES": "Files",
+      "THEMES_DETAIL": "Active: {name}",
+      "PAGES_DETAIL": "Pages, drafts and folders",
+      "NO_ACTIVE_THEME": "No active theme"
+    },
+    "SITES": {
+      "ALL": "All sites",
+      "FILTER": "Site",
+      "COLUMN": "Site"
+    }
+  }
+}

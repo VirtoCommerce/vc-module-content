@@ -1,0 +1,219 @@
+{
+  "CONTENT": {
+    "MENU": {
+      "TITLE": "Webbplatser",
+      "BLOGS": "Bloggar",
+      "MENUS": "Menyer"
+    },
+    "WIDGETS": {
+      "STORE_CONTENT": "Innehåll"
+    },
+    "TYPES": {
+      "THEMES": "Teman",
+      "PAGES": "Sidor",
+      "BLOGS": "Bloggar",
+      "LINKLISTS": "Menyer"
+    },
+    "STATUS": {
+      "PUBLISHED": "Publicerad",
+      "CHANGED": "Opublicerade ändringar",
+      "DRAFT": "Utkast"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Uppdatera",
+      "ADD": "Lägg till",
+      "CREATE": "Skapa",
+      "SAVE": "Spara",
+      "RESET": "Återställ",
+      "DELETE": "Ta bort",
+      "UPLOAD": "Ladda upp",
+      "PUBLISH": "Publicera",
+      "UNPUBLISH": "Avpublicera",
+      "PREVIEW": "Förhandsgranska"
+    },
+    "PROMPT": {
+      "OK": "OK",
+      "CANCEL": "Avbryt"
+    },
+    "PAGES": {
+      "STORES": {
+        "TITLE": "Webbplatser",
+        "EMPTY": "Inga webbplatser hittades",
+        "NO_URL": "Ingen butiks-URL ännu"
+      },
+      "FILES": {
+        "ROOT": "Alla",
+        "EMPTY": "Mappen är tom",
+        "COLUMNS": {
+          "NAME": "Namn",
+          "STATUS": "Status",
+          "SIZE": "Storlek",
+          "MODIFIED": "Ändrad"
+        },
+        "ADD_PAGE": "Lägg till sida",
+        "ADD_POST": "Lägg till inlägg",
+        "ADD_BLOG": "Lägg till blogg",
+        "ADD_FILE": "Lägg till fil",
+        "NEW_FOLDER": "Ny mapp",
+        "FOLDER_NAME": "Mappnamn",
+        "RENAME": "Byt namn",
+        "NEW_NAME": "Nytt namn",
+        "UPLOAD_TITLE": "Ladda upp filer",
+        "UPLOAD_URL": "Eller ladda upp från URL",
+        "UPLOAD_URL_PLACEHOLDER": "https://…",
+        "ACTIONS": {
+          "PAGE_BUILDER": "Redigera i Page Builder",
+          "EDIT_BLOG": "Redigera blogg",
+          "MOVE": "Flytta",
+          "RENAME": "Byt namn",
+          "DUPLICATE": "Duplicera",
+          "DOWNLOAD": "Ladda ner",
+          "COPY_URL": "Kopiera URL"
+        }
+      },
+      "MOVE": {
+        "TITLE": "Flytta till mapp",
+        "SUBTITLE": "{count} objekt: öppna målmappen och välj sedan ”Flytta hit”",
+        "FOLDER": "Mapp",
+        "NO_FOLDERS": "Inga undermappar",
+        "MOVE_HERE": "Flytta hit"
+      },
+      "PAGE": {
+        "TITLE_NEW": "Ny sida",
+        "TITLE_NEW_POST": "Nytt inlägg",
+        "SUBTITLE": "Sida",
+        "SUBTITLE_POST": "Blogginlägg",
+        "METADATA": "Metadata",
+        "LIST_HINT": "Kommaavgränsade värden",
+        "CONTENT_HINT": "Markdown eller HTML (Liquid tillåtet)",
+        "FIELDS": {
+          "PATH": "Relativ sökväg",
+          "NAME": "Namn",
+          "NAME_PLACEHOLDER": "Ange sidnamn",
+          "LANGUAGE": "Språk",
+          "LANGUAGE_PLACEHOLDER": "Alla språk",
+          "CONTENT": "Innehåll"
+        }
+      },
+      "BLOG": {
+        "TITLE_NEW": "Ny blogg",
+        "SUBTITLE": "Blogg",
+        "FIELDS": {
+          "NAME": "Bloggnamn"
+        }
+      },
+      "THEMES": {
+        "EMPTY": "Inga teman ännu",
+        "NEW": "Nytt tema",
+        "NAME": "Temanamn",
+        "ACTIVE": "Aktivt",
+        "SET_ACTIVE": "Sätt som aktivt",
+        "UPLOAD_TITLE": "Ladda upp tema (.zip)",
+        "COLUMNS": {
+          "NAME": "Tema",
+          "STATUS": "Status"
+        }
+      },
+      "ASSET": {
+        "TITLE_NEW": "Ny fil",
+        "SUBTITLE": "Temafil",
+        "FIELDS": {
+          "NAME": "Filnamn",
+          "NAME_PLACEHOLDER": "t.ex. product.liquid",
+          "CONTENT": "Innehåll"
+        }
+      },
+      "LINK_LISTS": {
+        "EMPTY": "Inga menyer ännu",
+        "COLUMNS": {
+          "NAME": "Namn",
+          "LANGUAGE": "Språk",
+          "LINKS": "Länkar"
+        }
+      },
+      "LINK_LIST": {
+        "TITLE_NEW": "Ny meny",
+        "SUBTITLE": "Meny",
+        "LINKS": "Länkar",
+        "NO_LINKS": "Inga länkar",
+        "ADD_LINK": "Lägg till länk",
+        "DELETE_LINKS": "Ta bort länkar",
+        "CLONE": "Klona",
+        "NONE": "Ingen",
+        "PRODUCT": "Produkt",
+        "CATEGORY": "Kategori",
+        "FIELDS": {
+          "NAME": "Namn",
+          "LANGUAGE": "Språk"
+        },
+        "COLUMNS": {
+          "TITLE": "Rubrik",
+          "URL": "URL",
+          "TYPE": "Länkad till",
+          "OBJECT": "Produkt / kategori"
+        }
+      },
+      "SITE": {
+        "VIEW_SITE": "Visa webbplats"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "Inställningar",
+        "NAME": "Webbplatsens namn",
+        "URL": "Butiks-URL",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "Status",
+        "LANGUAGES": "Språk",
+        "ALL_SETTINGS": "Alla inställningar",
+        "SAVED": "Inställningarna har sparats",
+        "CURRENCIES": "Valutor",
+        "DEFAULT": "Standard"
+      },
+      "BLOGS": {
+        "EMPTY": "Inga bloggar ännu",
+        "COLUMNS": {
+          "NAME": "Blogg"
+        }
+      },
+      "MENUS": {
+        "ADD": "Lägg till meny"
+      }
+    },
+    "VALIDATION": {
+      "FOLDER_NAME": "3–63 tecken: små bokstäver, siffror, mellanslag och enkla bindestreck (inte i början eller slutet)",
+      "FILE_NAME": "Namnet innehåller tecken som inte är tillåtna i ett filnamn",
+      "ASSET_NAME": "Ange ett filnamn med filändelse",
+      "BLOG_EXISTS": "Det finns redan en blogg med det här namnet",
+      "THEME_EXISTS": "Det finns redan ett tema med det här namnet",
+      "LINK_LIST_EXISTS": "Det finns redan en meny med det här namnet och språket"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Du har osparade ändringar. Stäng ändå?",
+      "NO_STORE_URL": "Butiken har ingen URL. Ange först butikens URL i butiksinställningarna.",
+      "URL_COPIED": "URL kopierad till urklipp",
+      "DELETE_FILES": "Ta bort {count} valda objekt?",
+      "DELETE_BLOGS": "Ta bort {count} blogg(ar) med alla inlägg?",
+      "DELETE_PAGE": "Ta bort ”{name}”?",
+      "DELETE_THEME": "Ta bort temat ”{name}”?",
+      "DELETE_LAST_THEME": "”{name}” är butikens enda tema. Ta bort det ändå?",
+      "OVERWRITE_THEME": "Temat ”{name}” finns redan. Skriva över dess filer?",
+      "DELETE_LINK_LISTS": "Ta bort {count} meny/menyer?",
+      "DELETE_LINKS": "Ta bort {count} länk(ar)?"
+    },
+    "STATES": {
+      "OPEN": "Öppen",
+      "RESTRICTEDACCESS": "Begränsad",
+      "CLOSED": "Stängd"
+    },
+    "SITE_TAB": {
+      "FILES": "Filer",
+      "THEMES_DETAIL": "Aktivt: {name}",
+      "PAGES_DETAIL": "Sidor, utkast och mappar",
+      "NO_ACTIVE_THEME": "Inget aktivt tema"
+    },
+    "SITES": {
+      "ALL": "Alla webbplatser",
+      "FILTER": "Webbplats",
+      "COLUMN": "Webbplats"
+    }
+  }
+}
