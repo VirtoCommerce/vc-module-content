@@ -1,0 +1,219 @@
+{
+  "CONTENT": {
+    "MENU": {
+      "TITLE": "Sivustot",
+      "BLOGS": "Blogit",
+      "MENUS": "Valikot"
+    },
+    "WIDGETS": {
+      "STORE_CONTENT": "Sisältö"
+    },
+    "TYPES": {
+      "THEMES": "Teemat",
+      "PAGES": "Sivut",
+      "BLOGS": "Blogit",
+      "LINKLISTS": "Valikot"
+    },
+    "STATUS": {
+      "PUBLISHED": "Julkaistu",
+      "CHANGED": "Julkaisemattomia muutoksia",
+      "DRAFT": "Luonnos"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Päivitä",
+      "ADD": "Lisää",
+      "CREATE": "Luo",
+      "SAVE": "Tallenna",
+      "RESET": "Palauta",
+      "DELETE": "Poista",
+      "UPLOAD": "Lähetä",
+      "PUBLISH": "Julkaise",
+      "UNPUBLISH": "Poista julkaisusta",
+      "PREVIEW": "Esikatsele"
+    },
+    "PROMPT": {
+      "OK": "OK",
+      "CANCEL": "Peruuta"
+    },
+    "PAGES": {
+      "STORES": {
+        "TITLE": "Sivustot",
+        "EMPTY": "Sivustoja ei löytynyt",
+        "NO_URL": "Kaupan URL-osoitetta ei ole vielä"
+      },
+      "FILES": {
+        "ROOT": "Kaikki",
+        "EMPTY": "Tämä kansio on tyhjä",
+        "COLUMNS": {
+          "NAME": "Nimi",
+          "STATUS": "Tila",
+          "SIZE": "Koko",
+          "MODIFIED": "Muokattu"
+        },
+        "ADD_PAGE": "Lisää sivu",
+        "ADD_POST": "Lisää kirjoitus",
+        "ADD_BLOG": "Lisää blogi",
+        "ADD_FILE": "Lisää tiedosto",
+        "NEW_FOLDER": "Uusi kansio",
+        "FOLDER_NAME": "Kansion nimi",
+        "RENAME": "Nimeä uudelleen",
+        "NEW_NAME": "Uusi nimi",
+        "UPLOAD_TITLE": "Lähetä tiedostoja",
+        "UPLOAD_URL": "Tai lähetä URL-osoitteesta",
+        "UPLOAD_URL_PLACEHOLDER": "https://…",
+        "ACTIONS": {
+          "PAGE_BUILDER": "Muokkaa Page Builderissa",
+          "EDIT_BLOG": "Muokkaa blogia",
+          "MOVE": "Siirrä",
+          "RENAME": "Nimeä uudelleen",
+          "DUPLICATE": "Kopioi",
+          "DOWNLOAD": "Lataa",
+          "COPY_URL": "Kopioi URL"
+        }
+      },
+      "MOVE": {
+        "TITLE": "Siirrä kansioon",
+        "SUBTITLE": "{count} kohdetta: avaa kohdekansio ja valitse sitten ”Siirrä tänne”",
+        "FOLDER": "Kansio",
+        "NO_FOLDERS": "Ei alikansioita",
+        "MOVE_HERE": "Siirrä tänne"
+      },
+      "PAGE": {
+        "TITLE_NEW": "Uusi sivu",
+        "TITLE_NEW_POST": "Uusi kirjoitus",
+        "SUBTITLE": "Sivu",
+        "SUBTITLE_POST": "Blogikirjoitus",
+        "METADATA": "Metatiedot",
+        "LIST_HINT": "Pilkuilla erotetut arvot",
+        "CONTENT_HINT": "Markdown tai HTML (Liquid sallittu)",
+        "FIELDS": {
+          "PATH": "Suhteellinen polku",
+          "NAME": "Nimi",
+          "NAME_PLACEHOLDER": "Syötä sivun nimi",
+          "LANGUAGE": "Kieli",
+          "LANGUAGE_PLACEHOLDER": "Mikä tahansa kieli",
+          "CONTENT": "Sisältö"
+        }
+      },
+      "BLOG": {
+        "TITLE_NEW": "Uusi blogi",
+        "SUBTITLE": "Blogi",
+        "FIELDS": {
+          "NAME": "Blogin nimi"
+        }
+      },
+      "THEMES": {
+        "EMPTY": "Ei vielä teemoja",
+        "NEW": "Uusi teema",
+        "NAME": "Teeman nimi",
+        "ACTIVE": "Aktiivinen",
+        "SET_ACTIVE": "Aseta aktiiviseksi",
+        "UPLOAD_TITLE": "Lähetä teema (.zip)",
+        "COLUMNS": {
+          "NAME": "Teema",
+          "STATUS": "Tila"
+        }
+      },
+      "ASSET": {
+        "TITLE_NEW": "Uusi tiedosto",
+        "SUBTITLE": "Teematiedosto",
+        "FIELDS": {
+          "NAME": "Tiedoston nimi",
+          "NAME_PLACEHOLDER": "esim. product.liquid",
+          "CONTENT": "Sisältö"
+        }
+      },
+      "LINK_LISTS": {
+        "EMPTY": "Ei vielä valikoita",
+        "COLUMNS": {
+          "NAME": "Nimi",
+          "LANGUAGE": "Kieli",
+          "LINKS": "Linkit"
+        }
+      },
+      "LINK_LIST": {
+        "TITLE_NEW": "Uusi valikko",
+        "SUBTITLE": "Valikko",
+        "LINKS": "Linkit",
+        "NO_LINKS": "Ei linkkejä",
+        "ADD_LINK": "Lisää linkki",
+        "DELETE_LINKS": "Poista linkit",
+        "CLONE": "Kloonaa",
+        "NONE": "Ei mitään",
+        "PRODUCT": "Tuote",
+        "CATEGORY": "Kategoria",
+        "FIELDS": {
+          "NAME": "Nimi",
+          "LANGUAGE": "Kieli"
+        },
+        "COLUMNS": {
+          "TITLE": "Otsikko",
+          "URL": "URL",
+          "TYPE": "Linkitetty kohteeseen",
+          "OBJECT": "Tuote / kategoria"
+        }
+      },
+      "SITE": {
+        "VIEW_SITE": "Näytä sivusto"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "Asetukset",
+        "NAME": "Sivuston nimi",
+        "URL": "Kaupan URL",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "Tila",
+        "LANGUAGES": "Kielet",
+        "ALL_SETTINGS": "Kaikki asetukset",
+        "SAVED": "Asetukset tallennettu",
+        "CURRENCIES": "Valuutat",
+        "DEFAULT": "Oletus"
+      },
+      "BLOGS": {
+        "EMPTY": "Ei vielä blogeja",
+        "COLUMNS": {
+          "NAME": "Blogi"
+        }
+      },
+      "MENUS": {
+        "ADD": "Lisää valikko"
+      }
+    },
+    "VALIDATION": {
+      "FOLDER_NAME": "3–63 merkkiä: pieniä kirjaimia, numeroita, välilyöntejä ja yksittäisiä yhdysmerkkejä (ei alussa eikä lopussa)",
+      "FILE_NAME": "Nimi sisältää merkkejä, jotka eivät ole sallittuja tiedostonimessä",
+      "ASSET_NAME": "Syötä tiedostonimi tunnisteineen",
+      "BLOG_EXISTS": "Tämänniminen blogi on jo olemassa",
+      "THEME_EXISTS": "Tämänniminen teema on jo olemassa",
+      "LINK_LIST_EXISTS": "Valikko, jolla on tämä nimi ja kieli, on jo olemassa"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Sinulla on tallentamattomia muutoksia. Suljetaanko silti?",
+      "NO_STORE_URL": "Kaupalla ei ole URL-osoitetta. Määritä ensin kaupan URL kaupan asetuksissa.",
+      "URL_COPIED": "URL kopioitu leikepöydälle",
+      "DELETE_FILES": "Poistetaanko {count} valittua kohdetta?",
+      "DELETE_BLOGS": "Poistetaanko {count} blogia kaikkine kirjoituksineen?",
+      "DELETE_PAGE": "Poistetaanko ”{name}”?",
+      "DELETE_THEME": "Poistetaanko teema ”{name}”?",
+      "DELETE_LAST_THEME": "”{name}” on tämän kaupan ainoa teema. Poistetaanko se silti?",
+      "OVERWRITE_THEME": "Teema ”{name}” on jo olemassa. Korvataanko sen tiedostot?",
+      "DELETE_LINK_LISTS": "Poistetaanko {count} valikkoa?",
+      "DELETE_LINKS": "Poistetaanko {count} linkkiä?"
+    },
+    "STATES": {
+      "OPEN": "Avoin",
+      "RESTRICTEDACCESS": "Rajoitettu",
+      "CLOSED": "Suljettu"
+    },
+    "SITE_TAB": {
+      "FILES": "Tiedostot",
+      "THEMES_DETAIL": "Aktiivinen: {name}",
+      "PAGES_DETAIL": "Sivut, luonnokset ja kansiot",
+      "NO_ACTIVE_THEME": "Ei aktiivista teemaa"
+    },
+    "SITES": {
+      "ALL": "Kaikki sivustot",
+      "FILTER": "Sivusto",
+      "COLUMN": "Sivusto"
+    }
+  }
+}

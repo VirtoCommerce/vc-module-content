@@ -1,0 +1,219 @@
+{
+  "CONTENT": {
+    "MENU": {
+      "TITLE": "サイト",
+      "BLOGS": "ブログ",
+      "MENUS": "メニュー"
+    },
+    "WIDGETS": {
+      "STORE_CONTENT": "コンテンツ"
+    },
+    "TYPES": {
+      "THEMES": "テーマ",
+      "PAGES": "ページ",
+      "BLOGS": "ブログ",
+      "LINKLISTS": "メニュー"
+    },
+    "STATUS": {
+      "PUBLISHED": "公開済み",
+      "CHANGED": "未公開の変更",
+      "DRAFT": "下書き"
+    },
+    "TOOLBAR": {
+      "REFRESH": "更新",
+      "ADD": "追加",
+      "CREATE": "作成",
+      "SAVE": "保存",
+      "RESET": "リセット",
+      "DELETE": "削除",
+      "UPLOAD": "アップロード",
+      "PUBLISH": "公開",
+      "UNPUBLISH": "公開を取り消す",
+      "PREVIEW": "プレビュー"
+    },
+    "PROMPT": {
+      "OK": "OK",
+      "CANCEL": "キャンセル"
+    },
+    "PAGES": {
+      "STORES": {
+        "TITLE": "サイト",
+        "EMPTY": "サイトが見つかりません",
+        "NO_URL": "ストアフロントの URL はまだありません"
+      },
+      "FILES": {
+        "ROOT": "すべて",
+        "EMPTY": "このフォルダーは空です",
+        "COLUMNS": {
+          "NAME": "名前",
+          "STATUS": "ステータス",
+          "SIZE": "サイズ",
+          "MODIFIED": "更新日時"
+        },
+        "ADD_PAGE": "ページを追加",
+        "ADD_POST": "投稿を追加",
+        "ADD_BLOG": "ブログを追加",
+        "ADD_FILE": "ファイルを追加",
+        "NEW_FOLDER": "新しいフォルダー",
+        "FOLDER_NAME": "フォルダー名",
+        "RENAME": "名前を変更",
+        "NEW_NAME": "新しい名前",
+        "UPLOAD_TITLE": "ファイルをアップロード",
+        "UPLOAD_URL": "または URL からアップロード",
+        "UPLOAD_URL_PLACEHOLDER": "https://…",
+        "ACTIONS": {
+          "PAGE_BUILDER": "Page Builder で編集",
+          "EDIT_BLOG": "ブログを編集",
+          "MOVE": "移動",
+          "RENAME": "名前を変更",
+          "DUPLICATE": "複製",
+          "DOWNLOAD": "ダウンロード",
+          "COPY_URL": "URL をコピー"
+        }
+      },
+      "MOVE": {
+        "TITLE": "フォルダーに移動",
+        "SUBTITLE": "{count} 件: 移動先のフォルダーを開いてから「ここに移動」を選択します",
+        "FOLDER": "フォルダー",
+        "NO_FOLDERS": "サブフォルダーがありません",
+        "MOVE_HERE": "ここに移動"
+      },
+      "PAGE": {
+        "TITLE_NEW": "新しいページ",
+        "TITLE_NEW_POST": "新しい投稿",
+        "SUBTITLE": "ページ",
+        "SUBTITLE_POST": "ブログ投稿",
+        "METADATA": "メタデータ",
+        "LIST_HINT": "カンマ区切りの値",
+        "CONTENT_HINT": "Markdown または HTML (Liquid 使用可)",
+        "FIELDS": {
+          "PATH": "相対パス",
+          "NAME": "名前",
+          "NAME_PLACEHOLDER": "ページ名を入力",
+          "LANGUAGE": "言語",
+          "LANGUAGE_PLACEHOLDER": "すべての言語",
+          "CONTENT": "コンテンツ"
+        }
+      },
+      "BLOG": {
+        "TITLE_NEW": "新しいブログ",
+        "SUBTITLE": "ブログ",
+        "FIELDS": {
+          "NAME": "ブログ名"
+        }
+      },
+      "THEMES": {
+        "EMPTY": "テーマはまだありません",
+        "NEW": "新しいテーマ",
+        "NAME": "テーマ名",
+        "ACTIVE": "有効",
+        "SET_ACTIVE": "アクティブに設定",
+        "UPLOAD_TITLE": "テーマをアップロード (.zip)",
+        "COLUMNS": {
+          "NAME": "テーマ",
+          "STATUS": "ステータス"
+        }
+      },
+      "ASSET": {
+        "TITLE_NEW": "新しいファイル",
+        "SUBTITLE": "テーマファイル",
+        "FIELDS": {
+          "NAME": "ファイル名",
+          "NAME_PLACEHOLDER": "例: product.liquid",
+          "CONTENT": "コンテンツ"
+        }
+      },
+      "LINK_LISTS": {
+        "EMPTY": "メニューはまだありません",
+        "COLUMNS": {
+          "NAME": "名前",
+          "LANGUAGE": "言語",
+          "LINKS": "リンク"
+        }
+      },
+      "LINK_LIST": {
+        "TITLE_NEW": "新しいメニュー",
+        "SUBTITLE": "メニュー",
+        "LINKS": "リンク",
+        "NO_LINKS": "リンクがありません",
+        "ADD_LINK": "リンクを追加",
+        "DELETE_LINKS": "リンクを削除",
+        "CLONE": "複製",
+        "NONE": "なし",
+        "PRODUCT": "製品",
+        "CATEGORY": "カテゴリ",
+        "FIELDS": {
+          "NAME": "名前",
+          "LANGUAGE": "言語"
+        },
+        "COLUMNS": {
+          "TITLE": "タイトル",
+          "URL": "URL",
+          "TYPE": "リンク先",
+          "OBJECT": "製品 / カテゴリ"
+        }
+      },
+      "SITE": {
+        "VIEW_SITE": "サイトを表示"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "設定",
+        "NAME": "サイト名",
+        "URL": "ストアフロント URL",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "ステータス",
+        "LANGUAGES": "言語",
+        "ALL_SETTINGS": "すべての設定",
+        "SAVED": "設定を保存しました",
+        "CURRENCIES": "通貨",
+        "DEFAULT": "デフォルト"
+      },
+      "BLOGS": {
+        "EMPTY": "ブログはまだありません",
+        "COLUMNS": {
+          "NAME": "ブログ"
+        }
+      },
+      "MENUS": {
+        "ADD": "メニューを追加"
+      }
+    },
+    "VALIDATION": {
+      "FOLDER_NAME": "3～63 文字: 英小文字、数字、スペース、単独のハイフン (先頭と末尾を除く)",
+      "FILE_NAME": "名前にファイル名で使用できない文字が含まれています",
+      "ASSET_NAME": "拡張子付きのファイル名を入力してください",
+      "BLOG_EXISTS": "この名前のブログは既に存在します",
+      "THEME_EXISTS": "この名前のテーマは既に存在します",
+      "LINK_LIST_EXISTS": "この名前と言語のメニューは既に存在します"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "保存されていない変更があります。閉じてもよろしいですか？",
+      "NO_STORE_URL": "ストアに URL がありません。まずストア設定でストアの URL を設定してください。",
+      "URL_COPIED": "URL をクリップボードにコピーしました",
+      "DELETE_FILES": "選択した {count} 件の項目を削除しますか？",
+      "DELETE_BLOGS": "{count} 件のブログをすべての投稿とともに削除しますか？",
+      "DELETE_PAGE": "「{name}」を削除しますか？",
+      "DELETE_THEME": "テーマ「{name}」を削除しますか？",
+      "DELETE_LAST_THEME": "「{name}」はこのストアの唯一のテーマです。削除してもよろしいですか？",
+      "OVERWRITE_THEME": "テーマ「{name}」は既に存在します。ファイルを上書きしますか？",
+      "DELETE_LINK_LISTS": "{count} 件のメニューを削除しますか？",
+      "DELETE_LINKS": "{count} 件のリンクを削除しますか？"
+    },
+    "STATES": {
+      "OPEN": "オープン",
+      "RESTRICTEDACCESS": "制限付き",
+      "CLOSED": "クローズ"
+    },
+    "SITE_TAB": {
+      "FILES": "ファイル",
+      "THEMES_DETAIL": "有効: {name}",
+      "PAGES_DETAIL": "ページ、下書き、フォルダー",
+      "NO_ACTIVE_THEME": "有効なテーマがありません"
+    },
+    "SITES": {
+      "ALL": "すべてのサイト",
+      "FILTER": "サイト",
+      "COLUMN": "サイト"
+    }
+  }
+}

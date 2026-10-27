@@ -1,0 +1,219 @@
+{
+  "CONTENT": {
+    "MENU": {
+      "TITLE": "Sitios",
+      "BLOGS": "Blogs",
+      "MENUS": "Menús"
+    },
+    "WIDGETS": {
+      "STORE_CONTENT": "Contenido"
+    },
+    "TYPES": {
+      "THEMES": "Temas",
+      "PAGES": "Páginas",
+      "BLOGS": "Blogs",
+      "LINKLISTS": "Menús"
+    },
+    "STATUS": {
+      "PUBLISHED": "Publicado",
+      "CHANGED": "Cambios sin publicar",
+      "DRAFT": "Borrador"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Actualizar",
+      "ADD": "Agregar",
+      "CREATE": "Crear",
+      "SAVE": "Guardar",
+      "RESET": "Restablecer",
+      "DELETE": "Eliminar",
+      "UPLOAD": "Cargar",
+      "PUBLISH": "Publicar",
+      "UNPUBLISH": "Anular publicación",
+      "PREVIEW": "Vista previa"
+    },
+    "PROMPT": {
+      "OK": "Aceptar",
+      "CANCEL": "Cancelar"
+    },
+    "PAGES": {
+      "STORES": {
+        "TITLE": "Sitios",
+        "EMPTY": "No se encontraron sitios",
+        "NO_URL": "Aún no hay URL de la tienda"
+      },
+      "FILES": {
+        "ROOT": "Todo",
+        "EMPTY": "Esta carpeta está vacía",
+        "COLUMNS": {
+          "NAME": "Nombre",
+          "STATUS": "Estado",
+          "SIZE": "Tamaño",
+          "MODIFIED": "Modificado"
+        },
+        "ADD_PAGE": "Agregar página",
+        "ADD_POST": "Agregar entrada",
+        "ADD_BLOG": "Agregar blog",
+        "ADD_FILE": "Agregar archivo",
+        "NEW_FOLDER": "Nueva carpeta",
+        "FOLDER_NAME": "Nombre de la carpeta",
+        "RENAME": "Cambiar nombre",
+        "NEW_NAME": "Nuevo nombre",
+        "UPLOAD_TITLE": "Cargar archivos",
+        "UPLOAD_URL": "O cargar desde una URL",
+        "UPLOAD_URL_PLACEHOLDER": "https://…",
+        "ACTIONS": {
+          "PAGE_BUILDER": "Editar en Page Builder",
+          "EDIT_BLOG": "Editar blog",
+          "MOVE": "Mover",
+          "RENAME": "Cambiar nombre",
+          "DUPLICATE": "Duplicar",
+          "DOWNLOAD": "Descargar",
+          "COPY_URL": "Copiar URL"
+        }
+      },
+      "MOVE": {
+        "TITLE": "Mover a carpeta",
+        "SUBTITLE": "{count} elemento(s): abra la carpeta de destino y luego seleccione «Mover aquí»",
+        "FOLDER": "Carpeta",
+        "NO_FOLDERS": "No hay subcarpetas",
+        "MOVE_HERE": "Mover aquí"
+      },
+      "PAGE": {
+        "TITLE_NEW": "Nueva página",
+        "TITLE_NEW_POST": "Nueva entrada",
+        "SUBTITLE": "Página",
+        "SUBTITLE_POST": "Entrada de blog",
+        "METADATA": "Metadatos",
+        "LIST_HINT": "Valores separados por comas",
+        "CONTENT_HINT": "Markdown o HTML (se permite Liquid)",
+        "FIELDS": {
+          "PATH": "Ruta relativa",
+          "NAME": "Nombre",
+          "NAME_PLACEHOLDER": "Introducir nombre de la página",
+          "LANGUAGE": "Idioma",
+          "LANGUAGE_PLACEHOLDER": "Cualquier idioma",
+          "CONTENT": "Contenido"
+        }
+      },
+      "BLOG": {
+        "TITLE_NEW": "Nuevo blog",
+        "SUBTITLE": "Blog",
+        "FIELDS": {
+          "NAME": "Nombre del blog"
+        }
+      },
+      "THEMES": {
+        "EMPTY": "Aún no hay temas",
+        "NEW": "Nuevo tema",
+        "NAME": "Nombre del tema",
+        "ACTIVE": "Activo",
+        "SET_ACTIVE": "Establecer activo",
+        "UPLOAD_TITLE": "Cargar tema (.zip)",
+        "COLUMNS": {
+          "NAME": "Tema",
+          "STATUS": "Estado"
+        }
+      },
+      "ASSET": {
+        "TITLE_NEW": "Nuevo archivo",
+        "SUBTITLE": "Archivo del tema",
+        "FIELDS": {
+          "NAME": "Nombre del archivo",
+          "NAME_PLACEHOLDER": "p. ej., product.liquid",
+          "CONTENT": "Contenido"
+        }
+      },
+      "LINK_LISTS": {
+        "EMPTY": "Aún no hay menús",
+        "COLUMNS": {
+          "NAME": "Nombre",
+          "LANGUAGE": "Idioma",
+          "LINKS": "Enlaces"
+        }
+      },
+      "LINK_LIST": {
+        "TITLE_NEW": "Nuevo menú",
+        "SUBTITLE": "Menú",
+        "LINKS": "Enlaces",
+        "NO_LINKS": "No hay enlaces",
+        "ADD_LINK": "Agregar enlace",
+        "DELETE_LINKS": "Eliminar enlaces",
+        "CLONE": "Clonar",
+        "NONE": "Ninguno",
+        "PRODUCT": "Producto",
+        "CATEGORY": "Categoría",
+        "FIELDS": {
+          "NAME": "Nombre",
+          "LANGUAGE": "Idioma"
+        },
+        "COLUMNS": {
+          "TITLE": "Título",
+          "URL": "URL",
+          "TYPE": "Vinculado a",
+          "OBJECT": "Producto / categoría"
+        }
+      },
+      "SITE": {
+        "VIEW_SITE": "Ver sitio"
+      },
+      "SITE_SETTINGS": {
+        "TITLE": "Configuración",
+        "NAME": "Nombre del sitio",
+        "URL": "URL de la tienda",
+        "URL_PLACEHOLDER": "https://shop.example.com",
+        "STATUS": "Estado",
+        "LANGUAGES": "Idiomas",
+        "ALL_SETTINGS": "Toda la configuración",
+        "SAVED": "Configuración guardada",
+        "CURRENCIES": "Monedas",
+        "DEFAULT": "Predeterminado"
+      },
+      "BLOGS": {
+        "EMPTY": "Aún no hay blogs",
+        "COLUMNS": {
+          "NAME": "Blog"
+        }
+      },
+      "MENUS": {
+        "ADD": "Agregar menú"
+      }
+    },
+    "VALIDATION": {
+      "FOLDER_NAME": "De 3 a 63 caracteres: letras minúsculas, dígitos, espacios y guiones simples (no al principio ni al final)",
+      "FILE_NAME": "El nombre contiene caracteres no permitidos en un nombre de archivo",
+      "ASSET_NAME": "Introduzca un nombre de archivo con extensión",
+      "BLOG_EXISTS": "Ya existe un blog con este nombre",
+      "THEME_EXISTS": "Ya existe un tema con este nombre",
+      "LINK_LIST_EXISTS": "Ya existe un menú con este nombre e idioma"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Tiene cambios sin guardar. ¿Cerrar de todos modos?",
+      "NO_STORE_URL": "La tienda no tiene URL. Configure primero la URL de la tienda en la configuración de la tienda.",
+      "URL_COPIED": "URL copiada al portapapeles",
+      "DELETE_FILES": "¿Eliminar {count} elemento(s) seleccionado(s)?",
+      "DELETE_BLOGS": "¿Eliminar {count} blog(s) con todas sus entradas?",
+      "DELETE_PAGE": "¿Eliminar «{name}»?",
+      "DELETE_THEME": "¿Eliminar el tema «{name}»?",
+      "DELETE_LAST_THEME": "«{name}» es el único tema de esta tienda. ¿Eliminarlo de todos modos?",
+      "OVERWRITE_THEME": "El tema «{name}» ya existe. ¿Sobrescribir sus archivos?",
+      "DELETE_LINK_LISTS": "¿Eliminar {count} menú(s)?",
+      "DELETE_LINKS": "¿Eliminar {count} enlace(s)?"
+    },
+    "STATES": {
+      "OPEN": "Abierta",
+      "RESTRICTEDACCESS": "Restringida",
+      "CLOSED": "Cerrada"
+    },
+    "SITE_TAB": {
+      "FILES": "Archivos",
+      "THEMES_DETAIL": "Activo: {name}",
+      "PAGES_DETAIL": "Páginas, borradores y carpetas",
+      "NO_ACTIVE_THEME": "No hay tema activo"
+    },
+    "SITES": {
+      "ALL": "Todos los sitios",
+      "FILTER": "Sitio",
+      "COLUMN": "Sitio"
+    }
+  }
+}
