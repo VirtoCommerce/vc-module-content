@@ -107,27 +107,97 @@ public class ContentController(
         var urlsToRemove = new List<string>();
         foreach (var url in urls)
         {
-            var isFolder = true;
+            var isFile = false;
             var draftUrl = publishingService.GetRelativeDraftUrl(url, true);
             var publishedUrl = publishingService.GetRelativeDraftUrl(url, false);
             if (await contentService.ItemExistsAsync(contentType, storeId, draftUrl))
             {
                 urlsToRemove.Add(draftUrl);
-                isFolder = false;
+                isFile = true;
             }
             if (await contentService.ItemExistsAsync(contentType, storeId, publishedUrl))
             {
                 urlsToRemove.Add(publishedUrl);
-                isFolder = false;
+                isFile = true;
             }
 
-            if (isFolder)
+            if (isFile)
             {
-                urlsToRemove.Add(url);
+                continue;
             }
+
+            // Neither a draft nor a published file. This used to mean "a folder, then", and the storage
+            // provider was told to remove a folder that might not be there — which it answers with an
+            // exception and this action with a 500. A url that names nothing is not a failure to a caller
+            // asking for it to be gone: the state they want already holds. The deploy that unpublishes a
+            // page somebody had already removed by hand hit exactly this, and that one failed request
+            // froze a deployment pipeline for a week.
+            if (await IsKnownAbsentAsync(contentType, storeId, url))
+            {
+                logger.LogInformation("Nothing to delete at {Url}: neither a file nor a folder in {ContentType}/{StoreId}.", url, contentType, storeId);
+                continue;
+            }
+
+            urlsToRemove.Add(url);
         }
-        await contentService.DeleteContentAsync(contentType, storeId, urlsToRemove.ToArray());
+
+        if (urlsToRemove.Count > 0)
+        {
+            await contentService.DeleteContentAsync(contentType, storeId, urlsToRemove.ToArray());
+        }
+
         return NoContent();
+    }
+
+    /// <summary>
+    /// True only when this url is known to name nothing at all — not a file (the caller has just
+    /// established that) and not a folder either.
+    /// <para>
+    /// Deliberately one-sided. Skipping something that is really there would be worse than the failure
+    /// this check exists to avoid: the caller is told the thing is gone and it is still live. So every
+    /// answer short of "the parent lists its contents and this is not among them" is <c>false</c>, and
+    /// the url goes to the storage provider exactly as it did before — including when the parent cannot
+    /// be listed, when it comes back empty, and when the url is an absolute one. Callers send both
+    /// forms: the admin blades pass <c>relativeUrl</c> in some places and the public <c>url</c> in
+    /// others, and path arithmetic on the latter is not ours to do — the provider resolves it.
+    /// </para>
+    /// <para>
+    /// A folder is looked for in its parent's listing, which is the one question both storage providers
+    /// answer the same way: blob storage has no folders of its own and lists a prefix, the file system
+    /// lists a directory. Asking about the folder itself would not tell an empty one from a missing one.
+    /// </para>
+    /// </summary>
+    private async Task<bool> IsKnownAbsentAsync(string contentType, string storeId, string url)
+    {
+        var trimmed = url?.Trim('/') ?? string.Empty;
+        if (trimmed.Length == 0 || Uri.TryCreate(trimmed, UriKind.Absolute, out _))
+        {
+            return false;
+        }
+
+        var slash = trimmed.LastIndexOf('/');
+        var name = slash < 0 ? trimmed : trimmed[(slash + 1)..];
+
+        var criteria = AbstractTypeFactory<FilterItemsCriteria>.TryCreateInstance();
+        criteria.ContentType = contentType;
+        criteria.StoreId = storeId;
+        // empty rather than null for the root: null is the admin's "root listing", which hides the blogs folder
+        criteria.FolderUrl = slash < 0 ? string.Empty : trimmed[..slash];
+
+        IList<ContentItem> siblings;
+        try
+        {
+            siblings = await contentFileService.FilterItemsAsync(criteria);
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Could not list {Parent} in {ContentType}/{StoreId} to check whether {Url} is still there; deleting it as before.", criteria.FolderUrl, contentType, storeId, url);
+            return false;
+        }
+
+        // An empty answer does not distinguish "the parent is empty" from "that is not where this url
+        // lives" — and only the first of those means the url names nothing.
+        return siblings.Count > 0 && !siblings.Any(item => item.Name.EqualsIgnoreCase(name));
     }
 
     /// <summary>
