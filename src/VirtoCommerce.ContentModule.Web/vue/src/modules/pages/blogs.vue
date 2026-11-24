@@ -5,25 +5,17 @@
     :loading="loading"
     width="50%"
   >
-    <div
-      v-if="sites.length > 1"
-      class="content-site-filter"
-    >
-      <VcSelect
-        v-model="siteId"
-        :options="siteOptions"
-        option-value="id"
-        option-label="name"
-        :clearable="false"
-        :aria-label="$t('CONTENT.SITES.FILTER')"
-      />
-    </div>
     <VcDataTable
       :items="rows"
       :active-item-id="activeId"
       :column-switcher="false"
+      search-bar
+      state-key="CONTENT_BLOGS"
+      :global-filters="siteFilters"
+      :unfiltered-count="all.length"
       :empty-state="{ icon: 'lucide-notebook-pen', title: $t('CONTENT.PAGES.BLOGS.EMPTY') }"
       @row-click="(e: { data: Row }) => open(e.data)"
+      @filter="(e: { filters: Record<string, unknown> }) => onSiteFilter(e.filters)"
     >
       <VcColumn
         id="name"
@@ -41,7 +33,7 @@
 
 <script setup lang="ts">
 import { useAsync, useBlade, type IBladeToolbar } from "@vc-shell/framework";
-import { VcBlade, VcColumn, VcDataTable, VcSelect } from "@vc-shell/framework/ui";
+import { VcBlade, VcColumn, VcDataTable } from "@vc-shell/framework/ui";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { Store } from "../../api_client/virtocommerce.store";
@@ -62,7 +54,8 @@ type Row = { id: string; name?: string; siteName?: string; store: Store; blog: C
 const { t } = useI18n({ useScope: "global" });
 const { openBlade, exposeToChildren } = useBlade();
 const clients = useContentClients();
-const { sites, siteId, siteOptions, loadSites, shows, addTo } = useAllSites();
+// the only filter is the site: blogs are a site's folders, the API has no search over them
+const { siteFilters, onSiteFilter, loadSites, shows, addTo } = useAllSites();
 
 const all = ref<Row[]>([]);
 const rows = computed(() => all.value.filter((x) => shows(x.store.id)));

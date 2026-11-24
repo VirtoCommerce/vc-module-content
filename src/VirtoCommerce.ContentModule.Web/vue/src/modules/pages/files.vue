@@ -11,14 +11,18 @@
       v-model:selection="selection"
       selection-mode="multiple"
       data-key="relativeUrl"
-      :items="items"
+      :items="rows"
       :searchable="true"
+      search-bar
+      :global-filters="globalFilters"
+      :unfiltered-count="items.length"
       :state-key="`CONTENT_FILES_${contentType.toUpperCase()}`"
       :active-item-id="activeItemId"
       :row-actions="rowActions"
       row-actions-mode="dropdown"
       :empty-state="{ icon: 'lucide-folder-open', title: $t('CONTENT.PAGES.FILES.EMPTY') }"
       @row-click="(e: { data: ContentFile }) => openItem(e.data)"
+      @filter="onFilter"
     >
       <template #header>
         <div class="content-crumbs">
@@ -111,7 +115,17 @@
 </template>
 
 <script setup lang="ts">
-import { useAsync, useBlade, useFunctions, useLoading, usePermissions, usePopup, notification, type IBladeToolbar } from "@vc-shell/framework";
+import {
+  useAsync,
+  useBlade,
+  useFunctions,
+  useLoading,
+  usePermissions,
+  usePopup,
+  notification,
+  type GlobalFilterConfig,
+  type IBladeToolbar,
+} from "@vc-shell/framework";
 import { VcBlade, VcBreadcrumbs, VcButton, VcColumn, VcDataTable, VcFileUpload, VcIcon, VcInput, VcPopup, VcStatus } from "@vc-shell/framework/ui";
 import { computed, onMounted, ref, shallowRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -190,11 +204,61 @@ function iconOf(item: ContentFile) {
   return "lucide-file-text";
 }
 
+type PublishStatus = "published" | "changed" | "draft";
+const statusOf = (item: ContentFile): PublishStatus => {
+  if (!item.published) return "draft";
+  return item.hasChanges ? "changed" : "published";
+};
+const statusLabels: Record<PublishStatus, string> = { published: "CONTENT.STATUS.PUBLISHED", changed: "CONTENT.STATUS.CHANGED", draft: "CONTENT.STATUS.DRAFT" };
+const statusVariants = { published: "success", changed: "warning", draft: "info" } as const;
+
 function publishState(item: ContentFile) {
-  if (item.published && !item.hasChanges) return { label: t("CONTENT.STATUS.PUBLISHED"), variant: "success" as const };
-  if (item.published) return { label: t("CONTENT.STATUS.CHANGED"), variant: "warning" as const };
-  return { label: t("CONTENT.STATUS.DRAFT"), variant: "info" as const };
+  const status = statusOf(item);
+  return { label: t(statusLabels[status]), variant: statusVariants[status] };
 }
+
+// The API lists a folder whole (no paging), with each file's publish state and modified date, but filters by keyword only:
+// an editor's "what is still a draft / has unpublished changes" and "what changed lately" narrow that listing.
+// Folders stay: they are how you get to the files below.
+const statuses = ref<PublishStatus[]>([]);
+const modified = ref<{ from?: Date; to?: Date }>({});
+const globalFilters = computed<GlobalFilterConfig[]>(() => [
+  ...(contentType.value === "themes"
+    ? []
+    : [
+        {
+          id: "status",
+          label: t("CONTENT.PAGES.FILES.COLUMNS.STATUS"),
+          filter: { multiple: true, options: (Object.keys(statusLabels) as PublishStatus[]).map((x) => ({ value: x, label: t(statusLabels[x]) })) },
+        },
+      ]),
+  { id: "modifiedDate", label: t("CONTENT.PAGES.FILES.COLUMNS.MODIFIED"), filter: { range: ["modifiedFrom", "modifiedTo"] } },
+]);
+
+// the search bar sends days (YYYY-MM-DD, both ends included): the end is that day's last moment
+const localDay = (ymd: unknown, endOfDay = false) => {
+  if (typeof ymd !== "string" || !ymd) return undefined;
+  const day = new Date(`${ymd}T00:00`);
+  return endOfDay ? new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1, 0, 0, 0, -1) : day;
+};
+
+function onFilter(event: { filters: Record<string, unknown> }) {
+  statuses.value = ([] as PublishStatus[]).concat((event.filters.status as PublishStatus | PublishStatus[] | undefined) ?? []);
+  modified.value = { from: localDay(event.filters.modifiedFrom), to: localDay(event.filters.modifiedTo, true) };
+  // Move and Delete act on the selection: never on rows the filter hides
+  selection.value = [];
+}
+
+function shown(item: ContentFile) {
+  if (isFolder(item)) return true;
+  if (statuses.value.length && contentType.value !== "themes" && !statuses.value.includes(statusOf(item))) return false;
+  const { from, to } = modified.value;
+  if (!from && !to) return true;
+  const date = item.modifiedDate ? new Date(item.modifiedDate) : undefined;
+  return !!date && (!from || date >= from) && (!to || date <= to);
+}
+
+const rows = computed(() => items.value.filter(shown));
 
 const { loading: listLoading, action: load } = useAsync(async () => {
   const client = await clients.content();
