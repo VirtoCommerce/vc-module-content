@@ -5,25 +5,17 @@
     :loading="loading"
     width="50%"
   >
-    <div
-      v-if="sites.length > 1"
-      class="content-site-filter"
-    >
-      <VcSelect
-        v-model="siteId"
-        :options="siteOptions"
-        option-value="id"
-        option-label="name"
-        :clearable="false"
-        :aria-label="$t('CONTENT.SITES.FILTER')"
-      />
-    </div>
     <VcDataTable
       :items="rows"
       :active-item-id="activeId"
       :column-switcher="false"
+      search-bar
+      state-key="CONTENT_MENUS"
+      :global-filters="globalFilters"
+      :unfiltered-count="all.length"
       :empty-state="{ icon: 'lucide-list-tree', title: $t('CONTENT.PAGES.LINK_LISTS.EMPTY') }"
       @row-click="(e: { data: Row }) => open(e.data)"
+      @filter="onFilter"
     >
       <VcColumn
         id="name"
@@ -51,14 +43,14 @@
 </template>
 
 <script setup lang="ts">
-import { useAsync, useBlade, type IBladeToolbar } from "@vc-shell/framework";
-import { VcBlade, VcColumn, VcDataTable, VcSelect } from "@vc-shell/framework/ui";
+import { useAsync, useBlade, type GlobalFilterConfig, type IBladeToolbar } from "@vc-shell/framework";
+import { VcBlade, VcColumn, VcDataTable } from "@vc-shell/framework/ui";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { MenuLinkList } from "../../api_client/virtocommerce.content";
 import type { Store } from "../../api_client/virtocommerce.store";
 import { useContentClients } from "../api";
-import { useAllSites } from "../composables/useAllSites";
+import { pickedValue, useAllSites } from "../composables/useAllSites";
 
 // every site's menus (link lists) in one list
 defineBlade({
@@ -74,10 +66,25 @@ type Row = { id: string; name?: string; language?: string; links: number; siteNa
 const { t } = useI18n({ useScope: "global" });
 const { openBlade, exposeToChildren } = useBlade();
 const clients = useContentClients();
-const { sites, siteId, siteOptions, loadSites, shows, addTo } = useAllSites();
+const { siteFilters, onSiteFilter, loadSites, shows, addTo } = useAllSites();
 
 const all = ref<Row[]>([]);
-const rows = computed(() => all.value.filter((x) => shows(x.store.id)));
+const language = ref<string>();
+const rows = computed(() => all.value.filter((x) => shows(x.store.id) && (!language.value || x.language === language.value)));
+
+// the API lists a site's menus whole, with no search: site and language (a menu is one language's) are picked from them
+const languages = computed(() => [...new Set(all.value.map((x) => x.language).filter((x): x is string => !!x))].sort((a, b) => a.localeCompare(b)));
+const globalFilters = computed<GlobalFilterConfig[]>(() => [
+  ...siteFilters.value,
+  ...(languages.value.length > 1
+    ? [{ id: "language", label: t("CONTENT.PAGES.LINK_LISTS.COLUMNS.LANGUAGE"), filter: { options: languages.value.map((x) => ({ value: x, label: x })) } }]
+    : []),
+]);
+
+function onFilter(event: { filters: Record<string, unknown> }) {
+  onSiteFilter(event.filters);
+  language.value = pickedValue(event.filters.language);
+}
 const activeId = ref<string>();
 
 const { loading, action: load } = useAsync(async () => {
