@@ -73,7 +73,7 @@ const language = ref<string>();
 const rows = computed(() => all.value.filter((x) => shows(x.store.id) && (!language.value || x.language === language.value)));
 
 // the API lists a site's menus whole, with no search: site and language (a menu is one language's) are picked from them
-const languages = computed(() => [...new Set(all.value.map((x) => x.language).filter((x): x is string => !!x))].sort());
+const languages = computed(() => [...new Set(all.value.map((x) => x.language).filter((x): x is string => !!x))].sort((a, b) => a.localeCompare(b)));
 const globalFilters = computed<GlobalFilterConfig[]>(() => [
   ...siteFilters.value,
   ...(languages.value.length > 1
